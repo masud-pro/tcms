@@ -128,7 +128,7 @@
 
         <li class="nav-item">
     
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="{{ route("filemanager") }}">
                 <i class="fas fa-folder-open"></i>
                 <span>File Manager</span>
             </a>

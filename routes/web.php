@@ -64,6 +64,9 @@ Route::middleware( ['auth:sanctum', 'verified', 'isAdmin'] )->group( function ()
     Route::get( 'account/individual-student', [AccountController::class, "individual_account"] )->name( "account.student-account" );
     Route::get( 'account/transactions', [AccountController::class, "transactions"] )->name( "account.transactions" );
 
+    Route::get('filemanager', function () {
+        return view("ms.filemanager.filemanager"); 
+     })->name("filemanager");
 } );
 
 Route::middleware( ['auth:sanctum'] )->group( function () {

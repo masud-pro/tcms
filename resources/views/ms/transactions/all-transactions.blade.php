@@ -88,7 +88,7 @@
                                 <td>{{ $transaction->status ??  "" }}</td>
                                 <td>{{ $transaction->currency ??  "" }}</td>
                                 <td>{{ $transaction->transaction_id ??  "" }}</td>
-                                <td>{{ $transaction->updated_at ??  "" }}</td>
+                                <td>{{ $transaction->updated_at ? $transaction->updated_at->format('d-M-Y g:i a') : "" }}</td>
                             </tr>
                         @endforeach
                     </tbody>

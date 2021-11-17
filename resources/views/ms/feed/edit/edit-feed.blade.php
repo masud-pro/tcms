@@ -75,26 +75,42 @@
 @endsection
 
 
-{{-- @push('scripts')
+@push('scripts')
 
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    
+    <script src="{{ asset("assets/tinymce/tinymce.min.js") }}" referrerpolicy="origin"></script>
     <script>
-        $(document).ready(function() {
-            $('#user_id').select2();
-        });
 
-        $('#select_all').click(function(){
+    var editor_config = {
+    path_absolute : "/",
+    selector: 'textarea',
+    relative_urls: false,
+    plugins: [
+        "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+        "searchreplace wordcount visualblocks visualchars code fullscreen",
+        "insertdatetime media nonbreaking save directionality",
+        "emoticons template paste textpattern"
+    ],
+    toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media",
+    file_picker_callback (callback, value, meta) {
+            let x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth
+            let y = window.innerHeight|| document.documentElement.clientHeight|| document.getElementsByTagName('body')[0].clientHeight
 
-            $("#user_id > option").prop("selected","selected");
-            $("#user_id").trigger("change");
+            tinymce.activeEditor.windowManager.openUrl({
+            url : '/file-manager/tinymce5',
+            title : 'Laravel File manager',
+            width : x * 0.8,
+            height : y * 0.8,
+            onMessage: (api, message) => {
+                callback(message.content, { text: message.text })
+            }
+            })
+        }
+    };
 
-            return false;
-        });
+    tinymce.init(editor_config);
 
-
+        
     </script>
 @endpush
 
-@push('styles')
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-@endpush --}}

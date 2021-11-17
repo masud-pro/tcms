@@ -42,7 +42,7 @@
                             <h5 class="mt-2 card-title text-dark">{{ $feed->name ?? "" }}</h5>
                             <hr>
                             <p class="card-text">
-                                {{ Illuminate\Support\Str::words( $feed->description ,50) }}
+                                {!! Illuminate\Support\Str::words( $feed->description ,50) !!}
                                 @if (Illuminate\Support\Str::wordCount( $feed->description) > 50)   
                                     <a data-toggle="collapse" href="#collapseExample{{ $feed->id }}" role="button" 
                                         aria-expanded="false" aria-controls="collapseExample">Read More</a>
@@ -50,7 +50,7 @@
                             </p>
                             <div class="collapse" id="collapseExample{{ $feed->id }}">
                                 <div class="card card-body">
-                                    {{ $feed->description }}
+                                    {!! $feed->description !!}
                                 </div>
                             </div>                              
                         </div>

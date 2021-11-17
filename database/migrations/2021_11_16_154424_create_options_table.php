@@ -1,8 +1,10 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use Database\Seeders\OptionSeeder;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreateOptionsTable extends Migration {
     /**
@@ -17,11 +19,15 @@ class CreateOptionsTable extends Migration {
             $table->foreignId("user_id")->nullable()->index();
 
             $table->string("name");
-            $table->string("vaule");
+            $table->string("value")->nullable();
             $table->string("category")->nullable();
 
             $table->timestamps();
         } );
+
+        Artisan::call('db:seed', [
+            '--class' => OptionSeeder::class,
+        ]);
     }
 
     /**
