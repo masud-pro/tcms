@@ -18,7 +18,7 @@ class CreateOptionsTable extends Migration {
 
             $table->string("name");
             $table->string("vaule");
-            $table->string("category");
+            $table->string("category")->nullable();
 
             $table->timestamps();
         } );
