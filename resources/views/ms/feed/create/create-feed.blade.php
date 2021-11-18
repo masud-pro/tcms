@@ -54,6 +54,9 @@
                         <div class="col text-left">
                             <input type="submit" value="Create" class="btn btn-primary mt-4">
                         </div>
+                        <div class="col text-right mt-4">
+                            <a href="{{ route("course.feeds.index",['course'=>request()->course]) }}">Go Back</a>
+                        </div>
                     </div>
 
                 </form>

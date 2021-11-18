@@ -34,6 +34,7 @@ class User extends Authenticatable {
         'gender',
         'reg_no',
         'roll',
+        'class',
         'waiver',
         'phone_no',
         'fathers_name',

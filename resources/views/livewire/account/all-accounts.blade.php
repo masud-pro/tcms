@@ -5,9 +5,14 @@
                 
                 <div class="row">
                     <div class="col">Account</div>
-                    <div class="col text-right"> @if ( $total != null )
-                        Total this month - {{ $total }} Tk
-                    @endif </div>
+                    <div class="col text-right"> 
+                        @if ( $total != null )
+                            Total this month - {{ $total }} Tk
+                        @endif 
+                        @if ( $totalUnpaid != null )
+                            and Total due - {{ $totalUnpaid }} Tk
+                        @endif
+                    </div>
                 </div>
                 <div wire:loading>
                     <div class="spinner-border" role="status">

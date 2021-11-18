@@ -4,6 +4,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\FeedController;
+use App\Http\Controllers\OptionController;
 use App\Http\Controllers\SslCommerzPaymentController;
 use App\Http\Controllers\SystemController;
 use App\Http\Controllers\UserController;
@@ -64,9 +65,12 @@ Route::middleware( ['auth:sanctum', 'verified', 'isAdmin'] )->group( function ()
     Route::get( 'account/individual-student', [AccountController::class, "individual_account"] )->name( "account.student-account" );
     Route::get( 'account/transactions', [AccountController::class, "transactions"] )->name( "account.transactions" );
 
-    Route::get('filemanager', function () {
-        return view("ms.filemanager.filemanager"); 
-     })->name("filemanager");
+    Route::get( "settings", [OptionController::class, 'index'] )->name( 'settings' );
+    Route::patch( "settings", [OptionController::class, 'update'] )->name( 'settings.update' );
+
+    Route::get( 'filemanager', function () {
+        return view( "ms.filemanager.filemanager" );
+    } )->name( "filemanager" );
 } );
 
 Route::middleware( ['auth:sanctum'] )->group( function () {
@@ -76,15 +80,16 @@ Route::middleware( ['auth:sanctum'] )->group( function () {
     Route::get( "display-courses", [CourseController::class, "display"] )->name( "display.course" );
     Route::post( "course/{course}/enroll", [CourseController::class, "enroll"] )->name( "course.enroll" );
 
-
     Route::get( 'attendance/student/individual', [AttendanceController::class, "student_individual_attendance"] )->name( "attendance.student.individual" );
     Route::get( 'account/student/individual', [AccountController::class, "student_individual_account"] )->name( "account.student.individual" );
     Route::get( "payment/{account}/pay", [AccountController::class, "student_pay"] )->name( "student.pay" );
+    Route::get( "payment/{account}/pay-offline", [AccountController::class, "student_pay_offline"] )->name( "student.pay.offline" );
+    Route::post( "payment/pay-offline", [AccountController::class, "student_pay_offline_store"] )->name( "student.pay.offline.store" );
 } );
 
 // SSLCOMMERZ Start
 // Route::get( '/example1', [SslCommerzPaymentController::class, 'exampleEasyCheckout'] );
-Route::get( '/example2', [SslCommerzPaymentController::class, 'exampleHostedCheckout'] );
+// Route::get( '/example2', [SslCommerzPaymentController::class, 'exampleHostedCheckout'] );
 
 Route::post( '/pay', [SslCommerzPaymentController::class, 'index'] );
 Route::post( '/pay-via-ajax', [SslCommerzPaymentController::class, 'payViaAjax'] );

@@ -80,6 +80,12 @@
                         <p class="text-danger small mt-1">{{ $message }}</p>
                     @enderror
 
+                    <label class="mt-3" for="class">Class</label>
+                    <input value="{{ old("class") ?? $user->class }}" name="class" class="form-control" id="class" type="number">
+                    @error('class')
+                        <p class="text-danger small mt-1">{{ $message }}</p>
+                    @enderror
+
                     <label class="mt-3" for="roll">Roll No</label>
                     <input value="{{ old("roll") ?? $user->roll }}" name="roll" class="form-control" id="roll" type="number">
                     @error('roll')
@@ -152,6 +158,9 @@
                         <div class="col text-left">
                             <input type="submit" value="Update" class="btn btn-primary mt-4">
                         </div>
+                        
+                            <a class="mt-4" href="{{ route("user.index") }}">Go Back</a>
+                       
                     </form>
                         <div class="col text-right">
                             <form action="{{ route("user.destroy",["user",$user->id]) }}">

@@ -65,6 +65,11 @@
                         <div class="col text-left">
                             <input type="submit" value="Update" class="btn btn-primary mt-4">
                         </div>
+                        <div class="col text-right">
+                            @if (request()->feed->course)
+                                <a class="d-inline-block mt-4" href="{{ route("course.feeds.index",["course"=>request()->feed->course->id]) }}">Go Back</a>
+                            @endif
+                        </div>
                     </div>
 
                 </form>

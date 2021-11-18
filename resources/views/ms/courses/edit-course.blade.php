@@ -108,6 +108,9 @@
                         <div class="col text-left">
                             <input type="submit" value="Update" class="btn btn-primary mt-4">
                         </div>
+
+                        <a class="mt-4" href="{{ route("course.index") }}">Go Back</a>
+
                     </form>
                         <div class="col text-right">
                             <form action="{{ route("course.destroy",["course"=>$course->id]) }}" method="POST">

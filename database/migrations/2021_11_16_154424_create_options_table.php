@@ -19,6 +19,7 @@ class CreateOptionsTable extends Migration {
             $table->foreignId("user_id")->nullable()->index();
 
             $table->string("name");
+            $table->string("slug");
             $table->string("value")->nullable();
             $table->string("category")->nullable();
 

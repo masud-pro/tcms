@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration {
             $table->string( "role" )->nullable();
             $table->date( "dob" )->nullable();
             $table->string( "gender" )->nullable();
+            $table->integer( "class" )->nullable();
             $table->string( "roll" )->nullable();
             $table->string( "reg_no" )->nullable();
             $table->boolean( "is_active" )->default(0);

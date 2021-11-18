@@ -43,17 +43,20 @@ class AllAccounts extends Component {
                 $query->whereMonth( "month", $month );
             } );
 
-            $accounts = $everything->get();
-            $total    = $everything->where( 'status', 'Paid' )->sum( "paid_amount" );
-
+            $accounts    = $everything->get();
+            $total       = $accounts->where( 'status', 'Paid' )->sum( "paid_amount" );
+            $totalUnpaid = $accounts->where( 'status', 'Unpaid' )->sum( "paid_amount" );
+            // dd($totalUnpaid);
         } else {
-            $accounts = [];
-            $total    = null;
+            $accounts    = [];
+            $total       = null;
+            $totalUnpaid = null;
         }
 
         return view( 'livewire.account.all-accounts', [
-            "accounts" => $accounts,
-            "total"    => $total,
+            "accounts"    => $accounts,
+            "total"       => $total ?? 0,
+            "totalUnpaid" => $totalUnpaid ?? 0,
         ] );
     }
 

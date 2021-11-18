@@ -9,6 +9,19 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Order extends Model {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'email',
+        'address',
+        'phone',
+        'card_type',
+        'transaction_id',
+        'amount',
+        'account_id',
+        'user_id',
+        'status',
+    ];
+
     /**
      * Get the account that owns the Order
      *

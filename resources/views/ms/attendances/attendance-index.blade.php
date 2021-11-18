@@ -65,10 +65,11 @@
                         </table>
                         <input type="hidden" name="course_id" value="{{ request()->course->id }}">
                         <input type="submit" class="btn btn-primary" value="Submit Attendance">
-                        <div class="text-right">
-                            <a href="{{ route("course.feeds.index",["course"=>request()->course]) }}">Back</a>
-                        </div>
+                        
                     </form>
+                    <div class="text-right">
+                        <a href="{{ route("course.feeds.index",["course"=>request()->course]) }}">Back</a>
+                    </div>
                     
                 </div>
             </div>

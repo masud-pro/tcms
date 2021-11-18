@@ -1,7 +1,11 @@
 <x-guest-layout>
     <x-jet-authentication-card>
         <x-slot name="logo">
-            <x-jet-authentication-card-logo />
+            {{-- <x-jet-authentication-card-logo /> --}}
+            <div class="text-center mb-3 ce-logo">
+                {{-- <i class="fas fa-chalkboard-teacher"></i> --}}
+                <img src="{{ asset("images/login/login.svg") }}" alt="">
+            </div>
         </x-slot>
 
         <div class="card-body">

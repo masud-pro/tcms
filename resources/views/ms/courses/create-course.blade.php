@@ -95,8 +95,15 @@
                     <div class="small">A landscape image is preferable</div>
                     <img id="batchImage" class="mt-3" src="" alt=""> <br>
 
+                    <div class="row">
+                        <div class="col">
+                            <input type="submit" value="Create" class="btn btn-primary mt-4">
+                        </div>
+                        <div class="col text-right mt-5">
+                            <a class="mt-4" href="{{ route("course.index") }}">Go Back</a>
+                        </div>
+                    </div>
 
-                    <input type="submit" value="Create" class="btn btn-primary mt-4">
 
                 </form>
             </div>

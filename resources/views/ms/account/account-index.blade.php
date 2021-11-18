@@ -69,7 +69,10 @@
                         <input type="hidden" name="course_id" value="{{ request()->course->id }}">
                         <input type="submit" class="btn btn-primary" value="Update">
                     </form>
-                    
+
+                    <div class="text-right">
+                        <a href="{{ route("course.feeds.index",['course'=>request()->course]) }}">Go Back</a>
+                    </div>
                 </div>
             </div>
         </div>

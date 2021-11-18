@@ -81,6 +81,12 @@
                         <p class="text-danger small mt-1">{{ $message }}</p>
                     @enderror
 
+                    <label class="mt-3" for="class">Class</label>
+                    <input value="{{ old("class") }}" name="class" class="form-control" id="class" type="number">
+                    @error('class')
+                        <p class="text-danger small mt-1">{{ $message }}</p>
+                    @enderror
+
                     <label class="mt-3" for="roll">Roll No</label>
                     <input value="{{ old("roll") }}" name="roll" class="form-control" id="roll" type="number">
                     @error('roll')
@@ -152,6 +158,9 @@
                     <div class="row">
                         <div class="col text-left">
                             <input type="submit" value="Create" class="btn btn-primary mt-4">
+                        </div>
+                        <div class="col text-right mt-5">
+                            <a href="{{ route("user.index") }}">Go Back</a>
                         </div>
                     </div>
 

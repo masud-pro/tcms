@@ -72,7 +72,7 @@
                                        
                     </form>
                     <div class="text-right">
-                        <a href="{{ route("dashboard") }}">Go Back</a>
+                        <a href="{{ route("course.feeds.index",['course'=>request()->course]) }}">Go Back</a>
                     </div>
                 </div>
             </div>

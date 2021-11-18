@@ -39,7 +39,7 @@ class SslCommerzPaymentController extends Controller {
         # In "orders" table, order unique identity is "transaction_id". "status" field contain status of the transaction, "amount" is the order amount to be paid and "currency" is for storing Site Currency which will be checked with paid currency.
 
         $post_data                 = array();
-        $post_data['total_amount'] = $data['amount']; # You cant not pay less than 10
+        $post_data['total_amount'] = Account::findOrFail( $data['account_id'] )->paid_amount; # You cant not pay less than 10
         $post_data['currency']     = "BDT";
         $post_data['tran_id']      = md5( uniqid() );
 
@@ -182,7 +182,8 @@ class SslCommerzPaymentController extends Controller {
     }
 
     public function success( Request $request ) {
-        // echo "Transaction is Successful";
+
+// echo "Transaction is Successful";
 
         // dd( $request->all() );
 
@@ -217,13 +218,13 @@ class SslCommerzPaymentController extends Controller {
                         'card_type'       => $cardType,
                         'store_amount'    => $storeAmount,
                         'currency_amount' => $currencyAmount,
-                        ] );
+                    ] );
 
                 $account  = Account::findOrFail( $account );
                 $courseID = $account->course_id;
                 $user_id  = $account->user_id;
                 $account->update( [
-                    'status'          => "Paid",
+                    'status' => "Paid",
                 ] );
 
                 $course = Course::findOrFail( $courseID );
@@ -317,7 +318,7 @@ That means through IPN Order status already updated. Now you can just show the c
     public function ipn( Request $request ) {
 
 #Received all the payement information from the gateway
-        if ( $request->input( 'tran_id' ) ) #Check transation id is posted or not. { { { { { { { { { {
+        if ( $request->input( 'tran_id' ) ) #Check transation id is posted or not. { { { { { { { { { { {
         $tran_id = $request->input( 'tran_id' );
     
 

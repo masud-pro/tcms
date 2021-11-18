@@ -5,16 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\Option;
 use Illuminate\Http\Request;
 
-class OptionController extends Controller
-{
+class OptionController extends Controller {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
+    public function index() {
+        return view("ms.option.option",[
+            "options" => Option::all()
+        ]);
     }
 
     /**
@@ -22,8 +22,7 @@ class OptionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         //
     }
 
@@ -33,8 +32,7 @@ class OptionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store( Request $request ) {
         //
     }
 
@@ -44,8 +42,7 @@ class OptionController extends Controller
      * @param  \App\Models\Option  $option
      * @return \Illuminate\Http\Response
      */
-    public function show(Option $option)
-    {
+    public function show( Option $option ) {
         //
     }
 
@@ -55,8 +52,7 @@ class OptionController extends Controller
      * @param  \App\Models\Option  $option
      * @return \Illuminate\Http\Response
      */
-    public function edit(Option $option)
-    {
+    public function edit( Option $option ) {
         //
     }
 
@@ -67,9 +63,16 @@ class OptionController extends Controller
      * @param  \App\Models\Option  $option
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Option $option)
-    {
-        //
+    public function update( Request $request) {
+        // dd($request->all());
+        foreach ($request->options as $key => $value) {
+            
+            Option::findOrFail($key)->update([
+                'value' => $value['value']
+            ]);
+        }
+
+        return redirect()->back()->with("success","Options Updated Successfully");
     }
 
     /**
@@ -78,8 +81,7 @@ class OptionController extends Controller
      * @param  \App\Models\Option  $option
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Option $option)
-    {
+    public function destroy( Option $option ) {
         //
     }
 }

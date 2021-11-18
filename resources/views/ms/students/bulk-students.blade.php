@@ -39,7 +39,7 @@
                                 <th>Phone Number</th>
                                 <th>Batch / Course</th>
                                 <th>Created At</th>
-                                {{-- <th>Actions</th> --}}
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tfoot>
@@ -49,7 +49,7 @@
                                 <th>Phone Number</th>
                                 <th>Batch / Course</th>
                                 <th>Created At</th>
-                                {{-- <th>Actions</th> --}}
+                                <th>Actions</th>
                             </tr>
                         </tfoot>
                         <tbody>
@@ -66,11 +66,14 @@
                                         @endforelse
                                     </td>
                                     <td>{{ $user->created_at->format("d-M-Y") }}</td>
-                                    {{-- <td><a class="btn btn-primary" href="{{ route("user.edit",[ 'user' => $user->id ]) }}">Edit</a></td> --}}
+                                    <td><a class="btn btn-primary" href="{{ route("user.edit",[ 'user' => $user->id ]) }}">Edit</a></td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
+                    <div class="text-right mt-4">
+                        <a href="{{ route("course.feeds.index",['course'=>request()->course]) }}">Go Back</a>
+                    </div>
                 </div>
             </div>
         </div>

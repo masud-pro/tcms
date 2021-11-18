@@ -25,7 +25,7 @@
                         <div class="col-md-4 mt-3">
                             <div class="card">
 
-                                <img class="card-img-top" height="250px" src="{{ asset("storage/".$course->image) }}" alt="Card image cap">
+                                <img class="card-img-top" height="250px" src="{{ $course->image ? asset("storage/".$course->image) : asset("images/default-banner.jpg") }}" alt="Card image cap">
 
                                 <div class="card-body">
 

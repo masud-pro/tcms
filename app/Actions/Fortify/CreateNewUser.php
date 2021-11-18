@@ -23,6 +23,7 @@ class CreateNewUser implements CreatesNewUsers {
             'email'            => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'dob'              => ['required'],
             'gender'           => ['required'],
+            'class'            => ['required'],
             'phone_no'         => ['required', 'max:11'],
             'fathers_name'     => ['required'],
             'fathers_phone_no' => ['required', 'max:11'],
@@ -35,18 +36,18 @@ class CreateNewUser implements CreatesNewUsers {
         ] )->validate();
 
         return User::create( [
-            'name'     => $input['name'],
-            'email'    => $input['email'],
-            'dob'    => $input['dob'],
-            'gender'    => $input['gender'],
-            'phone_no'    => $input['phone_no'],
-            'fathers_name'    => $input['fathers_name'],
-            'fathers_phone_no'    => $input['fathers_phone_no'],
-            'mothers_name'    => $input['mothers_name'],
-            'mothers_phone_no'    => $input['mothers_phone_no'],
-            'address'    => $input['address'],
-            'password' => Hash::make( $input['password'] ),
-            'role'     => $input['role'],
+            'name'             => $input['name'],
+            'email'            => $input['email'],
+            'dob'              => $input['dob'],
+            'gender'           => $input['gender'],
+            'phone_no'         => $input['phone_no'],
+            'fathers_name'     => $input['fathers_name'],
+            'fathers_phone_no' => $input['fathers_phone_no'],
+            'mothers_name'     => $input['mothers_name'],
+            'mothers_phone_no' => $input['mothers_phone_no'],
+            'address'          => $input['address'],
+            'password'         => Hash::make( $input['password'] ),
+            'role'             => $input['role'],
         ] );
     }
 }

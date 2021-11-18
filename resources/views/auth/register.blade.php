@@ -1,7 +1,11 @@
 <x-guest-layout>
     <x-jet-authentication-card>
         <x-slot name="logo">
-            <x-jet-authentication-card-logo />
+            {{-- <x-jet-authentication-card-logo /> --}}
+            <div class="text-center mb-3 ce-logo">
+                {{-- <i class="far fa-laugh-beam"></i> --}}
+                <img src="{{ asset("images/login/register.svg") }}" alt="">
+            </div>
         </x-slot>
 
         <x-jet-validation-errors class="mb-3" />
@@ -49,6 +53,14 @@
                     <x-jet-input class="{{ $errors->has('phone_no') ? 'is-invalid' : '' }}" type="text" name="phone_no"
                                  :value="old('phone_no')" required />
                     <x-jet-input-error for="phone_no"></x-jet-input-error>
+                </div>
+
+                <div class="mb-3">
+                    <x-jet-label value="{{ __('Class') }}" />
+
+                    <x-jet-input class="{{ $errors->has('phone_no') ? 'is-invalid' : '' }}" type="number" name="class"
+                                 :value="old('class')" required />
+                    <x-jet-input-error for="class"></x-jet-input-error>
                 </div>
 
                 <div class="mb-3">

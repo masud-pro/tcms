@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
-use App\Models\Order;
-use App\Models\Course;
 use App\Models\Account;
+use App\Models\Course;
+use App\Models\Option;
+use App\Models\Order;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AccountController extends Controller {
     /**
@@ -27,11 +29,47 @@ class AccountController extends Controller {
         ] );
     }
 
+    public function student_pay_offline( Account $account ) {
+        $this->authorize( "view", $account );
+
+        $bkashNumber  = Option::where( "slug", "rocket_number" )->pluck('value')->first();
+        $rocketNumber = Option::where( "slug", "bkash_number" )->pluck('value')->first();
+        $nagadNumber  = Option::where( "slug", "nagad_number" )->pluck('value')->first();
+
+        return view( "ms.account.pay-offline", [
+            'account'      => $account,
+            'bkashNumber'  => $bkashNumber ?? "Not Avaiable",
+            'rocketNumber' => $rocketNumber ?? "Not Avaiable",
+            'nagadNumber'  => $nagadNumber ?? "Not Avaiable",
+        ] );
+    }
+
+    public function student_pay_offline_store( Request $request ) {
+        $data = $request->validate( [
+            'name'           => "required|string",
+            'email'          => "required|email",
+            'address'        => "required",
+            'phone'          => "required",
+            'card_type'      => "required",
+            'transaction_id' => "required",
+            'amount'         => "required",
+            'account_id'     => "required",
+        ] );
+
+        $data['user_id'] = Auth::user()->id;
+        $data['status']  = "Pending";
+        $data['amount']  = Account::findOrFail( $data['account_id'] )->paid_amount;
+
+        Order::create( $data );
+
+        return redirect()->route( "dashboard" )->with( "success", "Your payment is received, You will be able to access everything after confirmation" );
+    }
+
     public function transactions() {
-        return view("ms.transactions.all-transactions",[
-            "transactions" => Order::latest()->simplePaginate(20)
-        ]);
-        
+        return view( "ms.transactions.all-transactions", [
+            "transactions" => Order::latest()->simplePaginate( 20 ),
+        ] );
+
     }
 
     /**
@@ -46,13 +84,17 @@ class AccountController extends Controller {
             $students = $course->user;
 
             foreach ( $students as $student ) {
-                Account::create( [
-                    'user_id'     => $student->id,
-                    'course_id'   => $course->id,
-                    'paid_amount' => $student->waiver ? $course->fee - $student->waiver : $course->fee,
-                    'status'      => "Unpaid",
-                    'month'       => Carbon::today(),
-                ] );
+
+                if ( $student->is_active == 1 ) {
+                    Account::create( [
+                        'user_id'     => $student->id,
+                        'course_id'   => $course->id,
+                        'paid_amount' => $student->waiver ? $course->fee - $student->waiver : $course->fee,
+                        'status'      => "Unpaid",
+                        'month'       => Carbon::today(),
+                    ] );
+                }
+
             }
 
             return view( "ms.account.account-index", [
@@ -67,7 +109,6 @@ class AccountController extends Controller {
     }
 
     public function student_individual_account() {
-        // dd("Account e hit korse");
         return view( "ms.account.student-individual-account" );
     }
 

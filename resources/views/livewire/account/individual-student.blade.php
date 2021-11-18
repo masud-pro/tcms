@@ -53,7 +53,7 @@
                                     <td>
                                         <input type="hidden" name="ids[]" value="{{ $account->id }}">
                                         <div class="custom-control custom-checkbox">
-                                            <input {{ $account->status == "Paid" ? "checked" : "" }}  name="status[]" value="{{ $account->id }}" type="checkbox" class="custom-control-input" id="customCheck{{ $account->id }}">
+                                            <input onclick="return false" {{ $account->status == "Paid" ? "checked" : "" }}  name="status[]" value="{{ $account->id }}" type="checkbox" class="custom-control-input" id="customCheck{{ $account->id }}">
                                             <label class="custom-control-label" for="customCheck{{ $account->id }}">Paid</label>
                                         </div>
                                     </td>
@@ -61,7 +61,12 @@
                                         @if ($account->status == "Paid")
                                             <a class="btn btn-success">Paid</a>
                                         @else
-                                            <a href="{{ route("student.pay",[ "account" => $account->id ]) }}" class="btn btn-primary">Pay Now</a>
+                                            @if ($manualPayment == 1)
+                                                <a href="{{ route("student.pay.offline",[ "account" => $account->id ]) }}" class="btn btn-primary">Pay Offline</a>
+                                            @endif
+                                            @if ($onlinePayment == 1)
+                                                <a href="{{ route("student.pay",[ "account" => $account->id ]) }}" class="btn btn-primary">Pay Online</a>
+                                            @endif
                                         @endif
                                     </td>
                                 </tr>

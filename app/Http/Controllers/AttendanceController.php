@@ -31,12 +31,15 @@ class AttendanceController extends Controller {
             $students = $course->user;
 
             foreach ( $students as $student ) {
-                Attendance::create( [
-                    'user_id'    => $student->id,
-                    'course_id'  => $course->id,
-                    'attendance' => false,
-                    'date'       => Carbon::today(),
-                ] );
+                if($student->is_active == 1){
+                    Attendance::create( [
+                        'user_id'    => $student->id,
+                        'course_id'  => $course->id,
+                        'attendance' => false,
+                        'date'       => Carbon::today(),
+                    ] );
+                }
+                
             }
 
             return view( "ms.attendances.attendance-index", [
