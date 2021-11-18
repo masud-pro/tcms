@@ -1,0 +1,14 @@
+#fm-main-block .btn-group:last-child,
+.tox-statusbar__branding{
+    display: none;
+}
+
+.ce-logo i,
+.ce-logo svg{
+    font-size: 55px;
+    color: #6875F5;
+}
+.ce-logo img{
+    width: 200px;
+    margin-bottom: 20px;
+}
