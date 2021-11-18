@@ -187,7 +187,6 @@ class UserController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function destroy( User $user ) {
-
         $user->deleteProfilePhoto();
         $user->tokens->each->delete();
         $user->delete();

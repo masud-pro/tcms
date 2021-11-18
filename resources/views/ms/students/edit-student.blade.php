@@ -163,7 +163,7 @@
                        
                     </form>
                         <div class="col text-right">
-                            <form action="{{ route("user.destroy",["user",$user->id]) }}">
+                            <form method="POST" action="{{ route("user.destroy",["user"=>$user->id]) }}">
                                 @csrf
                                 @method("DELETE")
                                 <input type="submit" onclick="return confirm('Are you sure you want to delete the account of {{ $user->name }}?')" value="Delete Account" class="btn btn-danger mt-4">
