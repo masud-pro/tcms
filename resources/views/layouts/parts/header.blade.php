@@ -20,7 +20,7 @@
     </form> --}}
 
     
-    <h1 class="h4 ml-3 mt-1 text-gray-800">
+    <h1 class="h4 ml-3 mt-1 text-gray-800 ce-heading">
          <!-- Title same goes for heading -->
         @yield("title") 
     </h1>

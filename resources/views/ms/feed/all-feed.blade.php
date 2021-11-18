@@ -31,7 +31,7 @@
 
         @if ( Auth::user()->role == "Admin" || $is_active == 1 )
 
-            <div class="container-fluid">
+            <div class="">
                 @if ( auth()->user()->role == "Admin" )  
                     <div class="btn-group mb-4">
                         <button 

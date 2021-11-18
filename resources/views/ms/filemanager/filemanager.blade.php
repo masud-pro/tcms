@@ -15,7 +15,7 @@
 @section('content')
 <div class="row">
     <div class="col-md-12">
-        <div class="card">
+        <div class="card overflow-hidden">
             <div class="card-header">
                 <h6 class="m-0 font-weight-bold text-primary">File Manager</h6>
             </div>

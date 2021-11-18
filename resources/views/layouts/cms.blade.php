@@ -7,9 +7,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
+    <meta name="title" content="Code Ecstasy Course Management System">
+    <meta name="description" content="Code Ecstasy Course Management System is a course management system where you one can handle payments attendance course exams etc. Grab your copy now!">
+    <meta name="author" content="https://codecstasy.com">
+    <link rel="shortcut icon" href="{{ asset("images/favicon/favicon.png") }}" type="image/x-icon">
     <title>
         @yield("title") - CE CMS
     </title>
