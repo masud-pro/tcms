@@ -40,6 +40,7 @@ class CreateNewUser implements CreatesNewUsers {
             'email'            => $input['email'],
             'dob'              => $input['dob'],
             'gender'           => $input['gender'],
+            'class'            => $input['class'],
             'phone_no'         => $input['phone_no'],
             'fathers_name'     => $input['fathers_name'],
             'fathers_phone_no' => $input['fathers_phone_no'],

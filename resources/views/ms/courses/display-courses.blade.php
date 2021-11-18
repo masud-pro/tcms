@@ -51,7 +51,7 @@
                                 <div class="card-body">
                                     <form action="{{ route("course.enroll",['course'=>$course->id]) }}" method="POST">
                                         @csrf
-                                        <input onclick="return confirm('Are you sure you want to enroll in this course?')" type="submit" value="Enrol" class="card-link btn btn-success font-weight-bold btn-block">
+                                        <input onclick="return confirm('Are you sure you want to enroll in this course?')" type="submit" value="Enroll" class="card-link btn btn-success font-weight-bold btn-block">
                                     </form>
                                 </div>
                             </div> 

@@ -80,7 +80,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <x-jet-label value="{!! __('Mother\'s Phone Number') !!}" />
+                    <x-jet-label value="{!! __('Mother\'s Name') !!}" />
 
                     <x-jet-input class="{{ $errors->has('mothers_name') ? 'is-invalid' : '' }}" type="text" name="mothers_name"
                                  :value="old('mothers_name')" required />

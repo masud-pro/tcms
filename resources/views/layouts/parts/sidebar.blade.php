@@ -8,7 +8,7 @@
         <div class="sidebar-brand-text mx-3">CE CMS</div>
     </a>
 
-    @if ( Auth::user()->role == "Admin" || (Auth::user()->role == "Student" && Auth::user()->is_active == 1) )
+    @if ( Auth::user()->role == "Admin" || ( Auth::user()->role == "Student" && Auth::user()->is_active == 1 ) )
         
 
     <!-- Divider -->

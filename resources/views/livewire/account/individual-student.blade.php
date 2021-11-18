@@ -62,10 +62,10 @@
                                             <a class="btn btn-success">Paid</a>
                                         @else
                                             @if ($manualPayment == 1)
-                                                <a href="{{ route("student.pay.offline",[ "account" => $account->id ]) }}" class="btn btn-primary">Pay Offline</a>
+                                                <a href="{{ route("student.pay.offline",[ "account" => $account->id ]) }}" class="btn btn-primary mt-1">Pay Offline</a>
                                             @endif
                                             @if ($onlinePayment == 1)
-                                                <a href="{{ route("student.pay",[ "account" => $account->id ]) }}" class="btn btn-primary">Pay Online</a>
+                                                <a href="{{ route("student.pay",[ "account" => $account->id ]) }}" class="btn btn-primary mt-1">Pay Online</a>
                                             @endif
                                         @endif
                                     </td>
