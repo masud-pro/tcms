@@ -24,7 +24,7 @@ class CreateNewUser implements CreatesNewUsers {
             'dob'              => ['required'],
             'gender'           => ['required'],
             'class'            => ['required'],
-            'phone_no'         => ['required', 'max:11'],
+            'phone_no'         => ['required', 'max:11', 'unique:users,phone_no'],
             'fathers_name'     => ['required'],
             'fathers_phone_no' => ['required', 'max:11'],
             'mothers_name'     => ['required'],

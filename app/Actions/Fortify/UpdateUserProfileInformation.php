@@ -27,7 +27,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation {
                 "dob"          => ["required"], ["date"],
                 "gender"       => ["required"],
                 "class"        => ["nullable", "integer"],
-                "phone_no"     => ["required", 'max:11'],
+                "phone_no"     => ["required", 'max:11',Rule::unique( 'users', 'phone_no' )->ignore( $user->id )],
                 "fathers_name" => ["nullable", "string"],
                 "mothers_name" => ["nullable", "string"],
                 'photo'        => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
