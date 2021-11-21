@@ -24,7 +24,7 @@
                     <x-jet-label value="{{ __('Email or Phone') }}" />
 
                     <x-jet-input class="{{ $errors->has('email') ? 'is-invalid' : '' }}" type="text"
-                                 name="email" :value="old('email')" required />
+                                 name="identity" :value="old('email')" required />
                     <x-jet-input-error for="email"></x-jet-input-error>
                 </div>
 

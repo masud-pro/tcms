@@ -16,6 +16,7 @@ class CreateCoursesTable extends Migration {
 
             $table->string("name");
             $table->text("description")->nullable();
+            $table->text("class_link")->nullable();
             $table->integer("fee");
             $table->string("type");
             $table->string("time");

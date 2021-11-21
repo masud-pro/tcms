@@ -74,6 +74,12 @@
                 <x-jet-input-error for="email" />
             </div>
 
+            <div class="mb-3">
+                <x-jet-label for="phone_no" value="{{ __('Phone No') }}" />
+                <x-jet-input id="phone_no" type="text" class="{{ $errors->has('phone_no') ? 'is-invalid' : '' }}" wire:model.defer="state.phone_no" />
+                <x-jet-input-error for="phone_no" />
+            </div>
+
             @if (auth()->user()->role == "Student")
                 <div class="mb-3">
                     <x-jet-label for="dob" value="{{ __('Date Of Birth') }}" />
@@ -88,12 +94,6 @@
                         <option selected value="female">Female</option>
                     </select>
                     <x-jet-input-error for="gender" />
-                </div>
-
-                <div class="mb-3">
-                    <x-jet-label for="phone_no" value="{{ __('Phone No') }}" />
-                    <x-jet-input id="phone_no" type="text" class="{{ $errors->has('phone_no') ? 'is-invalid' : '' }}" wire:model.defer="state.phone_no" />
-                    <x-jet-input-error for="phone_no" />
                 </div>
 
                 <div class="mb-3">

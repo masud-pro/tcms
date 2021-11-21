@@ -70,7 +70,11 @@
                     <tbody>
                         @foreach ($transactions as $transaction)
                             <tr>
-                                <td>{{ $transaction->account ? $transaction->account->course->name : "" }}</td>
+                                <td>
+                                    <a href="{{ $transaction->account ? route("course.feeds.index", ['course'=>$transaction->account->course->id]) : "" }}">
+                                        {{ $transaction->account ? $transaction->account->course->name : "" }}
+                                    </a>
+                                </td>
                                 <td>{{ $transaction->user ? $transaction->user->name : "" }}</td>
                                 <td>{{ $transaction->name ??  "" }}</td>
                                 <td>{{ $transaction->email ??  "" }}</td>

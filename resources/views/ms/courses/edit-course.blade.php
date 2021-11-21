@@ -46,6 +46,12 @@
                         <p class="text-danger small mt-1">{{ $message }}</p>
                     @enderror
 
+                    <label for="class_link" class="mt-3">Course Link</label>
+                    <textarea name="class_link" id="class_link" rows="2" class="form-control">{!! old("class_link")?? $course->class_link !!}</textarea>
+                    @error('class_link')
+                        <p class="text-danger small mt-1">{{ $message }}</p>
+                    @enderror
+
                     <label for="fee" class="mt-3">Fee</label>
                     <input value="{{ old("fee") ?? $course->fee }}" name="fee" class="form-control" id="fee" type="number">
                     @error('fee')
@@ -132,7 +138,38 @@
 
 
 @push('scripts')
+    <script src="{{ asset("assets/tinymce/tinymce.min.js") }}" referrerpolicy="origin"></script>
     <script>
+
+        var editor_config = {
+        path_absolute : "/",
+        selector: 'textarea#class_link',
+        relative_urls: false,
+        plugins: [
+            "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+            "searchreplace wordcount visualblocks visualchars code fullscreen",
+            "insertdatetime media nonbreaking save directionality",
+            "emoticons template paste textpattern"
+        ],
+        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media",
+        file_picker_callback (callback, value, meta) {
+                let x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth
+                let y = window.innerHeight|| document.documentElement.clientHeight|| document.getElementsByTagName('body')[0].clientHeight
+
+                tinymce.activeEditor.windowManager.openUrl({
+                url : '/file-manager/tinymce5',
+                title : 'Laravel File manager',
+                width : x * 0.8,
+                height : y * 0.8,
+                onMessage: (api, message) => {
+                    callback(message.content, { text: message.text })
+                }
+                })
+            }
+        };
+
+        tinymce.init(editor_config);
+
         function readURL(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();

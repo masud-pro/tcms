@@ -88,6 +88,7 @@ class UserController extends Controller {
     public function store_admin( Request $request ) {
         $data = $request->validate( [
             'name'     => ['required', 'string', 'max:255'],
+            'phone_no' => ['required'],
             'email'    => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed'],
             'terms'    => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['required', 'accepted'] : '',

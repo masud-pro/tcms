@@ -118,6 +118,18 @@
                                                     <div class="row no-gutters align-items-center mt-3">
                                                         <div class="col mr-2">
                                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                                Class Link
+                                                            </div>
+                                                            <div class="p mb-0 text-gray-800">{!! $course->class_link !!}</div>
+                                                        </div>
+                                                        <div class="col-auto">
+                                                            <i class="fas fa-info fa-2x text-gray-300"></i>
+                                                            {{-- <i class="fas fa-calendar "></i> --}}
+                                                        </div>
+                                                    </div>
+                                                    <div class="row no-gutters align-items-center mt-3">
+                                                        <div class="col mr-2">
+                                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                                                 Address
                                                             </div>
                                                             <div class="p mb-0 text-gray-800">{{ $course->address }} <span class="small"> - <b>Room No:</b> {{ $course->room }} </span></div>

@@ -37,6 +37,7 @@ class CreateUsersTable extends Migration {
             $table->string( "mothers_phone_no" )->nullable();
             $table->text( "address" )->nullable();
 
+            $table->dateTime("phone_no_verified_at")->nullable();
             $table->timestamps();
         } );
     }

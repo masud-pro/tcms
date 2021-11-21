@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Course;
 use App\Models\Account;
+use App\Models\Course;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\File;
 class CourseController extends Controller {
 
     public function __construct() {
-        $this->middleware('isAdmin')->only([
+        $this->middleware( 'isAdmin' )->only( [
             'edit',
             'index',
             'archived',
@@ -23,7 +23,7 @@ class CourseController extends Controller {
             'edit',
             'update',
             'destroy',
-        ]);
+        ] );
     }
 
     /**
@@ -61,14 +61,14 @@ class CourseController extends Controller {
 
         if ( $course->capacity > $course->user()->count() ) {
             $course->user()->attach( Auth::user()->id );
-            
-            Account::create([
-                'user_id' => Auth::user()->id,
-                'course_id' => $course->id,
-                'status' => "Unpaid",
+
+            Account::create( [
+                'user_id'     => Auth::user()->id,
+                'course_id'   => $course->id,
+                'status'      => "Unpaid",
                 'paid_amount' => $course->fee - Auth::user()->waiver,
-                'month' => Carbon::now(),
-            ]);
+                'month'       => Carbon::now(),
+            ] );
 
             return redirect()->route( "dashboard" )->with( "success", "Course Enrolled Successfully, Please Pay The Tuition Fee To See The Course Content" );
         } else {
@@ -96,7 +96,6 @@ class CourseController extends Controller {
             $course->user()->updateExistingPivot( $authorized, [
                 'is_active' => 1,
             ] );
-            
 
         } else {
             $course->user()->updateExistingPivot( $data["ids"], [
@@ -151,6 +150,7 @@ class CourseController extends Controller {
         $data = $request->validate( [
             "name"        => "required|string",
             "description" => "nullable|string",
+            "class_link"  => "nullable|string",
             "fee"         => "required|integer",
             "type"        => "required|string",
             "time"        => "nullable|string",
@@ -208,6 +208,7 @@ class CourseController extends Controller {
         $data = $request->validate( [
             "name"        => "required|string",
             "description" => "nullable|string",
+            "class_link"  => "nullable|string",
             "fee"         => "required|integer",
             "type"        => "required|string",
             "time"        => "nullable|string",

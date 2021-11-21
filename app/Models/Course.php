@@ -17,6 +17,7 @@ class Course extends Model {
     protected $fillable = [
         "name",
         "description",
+        "class_link",
         "fee",
         "type",
         "time",
