@@ -35,45 +35,54 @@ Route::post( "admin-reg", [UserController::class, "store_admin"] )->name( "store
 
 Route::middleware( ['auth:sanctum', 'verified', 'isAdmin'] )->group( function () {
 
+    // Courses
     Route::get( "archived-courses", [CourseController::class, "archived"] )->name( "archived.course" );
     Route::post( "restore/{course}/course", [CourseController::class, "restore"] )->name( "restore.course" );
     Route::get( "course/{course}/authorization-panel", [CourseController::class, "authorization_panel"] )->name( "course.authorize" );
     Route::patch( "course/{course}/authorization-panel", [CourseController::class, "authorize_users"] )->name( "course.users.authorize" );
     Route::post( "course/{course}/reauthorize", [CourseController::class, "reauthorize_users"] )->name( "course.users.reauthorize" );
+    Route::get( 'course/{course}/students', [UserController::class, "course_students"] )->name( "course.students" );
 
+    // User
     Route::resource( 'user', UserController::class );
 
-    //create feed link
+    // Create feed link
     Route::get( 'course/{course}/feeds/create-link', [FeedController::class, 'create_link'] )->name( "course.feeds.create-link" );
     Route::post( 'course/{course}/feeds/create-link', [FeedController::class, 'store_link'] )->name( "course.feeds.store-link" );
 
-    // edit feed link
+    // Edit feed link
     Route::get( 'feed/{feed}/edit-link', [FeedController::class, 'edit_link'] )->name( "feeds.edit-link" );
     Route::patch( 'feed/{feed}/edit-link', [FeedController::class, 'update_link'] )->name( "course.feeds.update-link" );
 
-    Route::get( 'course/{course}/students', [UserController::class, "course_students"] )->name( "course.students" );
-
+    // Attendance
     Route::resource( 'course.attendance', AttendanceController::class )->shallow()->except( 'index' );
     Route::get( "attendances", [AttendanceController::class, "index"] )->name( "attendances.index" );
     Route::patch( 'attendances/change', [AttendanceController::class, "change"] )->name( "attendance.change" );
     Route::get( 'attendances/individual-student', [AttendanceController::class, "individual_student"] )->name( "attendance.student-attendance" );
 
+    // Account
     Route::resource( 'course.accounts', AccountController::class )->shallow()->except( "index" );
     Route::patch( 'account/change', [AccountController::class, "change"] )->name( "account.change" );
     Route::get( 'accounts', [AccountController::class, "index"] )->name( "accounts.index" );
     Route::get( 'account/add-manually', [AccountController::class, 'create_manually'] )->name( "account.manual.create" );
     Route::get( 'account/individual-student', [AccountController::class, "individual_account"] )->name( "account.student-account" );
     Route::get( 'account/transactions', [AccountController::class, "transactions"] )->name( "account.transactions" );
+    Route::get( 'account/{course}/regenerate', [AccountController::class, "regenerate"] )->name( "account.regenerate" );
+    Route::get( 'account/{course}/generate-new', [AccountController::class, "regenerate_new"] )->name( "account.regenerate.new" );
 
+    // Settings
     Route::get( "settings", [OptionController::class, 'index'] )->name( 'settings' );
     Route::patch( "settings", [OptionController::class, 'update'] )->name( 'settings.update' );
 
+    // Filemanager
     Route::get( 'filemanager', function () {
         return view( "ms.filemanager.filemanager" );
     } )->name( "filemanager" );
+
 } );
 
 Route::middleware( ['auth:sanctum'] )->group( function () {
+
     Route::get( "my-course", [CourseController::class, "my_courses"] )->name( "my.courses" );
     Route::resource( 'course', CourseController::class );
     Route::resource( 'course.feeds', FeedController::class )->shallow();
@@ -85,12 +94,10 @@ Route::middleware( ['auth:sanctum'] )->group( function () {
     Route::get( "payment/{account}/pay", [AccountController::class, "student_pay"] )->name( "student.pay" );
     Route::get( "payment/{account}/pay-offline", [AccountController::class, "student_pay_offline"] )->name( "student.pay.offline" );
     Route::post( "payment/pay-offline", [AccountController::class, "student_pay_offline_store"] )->name( "student.pay.offline.store" );
+
 } );
 
-// SSLCOMMERZ Start
-// Route::get( '/example1', [SslCommerzPaymentController::class, 'exampleEasyCheckout'] );
-// Route::get( '/example2', [SslCommerzPaymentController::class, 'exampleHostedCheckout'] );
-
+// SSLCOMMERZ
 Route::post( '/pay', [SslCommerzPaymentController::class, 'index'] );
 Route::post( '/pay-via-ajax', [SslCommerzPaymentController::class, 'payViaAjax'] );
 
@@ -99,4 +106,3 @@ Route::post( '/fail', [SslCommerzPaymentController::class, 'fail'] );
 Route::post( '/cancel', [SslCommerzPaymentController::class, 'cancel'] );
 
 Route::post( '/ipn', [SslCommerzPaymentController::class, 'ipn'] );
-//SSLCOMMERZ END

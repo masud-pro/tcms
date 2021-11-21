@@ -22,7 +22,8 @@
             </div>
         @endif
 
-        {{-- <a class="btn btn-primary mb-4" href="{{ route("course.create") }}">Add Course</a> --}}
+        <a class="btn btn-primary mb-4" onclick="return confirm('Are you sure you want to re generate?')" href="{{ route("account.regenerate",['course' => request()->course]) }}">Regenerate Payments</a>
+        <a class="btn btn-primary mb-4" onclick="return confirm('Are you sure you want to newly regenerate?')" href="{{ route("account.regenerate.new",['course' => request()->course]) }}">Newly Generate Payments</a>
         <div class="card shadow mb-4">
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">Account for {{ \Carbon\Carbon::today()->format('M-Y') }}</h6>

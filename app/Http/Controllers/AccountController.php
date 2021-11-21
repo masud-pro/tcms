@@ -29,12 +29,65 @@ class AccountController extends Controller {
         ] );
     }
 
+    public function regenerate( Course $course ) {
+
+        $students = $course->user;
+
+        foreach ( $students as $student ) {
+
+            if ( $student->is_active == 1 ) {
+
+                $account = Account::whereMonth( "month", Carbon::now() )
+                    ->where("user_id",$student->id)
+                    ->where("course_id",$course->id)
+                    ->count();
+                
+                if( $account == 0 ){
+                    Account::create( [
+                        'user_id'     => $student->id,
+                        'course_id'   => $course->id,
+                        'paid_amount' => $student->waiver ? $course->fee - $student->waiver : $course->fee,
+                        'status'      => "Unpaid",
+                        'month'       => Carbon::today(),
+                    ] );
+                }
+
+            }
+
+        }
+
+        return redirect()->back()->with("success","Regenerated Successfully");
+
+    }
+
+    public function regenerate_new( Course $course ) {
+
+        Account::whereMonth("month",Carbon::now())->delete();
+
+        $students = $course->user;
+
+        foreach ( $students as $student ) {
+
+            if ( $student->is_active == 1 ) {
+                Account::create( [
+                    'user_id'     => $student->id,
+                    'course_id'   => $course->id,
+                    'paid_amount' => $student->waiver ? $course->fee - $student->waiver : $course->fee,
+                    'status'      => "Unpaid",
+                    'month'       => Carbon::today(),
+                ] );
+            }
+        }
+
+        return redirect()->back()->with("success","All Accounts Created Newly For This Month");
+    }
+
     public function student_pay_offline( Account $account ) {
         $this->authorize( "view", $account );
 
-        $bkashNumber  = Option::where( "slug", "rocket_number" )->pluck('value')->first();
-        $rocketNumber = Option::where( "slug", "bkash_number" )->pluck('value')->first();
-        $nagadNumber  = Option::where( "slug", "nagad_number" )->pluck('value')->first();
+        $bkashNumber  = Option::where( "slug", "rocket_number" )->pluck( 'value' )->first();
+        $rocketNumber = Option::where( "slug", "bkash_number" )->pluck( 'value' )->first();
+        $nagadNumber  = Option::where( "slug", "nagad_number" )->pluck( 'value' )->first();
 
         return view( "ms.account.pay-offline", [
             'account'      => $account,
