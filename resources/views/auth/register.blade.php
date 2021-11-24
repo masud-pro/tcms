@@ -58,7 +58,7 @@
                 <div class="mb-3">
                     <x-jet-label value="{{ __('Class') }}" />
 
-                    <x-jet-input class="{{ $errors->has('phone_no') ? 'is-invalid' : '' }}" type="number" name="class"
+                    <x-jet-input class="{{ $errors->has('class') ? 'is-invalid' : '' }}" type="number" name="class"
                                  :value="old('class')" required />
                     <x-jet-input-error for="class"></x-jet-input-error>
                 </div>

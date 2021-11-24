@@ -22,8 +22,38 @@
             </div>
         @endif
 
-        <a class="btn btn-primary mb-4" onclick="return confirm('Are you sure you want to re generate?')" href="{{ route("account.regenerate",['course' => request()->course]) }}">Regenerate Payments</a>
-        <a class="btn btn-primary mb-4" onclick="return confirm('Are you sure you want to newly regenerate?')" href="{{ route("account.regenerate.new",['course' => request()->course]) }}">Newly Generate Payments</a>
+        @if ( session('failed') )
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('failed') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
+
+
+        <form method="POST" class="d-inline" action="{{ route("account.sms-report",['parent'=>"father"]) }}">
+            @csrf
+            <input type="hidden" name="course_id" value="{{ request()->course->id }}">
+            <input type="submit" onclick="return confirm('Are you sure you want to send account report to father')" 
+                class="btn btn-primary mb-4" value="Send Account Report To Father">
+        </form>
+
+        <form method="POST" class="d-inline" action="{{ route("account.sms-report",['parent'=>"mother"]) }}">
+            @csrf
+            <input type="hidden" name="course_id" value="{{ request()->course->id }}">
+            <input type="submit" onclick="return confirm('Are you sure you want to send account report to mother')" 
+                class="btn btn-primary mb-4" value="Send Account Report To Mother">
+        </form>
+
+        <form class="d-inline" action="{{ route("account.regenerate",['course' => request()->course]) }}" method="POST">
+            @csrf
+            <input type="submit" class="btn btn-primary mb-4" onclick="return confirm('Are you sure you want to re generate?')" value="Regenerate Payments">
+        </form>
+        <form class="d-inline" action="{{ route("account.regenerate.new",['course' => request()->course]) }}" method="POST">
+            @csrf
+            <input type="submit" class="btn btn-primary mb-4" onclick="return confirm('Are you sure you want to newly regenerate?')" value="Newly Generate Payments">
+        </form>
         <div class="card shadow mb-4">
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">Account for {{ \Carbon\Carbon::today()->format('M-Y') }}</h6>

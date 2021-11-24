@@ -60,11 +60,11 @@ class UserController extends Controller {
             "roll"             => "nullable|integer",
             "reg_no"           => "nullable|integer",
             "waiver"           => "required|integer",
-            "phone_no"         => "required|string",
+            "phone_no"         => "required|string|max:11|min:11|unique:users,phone_no",
             "fathers_name"     => "nullable|string",
-            "fathers_phone_no" => "nullable|string",
+            "fathers_phone_no" => "nullable|string|max:11|min:11",
             "mothers_name"     => "nullable|string",
-            "mothers_phone_no" => "nullable|string",
+            "mothers_phone_no" => "nullable|string|max:11|min:11",
             "password"         => "required|confirmed|string",
         ] );
 
@@ -88,7 +88,7 @@ class UserController extends Controller {
     public function store_admin( Request $request ) {
         $data = $request->validate( [
             'name'     => ['required', 'string', 'max:255'],
-            'phone_no' => ['required','max:11'],
+            'phone_no' => ['required','max:11', 'min:11'],
             'email'    => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed'],
             'terms'    => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['required', 'accepted'] : '',
@@ -136,7 +136,6 @@ class UserController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update( Request $request, User $user ) {
-        // dd($request->all());
 
         $data = $request->validate( [
             "name"             => "required|string",
@@ -151,7 +150,7 @@ class UserController extends Controller {
             "roll"             => "nullable|integer",
             "reg_no"           => "nullable|integer",
             "waiver"           => "required|integer",
-            "phone_no"         => "required|string",
+            "phone_no"         => ["required", 'min:11', 'max:11',Rule::unique( 'users', 'phone_no' )->ignore( $user->id )],
             "fathers_name"     => "nullable|string",
             "fathers_phone_no" => "nullable|string",
             "mothers_name"     => "nullable|string",

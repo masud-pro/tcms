@@ -116,13 +116,13 @@
                 <span>SMS Panel</span>
             </a>
     
-            {{-- <div id="smsCollapse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div id="smsCollapse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">SMS Operations:</h6>
-                    <a class="collapse-item" href="{{ route("user.index") }}">All Students</a>
-                    <a class="collapse-item" href="{{ route("user.create") }}">Add Students</a>
+                    <a class="collapse-item" href="{{ route("sms.index") }}">SMS Records</a>
+                    <a class="collapse-item" href="{{ route("batch.sms") }}">Send Batch SMS</a>
                 </div>
-            </div> --}}
+            </div>
     
         </li>
 

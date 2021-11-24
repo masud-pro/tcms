@@ -20,6 +20,7 @@ class CreateAccountsTable extends Migration {
             $table->string( "status" )->default( "Unpaid" );
             $table->integer( "paid_amount" );
             $table->date( "month" );
+            $table->string( "plus_minus" )->nullable();
 
             $table->timestamps();
         } );

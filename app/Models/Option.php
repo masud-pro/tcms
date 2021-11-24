@@ -9,6 +9,9 @@ class Option extends Model {
     use HasFactory;
 
     protected $fillable = [
-        'value'
+        'name',
+        'slug',
+        'value',
+        'category'
     ];
 }

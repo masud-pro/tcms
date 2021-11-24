@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Option;
 use Database\Seeders\OptionSeeder;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Artisan;
@@ -26,8 +27,35 @@ class CreateOptionsTable extends Migration {
             $table->timestamps();
         } );
 
-        Artisan::call('db:seed', [
-            '--class' => OptionSeeder::class,
+        Option::create([
+                'name'  => "Manual Payment",
+                'slug'  => "manual_payment",
+                'value' => 1,
+        ]);
+        Option::create([
+                'name'  => "Online Payment",
+                'slug'  => "online_payment",
+                'value' => 0,
+        ]);
+        Option::create([
+                'name'  => "Bkash Number (Only For Manual Payment)",
+                'slug'  => "bkash_number",
+                'value' => "",
+        ]);
+        Option::create([
+                'name'  => "Rocket Number (Only For Manual Payment)",
+                'slug'  => "rocket_number",
+                'value' => "",
+        ]);
+        Option::create([
+                'name'  => "Nagad Number (Only For Manual Payment)",
+                'slug'  => "nagad_number",
+                'value' => "",
+        ]);
+        Option::create([
+                'name'  => "Remaining SMS",
+                'slug'  => "remaining_sms",
+                'value' => 0,
         ]);
     }
 

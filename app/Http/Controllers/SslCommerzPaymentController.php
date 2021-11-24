@@ -27,7 +27,7 @@ class SslCommerzPaymentController extends Controller {
             'email'      => "required|email",
             'address'    => "required",
             'phone_no'   => "required",
-            'amount'     => "required|integer",
+            'amount'     => "required|integer|min:10",
             'account_id' => "required|integer",
         ] );
 

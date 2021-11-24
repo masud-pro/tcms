@@ -3,7 +3,9 @@
 namespace App\Actions\Fortify;
 
 use App\Models\User;
+use App\Notifications\NewUserAdminNotification;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Laravel\Jetstream\Jetstream;
@@ -24,18 +26,18 @@ class CreateNewUser implements CreatesNewUsers {
             'dob'              => ['required'],
             'gender'           => ['required'],
             'class'            => ['required'],
-            'phone_no'         => ['required', 'max:11', 'unique:users,phone_no'],
+            'phone_no'         => ['required', 'min:11', 'max:11', 'unique:users,phone_no'],
             'fathers_name'     => ['required'],
-            'fathers_phone_no' => ['required', 'max:11'],
+            'fathers_phone_no' => ['required', 'min:11', 'max:11'],
             'mothers_name'     => ['required'],
-            'mothers_phone_no' => ['required', 'max:11'],
+            'mothers_phone_no' => ['required', 'min:11', 'max:11'],
             'address'          => ['required'],
             'password'         => $this->passwordRules(),
             'terms'            => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['required', 'accepted'] : '',
             'role'             => ['required'],
         ] )->validate();
 
-        return User::create( [
+        $user = User::create( [
             'name'             => $input['name'],
             'email'            => $input['email'],
             'dob'              => $input['dob'],
@@ -50,5 +52,11 @@ class CreateNewUser implements CreatesNewUsers {
             'password'         => Hash::make( $input['password'] ),
             'role'             => $input['role'],
         ] );
+
+        $admins = User::where( "role", "Admin" )->get();
+
+        Notification::send( $admins, new NewUserAdminNotification() );
+
+        return $user;
     }
 }

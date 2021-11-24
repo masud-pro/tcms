@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Attendance;
-use App\Models\Course;
 use Carbon\Carbon;
+use App\Models\SMS;
+use App\Models\Course;
+use App\Models\Option;
+use App\Models\Attendance;
 use Illuminate\Http\Request;
 
 class AttendanceController extends Controller {
@@ -31,7 +33,8 @@ class AttendanceController extends Controller {
             $students = $course->user;
 
             foreach ( $students as $student ) {
-                if($student->is_active == 1){
+
+                if ( $student->is_active == 1 ) {
                     Attendance::create( [
                         'user_id'    => $student->id,
                         'course_id'  => $course->id,
@@ -39,7 +42,7 @@ class AttendanceController extends Controller {
                         'date'       => Carbon::today(),
                     ] );
                 }
-                
+
             }
 
             return view( "ms.attendances.attendance-index", [
@@ -56,8 +59,7 @@ class AttendanceController extends Controller {
     }
 
     public function student_individual_attendance() {
-        // dd("Hit korse");
-        return view("ms.attendances.student-individual-attendance");
+        return view( "ms.attendances.student-individual-attendance" );
     }
 
     /**
@@ -123,6 +125,73 @@ class AttendanceController extends Controller {
         }
 
         return redirect()->back()->with( "success", "Attendance updated successfully" );
+
+    }
+
+    public function get_phone_numbers( $column, $course ) {
+
+        $attendances = Attendance::where( "course_id", $course )->where( "date", Carbon::today() )->where( "attendance", 0 )->get();
+        $numbers     = [];
+
+        foreach ( $attendances as $attendance ) {
+            $attendance->user->$column;
+
+            if ( $attendance->user->$column ) {
+                $numbers[] = $attendance->user->$column;
+            }
+
+        }
+
+        return $numbers;
+    }
+
+    public function send_sms_absent_report( Request $request, $parent ) {
+
+        if ( $parent == "father" ) {
+            $numbers = $this->get_phone_numbers( "fathers_phone_no", $request->course_id );
+
+        } elseif ( $parent == "mother" ) {
+            $numbers = $this->get_phone_numbers( "mothers_phone_no", $request->course_id );
+        }
+
+        $numberCount = count( $numbers );
+
+        $smsrow        = Option::where( "slug", "remaining_sms" )->first();
+        $remaining_sms = (int) $smsrow->value;
+
+        if ( $remaining_sms < $numberCount ) {
+            return redirect()->back()->with( "failed", "Not Enough SMS" );
+        }
+
+        if ( $numberCount > 0 ) {
+            $numbers = implode( ",", $numbers );
+            $message = "Your child is absent today - Date: " . Carbon::today()->format( "d-M-Y" ) . " - " . env( "APP_NAME" );
+
+            $status = SMSController::send_sms( $numbers, $message );
+
+            if ( $status ) {
+
+                $remaining_sms = $remaining_sms - $numberCount;
+
+                SMS::create( [
+                    'for'       => "Attendance Report",
+                    'course_id' => $request->course_id,
+                    'count'     => $numberCount,
+                    'message'   => $message,
+                ] );
+
+                $smsrow->update( [
+                    'value' => $remaining_sms,
+                ] );
+
+                return redirect()->back()->with( "success", "All guardian reported successfully" );
+            } else {
+                return redirect()->back()->with( "failed", "Report failed for unknown reasosns, Check all studnets phone no is correct or not!" );
+            }
+
+        } else {
+            return redirect()->back()->with( "failed", "Numbers not found, everyone may be present" );
+        }
 
     }
 

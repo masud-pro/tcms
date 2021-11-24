@@ -27,7 +27,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation {
                 "dob"          => ["required"], ["date"],
                 "gender"       => ["required"],
                 "class"        => ["nullable", "integer"],
-                "phone_no"     => ["required", 'max:11',Rule::unique( 'users', 'phone_no' )->ignore( $user->id )],
+                "phone_no"     => ["required", 'min:11', 'max:11',Rule::unique( 'users', 'phone_no' )->ignore( $user->id )],
                 "fathers_name" => ["nullable", "string"],
                 "mothers_name" => ["nullable", "string"],
                 'photo'        => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
@@ -35,7 +35,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation {
         } else {
             Validator::make( $input, [
                 'name'     => ['required', 'string', 'max:255'],
-                'phone_no' => ['required', 'max:11'],
+                'phone_no' => ['required', 'min:11', 'max:11'],
                 'email'    => ['required', 'email', 'max:255', Rule::unique( 'users' )->ignore( $user->id )],
                 'photo'    => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
             ] )->validateWithBag( 'updateProfileInformation' );

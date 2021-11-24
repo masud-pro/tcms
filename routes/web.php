@@ -5,9 +5,12 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\FeedController;
 use App\Http\Controllers\OptionController;
+use App\Http\Controllers\SMSController;
 use App\Http\Controllers\SslCommerzPaymentController;
 use App\Http\Controllers\SystemController;
 use App\Http\Controllers\UserController;
+use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -59,6 +62,7 @@ Route::middleware( ['auth:sanctum', 'verified', 'isAdmin'] )->group( function ()
     Route::get( "attendances", [AttendanceController::class, "index"] )->name( "attendances.index" );
     Route::patch( 'attendances/change', [AttendanceController::class, "change"] )->name( "attendance.change" );
     Route::get( 'attendances/individual-student', [AttendanceController::class, "individual_student"] )->name( "attendance.student-attendance" );
+    Route::post( 'attendances/sms-absent-report/{parent}', [AttendanceController::class, "send_sms_absent_report"] )->name( "attendance.sms-report" );
 
     // Account
     Route::resource( 'course.accounts', AccountController::class )->shallow()->except( "index" );
@@ -67,12 +71,19 @@ Route::middleware( ['auth:sanctum', 'verified', 'isAdmin'] )->group( function ()
     Route::get( 'account/add-manually', [AccountController::class, 'create_manually'] )->name( "account.manual.create" );
     Route::get( 'account/individual-student', [AccountController::class, "individual_account"] )->name( "account.student-account" );
     Route::get( 'account/transactions', [AccountController::class, "transactions"] )->name( "account.transactions" );
-    Route::get( 'account/{course}/regenerate', [AccountController::class, "regenerate"] )->name( "account.regenerate" );
-    Route::get( 'account/{course}/generate-new', [AccountController::class, "regenerate_new"] )->name( "account.regenerate.new" );
+    Route::post( 'account/{course}/regenerate', [AccountController::class, "regenerate"] )->name( "account.regenerate" );
+    Route::post( 'account/{course}/generate-new', [AccountController::class, "regenerate_new"] )->name( "account.regenerate.new" );
+    Route::post( 'account/sms-due-report/{parent}', [AccountController::class, "send_sms_due_report"] )->name( "account.sms-report" );
 
     // Settings
     Route::get( "settings", [OptionController::class, 'index'] )->name( 'settings' );
     Route::patch( "settings", [OptionController::class, 'update'] )->name( 'settings.update' );
+
+    //SMS
+    Route::post('sms', [SMSController::class, 'send'])->name('send.sms');
+    Route::get('all-sms', [SMSController::class, 'index'])->name('sms.index');
+    Route::get('batch-sms', [SMSController::class, 'create_batch_sms'])->name('batch.sms');
+    Route::post('batch-sms', [SMSController::class, 'send_batch_sms'])->name('batch.sms.send');
 
     // Filemanager
     Route::get( 'filemanager', function () {
@@ -106,3 +117,24 @@ Route::post( '/fail', [SslCommerzPaymentController::class, 'fail'] );
 Route::post( '/cancel', [SslCommerzPaymentController::class, 'cancel'] );
 
 Route::post( '/ipn', [SslCommerzPaymentController::class, 'ipn'] );
+
+
+// Route::get('nibir-api',function(){
+//     $url = "http://cecms.test/api/recharge/sms";
+//     $data = Http::acceptJson()->withToken("1|PkQcQeRkrwths6VgBGbVTGQBS8qrroMXIla6ZZ7Y")->post($url,[
+//         'amount' => 400
+//     ]);
+
+//     if($data->ok()){
+//         dd($data->json()['status']);
+//     }else{
+//         dd("not okay");
+//     }
+    
+// });
+
+
+
+    // Route::get('sms', function(){
+    //     return view("ms.sms.test");
+    // });

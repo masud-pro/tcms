@@ -10,7 +10,7 @@
         <meta name="author" content="https://codecstasy.com">
         <link rel="shortcut icon" href="{{ asset("images/favicon/favicon.png") }}" type="image/x-icon">
 
-        <title>{{ config('app.name', 'CE CMS') }}</title>
+        <title>{{ config('app.name', 'CE CMS') }} - CE CMS</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">

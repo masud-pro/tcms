@@ -6,6 +6,7 @@ use App\Models\Account;
 use App\Models\Course;
 use App\Models\Option;
 use App\Models\Order;
+use App\Models\SMS;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -38,11 +39,11 @@ class AccountController extends Controller {
             if ( $student->is_active == 1 ) {
 
                 $account = Account::whereMonth( "month", Carbon::now() )
-                    ->where("user_id",$student->id)
-                    ->where("course_id",$course->id)
+                    ->where( "user_id", $student->id )
+                    ->where( "course_id", $course->id )
                     ->count();
-                
-                if( $account == 0 ){
+
+                if ( $account == 0 ) {
                     Account::create( [
                         'user_id'     => $student->id,
                         'course_id'   => $course->id,
@@ -56,13 +57,13 @@ class AccountController extends Controller {
 
         }
 
-        return redirect()->back()->with("success","Regenerated Successfully");
+        return redirect()->back()->with( "success", "Regenerated Successfully" );
 
     }
 
     public function regenerate_new( Course $course ) {
 
-        Account::whereMonth("month",Carbon::now())->delete();
+        Account::whereMonth( "month", Carbon::now() )->delete();
 
         $students = $course->user;
 
@@ -77,9 +78,10 @@ class AccountController extends Controller {
                     'month'       => Carbon::today(),
                 ] );
             }
+
         }
 
-        return redirect()->back()->with("success","All Accounts Created Newly For This Month");
+        return redirect()->back()->with( "success", "All Accounts Created Newly For This Month" );
     }
 
     public function student_pay_offline( Account $account ) {
@@ -122,6 +124,73 @@ class AccountController extends Controller {
         return view( "ms.transactions.all-transactions", [
             "transactions" => Order::latest()->simplePaginate( 20 ),
         ] );
+
+    }
+
+    public function get_phone_numbers( $row, $course ) {
+
+        $accounts = Account::where( "course_id", $course )->where( "month", Carbon::today() )->where( "status", "Unpaid" )->get();
+        $numbers  = [];
+
+        foreach ( $accounts as $account ) {
+            $account->user->$row;
+
+            if ( $account->user->$row ) {
+                $numbers[] = $account->user->$row;
+            }
+
+        }
+
+        return $numbers;
+    }
+
+    public function send_sms_due_report( Request $request, $parent ) {
+
+        if ( $parent == "father" ) {
+            $numbers = $this->get_phone_numbers( "fathers_phone_no", $request->course_id );
+
+        } elseif ( $parent == "mother" ) {
+            $numbers = $this->get_phone_numbers( "mothers_phone_no", $request->course_id );
+        }
+
+        $numberCount = count( $numbers );
+
+        $smsrow        = Option::where( "slug", "remaining_sms" )->first();
+        $remaining_sms = (int) $smsrow->value;
+
+        if ( $remaining_sms < $numberCount ) {
+            return redirect()->back()->with( "failed", "Not Enough SMS" );
+        }
+
+        if ( $numberCount > 0 ) {
+            $numbers = implode( ",", $numbers );
+            $message = "You have a payment due on month: " . Carbon::today()->format( "M-Y" ) . " - " . env( "APP_NAME" );
+
+            $status = SMSController::send_sms( $numbers, $message );
+
+            if ( $status ) {
+
+                $remaining_sms = $remaining_sms - $numberCount;
+
+                SMS::create( [
+                    'for'       => "Account Report",
+                    'course_id' => $request->course_id,
+                    'count'     => $numberCount,
+                    'message'   => $message,
+                ] );
+
+                $smsrow->update( [
+                    'value' => $remaining_sms,
+                ] );
+
+                return redirect()->back()->with( "success", "All guardian reported successfully" );
+            } else {
+                return redirect()->back()->with( "failed", "Report failed for unknown reasosns, Check all studnets phone no is correct or not!" );
+            }
+
+        } else {
+            return redirect()->back()->with( "failed", "Numbers not found, everyone may be have paid" );
+        }
 
     }
 

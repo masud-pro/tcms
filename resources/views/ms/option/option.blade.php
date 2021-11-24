@@ -85,6 +85,15 @@
                                                 
                                             </td>
                                         </tr>
+                                    @elseif ( $option->slug == "remaining_sms" )
+                                        <tr>
+                                            <td>{{ $option->name }}</td>
+                                            <td>
+                                                
+                                                <input disabled type="text" class="form-control" value="{{ $option->value }}">
+                                                
+                                            </td>
+                                        </tr>
                                     @endif
                                 @empty
                                     No Options Found
