@@ -19,6 +19,20 @@ class AllStudents extends Component {
 
     public $q;
 
+    public function change_status( User $user, $user_status ) {
+        if( $user_status == 1 ){
+            $user->update([
+                'is_active' => 0,
+            ]);
+        }else{
+            $user->update([
+                'is_active' => 1,
+            ]);
+        }
+
+        session()->flash('success','Status Changed Successfully');
+    }
+
     public function render() {
         return view( 'livewire.students.all-students', [
             "users" => User::with( 'course' )->where( "role", "student" )->when( $this->q, function ( $query, $q ) {

@@ -1,4 +1,12 @@
 <div>
+    @if ( session('success') )
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
     <div class="row">
         <div class="col-lg-3 offset-lg-9 text-right">
             <input type="text" class="form-control mb-3" placeholder="Search" wire:model.debounce.1000ms="q">
@@ -41,7 +49,14 @@
                         <td><b>{{ $user->name }}</b></td>
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->phone_no }}</td>
-                        <td>{!! $user->is_active == 1 ? "<span class='badge bg-success text-dark'>Active</span>" : "<span class='badge bg-danger text-light'>Not Active</span>" !!}</td>
+                        <td>
+                            {{-- {!! $user->is_active == 1 ? "<span class='badge bg-success text-dark'>Active</span>" : "<span class='badge bg-danger text-light'>Not Active</span>" !!} --}}
+
+                            <div class="form-check form-switch ml-3">
+                                <input wire:change="change_status({{$user->id}},{{$user->is_active}})" class="form-check-input" type="checkbox" @if ($user->is_active == 1) checked @endif id="flexSwitchCheckDefault{{ $user->id }}">
+                                <label class="form-check-label" for="flexSwitchCheckDefault{{ $user->id }}">Is Active</label>
+                            </div>
+                        </td>
                         <td>
                             @forelse ($user->course as $course)
                                 <b>{{ $course->name . ", " }}</b>
@@ -67,4 +82,20 @@
 
 @push("styles")
     @livewireStyles()
+    <style>
+        .form-check-input:checked {
+            background-color: #1cc88a;
+            border-color: #1cc88a;
+        }
+        .sidebar-dark hr.sidebar-divider {
+            border-top: 1px solid rgba(255,255,255,.7);
+            box-sizing: content-box;
+            height: 0;
+            overflow: visible;
+        }
+    </style>
+@endpush
+
+@push('styles-before')
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">   
 @endpush
