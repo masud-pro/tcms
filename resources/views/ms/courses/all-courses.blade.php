@@ -82,10 +82,11 @@
                                 <th>Students</th>
                             </tr>
                         </tfoot>
-                        <tbody>
+                        <tbody> 
                             @foreach ($courses as $course)
                                 <tr>
-                                    <td>{!! $course->image ? "<a href='". asset( "storage/" . $course->image ) ."'><img width='100' src='" . asset( "storage/" . $course->image ) . "' />" : "" !!}</td>
+                                    
+                                    <td>{!! $course->image ? "<a href='". Storage::url($course->image)  ."'><img width='100' src='" . Storage::url($course->image) . "' />" : "" !!}</td>
                                     <td>{{ $course->name ?? "" }}</td>
                                     <td>{{ $course->fee ?? "" }}</td>
                                     <td>{{ $course->type ?? "" }}</td>

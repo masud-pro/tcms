@@ -50,11 +50,13 @@
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->phone_no }}</td>
                         <td>
-                            {{-- {!! $user->is_active == 1 ? "<span class='badge bg-success text-dark'>Active</span>" : "<span class='badge bg-danger text-light'>Not Active</span>" !!} --}}
-
                             <div class="form-check form-switch ml-3">
-                                <input wire:change="change_status({{$user->id}},{{$user->is_active}})" class="form-check-input" type="checkbox" @if ($user->is_active == 1) checked @endif id="flexSwitchCheckDefault{{ $user->id }}">
-                                <label class="form-check-label" for="flexSwitchCheckDefault{{ $user->id }}">Is Active</label>
+                                <input wire:change="change_status({{$user->id}},{{$user->is_active}})" 
+                                    class="form-check-input" type="checkbox" @if ($user->is_active == 1) checked @endif 
+                                    id="flexSwitchCheckDefault{{ $user->id }}">
+                                <label class="form-check-label" for="flexSwitchCheckDefault{{ $user->id }}">
+                                    Is Active
+                                </label>
                             </div>
                         </td>
                         <td>
@@ -64,8 +66,14 @@
                                 {{ "Not Found" }}
                             @endforelse
                         </td>
-                        <td>{{ $user->created_at->format("d-M-Y") }}</td>
-                        <td><a class="btn btn-primary" href="{{ route("user.edit",[ 'user' => $user->id ]) }}">Edit</a></td>
+                        <td>
+                            {{ $user->created_at->format("d-M-Y") }}
+                        </td>
+                        <td>
+                            <a class="btn btn-primary" href="{{ route("user.edit",[ 'user' => $user->id ]) }}" target="_blank">
+                                Edit
+                            </a>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>

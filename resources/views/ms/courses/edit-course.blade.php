@@ -107,7 +107,7 @@
                     <label for="address" class="mt-3">Image</label>
                     <input onchange="readURL(this);" name="image" type="file" class="form-control-file">
                     <div class="small">A landscape image is preferable</div>
-                    <img width="200" id="batchImage" class="mt-3" src="{{ $course->image ? asset("storage/".$course->image) : "" }}" alt=""> <br>
+                    <img width="200" id="batchImage" class="mt-3" src="{{ $course->image ? Storage::url($course->image) : "" }}" alt=""> <br>
 
 
                     <div class="row">

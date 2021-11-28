@@ -37,7 +37,7 @@ class AllStudents extends Component {
         return view( 'livewire.students.all-students', [
             "users" => User::with( 'course' )->where( "role", "student" )->when( $this->q, function ( $query, $q ) {
                 return $query->where( 'name', 'like', "%" . $q . "%" );
-            } )->latest()->paginate( 15 ),
+            } )->latest()->paginate( 20 ),
         ] );
     }
 }

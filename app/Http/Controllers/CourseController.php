@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class CourseController extends Controller {
 
@@ -223,9 +224,7 @@ class CourseController extends Controller {
         if ( isset( $data['image'] ) ) {
 
             if ( $course->image ) {
-                // dd("storage/" . $course->image);
-                File::delete( "storage/" . $course->image );
-                // unlink( asset("storage".$course->image) );
+                Storage::delete($course->image);
             }
 
             $image = $data['image']->store( 'batch-images' );

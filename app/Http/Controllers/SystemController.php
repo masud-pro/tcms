@@ -33,7 +33,7 @@ class SystemController extends Controller {
                 "totalCourses"         => $courses->count(),
                 "totalStudents"        => User::where( "role", "Student" )->count(),
                 "absentCount"          => $absent,
-                "attendancePercentage" => $attendancePercentage,
+                "attendancePercentage" => sprintf("%.1f",$attendancePercentage) ,
             ] );
 
         } else {
@@ -53,7 +53,7 @@ class SystemController extends Controller {
                 "courses"              => Auth::user()->course,
                 "pendingPayments"      => Auth::user()->payment()->whereMonth( "created_at", Carbon::today() )->where( "status", "Unpaid" )->count(),
                 "missedAttendance"     => $absent,
-                "attendancePercentage" => $attendancePercentage,
+                "attendancePercentage" => sprintf("%.1f",$attendancePercentage) ,
             ] );
 
         }

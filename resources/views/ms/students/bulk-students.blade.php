@@ -66,7 +66,9 @@
                                         @endforelse
                                     </td>
                                     <td>{{ $user->created_at->format("d-M-Y") }}</td>
-                                    <td><a class="btn btn-primary" href="{{ route("user.edit",[ 'user' => $user->id ]) }}">Edit</a></td>
+                                    <td>
+                                        <a class="btn btn-primary" href="{{ route("user.edit",[ 'user' => $user->id ]) }}" target="_blank">Edit</a>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
