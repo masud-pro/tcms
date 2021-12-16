@@ -98,6 +98,10 @@ class CourseController extends Controller {
                 'is_active' => 1,
             ] );
 
+            $course->user()->updateExistingPivot( $unauthorized, [
+                'is_active' => 0,
+            ] );
+
         } else {
             $course->user()->updateExistingPivot( $data["ids"], [
                 'is_active' => 0,

@@ -30,7 +30,7 @@ class AllStudents extends Component {
             ]);
         }
 
-        session()->flash('success','Status Changed Successfully');
+        session()->flash('status','Status Changed Successfully');
     }
 
     public function render() {

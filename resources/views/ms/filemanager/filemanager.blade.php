@@ -46,8 +46,8 @@
         document.getElementById('fm-main-block').setAttribute('style', 'height:' + window.innerHeight + 'px');
 
         fm.$store.commit('fm/setFileCallBack', function(fileUrl) {
-        window.opener.fmSetLink(fileUrl);
-        window.close();
+            window.opener.fmSetLink(fileUrl);
+            window.close();
         });
     });
 </script>

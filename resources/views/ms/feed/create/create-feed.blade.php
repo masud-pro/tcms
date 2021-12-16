@@ -85,14 +85,14 @@ var editor_config = {
     "insertdatetime media nonbreaking save directionality",
     "emoticons template paste textpattern"
   ],
-  toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media",
+  toolbar: "insertfile undo redo | styleselect | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media",
   file_picker_callback (callback, value, meta) {
           let x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth
           let y = window.innerHeight|| document.documentElement.clientHeight|| document.getElementsByTagName('body')[0].clientHeight
 
           tinymce.activeEditor.windowManager.openUrl({
           url : '/file-manager/tinymce5',
-          title : 'Laravel File manager',
+          title : 'Code Ecstasy File manager',
           width : x * 0.8,
           height : y * 0.8,
           onMessage: (api, message) => {

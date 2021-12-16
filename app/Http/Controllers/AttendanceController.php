@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
-use App\Models\SMS;
+use App\Models\Attendance;
 use App\Models\Course;
 use App\Models\Option;
-use App\Models\Attendance;
+use App\Models\SMS;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class AttendanceController extends Controller {
@@ -30,20 +30,25 @@ class AttendanceController extends Controller {
         $attendances = Attendance::whereDate( "date", Carbon::today() )->where( "course_id", $course->id )->get();
 
         if ( $attendances->count() <= 0 ) {
-            $students = $course->user;
+            $students       = $course->user;
+            $newAttendances = [];
 
             foreach ( $students as $student ) {
 
                 if ( $student->is_active == 1 ) {
-                    Attendance::create( [
+                    $newAttendances[] = [
                         'user_id'    => $student->id,
                         'course_id'  => $course->id,
                         'attendance' => false,
                         'date'       => Carbon::today(),
-                    ] );
+                        'created_at' => Carbon::now(),
+                        'updated_at' => Carbon::now(),
+                    ];
                 }
 
             }
+
+            Attendance::insert( $newAttendances );
 
             return view( "ms.attendances.attendance-index", [
                 "attendances" => Attendance::whereDate( "date", Carbon::today() )

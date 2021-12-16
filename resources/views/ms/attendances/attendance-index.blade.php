@@ -65,16 +65,16 @@
                             <thead>
                                 <tr>
                                     <th>Name</th>
-                                    <th>Email</th>
                                     <th>Attendance</th>
+                                    <th>Email</th>
                                 </tr>
                             </thead>
 
                             <tfoot>
                                 <tr>
                                     <th>Name</th>
-                                    <th>Email</th>
                                     <th>Attendance</th>
+                                    <th>Email</th>
                                 </tr>
                             </tfoot>
 
@@ -83,9 +83,6 @@
                                     <tr>
                                         <td>
                                             {{ $attendance->user ? $attendance->user->name : "Not Found" }}
-                                        </td>
-                                        <td>
-                                            {{ $attendance->user ? $attendance->user->email : "Not Found" }}
                                         </td>
                                         <td>
                                             <input type="hidden" name="ids[]" value="{{ $attendance->id }}">
@@ -100,6 +97,9 @@
                                                 </label>
 
                                             </div>
+                                        </td>
+                                        <td>
+                                            {{ $attendance->user ? $attendance->user->email : "Not Found" }}
                                         </td>
                                     </tr>
                                 @endforeach

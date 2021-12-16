@@ -35,7 +35,7 @@ class Course extends Model {
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function user(): BelongsToMany {
-        return $this->belongsToMany( User::class )->withPivot("is_active");
+        return $this->belongsToMany( User::class )->withPivot( "is_active" );
     }
 
     /**
@@ -63,6 +63,15 @@ class Course extends Model {
      */
     public function account(): HasMany {
         return $this->hasMany( Account::class );
+    }
+
+    /**
+     * Get all of the assessment for the Course
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function assessment(): HasMany {
+        return $this->hasMany( Assessment::class );
     }
 
 }

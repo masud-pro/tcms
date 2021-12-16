@@ -46,7 +46,6 @@ class AllAccounts extends Component {
             $accounts    = $everything->get();
             $total       = $accounts->where( 'status', 'Paid' )->sum( "paid_amount" );
             $totalUnpaid = $accounts->where( 'status', 'Unpaid' )->sum( "paid_amount" );
-            // dd($totalUnpaid);
         } else {
             $accounts    = [];
             $total       = null;

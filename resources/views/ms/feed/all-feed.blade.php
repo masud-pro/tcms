@@ -33,6 +33,7 @@
 
             <div class="">
                 @if ( auth()->user()->role == "Admin" )  
+
                     <div class="btn-group mb-4">
                         <button 
                         class="btn btn-primary dropdown-toggle" 
@@ -66,22 +67,34 @@
                         href="{{ route("course.attendance.create",[ "course" => $course->id ]) }}">
                         Take Attendance
                     </a>
+
                     <a 
                         class="btn btn-primary mb-4" 
                         href="{{ route("course.students",["course"=>$course->id ]) }}">
                         See Students
                     </a>
+
                     <a 
                         class="btn btn-primary mb-4" 
                         href="{{ route("course.accounts.create",[ "course" => $course->id ]) }}">
                         Generate Payments
                     </a>
+
                     <a 
                         class="btn btn-primary mb-4" 
                         href="{{ route("course.authorize",[ "course" => $course->id ]) }}">
                         Authorization Panel
                     </a>
+
+                    
+
                 @endif
+
+                    <a 
+                        class="btn btn-primary mb-4" 
+                        href="{{ route("course.assessments.index",[ "course" => $course->id ]) }}">
+                        Assessments
+                    </a>
 
                 <div class="row ">
                     <div class="col-md-12">

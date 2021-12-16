@@ -67,25 +67,23 @@
                             <thead>
                                 <tr>
                                     <th>Name</th>
+                                    <th>Account</th>
                                     <th>Email</th>
                                     <th>Amount</th>
-                                    <th>Account</th>
                                 </tr>
                             </thead>
                             <tfoot>
                                 <tr>
                                     <th>Name</th>
+                                    <th>Account</th>
                                     <th>Email</th>
                                     <th>Amount</th>
-                                    <th>Account</th>
                                 </tr>
                             </tfoot>
                             <tbody>
                                 @foreach ($accounts as $account)
                                     <tr>
                                         <td>{{ $account->user ? $account->user->name : "Not Found" }}</td>
-                                        <td>{{ $account->user ? $account->user->email : "Not Found" }}</td>
-                                        <td>{{ $account->paid_amount ?? "Not Found" }}</td>
                                         <td>
                                             <input type="hidden" name="ids[]" value="{{ $account->id }}">
                                             <div class="custom-control custom-checkbox">
@@ -93,6 +91,8 @@
                                                 <label class="custom-control-label" for="customCheck{{ $account->id }}">Paid</label>
                                             </div>
                                         </td>
+                                        <td>{{ $account->user ? $account->user->email : "Not Found" }}</td>
+                                        <td>{{ $account->paid_amount ?? "Not Found" }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>

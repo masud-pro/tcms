@@ -44,6 +44,7 @@
             </div>
 
         </li>
+
         <li class="nav-item">
 
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#userCollapse"
@@ -57,6 +58,24 @@
                     <h6 class="collapse-header">Student Operations:</h6>
                     <a class="collapse-item" href="{{ route("user.index") }}">All Students</a>
                     <a class="collapse-item" href="{{ route("user.create") }}">Add Students</a>
+                </div>
+            </div>
+
+        </li>
+
+        <li class="nav-item">
+
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#assessmentCollaple"
+                aria-expanded="true" aria-controls="assessmentCollaple">
+                <i class="fas fa-pen"></i>
+                <span>Assessments</span>
+            </a>
+
+            <div id="assessmentCollaple" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Assessment Operations:</h6>
+                    <a class="collapse-item" href="{{ route("assignments.index") }}">All Assignments</a>
+                    <a class="collapse-item" href="{{ route("assignments.create") }}">Create Assignments</a>
                 </div>
             </div>
 
@@ -104,8 +123,7 @@
                 <i class="fas fa-money-check-alt"></i>
                 <span>Transactions</span>
             </a>
-    
-    
+
         </li>
 
         <li class="nav-item">

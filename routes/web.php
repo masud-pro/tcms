@@ -1,6 +1,10 @@
 <?php
 
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\AssessmentController;
+use App\Http\Controllers\AssignmentController;
+use App\Http\Controllers\AssignmentFileController;
+use App\Http\Controllers\AssignmentResponseController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\FeedController;
@@ -9,8 +13,7 @@ use App\Http\Controllers\SMSController;
 use App\Http\Controllers\SslCommerzPaymentController;
 use App\Http\Controllers\SystemController;
 use App\Http\Controllers\UserController;
-use GuzzleHttp\Client;
-use Illuminate\Support\Facades\Http;
+use App\Models\AssignmentFile;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -75,15 +78,23 @@ Route::middleware( ['auth:sanctum', 'verified', 'isAdmin'] )->group( function ()
     Route::post( 'account/{course}/generate-new', [AccountController::class, "regenerate_new"] )->name( "account.regenerate.new" );
     Route::post( 'account/sms-due-report/{parent}', [AccountController::class, "send_sms_due_report"] )->name( "account.sms-report" );
 
+    // Assignment
+    Route::resource( "assignments", AssignmentController::class )->shallow();
+
+    // Assignment Responses
+    Route::get( 'assessment/{assessment}/responses', [AssessmentController::class, 'responses'] )->name("assessment.responses");
+    Route::patch( 'assessmnet/{assessment}/publish/all', [AssignmentResponseController::class, 'publish_all_results'] )->name("results.publish");
+    Route::patch( 'assessmnet/{assessment}/unpublish/all', [AssignmentResponseController::class, 'unpublish_all_results'] )->name("results.unpublish");
+
     // Settings
     Route::get( "settings", [OptionController::class, 'index'] )->name( 'settings' );
     Route::patch( "settings", [OptionController::class, 'update'] )->name( 'settings.update' );
 
     //SMS
-    Route::post('sms', [SMSController::class, 'send'])->name('send.sms');
-    Route::get('all-sms', [SMSController::class, 'index'])->name('sms.index');
-    Route::get('batch-sms', [SMSController::class, 'create_batch_sms'])->name('batch.sms');
-    Route::post('batch-sms', [SMSController::class, 'send_batch_sms'])->name('batch.sms.send');
+    Route::post( 'sms', [SMSController::class, 'send'] )->name( 'send.sms' );
+    Route::get( 'all-sms', [SMSController::class, 'index'] )->name( 'sms.index' );
+    Route::get( 'batch-sms', [SMSController::class, 'create_batch_sms'] )->name( 'batch.sms' );
+    Route::post( 'batch-sms', [SMSController::class, 'send_batch_sms'] )->name( 'batch.sms.send' );
 
     // Filemanager
     Route::get( 'filemanager', function () {
@@ -94,17 +105,31 @@ Route::middleware( ['auth:sanctum', 'verified', 'isAdmin'] )->group( function ()
 
 Route::middleware( ['auth:sanctum'] )->group( function () {
 
+    // Courses
     Route::get( "my-course", [CourseController::class, "my_courses"] )->name( "my.courses" );
     Route::resource( 'course', CourseController::class );
     Route::resource( 'course.feeds', FeedController::class )->shallow();
     Route::get( "display-courses", [CourseController::class, "display"] )->name( "display.course" );
     Route::post( "course/{course}/enroll", [CourseController::class, "enroll"] )->name( "course.enroll" );
 
+    // Attendance
     Route::get( 'attendance/student/individual', [AttendanceController::class, "student_individual_attendance"] )->name( "attendance.student.individual" );
+
+    // Account
     Route::get( 'account/student/individual', [AccountController::class, "student_individual_account"] )->name( "account.student.individual" );
     Route::get( "payment/{account}/pay", [AccountController::class, "student_pay"] )->name( "student.pay" );
     Route::get( "payment/{account}/pay-offline", [AccountController::class, "student_pay_offline"] )->name( "student.pay.offline" );
     Route::post( "payment/pay-offline", [AccountController::class, "student_pay_offline_store"] )->name( "student.pay.offline.store" );
+
+    // Assessment
+    Route::resource( "course.assessments", AssessmentController::class )->shallow();
+
+    // Assignment
+    Route::patch( "assignment-response.mark-as-done", [AssignmentResponseController::class, "assignment_mark_done"] )->name( "assignment.mark-done" );
+    Route::resource( "assignment.response", AssignmentResponseController::class )->shallow();
+
+    // Assignment FIles
+    Route::delete('assignment/file/{assignmentFile}/delete',[AssignmentFileController::class, 'destroy'])->name('assignment.file.destroy');
 
 } );
 
@@ -118,7 +143,6 @@ Route::post( '/cancel', [SslCommerzPaymentController::class, 'cancel'] );
 
 Route::post( '/ipn', [SslCommerzPaymentController::class, 'ipn'] );
 
-
 // Route::get('nibir-api',function(){
 //     $url = "http://cecms.test/api/recharge/sms";
 //     $data = Http::acceptJson()->withToken("1|PkQcQeRkrwths6VgBGbVTGQBS8qrroMXIla6ZZ7Y")->post($url,[
@@ -130,11 +154,9 @@ Route::post( '/ipn', [SslCommerzPaymentController::class, 'ipn'] );
 //     }else{
 //         dd("not okay");
 //     }
-    
+
 // });
 
-
-
-    // Route::get('sms', function(){
-    //     return view("ms.sms.test");
-    // });
+// Route::get('sms', function(){
+//     return view("ms.sms.test");
+// });

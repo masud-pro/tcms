@@ -203,21 +203,26 @@ class AccountController extends Controller {
         $accounts = Account::whereMonth( "month", Carbon::today() )->where( "course_id", $course->id )->get();
 
         if ( $accounts->count() <= 0 ) {
-            $students = $course->user;
+            $students   = $course->user;
+            $newAccount = [];
 
             foreach ( $students as $student ) {
 
                 if ( $student->is_active == 1 ) {
-                    Account::create( [
+                    $newAccount[] = [
                         'user_id'     => $student->id,
                         'course_id'   => $course->id,
                         'paid_amount' => $student->waiver ? $course->fee - $student->waiver : $course->fee,
                         'status'      => "Unpaid",
                         'month'       => Carbon::today(),
-                    ] );
+                        'created_at'  => Carbon::now(),
+                        'updated_at'  => Carbon::now(),
+                    ];
                 }
 
             }
+
+            Account::insert($newAccount);
 
             return view( "ms.account.account-index", [
                 "accounts" => Account::whereMonth( "month", Carbon::today() )->where( "course_id", $course->id )->get(),
