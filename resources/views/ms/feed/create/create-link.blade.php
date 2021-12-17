@@ -31,7 +31,7 @@
                         <p class="text-danger small mt-1">{{ $message }}</p>
                     @enderror
 
-                    <label for="link" class="mt-3">link</label>
+                    <label for="link" class="mt-3">Link</label>
                     <input type="text" value="{{ old("link") }}" name="link" id="link" class="form-control" />
                     @error('link')
                         <p class="text-danger small mt-1">{{ $message }}</p>

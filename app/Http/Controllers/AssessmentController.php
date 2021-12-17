@@ -7,6 +7,7 @@ use App\Models\AssignmentResponse;
 use App\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class AssessmentController extends Controller {
     /**
@@ -17,15 +18,9 @@ class AssessmentController extends Controller {
     public function index( Course $course ) {
         $user = Auth::user();
 
-        if ( $user->role == "Admin" ) {
-            return view( "ms.assessments.course-assessments", [
-                'assessments' => $course->assessment()->latest()->get(),
-            ] );
-        } else {
-            return view( "ms.assessments.course-assessments", [
-                'assessments' => $user->assessment()->where( "course_id", $course->id )->latest()->get(),
-            ] );
-        }
+        return view( "ms.assessments.course-assessments", [
+            'course' => $course,
+        ] );
 
     }
 
@@ -37,7 +32,7 @@ class AssessmentController extends Controller {
     public function create( Course $course ) {
         return view( "ms.assessments.create-assessment", [
             'course'   => $course,
-            'students' => $course->user()->pluck( 'name', 'users.id' ),
+            'students' => $course->user()->where( 'users.is_active', 1 )->pluck( 'name', 'users.id' ),
         ] );
     }
 
@@ -58,6 +53,9 @@ class AssessmentController extends Controller {
     public function responses( Assessment $assessment ) {
         return view( "ms.assignment-response.assignment-responses", [
             'assessment' => $assessment,
+            'min'        => $assessment->responses()->min('marks'),
+            'max'        => $assessment->responses()->max('marks'),
+            'avg'        => $assessment->responses()->avg('marks'),
         ] );
     }
 
@@ -68,6 +66,7 @@ class AssessmentController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show( Assessment $assessment ) {
+        $this->authorize( 'view', $assessment );
 
         if ( Auth::user()->role == "Student" ) {
             $assignmentResponse = AssignmentResponse::where( "assessment_id", $assessment->id )
@@ -143,7 +142,10 @@ class AssessmentController extends Controller {
         $assessment->responses()->delete();
 
         $assessment->user()->sync( [] );
+
         $assessment->files()->delete();
+
+        Storage::deleteDirectory( 'assignments/assessment_' . $assessment->id );
 
         $assessment->delete();
 

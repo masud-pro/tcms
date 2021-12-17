@@ -6,6 +6,7 @@ use App\Models\Assessment;
 use App\Models\Assignment;
 use App\Models\AssignmentFile;
 use App\Models\AssignmentResponse;
+use App\Notifications\AssessmentResultNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -223,24 +224,42 @@ class AssignmentResponseController extends Controller {
 
         if ( isset( $data['is_marks_published'] ) ) {
             $data['is_marks_published'] = 1;
+
         } else {
             $data['is_marks_published'] = 0;
         }
 
-        $response->update( $data );
+        $updated = $response->update( $data );
+
+        if ( $updated && $data['is_marks_published'] == 1 ) {
+            $result['name'] = $response->assessment->name;
+            $result['marks'] = $data['marks'];
+            $result['fullmarks'] = $response->assignment->marks;
+            $result['url'] = route("assessments.show",['assessment'=>$response->assessment->id]);
+
+            $response->user->notify(new AssessmentResultNotification($result));
+        }
 
         return redirect()->route( "assessment.responses", ['assessment' => $response->assessment->id] )->with( "success", "Marks Updated" );
 
     }
 
     public function publish_all_results( Assessment $assessment ) {
-        $responses = $assessment->responses()->whereNotNull( 'marks' )->where( "is_marks_published", 0 );
+        $responses = $assessment->responses()->whereNotNull( 'marks' )->orWhere( "is_marks_published", 0 );
 
-        $allResponses = $responses->get();
-
+        
         $responses->update( [
             'is_marks_published' => 1,
         ] );
+
+        foreach ($responses->get() as $response) {
+            $result['name'] = $response->assessment->name;
+            $result['marks'] = $response->marks;
+            $result['fullmarks'] = $response->assignment->marks;
+            $result['url'] = route("assessments.show",['assessment'=>$response->assessment->id]);
+
+            $response->user->notify(new AssessmentResultNotification($result));
+        }
 
         return redirect()->back()->with( "success", "All marks has been published" );
     }

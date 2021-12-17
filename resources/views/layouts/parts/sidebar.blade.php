@@ -201,6 +201,15 @@
             </a>
     
         </li>
+
+        <li class="nav-item">
+    
+            <a class="nav-link" href="{{ route("profile.show") }}">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </a>
+    
+        </li>
     @endif
  
         <div class="text-center d-none d-md-inline">

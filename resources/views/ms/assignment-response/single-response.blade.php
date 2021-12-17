@@ -10,6 +10,10 @@
 @section('content')
 
 <div class="row">
+    
+    <div class="col-md-12 text-right py-3">
+        <a href="{{ route("assessment.responses",['assessment'=>$assignmentResponse->assessment->id]) }}">Go Back</a>
+    </div>
 
     <div class="col-md-8">
 
@@ -29,6 +33,14 @@
                 </button>
             </div>
         @endif
+        @if ( session('delete') )
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('delete') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
  
         
         <div class="card shadow mb-4">
@@ -38,7 +50,8 @@
             <div class="card-body">
                 
                 
-                    <h3>{{ $assignmentResponse->assignment->title }}</h3>
+                    <h5>Assignment: {{ $assignmentResponse->assessment->name }}</h5>
+                    <h5>Assessment: {{ $assignmentResponse->assignment->title }}</h5>
                     <hr>
                     <div class="mt-5">
                         <h5>Question:</h5>
@@ -91,6 +104,31 @@
 
                     <input type="submit" class="btn btn-primary mt-3" value="Grade">
                 </form>
+
+                <ul class="list-unstyled mt-5">
+                    @if ($assignmentResponse != null)
+                        @if ($assignmentResponse->files->count() > 0 )
+                            <b>Files:</b>
+                            @forelse ($assignmentResponse->files as $file)
+                                <li class="my-3">
+                                    <a target="_blank" href="{{ Storage::url( $file->url ) }}">
+                                        {{ $file->name }}
+                                    </a> - 
+                                    <form class="d-inline" method="POST"
+                                        action="{{ route("assignment.file.destroy",['assignmentFile'=> $file->id]) }}">
+
+                                        @csrf
+                                        @method("DELETE")
+                                        <input onclick="return confirm('Are you sure you want to delte the file?')" type="submit" class="btn btn-danger btn-sm" value="Delete">
+
+                                    </form>
+                                </li>
+                            @empty
+                                
+                            @endforelse
+                        @endif
+                    @endif
+                </ul>
                 
             </div>
         </div>

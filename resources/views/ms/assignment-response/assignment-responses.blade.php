@@ -11,20 +11,136 @@
 
 @section('content')
 
-<form action="{{ route("results.publish",['assessment'=>$assessment->id]) }}" method="POST" class="d-inline">
-    @csrf
-    @method("PATCH")
-    
-    <input type="submit" class="btn btn-primary mb-3" value="Publish All Marks"
-    onclick="return confirm('Are you sure you want to publish all the marks now?')">
-</form>
-<form action="{{ route("results.unpublish",['assessment'=>$assessment->id]) }}" method="POST" class="d-inline">
-    @csrf
-    @method("PATCH")
+<div class="row">
+    <div class="col-lg-10">
+            
+        <form action="{{ route("results.publish",['assessment'=>$assessment->id]) }}" method="POST" class="d-inline">
+            @csrf
+            @method("PATCH")
+            
+            <input type="submit" class="btn btn-primary mb-3" value="Publish All Marks"
+            onclick="return confirm('Are you sure you want to publish all the marks now?')">
+        </form>
+        <form action="{{ route("results.unpublish",['assessment'=>$assessment->id]) }}" method="POST" class="d-inline">
+            @csrf
+            @method("PATCH")
 
-    <input type="submit" class="btn btn-primary mb-3" value="Unpublish All Marks"
-    onclick="return confirm('Are you sure you want to unpublish all the marks now?')">
-</form>
+            <input type="submit" class="btn btn-primary mb-3" value="Unpublish All Marks"
+            onclick="return confirm('Are you sure you want to unpublish all the marks now?')">
+        </form>
+
+        <div class="btn-group mb-3">
+            <button 
+            class="btn btn-primary dropdown-toggle" 
+            type="button" 
+            id="dropdownMenuButton" 
+            data-toggle="dropdown" 
+            aria-haspopup="true" 
+            aria-expanded="false">
+                Send Results
+            </button>
+
+            <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton">
+
+                    
+            <form class="dropdown-item" action="{{ route("exam.result.sms") }}" method="POST" class="d-inline">
+                @csrf
+
+                <input type="hidden" name="assessment_id" value="{{ request()->assessment->id }}">
+                <input type="hidden" name="to" value="fathers_phone_no">
+                <input type="submit" class="btn btn-link text-dark" value="Send Results To Father"
+                onclick="return confirm('Are you sure you want to unpublish all the marks now?')">
+            </form>
+            <form class="dropdown-item" action="{{ route("exam.result.sms") }}" method="POST" class="d-inline">
+                @csrf
+
+                <input type="hidden" name="assessment_id" value="{{ request()->assessment->id }}">
+                <input type="hidden" name="to" value="mothers_phone_no">
+                <input type="submit" class="btn btn-link text-dark" value="Send Results To Mother"
+                onclick="return confirm('Are you sure you want to unpublish all the marks now?')">
+            </form>
+            <form class="dropdown-item" action="{{ route("exam.result.sms") }}" method="POST" class="d-inline">
+                @csrf
+
+                <input type="hidden" name="assessment_id" value="{{ request()->assessment->id }}">
+                <input type="hidden" name="to" value="phone_no">
+                <input type="submit" class="btn btn-link text-dark" value="Send Results To Student"
+                onclick="return confirm('Are you sure you want to unpublish all the marks now?')">
+            </form>
+
+                
+
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2 text-right pt-3 pb-2">
+        <a href="{{ route("course.assessments.index",['course'=>request()->assessment->course->id]) }}">Go Back</a>
+    </div>
+</div>
+
+
+<div class="row">
+
+    <!-- Earnings (Monthly) Card Example -->
+    <div class="col-xl-4 col-md-6 mb-4">
+        <div class="card border-left-success shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                            Highest Marks</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $max ?? "Can't calculte yet" }}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-check-double fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Pending Requests Card Example -->
+    <div class="col-xl-4 col-md-6 mb-4">
+        <div class="card border-left-warning shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                            Average Marks</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                            {{ $avg ?? "Can't calculte yet" }}
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-check fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <!-- Earnings (Annual) Card Example -->
+     <div class="col-xl-4 col-md-6 mb-4">
+        <div class="card border-left-danger shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                            Lowest Marks</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $min ?? "Can't calculte yet" }}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-info fa-2x text-gray-300"></i>
+                        {{-- <i class="far fa-clock fa-2x text-gray-300"></i> --}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        
+    
+</div>
 <div class="row">
     <div class="col-md-12">
 
@@ -39,6 +155,14 @@
         @if ( session('delete') )
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 {{ session('delete') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
+        @if ( session('failed') )
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('failed') }}
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

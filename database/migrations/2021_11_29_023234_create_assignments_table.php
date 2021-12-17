@@ -16,7 +16,7 @@ class CreateAssignmentsTable extends Migration {
 
             $table->string( "title" );
             $table->text( "question" );
-            $table->string( "type" );
+            // $table->string( "type" );
             $table->float( "marks" );
 
             $table->timestamps();

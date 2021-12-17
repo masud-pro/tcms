@@ -25,7 +25,7 @@ class EditAssessment extends Component {
     ];
 
     public function mount() {
-        $this->students = $this->assessment->course->user()->pluck( 'name', 'users.id' );
+        $this->students = $this->assessment->course->user()->where('users.is_active',1)->pluck( 'name', 'users.id' );
 
         $this->form                            = [];
         $this->form['name']                    = $this->assessment->name;

@@ -2,10 +2,13 @@
 
 namespace App\Http\Livewire\Assessments;
 
+use Carbon\Carbon;
+use App\Models\User;
+use Livewire\Component;
 use App\Models\Assessment;
 use App\Models\Assignment;
-use Carbon\Carbon;
-use Livewire\Component;
+use App\Notifications\Assessment\CreateAssessment as AssessmentCreateAssessment;
+use Illuminate\Support\Facades\Notification;
 
 class CreateAssessment extends Component {
 
@@ -46,6 +49,16 @@ class CreateAssessment extends Component {
         $assessment = Assessment::create( $this->form );
 
         $assessment->user()->sync( $postTo );
+
+        if($assessment){
+            $notificationInfromation['courseName'] = $this->course->name;
+            $notificationInfromation['url'] = route("course.assessments.index",['course'=>$this->course->id]);
+
+            Notification::send(
+                User::whereIn('id',$postTo)->get(),
+                new AssessmentCreateAssessment($notificationInfromation)
+            );
+        }
 
         return redirect()->route( 'course.assessments.index', ['course' => $this->course->id] )->with( "success", "Assessment Created Successfully" );
 

@@ -34,41 +34,58 @@
                     <table class="table table-hover table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
+                                <th>Image</th>
                                 <th>Name</th>
                                 <th>Email</th>
-                                <th>Phone Number</th>
-                                <th>Batch / Course</th>
-                                <th>Created At</th>
-                                <th>Actions</th>
+                                @if ( Auth::user()->role == "Admin" )
+                                    <th>Phone Number</th>
+                                    <th>Batch / Course</th>
+                                    <th>Created At</th>
+                                    <th>Actions</th>
+                                @endif
                             </tr>
                         </thead>
                         <tfoot>
                             <tr>
+                                <th>Image</th>
                                 <th>Name</th>
                                 <th>Email</th>
-                                <th>Phone Number</th>
-                                <th>Batch / Course</th>
-                                <th>Created At</th>
-                                <th>Actions</th>
+                                @if ( Auth::user()->role == "Admin" )
+                                    <th>Phone Number</th>
+                                    <th>Batch / Course</th>
+                                    <th>Created At</th>
+                                    <th>Actions</th>
+                                @endif
                             </tr>
                         </tfoot>
                         <tbody>
                             @foreach ($users as $user)
                                 <tr>
+                                    <td class="text-center">
+                                        @if ( Auth::user()->role == "Admin" )
+                                            <a target="_blank" href="{{ $user->profile_photo_url ?? "" }}">
+                                                <img width="40" class="img-profile rounded-circle" src="{{ $user->profile_photo_url ?? "" }}">
+                                            </a>
+                                        @else
+                                            <img width="40" class="img-profile rounded-circle" src="{{ $user->profile_photo_url ?? "" }}">
+                                        @endif
+                                    </td>
                                     <td><b>{{ $user->name }}</b></td>
                                     <td>{{ $user->email }}</td>
-                                    <td>{{ $user->phone_no }}</td>
-                                    <td>
-                                        @forelse ($user->course as $course)
-                                            <b>{{ $course->name . ", " }}</b>
-                                        @empty
-                                            {{ "Not Found" }}
-                                        @endforelse
-                                    </td>
-                                    <td>{{ $user->created_at->format("d-M-Y") }}</td>
-                                    <td>
-                                        <a class="btn btn-primary" href="{{ route("user.edit",[ 'user' => $user->id ]) }}" target="_blank">Edit</a>
-                                    </td>
+                                    @if ( Auth::user()->role == "Admin" )
+                                        <td>{{ $user->phone_no }}</td>
+                                        <td>
+                                            @forelse ($user->course as $course)
+                                                <b>{{ $course->name . ", " }}</b>
+                                            @empty
+                                                {{ "Not Found" }}
+                                            @endforelse
+                                        </td>
+                                        <td>{{ $user->created_at->format("d-M-Y") }}</td>
+                                        <td>
+                                            <a class="btn btn-primary" href="{{ route("user.edit",[ 'user' => $user->id ]) }}" target="_blank">Edit</a>
+                                        </td>
+                                    @endif
                                 </tr>
                             @endforeach
                         </tbody>

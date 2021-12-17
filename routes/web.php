@@ -47,7 +47,6 @@ Route::middleware( ['auth:sanctum', 'verified', 'isAdmin'] )->group( function ()
     Route::get( "course/{course}/authorization-panel", [CourseController::class, "authorization_panel"] )->name( "course.authorize" );
     Route::patch( "course/{course}/authorization-panel", [CourseController::class, "authorize_users"] )->name( "course.users.authorize" );
     Route::post( "course/{course}/reauthorize", [CourseController::class, "reauthorize_users"] )->name( "course.users.reauthorize" );
-    Route::get( 'course/{course}/students', [UserController::class, "course_students"] )->name( "course.students" );
 
     // User
     Route::resource( 'user', UserController::class );
@@ -95,6 +94,7 @@ Route::middleware( ['auth:sanctum', 'verified', 'isAdmin'] )->group( function ()
     Route::get( 'all-sms', [SMSController::class, 'index'] )->name( 'sms.index' );
     Route::get( 'batch-sms', [SMSController::class, 'create_batch_sms'] )->name( 'batch.sms' );
     Route::post( 'batch-sms', [SMSController::class, 'send_batch_sms'] )->name( 'batch.sms.send' );
+    Route::post( 'send/results',[SMSController::class,'send_exam_results'] )->name('exam.result.sms');
 
     // Filemanager
     Route::get( 'filemanager', function () {
@@ -111,6 +111,8 @@ Route::middleware( ['auth:sanctum'] )->group( function () {
     Route::resource( 'course.feeds', FeedController::class )->shallow();
     Route::get( "display-courses", [CourseController::class, "display"] )->name( "display.course" );
     Route::post( "course/{course}/enroll", [CourseController::class, "enroll"] )->name( "course.enroll" );
+    Route::get( 'course/{course}/students', [UserController::class, "course_students"] )->name( "course.students" );
+
 
     // Attendance
     Route::get( 'attendance/student/individual', [AttendanceController::class, "student_individual_attendance"] )->name( "attendance.student.individual" );

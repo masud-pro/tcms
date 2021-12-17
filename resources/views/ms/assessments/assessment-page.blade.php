@@ -58,7 +58,7 @@
                 
                 
                 @if (  \Carbon\Carbon::now()->isAfter(  $assessment->start_time  ) )
-                    <h3>{{ $assessment->assignment->title }}</h3>
+                    <h3>{{ $assessment->name }}</h3>
                     <hr>
                     <div>
                         {!! $assessment->assignment->question !!}

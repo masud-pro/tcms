@@ -119,7 +119,7 @@ return [
     /**
      * Show / Hide system files and folders
      */
-    'hiddenFiles' => true,
+    'hiddenFiles' => false,
 
     /***************************************************************************
      * Middleware

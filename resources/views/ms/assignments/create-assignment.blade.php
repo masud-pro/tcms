@@ -36,7 +36,7 @@
                     @error('description')
                         <p class="text-danger small mt-1">{{ $message }}</p>
                     @enderror
-
+{{-- 
                     <label for="type" class="mt-3">Type</label>
                     <select value="{{ old("type") }}" name="type" id="type" class="form-control">
                         <option value="Written">Written</option>
@@ -44,7 +44,7 @@
                     </select>
                     @error('type')
                         <p class="text-danger small mt-1">{{ $message }}</p>
-                    @enderror
+                    @enderror --}}
 
                     <label for="marks" class="mt-3">Total Marks</label>
                     <input onscroll="return false" value="{{ old("marks") }}" name="marks" class="form-control" id="marks" type="number">
@@ -52,34 +52,6 @@
                         <p class="text-danger small mt-1">{{ $message }}</p>
                     @enderror
 
-                    {{-- <label for="start_time" class="mt-3">Start Time</label>
-                    <input value="{{ old("start_time") }}" name="start_time" class="form-control" id="start_time" type="text">
-                    @error('start_time')
-                        <p class="text-danger small mt-1">{{ $message }}</p>
-                    @enderror
-
-                    <label for="deadline" class="mt-3">Deadline</label>
-                    <input value="{{ old("deadline") }}" name="deadline" class="form-control" id="deadline" type="text">
-                    @error('deadline')
-                        <p class="text-danger small mt-1">{{ $message }}</p>
-                    @enderror
-
-                    <label for="is_accepting_submission" class="mt-3">Submission</label>
-                    <label for="type" class="mt-3">Type</label>
-                    <select value="{{ old("is_accepting_submission") }}" name="is_accepting_submission" id="is_accepting_submission" class="form-control">
-                        <option value="Accept">Accept</option>
-                        <option value="Reject">Reject</option>
-                    </select>
-                    @error('is_accepting_submission')
-                        <p class="text-danger small mt-1">{{ $message }}</p>
-                    @enderror
-
-
-                    <label for="submit_count" class="mt-3">Submit Count</label>
-                    <input onscroll="return false" value="{{ old("submit_count") }}" name="submit_count" class="form-control" id="submit_count" type="number">
-                    @error('submit_count')
-                        <p class="text-danger small mt-1">{{ $message }}</p>
-                    @enderror --}}
 
                     <div class="row">
                         <div class="col">

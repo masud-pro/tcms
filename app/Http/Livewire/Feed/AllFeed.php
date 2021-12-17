@@ -14,7 +14,6 @@ class AllFeed extends Component {
     }
 
     public function render() {
-        
         return view( 'livewire.feed.all-feed', [
             "course" => $this->course,
             "feeds"  => $this->course->feeds()->latest()->take( $this->perpage )->get(),

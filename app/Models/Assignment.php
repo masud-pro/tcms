@@ -14,7 +14,7 @@ class Assignment extends Model {
     protected $fillable = [
         'title',
         'question',
-        'type',
+        // 'type',
         'marks',
     ];
 

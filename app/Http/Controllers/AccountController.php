@@ -34,26 +34,69 @@ class AccountController extends Controller {
 
         $students = $course->user;
 
-        foreach ( $students as $student ) {
+        if ( $course->type == "Monthly" ) {
 
-            if ( $student->is_active == 1 ) {
+            // If monthly then generate for month
 
-                $account = Account::whereMonth( "month", Carbon::now() )
-                    ->where( "user_id", $student->id )
-                    ->where( "course_id", $course->id )
-                    ->count();
+            $newAccount = [];
 
-                if ( $account == 0 ) {
-                    Account::create( [
-                        'user_id'     => $student->id,
-                        'course_id'   => $course->id,
-                        'paid_amount' => $student->waiver ? $course->fee - $student->waiver : $course->fee,
-                        'status'      => "Unpaid",
-                        'month'       => Carbon::today(),
-                    ] );
+            foreach ( $students as $student ) {
+
+                if ( $student->is_active == 1 ) {
+
+                    $account = Account::whereMonth( "month", Carbon::now() )
+                        ->where( "user_id", $student->id )
+                        ->where( "course_id", $course->id )
+                        ->count();
+
+                    if ( $account == 0 ) {
+                        $newAccount[] = [
+                            'user_id'     => $student->id,
+                            'course_id'   => $course->id,
+                            'paid_amount' => $student->waiver ? $course->fee - $student->waiver : $course->fee,
+                            'status'      => "Unpaid",
+                            'month'       => Carbon::today(),
+                            'created_at'  => Carbon::now(),
+                            'updated_at'  => Carbon::now(),
+                        ];
+                    }
+
                 }
 
             }
+
+            Account::insert( $newAccount );
+
+        } else {
+
+            // If onetime then only check
+            $newAccount = [];
+
+            foreach ( $students as $student ) {
+
+                if ( $student->is_active == 1 ) {
+
+                    $account = Account::where( "user_id", $student->id )
+                        ->where( "course_id", $course->id )
+                        ->count();
+
+                    if ( $account == 0 ) {
+                        $newAccount = [
+                            'user_id'     => $student->id,
+                            'course_id'   => $course->id,
+                            'paid_amount' => $student->waiver ? $course->fee - $student->waiver : $course->fee,
+                            'status'      => "Unpaid",
+                            'month'       => Carbon::today(),
+                            'created_at'  => Carbon::now(),
+                            'updated_at'  => Carbon::now(),
+                        ];
+                    }
+
+                }
+
+            }
+
+            Account::create( $newAccount );
 
         }
 
@@ -63,21 +106,57 @@ class AccountController extends Controller {
 
     public function regenerate_new( Course $course ) {
 
-        Account::whereMonth( "month", Carbon::now() )->delete();
+        if ( $course->type == "Monthly" ) {
 
-        $students = $course->user;
+            Account::whereMonth( "month", Carbon::now() )->where( 'course_id', $course->id )->delete();
 
-        foreach ( $students as $student ) {
+            $students   = $course->user;
+            $newAccount = [];
 
-            if ( $student->is_active == 1 ) {
-                Account::create( [
-                    'user_id'     => $student->id,
-                    'course_id'   => $course->id,
-                    'paid_amount' => $student->waiver ? $course->fee - $student->waiver : $course->fee,
-                    'status'      => "Unpaid",
-                    'month'       => Carbon::today(),
-                ] );
+            foreach ( $students as $student ) {
+
+                if ( $student->is_active == 1 ) {
+                    
+                    $newAccount[] = [
+                        'user_id'     => $student->id,
+                        'course_id'   => $course->id,
+                        'paid_amount' => $student->waiver ? $course->fee - $student->waiver : $course->fee,
+                        'status'      => "Unpaid",
+                        'month'       => Carbon::today(),
+                        'created_at'  => Carbon::now(),
+                        'updated_at'  => Carbon::now(),
+                    ];
+                }
+
             }
+
+            Account::insert( $newAccount );
+
+        } else {
+
+            Account::where( 'course_id', $course->id )->delete();
+
+            $students   = $course->user;
+            $newAccount = [];
+
+            foreach ( $students as $student ) {
+
+                if ( $student->is_active == 1 ) {
+
+                    $newAccount[] = [
+                        'user_id'     => $student->id,
+                        'course_id'   => $course->id,
+                        'paid_amount' => $student->waiver ? $course->fee - $student->waiver : $course->fee,
+                        'status'      => "Unpaid",
+                        'month'       => Carbon::today(),
+                        'created_at'  => Carbon::now(),
+                        'updated_at'  => Carbon::now(),
+                    ];
+                }
+
+            }
+
+            Account::insert( $newAccount );
 
         }
 
@@ -194,13 +273,7 @@ class AccountController extends Controller {
 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create( Course $course ) {
-        $accounts = Account::whereMonth( "month", Carbon::today() )->where( "course_id", $course->id )->get();
+    public function generate_payments( $course, $accounts ) {
 
         if ( $accounts->count() <= 0 ) {
             $students   = $course->user;
@@ -209,6 +282,7 @@ class AccountController extends Controller {
             foreach ( $students as $student ) {
 
                 if ( $student->is_active == 1 ) {
+
                     $newAccount[] = [
                         'user_id'     => $student->id,
                         'course_id'   => $course->id,
@@ -218,19 +292,67 @@ class AccountController extends Controller {
                         'created_at'  => Carbon::now(),
                         'updated_at'  => Carbon::now(),
                     ];
+
                 }
 
             }
 
-            Account::insert($newAccount);
+            Account::insert( $newAccount );
 
-            return view( "ms.account.account-index", [
-                "accounts" => Account::whereMonth( "month", Carbon::today() )->where( "course_id", $course->id )->get(),
-            ] );
+            return true;
         } else {
-            return view( "ms.account.account-index", [
-                "accounts" => $accounts,
-            ] );
+            return false;
+        }
+
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create( Course $course ) {
+
+        if ( $course->type == "Monthly" ) {
+
+            $accounts = Account::whereMonth( "month", Carbon::today() )->where( "course_id", $course->id )->get();
+
+            $generated = $this->generate_payments( $course, $accounts );
+
+            if ( $generated ) { // If generated then show them a page
+
+                return view( "ms.account.account-index", [
+                    "accounts" => Account::whereMonth( "month", Carbon::today() )->where( "course_id", $course->id )->get(),
+                ] );
+
+            } else { // or show the previous
+
+                return view( "ms.account.account-index", [
+                    "accounts" => $accounts,
+                ] );
+
+            }
+
+        } else {
+
+            $accounts = Account::where( "course_id", $course->id )->get();
+
+            $generated = $this->generate_payments( $course, $accounts );
+
+            if ( $generated ) { // If generated then show them a page
+
+                return view( "ms.account.account-index", [
+                    "accounts" => Account::where( "course_id", $course->id )->get(),
+                ] );
+
+            } else { // or show the previous
+
+                return view( "ms.account.account-index", [
+                    "accounts" => $accounts,
+                ] );
+
+            }
+
         }
 
     }

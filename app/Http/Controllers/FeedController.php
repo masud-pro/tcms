@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use App\Models\Feed;
+use App\Notifications\Feed\CreateFeed;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 class FeedController extends Controller {
 
@@ -60,7 +62,18 @@ class FeedController extends Controller {
             'type'        => 'required',
         ] );
 
-        $course->feeds()->create( $data );
+        $created = $course->feeds()->create( $data );
+
+        if( $created ){
+            $feed['courseName'] = $course->name;
+            $feed['url']        = route( "course.feeds.index", ['course' => $course->id] );
+
+            Notification::send( 
+                $course->user,
+                new CreateFeed($feed)
+            );
+        }
+
 
         return redirect()
             ->route( "course.feeds.index", ["course" => $course->id] )
@@ -75,7 +88,17 @@ class FeedController extends Controller {
             'type' => 'required',
         ] );
 
-        $course->feeds()->create( $data );
+        $created = $course->feeds()->create( $data );
+
+        if( $created ){
+            $feed['courseName'] = $course->name;
+            $feed['url']        = route( "course.feeds.index", ['course' => $course->id] );
+
+            Notification::send( 
+                $course->user,
+                new CreateFeed($feed)
+            );
+        }
 
         return redirect()
             ->route( "course.feeds.index", ["course" => $course->id] )
@@ -115,8 +138,8 @@ class FeedController extends Controller {
     public function edit_link( Feed $feed, Request $request ) {
         // dd($request->course);
         return view( 'ms.feed.edit.edit-link', [
-            'feed'              => $feed,
-            'course'            => Course::findOrFail( $request->course ),
+            'feed'   => $feed,
+            'course' => Course::findOrFail( $request->course ),
         ] );
     }
 

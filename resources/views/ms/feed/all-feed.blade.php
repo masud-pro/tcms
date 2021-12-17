@@ -70,12 +70,6 @@
 
                     <a 
                         class="btn btn-primary mb-4" 
-                        href="{{ route("course.students",["course"=>$course->id ]) }}">
-                        See Students
-                    </a>
-
-                    <a 
-                        class="btn btn-primary mb-4" 
                         href="{{ route("course.accounts.create",[ "course" => $course->id ]) }}">
                         Generate Payments
                     </a>
@@ -89,6 +83,12 @@
                     
 
                 @endif
+
+                    <a 
+                        class="btn btn-primary mb-4" 
+                        href="{{ route("course.students",["course"=>$course->id ]) }}">
+                        See Students
+                    </a>
 
                     <a 
                         class="btn btn-primary mb-4" 

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\Result\ResultSMS;
+use App\Models\Assessment;
 use App\Models\Course;
 use App\Models\Option;
 use App\Models\SMS;
@@ -22,6 +24,70 @@ class SMSController extends Controller {
         ] );
     }
 
+    public function calculate_sms_and_remaining_sms() {
+        
+    }
+
+    public function send_exam_results( Request $request ) {
+        $data = $request->validate( [
+            'assessment_id' => 'required',
+            'to'            => 'required',
+        ] );
+
+        $assessment = Assessment::findOrFail( $data['assessment_id'] );
+
+        // First count the characters and find the sms count
+        $characters            = strlen( $assessment->name . " " . "result: 1000/1000" . " - " . env( 'APP_NAME' ) );
+        $numberOfSmsPerMessage = (int) ceil( $characters / 160 );
+
+        $smsCount = $assessment->responses()->count() * $numberOfSmsPerMessage; // Count the number of sms
+
+        $smsrow        = Option::where( "slug", "remaining_sms" )->first(); // Remaining SMS row
+        $remaining_sms = (int) $smsrow->value;
+
+// Remaining SMS
+        if ( $remaining_sms < $smsCount ) {
+            return redirect()->back()->with( "failed", "Not Enough SMS" );
+        }
+
+        if ( $smsCount > 0 ) {
+
+            $send_to       = $data['to'];
+            $loopResponses = $assessment->responses()->whereNotNull( 'marks' )->get();
+// Responses to loop
+
+            foreach ( $loopResponses as $response ) {
+                $result['number'] = $response->user->$send_to;
+
+                $result['message'] = $assessment->name . " " .
+                "result: " .
+                $response->marks . "/" .
+                $response->assignment->marks . " - " .
+                env( 'APP_NAME' );
+
+                ResultSMS::dispatch( $result );
+            }
+
+            $remaining_sms = $remaining_sms - $smsCount;
+
+            SMS::create( [
+                'for'     => $assessment->name . " Results",
+                'count'   => $smsCount,
+                'message' => $assessment->name . " " . "result: (individual)" . " - " . env( 'APP_NAME' ),
+            ] );
+
+            $smsrow->update( [
+                'value' => $remaining_sms,
+            ] );
+
+            return redirect()->back()->with( "success", "SMS Send Successfully" );
+
+        } else {
+            return redirect()->back()->with( "failed", "Numbers not found or something is wrong" );
+        }
+
+    }
+
     public function send_batch_sms( Request $request ) {
         $data = $request->validate( [
             'for'       => 'required|string',
@@ -37,23 +103,29 @@ class SMSController extends Controller {
         $courseUsers = Course::findOrFail( $data['course_id'] )->user;
         $numbers     = [];
         $send_to     = $data['send_to'];
+// Father or monther
 
         foreach ( $courseUsers as $user ) {
+
             if ( $user->$send_to ) {
-                $numbers[] = $user->$send_to;
+                $numbers[] = $user->$send_to; // Father or mother
             }
+
         }
 
         $smsCount = count( $numbers ) * $numberOfSmsPerMessage;
 
-        $smsrow        = Option::where( "slug", "remaining_sms" )->first();
+        $smsrow        = Option::where( "slug", "remaining_sms" )->first(); // Remaining SMS row
         $remaining_sms = (int) $smsrow->value;
+
+// Remaining SMS
 
         if ( $remaining_sms < $smsCount ) {
             return redirect()->back()->with( "failed", "Not Enough SMS" );
         }
 
         if ( $smsCount > 0 ) {
+
             $numbers = implode( ",", $numbers );
             $message = $data['message'];
 
@@ -64,9 +136,9 @@ class SMSController extends Controller {
                 $remaining_sms = $remaining_sms - $smsCount;
 
                 SMS::create( [
-                    'for'       => $data['for'],
-                    'count'     => $smsCount,
-                    'message'   => $message,
+                    'for'     => $data['for'],
+                    'count'   => $smsCount,
+                    'message' => $message,
                 ] );
 
                 $smsrow->update( [

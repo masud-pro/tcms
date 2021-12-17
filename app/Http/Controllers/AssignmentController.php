@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Assessment;
 use App\Models\Assignment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class AssignmentController extends Controller {
     /**
@@ -13,9 +14,9 @@ class AssignmentController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        return view("ms.assignments.assignment-index",[
-            'assignments' => Assignment::latest()->get()
-        ]);
+        return view( "ms.assignments.assignment-index", [
+            'assignments' => Assignment::latest()->get(),
+        ] );
     }
 
     /**
@@ -38,13 +39,13 @@ class AssignmentController extends Controller {
         $validatedData = $request->validate( [
             "title"    => "required",
             "question" => "required",
-            "type"     => "required",
+            // "type"     => "required",
             "marks"    => "required|numeric",
         ] );
 
-        Assignment::create($validatedData);
+        Assignment::create( $validatedData );
 
-        return redirect()->route("assignments.index")->with("success","Assignment Created Successfully");
+        return redirect()->route( "assignments.index" )->with( "success", "Assignment Created Successfully" );
 
     }
 
@@ -65,9 +66,9 @@ class AssignmentController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit( Assignment $assignment ) {
-        return view("ms.assignments.edit-assignment",[
-            'assignment' => $assignment
-        ]);
+        return view( "ms.assignments.edit-assignment", [
+            'assignment' => $assignment,
+        ] );
     }
 
     /**
@@ -81,13 +82,12 @@ class AssignmentController extends Controller {
         $validatedData = $request->validate( [
             "title"    => "required",
             "question" => "required",
-            "type"     => "required",
             "marks"    => "required|numeric",
         ] );
 
-        $assignment->update($validatedData);
+        $assignment->update( $validatedData );
 
-        return redirect()->back()->with("success","Assignment Updated Successfully");
+        return redirect()->back()->with( "success", "Assignment Updated Successfully" );
     }
 
     /**
@@ -98,17 +98,19 @@ class AssignmentController extends Controller {
      */
     public function destroy( Assignment $assignment ) {
         $assessment = $assignment->assessment();
-        
+
         foreach ( $assessment->get() as $signleAssessment ) {
-            $signleAssessment->user()->sync([]);
+            $signleAssessment->user()->sync( [] );
+            Storage::deleteDirectory( 'assignments/assessment_' . $signleAssessment->id );
         }
-        
+
         $assessment->delete();
         $assignment->response()->delete();
         $assignment->files()->delete();
 
         $assignment->delete();
-     
-        return redirect()->route("assignments.index")->with("delete","Assignment Deleted Successfully");
+
+        return redirect()->route( "assignments.index" )->with( "delete", "Assignment Deleted Successfully" );
     }
+
 }
