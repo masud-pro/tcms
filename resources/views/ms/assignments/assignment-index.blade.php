@@ -48,7 +48,6 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Title</th>
-                                <th>Type</th>
                                 <th>Marks</th>
                                 <th>Actions</th>
                             </tr>
@@ -57,7 +56,6 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Title</th>
-                                <th>Type</th>
                                 <th>Marks</th>
                                 <th>Actions</th>
                             </tr>
@@ -68,7 +66,6 @@
                                     
                                     <td>{{ $assignment->id }}</td>
                                     <td>{{ $assignment->title ?? "" }}</td>
-                                    <td>{{ $assignment->type ?? "" }}</td>
                                     <td>{{ $assignment->marks ?? "" }}</td>
                                     <td>
                                         <a class="btn btn-primary" href="{{ route("assignments.edit",['assignment'=>$assignment->id]) }}">Edit</a>
