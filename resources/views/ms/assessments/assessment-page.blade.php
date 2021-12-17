@@ -135,6 +135,10 @@
             </div>
             <div class="card-body">
 
+                <p>
+                    <b>Full Marks:</b>  {!! $assessment->assignment->marks !!}
+                </p>
+
                 @if ($assignmentResponse && $assignmentResponse->is_marks_published)
                     <div class="text-center">
                         <b style="font-size: 26px">Your Grade: {{ $assignmentResponse->marks }}</b> 

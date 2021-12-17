@@ -238,7 +238,7 @@ class CourseController extends Controller {
 
         $course->update( $data );
 
-        return redirect()->back()->with( "success", "Course created successfully" );
+        return redirect()->back()->with( "success", "Course updated successfully" );
 
     }
 
