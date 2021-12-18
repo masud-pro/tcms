@@ -136,8 +136,10 @@ class AssignmentResponseController extends Controller {
             ->where( "user_id", Auth::user()->id )->first();
 
         if ( $assignmentResponse ) {
+
             $assignmentResponse->update( [
-                'answer' => $data['answer'],
+                'answer'       => $data['answer'],
+                'submitted_at' => Carbon::now(),
             ] );
 
             if ( is_array( $files ) ) {
@@ -151,7 +153,9 @@ class AssignmentResponseController extends Controller {
             }
 
         } else {
-            $createdResponse = AssignmentResponse::create( $data );
+            
+            $data['submitted_at'] = Carbon::now();
+            $createdResponse      = AssignmentResponse::create( $data );
 
             if ( is_array( $files ) ) {
 
@@ -180,6 +184,7 @@ class AssignmentResponseController extends Controller {
             ->where( "assignment_id", $data['assignment_id'] )
             ->where( "user_id", Auth::user()->id )->update( [
             'is_submitted' => $data['is_submitted'],
+            'submitted_at' => Carbon::now(),
         ] );
 
         return redirect()->back()->with( "success", "Your Assignment Status Updated" );
@@ -232,12 +237,12 @@ class AssignmentResponseController extends Controller {
         $updated = $response->update( $data );
 
         if ( $updated && $data['is_marks_published'] == 1 ) {
-            $result['name'] = $response->assessment->name;
-            $result['marks'] = $data['marks'];
+            $result['name']      = $response->assessment->name;
+            $result['marks']     = $data['marks'];
             $result['fullmarks'] = $response->assignment->marks;
-            $result['url'] = route("assessments.show",['assessment'=>$response->assessment->id]);
+            $result['url']       = route( "assessments.show", ['assessment' => $response->assessment->id] );
 
-            $response->user->notify(new AssessmentResultNotification($result));
+            $response->user->notify( new AssessmentResultNotification( $result ) );
         }
 
         return redirect()->route( "assessment.responses", ['assessment' => $response->assessment->id] )->with( "success", "Marks Updated" );
@@ -247,18 +252,17 @@ class AssignmentResponseController extends Controller {
     public function publish_all_results( Assessment $assessment ) {
         $responses = $assessment->responses()->whereNotNull( 'marks' )->orWhere( "is_marks_published", 0 );
 
-        
         $responses->update( [
             'is_marks_published' => 1,
         ] );
 
-        foreach ($responses->get() as $response) {
-            $result['name'] = $response->assessment->name;
-            $result['marks'] = $response->marks;
+        foreach ( $responses->get() as $response ) {
+            $result['name']      = $response->assessment->name;
+            $result['marks']     = $response->marks;
             $result['fullmarks'] = $response->assignment->marks;
-            $result['url'] = route("assessments.show",['assessment'=>$response->assessment->id]);
+            $result['url']       = route( "assessments.show", ['assessment' => $response->assessment->id] );
 
-            $response->user->notify(new AssessmentResultNotification($result));
+            $response->user->notify( new AssessmentResultNotification( $result ) );
         }
 
         return redirect()->back()->with( "success", "All marks has been published" );

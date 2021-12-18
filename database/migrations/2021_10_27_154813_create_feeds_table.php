@@ -15,6 +15,7 @@ class CreateFeedsTable extends Migration {
             $table->id();
 
             $table->foreignId( 'course_id' )->index();
+            $table->foreignId( 'user_id' )->index();
 
             $table->string( 'name' );
             $table->text( 'description' )->nullable();

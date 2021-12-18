@@ -209,8 +209,8 @@
                                     <td>{{ $response->marks ?? "Not Marked" }}</td>
                                     <td>{!! $response->is_marks_published ? "<span class='badge badge-success text-dark'>Published</span>" : "<span class='badge badge-danger'>Not Published</span>" !!}</td>
                                     <td>{!! $response->is_submitted ? "<span class='badge badge-success text-dark'>Submitted</span>" : "<span class='badge badge-danger'>Not Submitted</span>" !!}</td>
-                                    <td>{!! $response->updated_at->format("d-M-Y h:i A") !!}</td>
-                                    <td>{!! \Carbon\Carbon::parse($response->updated_at)->isBefore($response->assessment->deadline) ? "<span class='badge badge-success text-dark'>In Time</span>" : "<span class='badge badge-danger'>Late</span>" !!}</td>
+                                    <td>{!! \Carbon\Carbon::parse($response->submitted_at)->format("d-M-Y h:i A") !!}</td>
+                                    <td>{!! \Carbon\Carbon::parse($response->submitted_at)->isBefore($response->assessment->deadline) ? "<span class='badge badge-success text-dark'>In Time</span>" : "<span class='badge badge-danger'>Late</span>" !!}</td>
                                     <td><a class="btn btn-primary" href="{{ route("response.show",['response'=>$response->id]) }}">Show Answer</a></td>
                                 </tr>
                             @endforeach

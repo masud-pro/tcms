@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use App\Models\Course;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Feed extends Model {
     use HasFactory;
@@ -20,6 +20,7 @@ class Feed extends Model {
         'course_id',
         'exam_id',
         'mcq_id',
+        'user_id',
     ];
 
     /**
@@ -31,5 +32,13 @@ class Feed extends Model {
         return $this->belongsTo( Course::class );
     }
 
+    /**
+     * Get the posted_by that owns the Feed
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user(): BelongsTo {
+        return $this->belongsTo( User::class );
+    }
 
 }

@@ -22,6 +22,7 @@ class CreateAssignmentResponsesTable extends Migration {
             $table->float( "marks" )->nullable();
             $table->boolean( "is_marks_published" )->default( false );
             $table->boolean( "is_submitted" )->default( false );
+            $table->dateTime( "submitted_at" )->nullable();
 
             $table->timestamps();
         } );

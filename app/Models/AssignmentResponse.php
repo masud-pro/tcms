@@ -17,6 +17,7 @@ class AssignmentResponse extends Model {
         'answer',
         'marks',
         'is_marks_published',
+        'submitted_at',
     ];
 
     /**

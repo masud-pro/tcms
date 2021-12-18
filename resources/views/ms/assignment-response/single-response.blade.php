@@ -2,7 +2,7 @@
 @extends('layouts.cms')
 
 @section('title')
-    {{ $assignmentResponse->assessment->name }} Answer
+    {{ $assignmentResponse->assessment->name }}: {{ $assignmentResponse->user->name }}'s Answer
 @endsection
 
 
@@ -79,9 +79,9 @@
                
                     
                 <br>
-                <b>Submitted at:</b> {{ $assignmentResponse->updated_at->format("d-M-Y h:i A")  }} 
+                <b>Submitted at:</b> {{ \Carbon\Carbon::parse($assignmentResponse->submitted_at)->format("d-M-Y h:i A")  }} 
                 
-                {!! \Carbon\Carbon::parse($assignmentResponse->updated_at)->isBefore($assignmentResponse->assessment->deadline) ? 
+                {!! \Carbon\Carbon::parse($assignmentResponse->submitted_at)->isBefore($assignmentResponse->assessment->deadline) ? 
                 "<span class='ml-2 badge badge-success text-dark'>In Time</span>" :
                 "<span class='ml-2 badge badge-danger'>Late</span>" !!} 
 

@@ -15,8 +15,14 @@
                         <!-- Card Header - Dropdown -->
                         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                             <div class="m-0 font-weight-bold">
-                                <h6 class="m-0 font-weight-bold text-dark">Post</h6>
-                                <span class="small"> - {{ $feed->created_at ? $feed->created_at->format("dS-M-Y") : "" }}</span>
+                                <div class="d-flex">
+                                    <img width="40" height="40" class="img-profile rounded-circle mt-1" src="{{ $feed->user->profile_photo_url ?? "" }}">
+                                    <div class="ml-3">
+                                        <p class="m-0 font-weight-bold text-dark">{{ $feed->user->name }}</p>
+                                        <span class="small">{{ $feed->created_at ? $feed->created_at->format("dS M Y g:i A") : "" }}</span>
+                                    </div>
+                                </div>
+                                
                             </div>
                             
                             <div class="dropdown no-arrow">
@@ -60,8 +66,14 @@
                         <!-- Card Header - Dropdown -->
                         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                             <div class="m-0 font-weight-bold">
-                                <h6 class="m-0 font-weight-bold text-dark">Resource</h6>
-                                <span class="small"> - {{ $feed->created_at ? $feed->created_at->format("dS-M-Y") : "" }}</span>
+                                
+                                <div class="d-flex">
+                                    <img width="40" height="40" class="img-profile rounded-circle mt-1" src="{{ $feed->user->profile_photo_url ?? "" }}">
+                                    <div class="ml-3">
+                                        <p class="m-0 font-weight-bold text-dark">{{ $feed->user->name }}</p>
+                                        <span class="small">{{ $feed->created_at ? $feed->created_at->format("dS M Y g:i A") : "" }}</span>
+                                    </div>
+                                </div>
                             </div>
                             
                             <div class="dropdown no-arrow">

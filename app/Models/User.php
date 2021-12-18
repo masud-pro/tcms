@@ -113,4 +113,6 @@ class User extends Authenticatable {
         return $this->belongsToMany(Assessment::class);
     }
 
+    
+
 }

@@ -153,8 +153,8 @@
                     @if ($assignmentResponse != null)
                         <li class="mt-2">
                             <b>
-                                Submission - {{ $assignmentResponse->updated_at->format("d-m-Y h:i A") }}
-                                @if ( \Carbon\Carbon::parse($assignmentResponse->updated_at)->isAfter($assessment->deadline) )
+                                Submission - {{ \Carbon\Carbon::parse($assignmentResponse->submitted_at)->format("d-m-Y h:i A") }}
+                                @if ( \Carbon\Carbon::parse($assignmentResponse->submitted_at)->isAfter($assessment->deadline) )
                                     <span class="text-danger">(Late)</span>
                                 @endif
                             </b>
@@ -201,7 +201,7 @@
                             <input type="hidden" name="assessment_id" value="{{ $assessment->id }}">
                             <input type="hidden" name="assignment_id" value="{{ $assessment->assignment->id }}">
                             <input type="hidden" name="is_submitted" value="{{ $assignmentResponse && $assignmentResponse->is_submitted == 1 ? 0 : 1 }}">
-                            <input {{ !$assignmentResponse ? "disabled" : "" }} type="submit" class="btn btn-success mt-5 mb-2 text-dark" value=" {{ $assignmentResponse && $assignmentResponse->is_submitted == 1 ? "Mark Unone" : "Mark as Done" }} "><br>
+                            <input {{ !$assignmentResponse ? "disabled" : "" }} type="submit" class="btn btn-success mt-5 mb-2 text-dark" value=" {{ $assignmentResponse && $assignmentResponse->is_submitted == 1 ? "Mark Undone" : "Mark as Done" }} "><br>
                             {!! !$assignmentResponse ? "<span class='small text-info'>Submit Before You Mark as Done</span>" : "" !!}
                             
                         </form>

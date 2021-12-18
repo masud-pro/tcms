@@ -27,6 +27,7 @@
             </div>
         @endif
         @if (Auth::user()->role == "Admin")
+
             <!-- Page Heading -->
             <div class="d-sm-flex align-items-center justify-content-between mb-4">
                 <h1 class="h5 mb-0 text-gray-800">Overview</h1>
@@ -165,7 +166,11 @@
 
                                 <div class="card-body">
 
-                                    <h5 class="card-title text-dark">{{ $course->name }}</h5>
+                                    <h5 class="card-title text-dark">
+                                        <a class="text-dark" href="{{ route("course.feeds.index",['course'=>$course->id]) }}">
+                                            {{ $course->name }}
+                                        </a>
+                                    </h5>
                                     <p class="card-text">
                                         {{ Illuminate\Support\Str::words( $course->description ,10) }}
                                         @if (Illuminate\Support\Str::wordCount( $course->description) > 10)   
@@ -307,7 +312,11 @@
 
                                 <div class="card-body">
 
-                                    <h5 class="card-title text-dark">{{ $course->name }}</h5>
+                                    <h5 class="card-title text-dark">
+                                        <a class="text-dark" href="{{ route("course.feeds.index",['course'=>$course->id]) }}">
+                                            {{ $course->name }}
+                                        </a>
+                                    </h5>
                                     <p class="card-text">
                                         {{ Illuminate\Support\Str::words( $course->description ,10) }}
                                         @if (Illuminate\Support\Str::wordCount( $course->description) > 10)   

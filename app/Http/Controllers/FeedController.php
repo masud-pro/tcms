@@ -62,6 +62,8 @@ class FeedController extends Controller {
             'type'        => 'required',
         ] );
 
+        $data['user_id'] = Auth::user()->id;
+
         $created = $course->feeds()->create( $data );
 
         if( $created ){
@@ -87,6 +89,8 @@ class FeedController extends Controller {
             'link' => 'required',
             'type' => 'required',
         ] );
+
+        $data['user_id'] = Auth::user()->id;
 
         $created = $course->feeds()->create( $data );
 

@@ -18,18 +18,21 @@ class SystemController extends Controller {
             $allAttendanceCount   = $allAttendances->count();
             $present              = $allAttendances->where( "attendance", 1 )->count();
             $absent               = $allAttendanceCount - $present;
+
             if( $allAttendanceCount > 0  ){
                 $attendancePercentage = ( $present / $allAttendanceCount ) * 100;
             }else{
                 $attendancePercentage = 0;
             }
-            $account = Account::select('status')->whereMonth( "created_at", Carbon::now() )->get();
+            
+            $reveivedPayments = Account::whereMonth( "created_at", Carbon::now() )->where( "status", "Paid" )->sum( "paid_amount" );
+            $duePayments = Account::whereMonth( "created_at", Carbon::now() )->where( "status", "Unpaid" )->sum( "paid_amount" );
             $courses = Course::all();
-
+            
             return view( 'dashboard', [
                 "courses"              => $courses,
-                "reveivedPayments"     => $account->where( "status", "Paid" )->sum( "paid_amount" ),
-                "duePayments"          => $account->where( "status", "Unpaid" )->sum( "paid_amount" ),
+                "reveivedPayments"     => $reveivedPayments,
+                "duePayments"          => $duePayments,
                 "totalCourses"         => $courses->count(),
                 "totalStudents"        => User::where( "role", "Student" )->count(),
                 "absentCount"          => $absent,

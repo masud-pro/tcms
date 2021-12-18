@@ -7,7 +7,7 @@
                             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                 <div class="m-0 font-weight-bold"> 
                                     <h6 class="m-0 font-weight-bold text-dark">Assignment  @if ( auth()->user()->role == "Admin" ) - Id {{ $assessment->id }} @endif</h6>
-                                    <span class="small"> - {{ $assessment->created_at ? $assessment->created_at->format("dS-M-Y h:i A") : "" }}</span>
+                                    <span class="small"> {{ $assessment->created_at ? $assessment->created_at->format("dS-M-Y h:i A") : "" }}</span>
                                 </div>
 
                                 @if ( auth()->user()->role == "Admin" )
@@ -55,7 +55,7 @@
                         </div>
                     @endif
                 @empty
-                    
+                    <p>No Assessments Found</p>
                 @endforelse
 
                 @if ( $assessments->count() > 0 && $assessments->count() < $total )
