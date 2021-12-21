@@ -49,7 +49,10 @@
         <p>We have received your payment successfully!!</p>
         <hr class="my-4">
 
-        <p><strong>We have log you out</strong> for security puposes, please login again. <a href="{{ url('/login') }}">Login</a></p>
+        <p><strong>We have log you out</strong> for security puposes, please login again.</p> 
+        <div class="text-center py-3">
+          <a class="btn btn-primary" href="{{ url('/login') }}">Login</a>
+        </div>
         <p>Having trouble? <a>Contact us</a></p>
       </div>
 

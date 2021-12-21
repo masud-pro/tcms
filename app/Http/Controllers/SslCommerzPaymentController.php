@@ -232,8 +232,7 @@ class SslCommerzPaymentController extends Controller {
                 $course->user()->updateExistingPivot( $user_id, [
                     'is_active' => 1,
                 ] );
-
-                // echo "<br >Transaction is successfully Completed";
+                
                 return view( "ms.payment-gateway.success" );
             } else {
                 /*
