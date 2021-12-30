@@ -204,8 +204,13 @@
                         <tbody> 
                             @foreach ($assessment->responses as $response)
                                 <tr>
-                                    
-                                    <td> <a href="{{ route("user.edit",['user'=>$response->user->id]) }}">{{ $response->user->name }}</a></td>
+                                    <td> 
+                                        @if ($response->user)
+                                            <a href="{{ route("user.edit",['user'=> $response->user->id ]) }}">{{ $response->user->name }}</a>
+                                        @else
+                                            Not Found
+                                        @endif
+                                    </td>
                                     <td>{{ $response->marks ?? "Not Marked" }}</td>
                                     <td>{!! $response->is_marks_published ? "<span class='badge badge-success text-dark'>Published</span>" : "<span class='badge badge-danger'>Not Published</span>" !!}</td>
                                     <td>{!! $response->is_submitted ? "<span class='badge badge-success text-dark'>Submitted</span>" : "<span class='badge badge-danger'>Not Submitted</span>" !!}</td>

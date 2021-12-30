@@ -42,7 +42,7 @@
                         <p class="text-danger small mt-1">{{ $course_id }}</p>
                     @enderror
 
-                    <label for="send_to" class="mt-3">Course</label>
+                    <label for="send_to" class="mt-3">SMS to</label>
                     <select class="form-control" name="send_to">
                         <option value="phone_no">Students</option>
                         <option value="fathers_phone_no">Father</option>
@@ -54,7 +54,7 @@
 
                     <label for="message" class="mt-3">Message</label>
                     <textarea name="message" id="message" rows="2" class="form-control">{!! old("message") !!}</textarea>
-                    <p id="count" class="text-info small mt-1">160 characters count 1 SMS, if your character count is more than 160 it will count as 2 SMS</p>
+                    <p id="count" class="text-info small mt-1">160 characters count 1 SMS, if your character count is more than 160 it will count as 2 SMS (For bangla SMS you will be charged more)</p>
                     @error('message')
                         <p class="text-danger small mt-1">{{ $message }}</p>
                     @enderror
@@ -81,7 +81,7 @@
         $(document).ready(function(){
             $('#message').on("input",function(){
                 var message = $('#message').val();
-                var numberOrSMS = Math.ceil(message.length/160);
+                var numberOrSMS = Math.ceil( message.length / 160 );
                 $('#count').text("SMS Count: " + numberOrSMS);
             }); 
         });

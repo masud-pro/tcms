@@ -43,7 +43,7 @@
                     <tr>
                         <td class="text-center">
                             <a target="_blank" href="{{ $user->profile_photo_url ?? "" }}">
-                                <img width="40" class="img-profile rounded-circle" src="{{ $user->profile_photo_url ?? "" }}">
+                                <img width="40" height="40" class="img-profile rounded-circle" src="{{ $user->profile_photo_url ?? "" }}">
                             </a>
                         </td>
                         <td><b>{{ $user->name }}</b></td>
