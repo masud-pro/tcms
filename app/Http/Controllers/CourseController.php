@@ -7,7 +7,6 @@ use App\Models\Course;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 class CourseController extends Controller {
@@ -59,8 +58,7 @@ class CourseController extends Controller {
     }
 
     public function enroll( Course $course ) {
-
-        if ( $course->capacity > $course->user()->count() ) {
+        if ( $course->capacity > $course->user->where( "is_active", 1 )->count() ) {
             $course->user()->attach( Auth::user()->id );
 
             Account::create( [
@@ -117,7 +115,7 @@ class CourseController extends Controller {
         $users = $course->user;
 
         foreach ( $users as $user ) {
-            $unpaidPayments = $user->payment()->where( "status", "unpaid" )->count();
+            $unpaidPayments = $user->payment()->where( "status", "unpaid" )->whereMonth( "created_at", Carbon::today() )->count();
 
             if ( $unpaidPayments > 0 ) {
                 $course->user()->updateExistingPivot( $user->id, [
@@ -228,7 +226,7 @@ class CourseController extends Controller {
         if ( isset( $data['image'] ) ) {
 
             if ( $course->image ) {
-                Storage::delete($course->image);
+                Storage::delete( $course->image );
             }
 
             $image = $data['image']->store( 'batch-images' );
