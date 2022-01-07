@@ -5,7 +5,7 @@
         <div class="sidebar-brand-icon">
             <i class="fas fa-chalkboard-teacher"></i>
         </div>
-        <div class="sidebar-brand-text mx-3">CE CMS</div>
+        <div class="sidebar-brand-text mx-3">{{ env("DASH_TITLE","CE CMS") }}</div>
     </a>
 
     @if ( Auth::user()->role == "Admin" || ( Auth::user()->role == "Student" && Auth::user()->is_active == 1 ) )

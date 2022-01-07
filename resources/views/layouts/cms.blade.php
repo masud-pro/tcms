@@ -12,7 +12,7 @@
     <meta name="author" content="https://codecstasy.com">
     <link rel="shortcut icon" href="{{ asset("images/favicon/favicon.png") }}" type="image/x-icon">
     <title>
-        @yield("title") - CE CMS
+        @yield("title") - Code Ecstasy
     </title>
     @stack("styles-before")
     
