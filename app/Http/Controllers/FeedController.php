@@ -11,6 +11,21 @@ use Illuminate\Support\Facades\Notification;
 
 class FeedController extends Controller {
 
+    public function __construct() {
+        $this->middleware( "isAdmin" )
+            ->only( [
+                "edit",
+                "destroy",
+                "create",
+                "create_link",
+                "store",
+                "store_link",
+                "edit_link",
+                "update",
+                "update_link",
+            ] );
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -66,16 +81,15 @@ class FeedController extends Controller {
 
         $created = $course->feeds()->create( $data );
 
-        if( $created ){
+        if ( $created ) {
             $feed['courseName'] = $course->name;
             $feed['url']        = route( "course.feeds.index", ['course' => $course->id] );
 
-            Notification::send( 
+            Notification::send(
                 $course->user,
-                new CreateFeed($feed)
+                new CreateFeed( $feed )
             );
         }
-
 
         return redirect()
             ->route( "course.feeds.index", ["course" => $course->id] )
@@ -94,13 +108,13 @@ class FeedController extends Controller {
 
         $created = $course->feeds()->create( $data );
 
-        if( $created ){
+        if ( $created ) {
             $feed['courseName'] = $course->name;
             $feed['url']        = route( "course.feeds.index", ['course' => $course->id] );
 
-            Notification::send( 
+            Notification::send(
                 $course->user,
-                new CreateFeed($feed)
+                new CreateFeed( $feed )
             );
         }
 
@@ -194,4 +208,5 @@ class FeedController extends Controller {
         $feed->delete();
         return redirect()->back()->with( "delete", "Feed Deleted Successfully" );
     }
+
 }
