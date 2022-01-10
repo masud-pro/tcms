@@ -2,10 +2,13 @@
 
 namespace App\Http\Livewire\Assessments;
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class AllAssessment extends Component {
+
+    use AuthorizesRequests;
 
     public $course;
     public $perpage = 15;
@@ -15,6 +18,8 @@ class AllAssessment extends Component {
     }
 
     public function render() {
+        $this->authorize( 'view', $this->course );
+        
         $user = Auth::user();
 
         if ( $user->role == "Admin" ) {

@@ -19,7 +19,10 @@
                     <th>Image</th>
                     <th>Name</th>
                     <th>Email</th>
-                    <th>Phone Number</th>
+                    <th>Class</th>
+                    <th>Phone No</th>
+                    <th>Fathers No</th>
+                    <th>Mothers No</th>
                     <th>Status</th>
                     <th>Batch / Course</th>
                     <th>Created At</th>
@@ -31,7 +34,10 @@
                     <th>Image</th>
                     <th>Name</th>
                     <th>Email</th>
-                    <th>Phone Number</th>
+                    <th>Class</th>
+                    <th>Phone No</th>
+                    <th>Fathers No</th>
+                    <th>Mothers No</th>
                     <th>Status</th>
                     <th>Batch / Course</th>
                     <th>Created At</th>
@@ -46,9 +52,12 @@
                                 <img width="40" height="40" class="img-profile rounded-circle" src="{{ $user->profile_photo_url ?? "" }}">
                             </a>
                         </td>
-                        <td><b>{{ $user->name }}</b></td>
-                        <td>{{ $user->email }}</td>
-                        <td>{{ $user->phone_no }}</td>
+                        <td><b>{{ $user->name ?? "Not Found" }}</b></td>
+                        <td>{{ $user->email ?? "Not Found" }}</td>
+                        <td>{{ $user->class ?? "Not Found" }}</td>
+                        <td>{{ $user->phone_no ?? "Not Found" }}</td>
+                        <td>{{ $user->fathers_phone_no ?? "Not Found" }}</td>
+                        <td>{{ $user->mothers_phone_no ?? "Not Found" }}</td>
                         <td>
                             <div class="form-check form-switch ml-3">
                                 <input wire:change="change_status({{$user->id}},{{$user->is_active}})" 
@@ -61,7 +70,12 @@
                         </td>
                         <td>
                             @forelse ($user->course as $course)
-                                <b>{{ $course->name . ", " }}</b>
+                                <b>
+                                    <a href="{{ route("course.feeds.index",["course"=>$course->id]) }}"
+                                        class="text-secondary">
+                                        {{ $course->name . ", " }}
+                                    </a>
+                                </b>
                             @empty
                                 {{ "Not Found" }}
                             @endforelse

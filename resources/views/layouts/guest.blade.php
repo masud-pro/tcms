@@ -5,12 +5,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <link href="{{ asset("assets") }}/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-        <meta name="title" content="Code Ecstasy Course Management System">
-        <meta name="description" content="Code Ecstasy Course Management System is a course management system where you one can handle payments attendance course exams etc. Grab your copy now!">
+        <meta name="title" content="{{ env("META_TITLE","Code Ecstasy Course Management System") }}">
+        <meta name="description" content="{{ env("META_DESCRIPTION","Course Management System") }} is a Course Management System built by Code Ecstasy where you one can handle payments attendance course exams etc. Grab your copy now!">
         <meta name="author" content="https://codecstasy.com">
         <link rel="shortcut icon" href="{{ asset("images/favicon/favicon.png") }}" type="image/x-icon">
 
-        <title>{{ env("APP_NAME","Course Management System") }} - Code Ecstasy</title>
+        <title>{{ env("APP_NAME","Course Management System") }}</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">

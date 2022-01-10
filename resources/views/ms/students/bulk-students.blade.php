@@ -38,7 +38,10 @@
                                 <th>Name</th>
                                 <th>Email</th>
                                 @if ( Auth::user()->role == "Admin" )
-                                    <th>Phone Number</th>
+                                    <th>Class</th>
+                                    <th>Phone No</th>
+                                    <th>Fathers No</th>
+                                    <th>Mothers No</th>
                                     <th>Batch / Course</th>
                                     <th>Created At</th>
                                     <th>Actions</th>
@@ -51,7 +54,10 @@
                                 <th>Name</th>
                                 <th>Email</th>
                                 @if ( Auth::user()->role == "Admin" )
-                                    <th>Phone Number</th>
+                                    <th>Class</th>
+                                    <th>Phone No</th>
+                                    <th>Fathers No</th>
+                                    <th>Mothers No</th>
                                     <th>Batch / Course</th>
                                     <th>Created At</th>
                                     <th>Actions</th>
@@ -70,13 +76,21 @@
                                             <img width="40" class="img-profile rounded-circle" src="{{ $user->profile_photo_url ?? "" }}">
                                         @endif
                                     </td>
-                                    <td><b>{{ $user->name }}</b></td>
-                                    <td>{{ $user->email }}</td>
+                                    <td><b>{{ $user->name ?? "Not Found" }}</b></td>
+                                    <td>{{ $user->email ?? "Not Found" }}</td>
                                     @if ( Auth::user()->role == "Admin" )
+                                        <td>{{ $user->class ?? "Not Found" }}</td>
                                         <td>{{ $user->phone_no }}</td>
+                                        <td>{{ $user->fathers_phone_no ?? "Not Found" }}</td>
+                                        <td>{{ $user->mothers_phone_no ?? "Not Found" }}</td>
                                         <td>
                                             @forelse ($user->course as $course)
-                                                <b>{{ $course->name . ", " }}</b>
+                                                <b>
+                                                    <a href="{{ route("course.feeds.index",["course"=>$course->id]) }}"
+                                                        class="text-secondary">
+                                                        {{ $course->name . ", " }}
+                                                    </a>
+                                                </b>
                                             @empty
                                                 {{ "Not Found" }}
                                             @endforelse

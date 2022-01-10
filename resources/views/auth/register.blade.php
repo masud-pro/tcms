@@ -64,7 +64,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <x-jet-label value="{!! __('Father\'s Name') !!}" />
+                    <x-jet-label value="{!! __('Father\'s Name and Occupation') !!}" />
 
                     <x-jet-input class="{{ $errors->has('fathers_name') ? 'is-invalid' : '' }}" type="text" name="fathers_name"
                                  :value="old('fathers_name')" required />
@@ -80,7 +80,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <x-jet-label value="{!! __('Mother\'s Name') !!}" />
+                    <x-jet-label value="{!! __('Mother\'s Name and Occupation') !!}" />
 
                     <x-jet-input class="{{ $errors->has('mothers_name') ? 'is-invalid' : '' }}" type="text" name="mothers_name"
                                  :value="old('mothers_name')" required />

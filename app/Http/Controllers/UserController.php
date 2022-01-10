@@ -22,6 +22,9 @@ class UserController extends Controller {
 
     public function course_students( $course ) {
         $course = Course::withTrashed()->findOrFail( $course );
+
+        $this->authorize( 'view', $course );
+
         return view( "ms.students.bulk-students", [
             "users"  => $course->user,
             "course" => $course,

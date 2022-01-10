@@ -12,6 +12,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AssignmentResponseController extends Controller {
+
+    public function __construct() {
+        $this->middleware("isAdmin")->only(["show"]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -153,7 +158,7 @@ class AssignmentResponseController extends Controller {
             }
 
         } else {
-            
+
             $data['submitted_at'] = Carbon::now();
             $createdResponse      = AssignmentResponse::create( $data );
 

@@ -9,7 +9,7 @@
 @section('content')
     
     @if ( Auth::user()->role == "Admin" || (Auth::user()->role == "Student" && Auth::user()->is_active == 1) )
-        <h1 class="h3 mb-4 text-primary">Welcome to @if (auth()->user()->role == "Admin") Admin @else Student @endif Panel 😀</h1>
+        <h1 class="h3 mb-4 text-primary">Welcome to {{ env("APP_NAME") }} 😀</h1>
         @if ( session('success') )
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ session('success') }}

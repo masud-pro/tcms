@@ -12,6 +12,7 @@
 
     <!-- Bootstrap core CSS -->
     <link href="{{ asset("assets/frontpage/bootstrap.min.css") }}" rel="stylesheet">
+    <link href="{{ asset("css/style.css") }}" rel="stylesheet">
 
     <style>
       .bd-placeholder-img {
@@ -48,8 +49,8 @@
   </header>
 
   <main class="px-3">
-    <h1 class="font-weight-bold">Welcome</h1>
-    <p class="lead">Enjoy every course and learning. To enroll to courses you have to register first. After that you can enroll to courses. If you're already erolled please login.</p>
+    <h1 class="font-weight-bold ce-welcome-heading">Welcome to {{ env("APP_NAME") }}</h1>
+    <p class="lead ce-welcome-description">Enjoy every course and learning. To enroll to courses you have to register first. After that you can enroll to courses. If you're already erolled please login.</p>
     <p class="lead">
         @if (Route::has('login'))
             @auth

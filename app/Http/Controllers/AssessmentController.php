@@ -15,9 +15,7 @@ class AssessmentController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function index( Course $course ) {
-        $user = Auth::user();
-
+    public function index( Course $course ) {        
         return view( "ms.assessments.course-assessments", [
             'course' => $course,
         ] );

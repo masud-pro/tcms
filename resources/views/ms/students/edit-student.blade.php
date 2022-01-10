@@ -110,7 +110,7 @@
                         <p class="text-danger small mt-1">{{ $message }}</p>
                     @enderror
 
-                    <label class="mt-3" for="fathers_name">Father's Name</label>
+                    <label class="mt-3" for="fathers_name">Father's Name and Occupation</label>
                     <input value="{{ old("fathers_name") ?? $user->fathers_name }}" name="fathers_name" class="form-control" id="fathers_name" type="text">
                     @error('fathers_name')
                         <p class="text-danger small mt-1">{{ $message }}</p>
@@ -122,7 +122,7 @@
                         <p class="text-danger small mt-1">{{ $message }}</p>
                     @enderror
 
-                    <label class="mt-3" for="mothers_name">Mother's Name</label>
+                    <label class="mt-3" for="mothers_name">Mother's Name and Occupation</label>
                     <input value="{{ old("mothers_name") ?? $user->mothers_name }}" name="mothers_name" class="form-control" id="mothers_name" type="text">
                     @error('mothers_name')
                         <p class="text-danger small mt-1">{{ $message }}</p>

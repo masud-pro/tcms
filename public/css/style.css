@@ -15,9 +15,16 @@
 body{
     color: #222!important;
 }
+
 @media all and ( max-width: 768px ){
     .ce-heading{
         font-size: 20px;
         margin-left: 0px!important;
+    }
+    .ce-welcome-heading{
+        font-size: 34px;
+    }
+    .ce-welcome-description{
+        font-size: 18px;
     }
 }

@@ -201,7 +201,9 @@
                             <input type="hidden" name="assessment_id" value="{{ $assessment->id }}">
                             <input type="hidden" name="assignment_id" value="{{ $assessment->assignment->id }}">
                             <input type="hidden" name="is_submitted" value="{{ $assignmentResponse && $assignmentResponse->is_submitted == 1 ? 0 : 1 }}">
-                            <input {{ !$assignmentResponse ? "disabled" : "" }} type="submit" class="btn btn-success mt-5 mb-2 text-dark" value=" {{ $assignmentResponse && $assignmentResponse->is_submitted == 1 ? "Mark Undone" : "Mark as Done" }} "><br>
+                            <input {{ !$assignmentResponse ? "disabled" : "" }} type="submit" class="btn mt-5 mb-2 btn-dark" 
+                                value="{{ $assignmentResponse && $assignmentResponse->is_submitted == 1 ? "Mark Undone" : "Mark as Done" }}"
+                                onclick="return confirm('Are you sure you want to turn in your paper now?')"><br>
                             {!! !$assignmentResponse ? "<span class='small text-info'>Submit Before You Mark as Done</span>" : "" !!}
                             
                         </form>

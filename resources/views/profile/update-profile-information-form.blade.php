@@ -121,7 +121,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <x-jet-label for="fathers_name" value="{!! __('Father\'s Name') !!}" />
+                    <x-jet-label for="fathers_name" value="{!! __('Father\'s Name and Occupation') !!}" />
                     <x-jet-input id="fathers_name" type="text" class="{{ $errors->has('fathers_name') ? 'is-invalid' : '' }}" wire:model.defer="state.fathers_name" />
                     <x-jet-input-error for="fathers_name" />
                 </div>
@@ -133,7 +133,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <x-jet-label for="mothers_name" value="{!! __('Mother\'s Name') !!}" />
+                    <x-jet-label for="mothers_name" value="{!! __('Mother\'s Name and Occupation') !!}" />
                     <x-jet-input id="mothers_name" type="text" class="{{ $errors->has('mothers_name') ? 'is-invalid' : '' }}" wire:model.defer="state.mothers_name" />
                     <x-jet-input-error for="mothers_name" />
                 </div>
