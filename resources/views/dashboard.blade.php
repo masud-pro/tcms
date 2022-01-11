@@ -353,7 +353,19 @@
     
     @else
 
-    <h4 class="text-danger text-center mt-5">Your Current Status is Unauthorized. Please Contact Your Tutor For More Information</h4>
+    
+    <div class="container text-center">
+        <h2 class="text-primary mt-3">
+            Hello and Welcome to {{ env("APP_NAME") }}
+        </h2>
+        <h5 class="text-dark mt-4">
+            Your registration to {{ env("APP_NAME") }} is successful. We will review and approve your account very 
+            soon. Add all your <b>profile information</b> and add a <b>profile picture</b> to get authorized soon. 
+            We will notify you via email when your account status is changed.
+        </h5>
+        <a href="{{ route("profile.show") }}" class="btn btn-primary text-center mt-3">Update Profile</a>
+        <p class="lead mt-3 text-info">To update profile picture just simply upload the profile picture and click on save.</p>
+    </div>
         
     @endif
 @endsection
