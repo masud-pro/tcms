@@ -8,7 +8,7 @@
     <meta name="description" content="{{ env("APP_NAME") }} is built by Code Ecstasy, It's awesome right? Grab your copy now!">
     <meta name="author" content="https://codecstasy.com">
     <link rel="shortcut icon" href="{{ asset("images/favicon/favicon.png") }}" type="image/x-icon">
-    <title> {{ env("APP_NAME") }} - Code Ecstasy</title>
+    <title> {{ env("APP_NAME") }} </title>
 
     <!-- Bootstrap core CSS -->
     <link href="{{ asset("assets/frontpage/bootstrap.min.css") }}" rel="stylesheet">

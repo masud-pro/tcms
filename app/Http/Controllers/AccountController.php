@@ -166,8 +166,8 @@ class AccountController extends Controller {
     public function student_pay_offline( Account $account ) {
         $this->authorize( "view", $account );
 
-        $bkashNumber  = Option::where( "slug", "rocket_number" )->pluck( 'value' )->first();
-        $rocketNumber = Option::where( "slug", "bkash_number" )->pluck( 'value' )->first();
+        $bkashNumber  = Option::where( "slug", "bkash_number" )->pluck( 'value' )->first();
+        $rocketNumber = Option::where( "slug", "rocket_number" )->pluck( 'value' )->first();
         $nagadNumber  = Option::where( "slug", "nagad_number" )->pluck( 'value' )->first();
 
         return view( "ms.account.pay-offline", [

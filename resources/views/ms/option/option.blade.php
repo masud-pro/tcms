@@ -81,7 +81,7 @@
                                             <td>{{ $option->name }}</td>
                                             <td>
                                                 
-                                                <input type="text" class="form-control" name="options[{{ $option->id }}][value]" value="{{ $option->value }}">
+                                                <textarea class="form-control" name="options[{{ $option->id }}][value]">{{ $option->value }}</textarea>
                                                 
                                             </td>
                                         </tr>
@@ -99,7 +99,7 @@
                                     No Options Found
                                 @endforelse
                                     
-                                
+                                    
                             </tbody>
                         </table>
                         <input type="submit" class="btn btn-primary" value="Update">
