@@ -6,6 +6,9 @@ use App\Models\Account;
 use App\Models\Course;
 use Livewire\Component;
 
+/**
+ * This class is of mailnly batch accounts with paid unpaid but no expense
+ */
 class AllAccounts extends Component {
 
     public $deleteId = '';
@@ -16,9 +19,12 @@ class AllAccounts extends Component {
 
     public $batches;
 
+    public $q;
+
     protected $queryString = [
         "batch" => ["except" => ""],
         "month" => ["except" => ""],
+        "q"     => ["except" => ""],
     ];
 
     public function mount() {
@@ -37,15 +43,30 @@ class AllAccounts extends Component {
 
         if ( isset( $this->month ) && isset( $this->batch ) && $this->batch != "" ) {
 
-            $everything = Account::when( $this->batch, function ( $query, $batch ) {
-                $query->where( "course_id", $batch );
-            } )->when( $this->month, function ( $query, $month ) {
-                $query->whereMonth( "month", $month );
-            } );
+            $everything = Account::select( ["accounts.*", "accounts.id as account_id", "users.name as user_name", "users.email as user_email"] )
+                ->with( "user")
+                ->whereHas("user",function($query){
+                    $query->where('name', 'like', '%'.$this->q.'%');
+                })
+                ->leftJoin( "users", "accounts.user_id", "=", "users.id" )
+                ->orderBy( "users.name", "asc" )
+                
+                ->when( $this->batch, function ( $query, $batch ) {
+                    $query->where( "course_id", $batch );
+                } )
+                ->when( $this->month, function ( $query, $month ) {
+                    $query->whereMonth( "month", $month );
+                } )
+                ->where( function($query){
+                    $query->where("status", "Paid");
+                    $query->orWhere("status", "Unpaid");
+                } );
 
             $accounts    = $everything->get();
             $total       = $accounts->where( 'status', 'Paid' )->sum( "paid_amount" );
             $totalUnpaid = $accounts->where( 'status', 'Unpaid' )->sum( "paid_amount" );
+
+            // dd($everything);
         } else {
             $accounts    = [];
             $total       = null;

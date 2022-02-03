@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Option;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class OptionController extends Controller {
     /**
@@ -12,9 +13,9 @@ class OptionController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        return view("ms.option.option",[
-            "options" => Option::all()
-        ]);
+        return view( "ms.option.option", [
+            "options" => Option::all(),
+        ] );
     }
 
     /**
@@ -34,6 +35,17 @@ class OptionController extends Controller {
      */
     public function store( Request $request ) {
         //
+    }
+
+    public function reset_frontpage_image() {
+
+        Storage::delete( Option::where( "slug", "front_page_image" )->first()->value );
+
+        Option::where("slug","front_page_image")->update([
+            "value" => 0,
+        ]);
+
+        return redirect()->back()->with("success","Images reset successfully");
     }
 
     /**
@@ -63,16 +75,23 @@ class OptionController extends Controller {
      * @param  \App\Models\Option  $option
      * @return \Illuminate\Http\Response
      */
-    public function update( Request $request) {
-        // dd($request->all());
-        foreach ($request->options as $key => $value) {
-            
-            Option::findOrFail($key)->update([
-                'value' => $value['value']
-            ]);
+    public function update( Request $request ) {
+
+        foreach ( $request->options as $slug => $option ) {
+
+            if ( $slug == "front_page_image" ) {
+
+                Storage::delete( Option::where( "slug", "front_page_image" )->first()->value );
+
+                $option['value'] = $option['value']->store( 'images/front-page' );
+            }
+
+            Option::where( "slug", $slug )->update( [
+                'value' => $option['value'],
+            ] );
         }
 
-        return redirect()->back()->with("success","Options Updated Successfully");
+        return redirect()->back()->with( "success", "Options Updated Successfully" );
     }
 
     /**
@@ -84,4 +103,5 @@ class OptionController extends Controller {
     public function destroy( Option $option ) {
         //
     }
+
 }

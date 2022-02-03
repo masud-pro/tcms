@@ -26,13 +26,16 @@ class AllAttendances extends Component {
     public function render() {
 
         if ( isset( $this->batch ) && isset( $this->date ) ) {
-            // dd($this->date);
-            $attendances = Attendance::with( "user" )
+            $attendances = Attendance::select( ["attendances.*", "attendances.id as account_id", "users.name as user_name", "users.email as user_email"] )
+                ->with( "user" )
+                ->leftJoin( "users", "attendances.user_id", "=", "users.id" )
+                ->orderBy( "users.name", "asc" )
                 ->when( $this->batch, function ( $query, $batch ) {
                     $query->where( "course_id", $batch );
-                } )->when( $this->date, function ( $query, $date ) {
-                $query->where( "date", $date );
-            } )
+                } )
+                ->when( $this->date, function ( $query, $date ) {
+                    $query->where( "date", $date );
+                } )
                 ->get();
         } else {
             $attendances = [];

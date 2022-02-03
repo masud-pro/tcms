@@ -55,8 +55,11 @@ class ManualAccount extends Component {
 
         $validatedData['user_id']   = $this->student;
         $validatedData['course_id'] = $this->batch;
-        $month                      = Carbon::today()->format( "d" ) . "-" . $validatedData['month'];
+
+        // Format the month
+        $month                      = "01" . "-" . $validatedData['month'];
         $month                      = Carbon::createFromFormat( 'd-m-Y', $month );
+
         $validatedData['month']     = $month;
         
         Account::create( $validatedData );

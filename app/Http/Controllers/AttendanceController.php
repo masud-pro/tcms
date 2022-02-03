@@ -27,9 +27,9 @@ class AttendanceController extends Controller {
      */
     public function create( Course $course ) {
 
-        $attendances = Attendance::whereDate( "date", Carbon::today() )->where( "course_id", $course->id )->get();
+        $attendanceCount = Attendance::whereDate( "date", Carbon::today() )->where( "course_id", $course->id )->count();
 
-        if ( $attendances->count() <= 0 ) {
+        if ( $attendanceCount <= 0 ) {
             $students       = $course->user;
             $newAttendances = [];
 
@@ -51,11 +51,23 @@ class AttendanceController extends Controller {
             Attendance::insert( $newAttendances );
 
             return view( "ms.attendances.attendance-index", [
-                "attendances" => Attendance::whereDate( "date", Carbon::today() )
+                "attendances" => Attendance::select( ["attendances.*", "attendances.id as account_id", "users.name as user_name", "users.email as user_email"] )
+                    ->with( "user" )
+                    ->whereDate( "date", Carbon::today() )
                     ->where( "course_id", $course->id )
+                    ->leftJoin( "users", "attendances.user_id", "=", "users.id" )
+                    ->orderBy( "users.name", "asc" )
                     ->get(),
             ] );
         } else {
+            $attendances = Attendance::select( ["attendances.*", "attendances.id as account_id", "users.name as user_name", "users.email as user_email"] )
+                ->with( "user" )
+                ->whereDate( "date", Carbon::today() )
+                ->where( "course_id", $course->id )
+                ->leftJoin( "users", "attendances.user_id", "=", "users.id" )
+                ->orderBy( "users.name", "asc" )
+                ->get();
+            // dd($attendances);
             return view( "ms.attendances.attendance-index", [
                 "attendances" => $attendances,
             ] );

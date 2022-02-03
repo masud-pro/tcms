@@ -92,7 +92,7 @@
             <div id="attendaceCollapse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Attendance Operations:</h6>
-                    <a class="collapse-item" href="{{ route("attendances.index") }}">All Attendances</a>
+                    <a class="collapse-item" href="{{ route("attendances.index") }}">Batch Attendances</a>
                     <a class="collapse-item" href="{{ route("attendance.student-attendance") }}">Student Attendance</a>
                 </div>
             </div>
@@ -109,9 +109,12 @@
     
             <div id="paymentsCollapse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Payments Operations:</h6>
-                    <a class="collapse-item" href="{{ route("accounts.index") }}">All Accounts</a>
+                    <h6 class="collapse-header">Reports:</h6>
+                    <a class="collapse-item" href="{{ route("account.overall-account") }}">Overall Accounts</a>
+                    <a class="collapse-item" href="{{ route("accounts.index") }}">Batch Accounts</a>
                     <a class="collapse-item" href="{{ route("account.student-account") }}">Student Account</a>
+                    <h6 class="collapse-header">Add Accounts:</h6>
+                    <a class="collapse-item" href="{{ route("account.manual.create") }}">Add Student Account</a>
                 </div>
             </div>
     

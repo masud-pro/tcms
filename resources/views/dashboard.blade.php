@@ -9,7 +9,9 @@
 @section('content')
     
     @if ( Auth::user()->role == "Admin" || (Auth::user()->role == "Student" && Auth::user()->is_active == 1) )
-        <h1 class="h3 mb-4 text-primary">Welcome to {{ env("APP_NAME") }} 😀</h1>
+
+        <h1 class="h3 mb-4 text-primary">Welcome to {{ env("APP_NAME") }}  @if ( $emoji ) 😀 @endif</h1>
+
         @if ( session('success') )
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ session('success') }}
@@ -36,15 +38,48 @@
                 
             </div>
             <div class="row">
-
-                <div class="col-xl-6 col-md-6 mb-4">
-                    <div class="card border-left-success shadow h-100 py-2">
+                <div class="col-xl mb-4">
+                    <div class="card border-left-primary shadow h-100 py-2">
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                        Received Payments</div>
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                        Net Income</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ number_format($total, 2, '.', ',') }} Tk</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl mb-4">
+                    <div class="card border-left-info shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                        Student Payments</div>
                                     <div class="h5 mb-0 font-weight-bold text-gray-800">{{ number_format($reveivedPayments, 2, '.', ',') }} Tk</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-xl mb-4">
+                    <div class="card border-left-warning shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                        Expense</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ number_format($expense, 2, '.', ',') }} Tk</div>
                                 </div>
                                 <div class="col-auto">
                                     <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -55,12 +90,30 @@
                 </div>
 
                 <!-- Pending Requests Card Example -->
-                <div class="col-xl-6 col-md-6 mb-4">
-                    <div class="card border-left-warning shadow h-100 py-2">
+                <div class="col-xl mb-4">
+                    <div class="card border-left-success shadow h-100 py-2">
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                        Revenue</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ number_format($revenue, 2, '.', ',') }} Tk</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pending Requests Card Example -->
+                <div class="col-xl mb-4">
+                    <div class="card border-left-danger shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
                                         Due Payments</div>
                                     <div class="h5 mb-0 font-weight-bold text-gray-800">{{ number_format($duePayments, 2, '.', ',') }} Tk</div>
                                 </div>
@@ -71,7 +124,9 @@
                         </div>
                     </div>
                 </div>
+            </div>
 
+            <div class="row">
                 <!-- Earnings (Monthly) Card Example -->
                 <div class="col-xl-3 col-md-6 mb-4">
                     <div class="card border-left-primary shadow h-100 py-2">
@@ -139,11 +194,11 @@
 
 
                 <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-left-danger shadow h-100 py-2">
+                    <div class="card border-left-warning shadow h-100 py-2">
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                         Total Missed Attendance</div>
                                     <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $absentCount }}</div>
                                 </div>
@@ -154,51 +209,103 @@
                         </div>
                     </div>
                 </div>
-
+            </div>
+            <div class="row">
                 <div class="col-12">
                     <h5 class="mb-4 mt-3">All Courses</h5>
                 </div>
-                @forelse ($courses as $course)
-                        <div class="col-md-4 mt-3">
-                            <div class="card">
 
-                                <img class="card-img-top" height="250px" src="{{ $course->image ? Storage::url($course->image) : asset("images/default-banner.jpg") }}" alt="Card image cap">
+                    @if ( $courseView == "grid" )
+                        @forelse ($courses as $course)
 
-                                <div class="card-body">
+                            <div class="col-md-4 mt-3">
+                                <div class="card">
 
-                                    <h5 class="card-title text-dark">
-                                        <a class="text-dark" href="{{ route("course.feeds.index",['course'=>$course->id]) }}">
-                                            {{ $course->name }}
-                                        </a>
-                                    </h5>
-                                    <p class="card-text">
-                                        {{ Illuminate\Support\Str::words( $course->description ,10) }}
-                                        @if (Illuminate\Support\Str::wordCount( $course->description) > 10)   
-                                            <a data-toggle="collapse" href="#collapseExample{{ $course->id }}" role="button" aria-expanded="false" aria-controls="collapseExample">Read More</a>
-                                        @endif
-                                    </p>
-                                    <div class="collapse" id="collapseExample{{ $course->id }}">
-                                        <div class="card card-body">
-                                            {{ $course->description }}
+                                    <img class="card-img-top" height="250px" src="{{ $course->image ? Storage::url($course->image) : asset("images/default-banner.jpg") }}" alt="Card image cap">
+
+                                    <div class="card-body">
+
+                                        <h5 class="card-title text-dark">
+                                            <a class="text-dark" href="{{ route("course.feeds.index",['course'=>$course->id]) }}">
+                                                {{ $course->name }}
+                                            </a>
+                                        </h5>
+                                        <p class="card-text">
+                                            {{ Illuminate\Support\Str::words( $course->description ,10) }}
+                                            @if (Illuminate\Support\Str::wordCount( $course->description) > 10)   
+                                                <a data-toggle="collapse" href="#collapseExample{{ $course->id }}" role="button" aria-expanded="false" aria-controls="collapseExample">Read More</a>
+                                            @endif
+                                        </p>
+                                        <div class="collapse" id="collapseExample{{ $course->id }}">
+                                            <div class="card card-body">
+                                                {{ $course->description }}
+                                            </div>
                                         </div>
-                                    </div>
 
-                                </div>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">Students: <span class="text-primary font-weight-bold">{{ $course->user ? $course->user->count() : "" }}</span></li>
-                                    <li class="list-group-item">Time: <span class="text-primary font-weight-bold">{{ $course->time }}</span></li>
-                                    <li class="list-group-item">Fee: <span class="text-primary font-weight-bold">{{ $course->fee }}</span></li>
-                                </ul>
-                                <div class="card-body">
-                                    {{-- <a href="#" class="card-link float-left">Enroll</a> --}}
-                                    <a href="{{ route("course.feeds.index",['course'=>$course->id]) }}" class="card-link btn btn-success font-weight-bold btn-block">Go To Feed</a>
-                                </div>
-                            </div> 
-                        </div>
-                    @empty
-                        No Course Found
-                    @endforelse
-                
+                                    </div>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">Students: <span class="text-primary font-weight-bold">{{ $course->user ? $course->user->count() : "" }}</span></li>
+                                        <li class="list-group-item">Time: <span class="text-primary font-weight-bold">{{ $course->time }}</span></li>
+                                        <li class="list-group-item">Fee: <span class="text-primary font-weight-bold">{{ $course->fee }}</span></li>
+                                    </ul>
+                                    <div class="card-body">
+                                        {{-- <a href="#" class="card-link float-left">Enroll</a> --}}
+                                        <a href="{{ route("course.feeds.index",['course'=>$course->id]) }}" class="card-link btn btn-success font-weight-bold btn-block">Go To Feed</a>
+                                    </div>
+                                </div> 
+                            </div>
+                            
+                            
+                        @empty
+                            No Course Found
+                        @endforelse
+                    @elseif($courseView == "table")
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Image</th>
+                                    <th>Name</th>
+                                    <th>Fee</th>
+                                    <th>Type</th>
+                                    <th>Time</th>
+                                    <th>Subject</th>
+                                    <th>Capacity</th>
+                                    <th>Students</th>
+                                    <th>Feed</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>Image</th>
+                                    <th>Name</th>
+                                    <th>Fee</th>
+                                    <th>Type</th>
+                                    <th>Time</th>
+                                    <th>Subject</th>
+                                    <th>Capacity</th>
+                                    <th>Students</th>
+                                    <th>Feed</th>
+                                </tr>
+                            </tfoot>
+                            <tbody> 
+                                @foreach ($courses as $course)
+                                    <tr>
+                                        <td>{!! $course->image ? "<a href='". Storage::url($course->image)  ."'><img width='100' src='" . Storage::url($course->image) . "' />" : "" !!}</td>
+                                        <td>{{ $course->name ?? "" }}</td>
+                                        <td>{{ $course->fee ?? "" }}</td>
+                                        <td>{{ $course->type ?? "" }}</td>
+                                        <td>{{ $course->time ?? "" }}</td>
+                                        <td>{{ $course->subject ?? "" }}</td>
+                                        <td>{{ $course->capacity ?? "" }}</td>
+                                        <td>{{ $course->user ? $course->user->count() : 0 }}</td>
+                                        <td><a class="btn btn-primary" href="{{ route("course.feeds.index",["course"=> $course->id]) }}">Feed</a></td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    @endif
                 
             </div>
         @else
@@ -369,6 +476,30 @@
         
     @endif
 @endsection
+
+@push("styles")
+    <link href="{{ asset("assets") }}/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <style>
+        #dataTable_info{
+            display: none;
+        }
+    </style>
+@endpush
+
+@push('scripts')
+    <!-- Page level plugins -->
+    <script src="{{ asset("assets") }}/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="{{ asset("assets") }}/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script>
+        $(document).ready(function() {
+            $('#dataTable').DataTable({
+                "bPaginate": false
+            });
+        });
+    </script>
+@endpush
 
 
 

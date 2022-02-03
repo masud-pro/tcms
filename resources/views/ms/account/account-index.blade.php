@@ -54,13 +54,15 @@
             @csrf
             <input type="submit" class="btn btn-primary mb-4" onclick="return confirm('Are you sure you want to newly regenerate?')" value="Newly Generate Payments">
         </form>
+
         <div class="card shadow mb-4">
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">Account for {{ \Carbon\Carbon::today()->format('M-Y') }}</h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <form action="{{ route("account.change") }}" method="POST">
+
+                    <form id="updateForm" action="{{ route("account.change") }}" method="POST">
                         @csrf
                         @method("PATCH")
                         <table class="table table-hover table-bordered" width="100%" cellspacing="0">
@@ -97,8 +99,12 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        <input type="hidden" name="course_id" value="{{ request()->course->id }}">
-                        <input type="submit" class="btn btn-primary" value="Update">
+                        <input type="hidden" name="course" value="{{ request()->course->id }}">
+                        <input type="hidden" name="reauth" value="0" id="reauth">
+                        {{-- <input type="submit" class="btn btn-primary" value="Update"> --}}
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#updateModal">
+                            Update
+                        </button>
                     </form>
 
                     <div class="text-right">
@@ -110,7 +116,29 @@
     </div>
 </div>
 
-
+<!-- Update Modal -->
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="updateModalLabel">Update and Re-authorize?</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <ul>
+                <li>Update will just update the accounts</li>
+                <li>Update with re-authorize will update the accounts and give <b>access to the students to the course materials based on their payment status.</b></li>
+            </ul>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="updateButton">Update</button>
+            <button type="button" class="btn btn-primary" id="updateReauthButton">Update and Re-authorize</button>
+        </div>
+    </div>
+    </div>
+</div>
     
 @endsection
 
@@ -122,4 +150,15 @@
 
     <!-- Page level custom scripts -->
     <script src="{{ asset("assets") }}/js/demo/datatables-demo.js"></script>
+    <script>
+        $(document).ready(function() {    
+            $("#updateButton").click(function(){
+                $("#updateForm").submit();
+            });
+            $("#updateReauthButton").click(function(){
+                $("input#reauth").val("1");
+                $("#updateForm").submit();
+            });
+        });
+    </script>
 @endpush

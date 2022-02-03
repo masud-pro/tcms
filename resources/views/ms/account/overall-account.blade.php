@@ -3,7 +3,7 @@
 @extends('layouts.cms')
 
 @section('title')
-    Account
+    Overall Accounts
 @endsection
 
 @push("styles")
@@ -12,7 +12,7 @@
 
 @section('content')
 
-<a href="{{ route("account.manual.create") }}" class="btn btn-primary mb-3">Add Student Accounts</a>
+{{-- <a href="" class="btn btn-primary mb-3">Add Accounts</a> --}}
 <div class="row">
     <div class="col-md-12">
 
@@ -25,7 +25,7 @@
             </div>
         @endif
         
-        @livewire("account.all-accounts")
+        @livewire("account.overall-account")
 
         
     </div>
@@ -36,10 +36,5 @@
 
 
 @push('scripts')
-    <!-- Page level plugins -->
-    <script src="{{ asset("assets") }}/vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="{{ asset("assets") }}/vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
-    <!-- Page level custom scripts -->
-    <script src="{{ asset("assets") }}/js/demo/datatables-demo.js"></script>
 @endpush

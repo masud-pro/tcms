@@ -78,7 +78,7 @@ class CourseController extends Controller {
 
     public function authorization_panel( Course $course ) {
         return view( "ms.authorization.authorization-panel", [
-            "students" => $course->user,
+            "students" => $course->user()->orderBy("name","asc")->get(),
         ] );
     }
 
@@ -166,7 +166,7 @@ class CourseController extends Controller {
         ] );
 
         if ( isset( $data['image'] ) ) {
-            $image = $data['image']->store( 'batch-images' );
+            $image = $data['image']->store( 'images/batch-images' );
 
             $data['image'] = $image;
         }
@@ -229,7 +229,7 @@ class CourseController extends Controller {
                 Storage::delete( $course->image );
             }
 
-            $image = $data['image']->store( 'batch-images' );
+            $image = $data['image']->store( 'images/batch-images' );
 
             $data['image'] = $image;
         }

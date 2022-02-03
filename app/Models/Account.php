@@ -17,7 +17,8 @@ class Account extends Model {
         'paid_amount',
         'status',
         'month',
-        // 'via',
+        'name',
+        'description',
     ];
 
     /**

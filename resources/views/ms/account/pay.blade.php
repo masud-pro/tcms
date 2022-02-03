@@ -43,7 +43,7 @@
                         <p class="text-danger small mt-1">{{ $message }}</p>
                     @enderror
 
-                    <label for="name">Phone Number</label>
+                    <label for="name">Payment Phone Number <small>(From which the payment was made)</small></label>
                     <input value="{{ old("phone_no") }}" name="phone_no" class="form-control mb-3" id="phone_no" type="text">
                     @error('phone_no')
                         <p class="text-danger small mt-1">{{ $message }}</p>

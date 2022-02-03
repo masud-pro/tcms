@@ -28,6 +28,7 @@
             @csrf
             <input type="submit" value="Reauthorize Students" onclick="return confirm('Are you sure you want to re authorize students')" class="mb-3 btn btn-primary">
         </form>
+        
         <div class="card">
             <div class="card-header">
                 <h6 class="m-0 font-weight-bold text-primary">Authorization Panel</h6>

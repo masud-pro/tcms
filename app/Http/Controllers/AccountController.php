@@ -21,6 +21,10 @@ class AccountController extends Controller {
         return view( "ms.account.all-accounts" );
     }
 
+    public function overall_account() {
+        return view("ms.account.overall-account");
+    }
+
     public function student_pay( Account $account ) {
 
         $this->authorize( "view", $account );
@@ -68,7 +72,7 @@ class AccountController extends Controller {
             Account::insert( $newAccount );
 
         } else {
-
+            
             // If onetime then only check
             $newAccount = [];
 
@@ -80,6 +84,7 @@ class AccountController extends Controller {
                         ->where( "course_id", $course->id )
                         ->count();
 
+                        // dd("ekhane ashche");
                     if ( $account == 0 ) {
                         $newAccount = [
                             'user_id'     => $student->id,
@@ -95,8 +100,8 @@ class AccountController extends Controller {
                 }
 
             }
-
-            Account::create( $newAccount );
+            
+            Account::insert( $newAccount );
 
         }
 
@@ -116,7 +121,7 @@ class AccountController extends Controller {
             foreach ( $students as $student ) {
 
                 if ( $student->is_active == 1 ) {
-                    
+
                     $newAccount[] = [
                         'user_id'     => $student->id,
                         'course_id'   => $course->id,
@@ -319,16 +324,28 @@ class AccountController extends Controller {
 
             $generated = $this->generate_payments( $course, $accounts );
 
-            if ( $generated ) { // If generated then show them a page
+            if ( $generated ) { // If generated then show them the page
 
                 return view( "ms.account.account-index", [
-                    "accounts" => Account::whereMonth( "month", Carbon::today() )->where( "course_id", $course->id )->get(),
+                    "accounts" => Account::select( ["accounts.*", "accounts.id as account_id", "users.name as user_name", "users.email as user_email"] )
+                        ->with( "user")
+                        ->leftJoin( "users", "accounts.user_id", "=", "users.id" )
+                        ->orderBy( "users.name", "asc" )
+                        ->whereMonth( "month", Carbon::today() )
+                        ->where( "course_id", $course->id )
+                        ->get(),
                 ] );
 
             } else { // or show the previous
 
                 return view( "ms.account.account-index", [
-                    "accounts" => $accounts,
+                    "accounts" => Account::select( ["accounts.*", "accounts.id as account_id", "users.name as user_name", "users.email as user_email"] )
+                        ->with( "user")
+                        ->leftJoin( "users", "accounts.user_id", "=", "users.id" )
+                        ->orderBy( "users.name", "asc" )
+                        ->whereMonth( "month", Carbon::today() )
+                        ->where( "course_id", $course->id )
+                        ->get(),
                 ] );
 
             }
@@ -412,10 +429,11 @@ class AccountController extends Controller {
      *
      */
     public function change( Request $request ) {
-
         $data = $request->validate( [
             "ids"    => "required|array",
             "status" => "nullable|array",
+            "course" => "nullable|integer",
+            "reauth" => "nullable|integer",
         ] );
 
         if ( isset( $data['status'] ) ) {
@@ -429,7 +447,36 @@ class AccountController extends Controller {
             Account::whereIn( "id", $data["ids"] )->update( ["status" => "Unpaid"] );
         }
 
+// Reauthorize if called to be reauthorize
+        if ( $data['reauth'] ) {
+            $courseController = new CourseController();
+            $courseController->reauthorize_users( Course::find( $data['course'] ) );
+        }
+
         return redirect()->back()->with( "success", "Account updated successfully" );
+
+    }
+
+    public function change_and_reauthorize( Request $request ) {
+
+        $data = $request->validate( [
+            "ids"    => "required|array",
+            "status" => "nullable|array",
+            "course" => "nullable|integer",
+        ] );
+
+        if ( isset( $data['status'] ) ) {
+            $paid   = $data['status'];
+            $unpaid = array_diff( $data['ids'], $data['status'] );
+
+            Account::whereIn( "id", $paid )->update( ["status" => "Paid"] );
+            Account::whereIn( "id", $unpaid )->update( ["status" => "Unpaid"] );
+
+        } else {
+            Account::whereIn( "id", $data["ids"] )->update( ["status" => "Unpaid"] );
+        }
+
+        // return redirect()->back()->with( "success", "Account updated successfully" );
 
     }
 

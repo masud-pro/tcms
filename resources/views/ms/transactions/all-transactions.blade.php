@@ -26,6 +26,19 @@
                 </button>
             </div>
         @endif
+        
+        <form class="mb-3">
+            <div class="form-row">
+                <div class="col-lg-10">
+                    <label><b>Filter by Month</b></label>
+                    <input type="text" id="month" class="form-control mb-3" wire:model.debounce.500ms="month" placeholder="Enter Month">
+                </div>
+                <div class="col-lg-2">
+                    <label class="d-none d-lg-block"></label>
+                    <input type="submit" class="btn btn-primary btn-block mt-2">
+                </div>
+            </div>
+        </form>
 
         <div class="card shadow mb-4">
             <div class="card-header py-3">
@@ -100,3 +113,26 @@
     
 @endsection
 
+
+
+
+@push('styles')
+    @livewireStyles()
+    <link href="{{ asset("assets") }}/css/datepicker/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css">
+@endpush
+@push('scripts')
+    @livewireScripts()
+    <script src="{{ asset("assets") }}/js/datepicker/bootstrap-datepicker.min.js"></script>
+
+    <script>
+
+        $('#month').datepicker({
+            format: "mm-yyyy",
+            startView: "months", 
+            minViewMode: "months",
+            autoclose: true,
+            todayHighlight: true
+        });
+
+    </script>
+@endpush

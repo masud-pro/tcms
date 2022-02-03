@@ -60,8 +60,8 @@
 
                     <label for="type" class="mt-3">Type</label>
                     <select value="{{ old("type") ?? $course->type }}" name="type" id="type" class="form-control">
-                        <option value="Monthly">Monthly</option>
-                        <option value="One Time">One Time</option>
+                        <option @if($course->type == "Monthly") selected @endif value="Monthly">Monthly</option>
+                        <option @if($course->type == "One Time") selected @endif value="One Time">One Time</option>
                     </select>
                     @error('type')
                         <p class="text-danger small mt-1">{{ $message }}</p>

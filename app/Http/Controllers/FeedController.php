@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Course;
 use App\Models\Feed;
-use App\Notifications\Feed\CreateFeed;
+use App\Models\Course;
+use App\Models\Option;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\Feed\CreateFeed;
 use Illuminate\Support\Facades\Notification;
 
 class FeedController extends Controller {
@@ -39,9 +40,10 @@ class FeedController extends Controller {
         $course = Course::withTrashed()->findOrFail( $course );
 
         return view( "ms.feed.all-feed", [
-            "course"    => $course,
-            "feeds"     => $course->feeds()->latest()->get(),
-            "is_active" => Auth::user()->course()->where( "course_id", $course->id )->pluck( "is_active" )->first(),
+            "course"        => $course,
+            "feeds"         => $course->feeds()->latest()->get(),
+            "is_active"     => Auth::user()->course()->where( "course_id", $course->id )->pluck( "is_active" )->first(),
+            "canSeeFriends" => Option::where( "slug", "can_student_see_friends" )->first()->value,
         ] );
     }
 

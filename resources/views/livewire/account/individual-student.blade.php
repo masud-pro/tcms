@@ -1,4 +1,10 @@
 <div>
+    <ul>
+        <li><b>Manual payment is done via Bkash, Rocket, Nagad and you have to make the payment manually from the app of UUSD.</b></li>
+        @if ( env("STORE_ID") != null && env("STORE_PASSWORD") != null )
+            <li><b>Online payment is a automatic system of payment which includes Visa/Master Cards, Banks, Bkash, Rocket, Nagad, Other internet banking options etc.</b></li>
+        @endif
+    </ul>
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">
@@ -22,34 +28,41 @@
                     <table class="table table-hover table-bordered" width="100%" cellspacing="0">
                         <thead>
                             <tr>
+                                <th>Action</th>
+                                <th>Is Paid</th>
                                 <th>Name</th>
+                                <th>Paid Amount</th>
                                 <th>Batch</th>
                                 <th>Email</th>
-                                <th>Paid Amount</th>
                                 <th>Last Updated</th>
-                                <th>Is Paid</th>
-                                <th>Action</th>
                             </tr>
                         </thead>
                         <tfoot>
                             <tr>
+                                <th>Action</th>
+                                <th>Is Paid</th>
                                 <th>Name</th>
+                                <th>Paid Amount</th>
                                 <th>Batch</th>
                                 <th>Email</th>
-                                <th>Paid Amount</th>
                                 <th>Last Updated</th>
-                                <th>Is Paid</th>
-                                <th>Action</th>
                             </tr>
                         </tfoot>
                         <tbody>
                             @foreach ($accounts as $account)
                                 <tr>
-                                    <td>{{ $account->user ? $account->user->name : "Not Found" }}</td>
-                                    <td>{{ $account->course ? $account->course->name : "Not Found" }}</td>
-                                    <td>{{ $account->user ? $account->user->email : "Not Found" }}</td>
-                                    <td>{{ $account->paid_amount ?? "Not Found" }}</td>
-                                    <td>{{ $account->updated_at ? \Carbon\Carbon::parse()->format("d-M-Y g:i a") : "Not Found" }}</td>
+                                    <td>
+                                        @if ($account->status == "Paid")
+                                            <a class="btn btn-success">Paid</a>
+                                        @else
+                                            @if ($manualPayment == 1)
+                                                <a href="{{ route("student.pay.offline",[ "account" => $account->id ]) }}" class="btn btn-primary mt-1">Pay Manually</a>
+                                            @endif
+                                            @if ($onlinePayment == 1)
+                                                <a href="{{ route("student.pay",[ "account" => $account->id ]) }}" class="btn btn-primary mt-1">Online Payment</a>
+                                            @endif
+                                        @endif
+                                    </td>
                                     <td>
                                         <input type="hidden" name="ids[]" value="{{ $account->id }}">
                                         <div class="custom-control custom-checkbox">
@@ -57,18 +70,11 @@
                                             <label class="custom-control-label" for="customCheck{{ $account->id }}">Paid</label>
                                         </div>
                                     </td>
-                                    <td>
-                                        @if ($account->status == "Paid")
-                                            <a class="btn btn-success">Paid</a>
-                                        @else
-                                            @if ($manualPayment == 1)
-                                                <a href="{{ route("student.pay.offline",[ "account" => $account->id ]) }}" class="btn btn-primary mt-1">Pay Offline</a>
-                                            @endif
-                                            @if ($onlinePayment == 1)
-                                                <a href="{{ route("student.pay",[ "account" => $account->id ]) }}" class="btn btn-primary mt-1">Pay Online</a>
-                                            @endif
-                                        @endif
-                                    </td>
+                                    <td>{{ $account->user ? $account->user->name : "Not Found" }}</td>
+                                    <td>{{ $account->paid_amount ?? "Not Found" }}</td>
+                                    <td>{{ $account->course ? $account->course->name : "Not Found" }}</td>
+                                    <td>{{ $account->user ? $account->user->email : "Not Found" }}</td>
+                                    <td>{{ $account->updated_at ? \Carbon\Carbon::parse()->format("d-M-Y g:i a") : "Not Found" }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

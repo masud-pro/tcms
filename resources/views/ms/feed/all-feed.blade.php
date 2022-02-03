@@ -84,11 +84,13 @@
 
                 @endif
 
-                    <a 
-                        class="btn btn-primary mb-4" 
-                        href="{{ route("course.students",["course"=>$course->id ]) }}">
-                        See Students
-                    </a>
+                    @if ( auth()->user()->role == "Admin" || $canSeeFriends)    
+                        <a 
+                            class="btn btn-primary mb-4" 
+                            href="{{ route("course.students", [ "course"=>$course->id ]) }}">
+                            See Students
+                        </a>
+                    @endif
 
                     <a 
                         class="btn btn-primary mb-4" 
