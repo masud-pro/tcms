@@ -51,7 +51,7 @@
 
   <main class="px-3">
     <h1 class="font-weight-bold ce-welcome-heading text-{{ $fontColor }}">Welcome to {{ env("APP_NAME") }}</h1>
-    <p class="lead ce-welcome-description text-{{ $fontColor }}">Enjoy every course and learning. To enroll to courses you have to register first. After that you can enroll to courses. If you're already erolled please login.</p>
+    <p class="lead ce-welcome-description text-{{ $fontColor }}">Enjoy every course and learning. To enroll to courses you have to register first. After that you can enroll to courses. If you're already enrolled please login.</p>
     <p class="lead">
         @if (Route::has('login'))
             @auth
