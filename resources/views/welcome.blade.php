@@ -65,7 +65,7 @@
         @endif
     </p>
     <p>
-      <a href="{{ asset("assets/user-guide/Student User Guide.pdf") }}" class="small text-dark">Student User Guide</a>
+      <a target="_blank" href="{{ asset("assets/user-guide/Student User Guide.pdf") }}" class="small text-dark">Student User Guide</a>
     </p>
   </main>
 
