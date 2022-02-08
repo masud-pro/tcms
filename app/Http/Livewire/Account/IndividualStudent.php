@@ -13,6 +13,8 @@ class IndividualStudent extends Component {
 
     public $status;
 
+    public $due;
+
     public $onlinePayment;
 
     public $manualPayment;
@@ -27,6 +29,8 @@ class IndividualStudent extends Component {
         $this->user = Auth::user()->id;
         $this->onlinePayment = Option::where( "slug", "online_payment" )->first()->value;
         $this->manualPayment = Option::where( "slug", "manual_payment" )->first()->value;
+
+        $this->due = Account::where("user_id",auth()->user()->id)->where("status","Unpaid")->count();
     }
 
     public function render() {

@@ -41,6 +41,7 @@
                             <table class="table table-hover table-bordered" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
+                                        <th>ID</th>
                                         <th>Name</th>
                                         <th>Email</th>
                                         <th>Is Active</th>
@@ -48,6 +49,7 @@
                                 </thead>
                                 <tfoot>
                                     <tr>
+                                        <th>ID</th>
                                         <th>Name</th>
                                         <th>Email</th>
                                         <th>Is Active</th>
@@ -56,6 +58,7 @@
                                 <tbody>
                                     @foreach ($students as $student)
                                         <tr>
+                                            <td>{{ $student->id ?? "Not Found" }}</td>
                                             <td>{{ $student->name ?? "Not Found" }}</td>
                                             <td>{{ $student->email ?? "Not Found" }}</td>
                                             <td>

@@ -34,6 +34,9 @@
                     <table class="table table-hover table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
+                                @if ( Auth::user()->role == "Admin" )
+                                    <th>ID</th>
+                                @endif
                                 <th>Image</th>
                                 <th>Name</th>
                                 <th>Email</th>
@@ -50,6 +53,9 @@
                         </thead>
                         <tfoot>
                             <tr>
+                                @if ( Auth::user()->role == "Admin" )
+                                    <th>ID</th>
+                                @endif
                                 <th>Image</th>
                                 <th>Name</th>
                                 <th>Email</th>
@@ -67,6 +73,9 @@
                         <tbody>
                             @foreach ($users as $user)
                                 <tr>
+                                    @if ( Auth::user()->role == "Admin" )
+                                        <td>{{ $user->id ?? "Not Found" }}</td>
+                                    @endif
                                     <td class="text-center">
                                         @if ( Auth::user()->role == "Admin" )
                                             <a target="_blank" href="{{ $user->profile_photo_url ?? "" }}">

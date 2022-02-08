@@ -31,11 +31,13 @@ class SystemController extends Controller {
             $allAccounts      = Account::whereMonth( "created_at", Carbon::now() )->get();
             $reveivedPayments = $allAccounts->where( "status", "Paid" )->sum( "paid_amount" );
             $duePayments      = $allAccounts->where( "status", "Unpaid" )->sum( "paid_amount" );
+            $pending          = $allAccounts->where( "status", "Pending" )->sum( "paid_amount" );
+            $due              = $duePayments + $pending;
             $netIncome        = $allAccounts->where( 'status', 'Revenue' )->sum( "paid_amount" );
             $expense          = $allAccounts->where( 'status', 'Expense' )->sum( "paid_amount" );
             $total            = $netIncome + $reveivedPayments;
             $revenue          = $total - $expense;
-            $courses          = Course::with("user")->get();
+            $courses          = Course::with( "user" )->get();
             $courseView       = Option::where( "slug", "dashboard_course_view" )->first()['value'];
 
             return view( 'dashboard', [
@@ -43,10 +45,11 @@ class SystemController extends Controller {
                 "total"                => $total,
                 "reveivedPayments"     => $reveivedPayments,
                 "revenue"              => $revenue,
-                "duePayments"          => $duePayments,
+                "duePayments"          => $due,
                 "expense"              => $expense,
                 "totalCourses"         => $courses->count(),
                 "totalStudents"        => User::where( "role", "Student" )->count(),
+                "studentWithBatch"     => User::where( "role", "Student" )->has( "course" )->count(),
                 "absentCount"          => $absent,
                 "attendancePercentage" => sprintf( "%.1f", $attendancePercentage ),
                 "emoji"                => $emoji,

@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Feed;
+use App\Models\Account;
 use App\Models\Course;
+use App\Models\Feed;
 use App\Models\Option;
+use App\Notifications\Feed\CreateFeed;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Notifications\Feed\CreateFeed;
 use Illuminate\Support\Facades\Notification;
 
 class FeedController extends Controller {
@@ -37,13 +38,45 @@ class FeedController extends Controller {
 
         $this->authorize( 'view', Course::findOrFail( $course ) );
 
-        $course = Course::withTrashed()->findOrFail( $course );
+        $course = Course::with( "user" )->withTrashed()->findOrFail( $course );
+
+        if ( Auth::user()->role == "Admin" ) {
+            $present      = $course->attendance->where( "attendance", 1 )->count();
+            $allAtendance = $course->attendance->count();
+
+            if ( $allAtendance > 0 ) {
+                $attendancePercentage = ( $present / $allAtendance ) * 100;
+            } else {
+                $attendancePercentage = 0;
+            }
+
+            $totalStudents = $course->user->count();
+            $paid          = $course->account->where( "status", "Paid" )->count();
+            $unpaid        = $course->account->where( "status", "Unpaid" )->count();
+        } else {
+            $attendancePercentage = 0;
+            $totalStudents        = 0;
+            $paid                 = 0;
+            $unpaid               = Account::where( "user_id", auth()->user()->id )
+                ->where( "course_id", $course->id )
+                ->where( "status", "Unpaid" )
+                ->count();
+            $accountStatus = Account::where( "user_id", auth()->user()->id )
+                ->where( "course_id", $course->id )
+                ->where( "status", "Pending" )
+                ->count();
+        }
 
         return view( "ms.feed.all-feed", [
-            "course"        => $course,
-            "feeds"         => $course->feeds()->latest()->get(),
-            "is_active"     => Auth::user()->course()->where( "course_id", $course->id )->pluck( "is_active" )->first(),
-            "canSeeFriends" => Option::where( "slug", "can_student_see_friends" )->first()->value,
+            "course"               => $course,
+            "feeds"                => $course->feeds()->latest()->get(),
+            "is_active"            => auth()->user()->course()->where( "course_id", $course->id )->pluck( "is_active" )->first(),
+            "canSeeFriends"        => Option::where( "slug", "can_student_see_friends" )->first()->value,
+            "attendancePercentage" => sprintf( "%.1f", $attendancePercentage ),
+            "totalStudents"        => $totalStudents,
+            "paid"                 => $paid,
+            "unpaid"               => $unpaid,
+            "accountStatus"        => $accountStatus ?? 0,
         ] );
     }
 

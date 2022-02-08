@@ -84,7 +84,7 @@ class OverallAccount extends Component {
 
         if ( isset( $this->month ) ) {
 
-            $everything = Account::select( ["accounts.*", "accounts.id as account_id", "users.name as user_name", "users.email as user_email"] )
+            $everything = Account::select( ["accounts.*", "accounts.id as account_id","users.id as user_id", "users.name as user_name", "users.email as user_email"] )
                 ->with( ["user", "course"] )
                 ->leftJoin( "users", "accounts.user_id", "=", "users.id" )
                 ->orderBy( "users.name", "asc" )
@@ -103,7 +103,9 @@ class OverallAccount extends Component {
 
             $expense = $accounts->where( 'status', 'Expense' )->sum( "paid_amount" );
 
-            $totalUnpaid = $accounts->where( 'status', 'Unpaid' )->sum( "paid_amount" );
+            $unpaid = $accounts->where( 'status', 'Unpaid' )->sum( "paid_amount" );
+            $pending = $accounts->where( 'status', 'Pending' )->sum( "paid_amount" );
+            $totalUnpaid = $unpaid + $pending;
             $total       = $netIncome + $totalPaid;
             $revenue     = $total - $expense;
 

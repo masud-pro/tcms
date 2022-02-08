@@ -28,6 +28,14 @@
                 </button>
             </div>
         @endif
+
+        @if (Auth::user()->role == "Student" && $pendingPayments > 0)
+            <div class="text-center">
+                <h2 class="text-danger mb-3">You Have {{ $pendingPayments }} Due Payment(s) </h2>
+                <a href="{{ route("account.student.individual",["status"=>"Unpaid"]) }}" class="btn btn-primary">Pay Now</a>
+            </div>
+        @endif
+
         @if (Auth::user()->role == "Admin")
 
             <!-- Page Heading -->
@@ -128,12 +136,12 @@
 
             <div class="row">
                 <!-- Earnings (Monthly) Card Example -->
-                <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-left-primary shadow h-100 py-2">
+                <div class="col-xl col-md-6 mb-4">
+                    <div class="card border-left-success shadow h-100 py-2">
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                         Total Batch/Courses</div>
                                     <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalCourses }}</div>
                                 </div>
@@ -146,12 +154,12 @@
                 </div>
 
                 <!-- Earnings (Annual) Card Example -->
-                <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-left-success shadow h-100 py-2">
+                <div class="col-xl col-md-6 mb-4">
+                    <div class="card border-left-primary shadow h-100 py-2">
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                         Total Students</div>
                                     <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalStudents }}</div>
                                 </div>
@@ -162,9 +170,27 @@
                         </div>
                     </div>
                 </div>
+        
+                <!-- Earnings (Annual) Card Example -->
+                <div class="col-xl col-md-6 mb-4">
+                    <div class="card border-left-success shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                        Total Enrolled Students</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $studentWithBatch }}</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- Tasks Card Example -->
-                <div class="col-xl-3 col-md-6 mb-4">
+                <div class="col-xl col-md-6 mb-4">
                     <div class="card border-left-info shadow h-100 py-2">
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
@@ -191,16 +217,16 @@
                         </div>
                     </div>
                 </div>
-
-
-                <div class="col-xl-3 col-md-6 mb-4">
+        
+        
+                <div class="col-xl col-md-6 mb-4">
                     <div class="card border-left-warning shadow h-100 py-2">
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                        Total Missed Attendance</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $absentCount }}</div>
+                                        Due Payments</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $duePayments }}</div>
                                 </div>
                                 <div class="col-auto">
                                     <i class="far fa-clock fa-2x text-gray-300"></i>
@@ -209,6 +235,7 @@
                         </div>
                     </div>
                 </div>
+                
             </div>
             <div class="row">
                 <div class="col-12">

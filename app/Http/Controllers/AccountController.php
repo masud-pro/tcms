@@ -22,7 +22,7 @@ class AccountController extends Controller {
     }
 
     public function overall_account() {
-        return view("ms.account.overall-account");
+        return view( "ms.account.overall-account" );
     }
 
     public function student_pay( Account $account ) {
@@ -32,6 +32,12 @@ class AccountController extends Controller {
         return view( "ms.account.pay", [
             'account' => $account,
         ] );
+    }
+
+    public function mark_unpaid( $account ) {
+        Account::findOrFail( $account )->update( ["status" => "Unpaid"] );
+
+        return redirect()->back()->with( "success", "Payment Mark As Unpaid" );
     }
 
     public function regenerate( Course $course ) {
@@ -72,7 +78,7 @@ class AccountController extends Controller {
             Account::insert( $newAccount );
 
         } else {
-            
+
             // If onetime then only check
             $newAccount = [];
 
@@ -84,7 +90,7 @@ class AccountController extends Controller {
                         ->where( "course_id", $course->id )
                         ->count();
 
-                        // dd("ekhane ashche");
+// dd("ekhane ashche");
                     if ( $account == 0 ) {
                         $newAccount = [
                             'user_id'     => $student->id,
@@ -100,7 +106,7 @@ class AccountController extends Controller {
                 }
 
             }
-            
+
             Account::insert( $newAccount );
 
         }
@@ -200,6 +206,10 @@ class AccountController extends Controller {
         $data['amount']  = Account::findOrFail( $data['account_id'] )->paid_amount;
 
         Order::create( $data );
+
+        Account::find( $data['account_id'] )->update( [
+            "status" => "Pending",
+        ] );
 
         return redirect()->route( "dashboard" )->with( "success", "Your payment is received, You will be able to access everything after confirmation" );
     }
@@ -328,7 +338,7 @@ class AccountController extends Controller {
 
                 return view( "ms.account.account-index", [
                     "accounts" => Account::select( ["accounts.*", "accounts.id as account_id", "users.name as user_name", "users.email as user_email"] )
-                        ->with( "user")
+                        ->with( "user" )
                         ->leftJoin( "users", "accounts.user_id", "=", "users.id" )
                         ->orderBy( "users.name", "asc" )
                         ->whereMonth( "month", Carbon::today() )
@@ -340,7 +350,7 @@ class AccountController extends Controller {
 
                 return view( "ms.account.account-index", [
                     "accounts" => Account::select( ["accounts.*", "accounts.id as account_id", "users.name as user_name", "users.email as user_email"] )
-                        ->with( "user")
+                        ->with( "user" )
                         ->leftJoin( "users", "accounts.user_id", "=", "users.id" )
                         ->orderBy( "users.name", "asc" )
                         ->whereMonth( "month", Carbon::today() )
@@ -437,11 +447,17 @@ class AccountController extends Controller {
         ] );
 
         if ( isset( $data['status'] ) ) {
+
             $paid   = $data['status'];
             $unpaid = array_diff( $data['ids'], $data['status'] );
 
-            Account::whereIn( "id", $paid )->update( ["status" => "Paid"] );
-            Account::whereIn( "id", $unpaid )->update( ["status" => "Unpaid"] );
+            Account::whereIn( "id", $paid )
+                ->update( ["status" => "Paid"] );
+
+            Account::whereIn( "id", $unpaid )
+                ->whereNotIn( "status", ["Pending"] )
+                ->update( ["status" => "Unpaid"] );
+            // Account::whereIn( "id", $unpaid )->update( ["status" => "Unpaid"] );
 
         } else {
             Account::whereIn( "id", $data["ids"] )->update( ["status" => "Unpaid"] );

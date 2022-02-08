@@ -40,7 +40,7 @@
                 </div>
                 <div class="col-md">
                     <label><b>Search</b></label>
-                    <input type="text" class="form-control" wire:model.debounce.1000ms="q" placeholder="Search">
+                    <input type="text" class="form-control" wire:model.debounce.1000ms="q" placeholder="Search Name or ID">
                 </div>
             </div>
 
@@ -52,31 +52,33 @@
                         <table class="table table-hover table-bordered" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
+                                    <th>ID</th>
                                     <th>Name</th>
+                                    <th>Is Paid</th>
+                                    <th>Status</th>
                                     <th>Email</th>
                                     <th>Paid Amount</th>
                                     <th>Last Updated</th>
-                                    <th>Is Paid</th>
                                     <th>Delete</th>
                                 </tr>
                             </thead>
                             <tfoot>
                                 <tr>
+                                    <th>ID</th>
                                     <th>Name</th>
+                                    <th>Is Paid</th>
+                                    <th>Status</th>
                                     <th>Email</th>
                                     <th>Paid Amount</th>
                                     <th>Last Updated</th>
-                                    <th>Is Paid</th>
                                     <th>Delete</th>
                                 </tr>
                             </tfoot>
                             <tbody>
                                 @foreach ($accounts as $account)
                                     <tr>
+                                        <td>{{ $account->user_id ?? "Not Found" }}</td>
                                         <td>{{ $account->user_name ?? "Not Found" }}</td>
-                                        <td>{{ $account->user_email ?? "Not Found" }}</td>
-                                        <td>{{ $account->paid_amount ?? "Not Found" }}</td>
-                                        <td>{{ $account->updated_at ? \Carbon\Carbon::parse()->format("d-M-Y g:i a") : "Not Found" }}</td>
                                         <td>
                                             <input type="hidden" name="ids[]" value="{{ $account->id }}">
                                             <div class="custom-control custom-checkbox">
@@ -84,6 +86,22 @@
                                                 <label class="custom-control-label" for="customCheck{{ $account->id }}">Paid</label>
                                             </div>
                                         </td>
+                                        <td>
+                                            @if ($account->status == "Paid")
+                                                <span class="badge badge-success">Paid</span>
+                                            @elseif ($account->status == "Unpaid")
+                                                <span class="badge badge-danger">Unpaid</span>
+                                            @elseif ($account->status == "Pending")
+                                                <span class="badge badge-secondary">Pending</span>
+                                                <a href="{{ route("account.mark-unpaid",['account'=>$account->id]) }}" class="btn btn-warning btn-sm"
+                                                    onclick="return confirm('Are you sure you want to mark this payment as unpaid?')">
+                                                    Mark Unpaid
+                                                </a>  
+                                            @endif
+                                        </td>
+                                        <td>{{ $account->user_email ?? "Not Found" }}</td>
+                                        <td>{{ $account->paid_amount ?? "Not Found" }}</td>
+                                        <td>{{ $account->updated_at ? \Carbon\Carbon::parse()->format("d-M-Y g:i a") : "Not Found" }}</td>
                                         <td>
                                             <button type="button" wire:click="deleteId({{ $account->id }})" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">Delete</button>
                                         </td>

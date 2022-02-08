@@ -42,7 +42,7 @@ class ManualAccount extends Component {
         $this->status   = "Unpaid";
 
         if ( $this->batch != "" ) {
-            $this->students = Course::findOrFail( $this->batch )->user;
+            $this->students = Course::findOrFail( $this->batch )->user->sortBy("name");
         }
 
     }
@@ -70,7 +70,7 @@ class ManualAccount extends Component {
     public function updatedBatch() {
 
         if ( $this->batch != "" ) {
-            $this->students = Course::findOrFail( $this->batch )->user;
+            $this->students = Course::findOrFail( $this->batch )->user->sortBy("name");
         } else {
             $this->students = [];
             $this->student  = "";

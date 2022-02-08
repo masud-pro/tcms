@@ -40,9 +40,14 @@ class AllStudents extends Component {
 
     public function render() {
         return view( 'livewire.students.all-students', [
-            "users" => User::with( 'course' )->where( "role", "student" )->when( $this->q, function ( $query, $q ) {
-                return $query->where( 'name', 'like', "%" . $q . "%" );
-            } )->latest()->paginate( 20 ),
+            "users" => User::with( 'course' )
+                ->where( "role", "student" )
+                ->when( $this->q, function ( $query, $q ) {
+                    $query->where( 'name', 'like', "%" . $q . "%" )
+                        ->orWhere('id', 'like', "%" . $q . "%");
+                } )
+                ->latest()
+                ->paginate( 20 ),
         ] );
     }
 }

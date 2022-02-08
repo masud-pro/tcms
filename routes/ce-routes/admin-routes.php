@@ -53,6 +53,7 @@ Route::post( 'account/{course}/generate-new', [AccountController::class, "regene
 Route::post( 'account/sms-due-report/{parent}', [AccountController::class, "send_sms_due_report"] )->name( "account.sms-report" );
 Route::post( 'account/update-and-reauth', [AccountController::class, "change_and_reauthorize"] )->name( "account.update-and-reauth" );
 Route::get( 'account/overall-accounts', [AccountController::class, "overall_account"] )->name( "account.overall-account" );
+Route::get( 'account/{account}/mark-unpaid', [AccountController::class, "mark_unpaid"] )->name( "account.mark-unpaid" );
 
 // Assignment
 Route::resource( "assignments", AssignmentController::class )->shallow();

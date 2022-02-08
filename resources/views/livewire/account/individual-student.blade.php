@@ -1,6 +1,10 @@
 <div>
+    <div class="text-center">
+        <h2 class="text-danger mb-3">You Have {{ $due }} Due Payment(s). Please Pay.</h2>
+    </div>
+
     <ul>
-        <li><b>Manual payment is done via Bkash, Rocket, Nagad and you have to make the payment manually from the app of UUSD.</b></li>
+        <li><b>Manual payment is done via Bkash, Rocket, Nagad and you have to make the payment manually from the app or USSD.</b></li>
         @if ( env("STORE_ID") != null && env("STORE_PASSWORD") != null )
             <li><b>Online payment is a automatic system of payment which includes Visa/Master Cards, Banks, Bkash, Rocket, Nagad, Other internet banking options etc.</b></li>
         @endif
@@ -30,10 +34,9 @@
                             <tr>
                                 <th>Action</th>
                                 <th>Is Paid</th>
-                                <th>Name</th>
                                 <th>Paid Amount</th>
+                                <th>Month</th>
                                 <th>Batch</th>
-                                <th>Email</th>
                                 <th>Last Updated</th>
                             </tr>
                         </thead>
@@ -41,10 +44,9 @@
                             <tr>
                                 <th>Action</th>
                                 <th>Is Paid</th>
-                                <th>Name</th>
                                 <th>Paid Amount</th>
+                                <th>Month</th>
                                 <th>Batch</th>
-                                <th>Email</th>
                                 <th>Last Updated</th>
                             </tr>
                         </tfoot>
@@ -53,7 +55,7 @@
                                 <tr>
                                     <td>
                                         @if ($account->status == "Paid")
-                                            <a class="btn btn-success">Paid</a>
+                                            <span class="text-success">✓</span>
                                         @else
                                             @if ($manualPayment == 1)
                                                 <a href="{{ route("student.pay.offline",[ "account" => $account->id ]) }}" class="btn btn-primary mt-1">Pay Manually</a>
@@ -64,16 +66,18 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <input type="hidden" name="ids[]" value="{{ $account->id }}">
+                                        <span class='badge badge-{{ $account->status == "Paid" ? "success" : "danger" }}'>
+                                            {{ $account->status == "Paid" ? "Paid" : "Unpaid" }}
+                                        </span>
+                                        {{-- <input type="hidden" name="ids[]" value="{{ $account->id }}">
                                         <div class="custom-control custom-checkbox">
                                             <input onclick="return false" {{ $account->status == "Paid" ? "checked" : "" }}  name="status[]" value="{{ $account->id }}" type="checkbox" class="custom-control-input" id="customCheck{{ $account->id }}">
                                             <label class="custom-control-label" for="customCheck{{ $account->id }}">Paid</label>
-                                        </div>
+                                        </div> --}}
                                     </td>
-                                    <td>{{ $account->user ? $account->user->name : "Not Found" }}</td>
                                     <td>{{ $account->paid_amount ?? "Not Found" }}</td>
+                                    <td>{{ $account->month ? \Carbon\Carbon::parse($account->month)->format("M-Y") : "Not Found" }}</td>
                                     <td>{{ $account->course ? $account->course->name : "Not Found" }}</td>
-                                    <td>{{ $account->user ? $account->user->email : "Not Found" }}</td>
                                     <td>{{ $account->updated_at ? \Carbon\Carbon::parse()->format("d-M-Y g:i a") : "Not Found" }}</td>
                                 </tr>
                             @endforeach

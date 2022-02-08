@@ -30,7 +30,7 @@ class StudentAttendance extends Component {
         $this->students = [];
 
         if ( $this->batch != "" ) {
-            $this->students = Course::findOrFail( $this->batch )->user;
+            $this->students = Course::findOrFail( $this->batch )->user->sortBy("name");
         }
 
     }
@@ -38,7 +38,7 @@ class StudentAttendance extends Component {
     public function updatedBatch() {
 
         if ( $this->batch != "" ) {
-            $this->students = Course::findOrFail( $this->batch )->user;
+            $this->students = Course::findOrFail( $this->batch )->user->sortBy("name");
         } else {
             $this->students = [];
             $this->student  = "";

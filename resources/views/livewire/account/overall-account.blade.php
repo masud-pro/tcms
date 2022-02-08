@@ -188,7 +188,7 @@
                                 @foreach ($accounts as $account)
                                     <tr>
                                         <td>{!! $account->course ? "<a href='".route("course.feeds.index",["course"=>$account->course->id])."'>{$account->course->name}</a>"   : "Not from course" !!}</td>
-                                        <td>{{ $account->user_name ? $account->user_name . " (Student)" : $account->name }}</td>
+                                        <td>{{ $account->user_name ? "ID: " . $account->user_id . " " . $account->user_name . " (Student)" : $account->name }}</td>
                                         <td>{{ $account->user_email ? $account->user_email : $account->description }}</td>
                                         <td>{{ $account->paid_amount ?? "Not Found" }}</td>
                                         <td>{{ $account->updated_at ? \Carbon\Carbon::parse()->format("d-M-Y g:i a") : "Not Found" }}</td>

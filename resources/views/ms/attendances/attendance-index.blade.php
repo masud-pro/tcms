@@ -64,6 +64,7 @@
 
                             <thead>
                                 <tr>
+                                    <th>ID</th>
                                     <th>Name</th>
                                     <th>Attendance</th>
                                     <th>Email</th>
@@ -72,6 +73,7 @@
 
                             <tfoot>
                                 <tr>
+                                    <th>ID</th>
                                     <th>Name</th>
                                     <th>Attendance</th>
                                     <th>Email</th>
@@ -81,6 +83,9 @@
                             <tbody>
                                 @foreach ($attendances as $attendance)
                                     <tr>
+                                        <td>
+                                            {{ $attendance->user ? $attendance->user->id : "Not Found" }}
+                                        </td>
                                         <td>
                                             {{ $attendance->user ? $attendance->user->name : "Not Found" }}
                                         </td>

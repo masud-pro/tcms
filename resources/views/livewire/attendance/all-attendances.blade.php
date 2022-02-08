@@ -34,23 +34,25 @@
                         <table class="table table-hover table-bordered" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
+                                    <th>ID</th>
                                     <th>Name</th>
-                                    <th>Email</th>
                                     <th>Attendance</th>
+                                    <th>Email</th>
                                 </tr>
                             </thead>
                             <tfoot>
                                 <tr>
+                                    <th>ID</th>
                                     <th>Name</th>
-                                    <th>Email</th>
                                     <th>Attendance</th>
+                                    <th>Email</th>
                                 </tr>
                             </tfoot>
                             <tbody>
                                 @foreach ($attendances as $attendance)
                                     <tr>
+                                        <td>{{ $attendance->user ? $attendance->user->id : "Not Found" }}</td>
                                         <td>{{ $attendance->user ? $attendance->user->name : "Not Found" }}</td>
-                                        <td>{{ $attendance->user ? $attendance->user->email : "Not Found" }}</td>
                                         <td>
                                             <input type="hidden" name="ids[]" value="{{ $attendance->id }}">
                                             <div class="custom-control custom-checkbox">
@@ -58,6 +60,7 @@
                                                 <label class="custom-control-label" for="customCheck{{ $attendance->id }}">Present</label>
                                             </div>
                                         </td>
+                                        <td>{{ $attendance->user ? $attendance->user->email : "Not Found" }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>

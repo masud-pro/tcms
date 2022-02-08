@@ -58,7 +58,9 @@ class CourseController extends Controller {
     }
 
     public function enroll( Course $course ) {
+
         if ( $course->capacity > $course->user->where( "is_active", 1 )->count() ) {
+
             $course->user()->attach( Auth::user()->id );
 
             Account::create( [
@@ -69,7 +71,7 @@ class CourseController extends Controller {
                 'month'       => Carbon::now(),
             ] );
 
-            return redirect()->route( "dashboard" )->with( "success", "Course Enrolled Successfully, Please Pay The Tuition Fee To See The Course Content" );
+            return redirect()->route("account.student.individual",["status"=>"Unpaid"])->with( "success", "Course Enrolled Successfully, Please Pay The Tuition Fee To See The Course Content" );
         } else {
             return redirect()->route( "dashboard" )->with( "full", "Course Capacity is Full" );
         }
@@ -115,9 +117,16 @@ class CourseController extends Controller {
         $users = $course->user;
 
         foreach ( $users as $user ) {
-            $unpaidPayments = $user->payment()->where( "status", "unpaid" )->whereMonth( "created_at", Carbon::today() )->count();
+            
+            $unPaid = $user->payment()
+                ->where( "status", "Unpaid" )
+                ->whereMonth( "created_at", Carbon::today() )
+                ->count();
+            // if( $user->id == 2 ){
+            //     dd($unPaid);
+            // }
 
-            if ( $unpaidPayments > 0 ) {
+            if ( $unPaid > 0 ) {
                 $course->user()->updateExistingPivot( $user->id, [
                     'is_active' => 0,
                 ] );

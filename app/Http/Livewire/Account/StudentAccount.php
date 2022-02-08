@@ -26,7 +26,7 @@ class StudentAccount extends Component {
         $this->students = [];
 
         if ( $this->batch != "" ) {
-            $this->students = Course::findOrFail( $this->batch )->user;
+            $this->students = Course::findOrFail( $this->batch )->user->sortBy("name");
         }
 
     }
@@ -34,7 +34,7 @@ class StudentAccount extends Component {
     public function updatedBatch() {
 
         if ( $this->batch != "" ) {
-            $this->students = Course::findOrFail( $this->batch )->user;
+            $this->students = Course::findOrFail( $this->batch )->user->sortBy("name");
         } else {
             $this->students = [];
             $this->user  = "";
@@ -44,7 +44,6 @@ class StudentAccount extends Component {
     }
 
     public function render() {
-
         if ( isset( $this->batch ) && isset( $this->user ) ) {
             $accounts = Account::when( $this->user, function ( $query, $student ) {
                 $query->where( "user_id", $student );

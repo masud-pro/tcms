@@ -43,30 +43,34 @@ class AllAccounts extends Component {
 
         if ( isset( $this->month ) && isset( $this->batch ) && $this->batch != "" ) {
 
-            $everything = Account::select( ["accounts.*", "accounts.id as account_id", "users.name as user_name", "users.email as user_email"] )
-                ->with( "user")
-                ->whereHas("user",function($query){
-                    $query->where('name', 'like', '%'.$this->q.'%');
-                })
+            $everything = Account::select( ["accounts.*", "accounts.id as account_id", "users.id as user_id", "users.name as user_name", "users.email as user_email"] )
+                ->with( "user" )
+                ->whereHas( "user", function ( $query ) {
+                    $query->where( 'name', 'like', '%' . $this->q . '%' )
+                        ->orWhere( 'id', 'like', '%' . $this->q . '%' );
+                } )
                 ->leftJoin( "users", "accounts.user_id", "=", "users.id" )
                 ->orderBy( "users.name", "asc" )
-                
+
                 ->when( $this->batch, function ( $query, $batch ) {
                     $query->where( "course_id", $batch );
                 } )
                 ->when( $this->month, function ( $query, $month ) {
                     $query->whereMonth( "month", $month );
                 } )
-                ->where( function($query){
-                    $query->where("status", "Paid");
-                    $query->orWhere("status", "Unpaid");
+                ->where( function ( $query ) {
+                    $query->where( "status", "Paid" );
+                    $query->orWhere( "status", "Unpaid" );
+                    $query->orWhere( "status", "Pending" );
                 } );
 
             $accounts    = $everything->get();
             $total       = $accounts->where( 'status', 'Paid' )->sum( "paid_amount" );
-            $totalUnpaid = $accounts->where( 'status', 'Unpaid' )->sum( "paid_amount" );
+            $unpaid      = $accounts->where( 'status', 'Unpaid' )->sum( "paid_amount" );
+            $pending     = $accounts->where( 'status', 'Pending' )->sum( "paid_amount" );
+            $totalUnpaid = $unpaid + $pending;
 
-            // dd($everything);
+            // dd($accounts);
         } else {
             $accounts    = [];
             $total       = null;

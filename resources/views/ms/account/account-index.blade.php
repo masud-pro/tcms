@@ -68,16 +68,20 @@
                         <table class="table table-hover table-bordered" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
+                                    <th>ID</th>
                                     <th>Name</th>
                                     <th>Account</th>
+                                    <th>Status</th>
                                     <th>Email</th>
                                     <th>Amount</th>
                                 </tr>
                             </thead>
                             <tfoot>
                                 <tr>
+                                    <th>ID</th>
                                     <th>Name</th>
                                     <th>Account</th>
+                                    <th>Status</th>
                                     <th>Email</th>
                                     <th>Amount</th>
                                 </tr>
@@ -85,6 +89,7 @@
                             <tbody>
                                 @foreach ($accounts as $account)
                                     <tr>
+                                        <td>{{ $account->user ? $account->user->id : "Not Found" }}</td>
                                         <td>{{ $account->user ? $account->user->name : "Not Found" }}</td>
                                         <td>
                                             <input type="hidden" name="ids[]" value="{{ $account->id }}">
@@ -92,6 +97,20 @@
                                                 <input {{ $account->status == "Paid" ? "checked" : "" }}  name="status[]" value="{{ $account->id }}" type="checkbox" class="custom-control-input" id="customCheck{{ $account->id }}">
                                                 <label class="custom-control-label" for="customCheck{{ $account->id }}">Paid</label>
                                             </div>
+                                        </td>
+                                        <td>
+                                            @if ($account->status == "Paid")
+                                                <span class="badge badge-success">Paid</span>
+                                            @elseif ($account->status == "Unpaid")
+                                                <span class="badge badge-danger">Unpaid</span>
+                                            @elseif ($account->status == "Pending")
+                                                <span class="badge badge-secondary">Pending</span>
+                                                
+                                                <a href="{{ route("account.mark-unpaid",['account'=>$account->id]) }}" class="btn btn-warning btn-sm"
+                                                    onclick="return confirm('Are you sure you want to mark this payment as unpaid?')">
+                                                    Mark Unpaid
+                                                </a>   
+                                            @endif
                                         </td>
                                         <td>{{ $account->user ? $account->user->email : "Not Found" }}</td>
                                         <td>{{ $account->paid_amount ?? "Not Found" }}</td>

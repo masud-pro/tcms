@@ -9,13 +9,14 @@
     @endif
     <div class="row">
         <div class="col-lg-3 offset-lg-9 text-right">
-            <input type="text" class="form-control mb-3" placeholder="Search" wire:model.debounce.1000ms="q">
+            <input type="text" class="form-control mb-3" placeholder="Search Name or ID" wire:model.debounce.500ms="q">
         </div>
     </div>
     <div class="table-responsive">
         <table class="table table-hover table-bordered" width="100%" cellspacing="0">
             <thead>
                 <tr>
+                    <th>ID</th>
                     <th>Image</th>
                     <th>Name</th>
                     <th>Email</th>
@@ -31,6 +32,7 @@
             </thead>
             <tfoot>
                 <tr>
+                    <th>ID</th>
                     <th>Image</th>
                     <th>Name</th>
                     <th>Email</th>
@@ -47,6 +49,9 @@
             <tbody>
                 @foreach ($users as $user)
                     <tr>
+                        <td>
+                            {{ $user->id }}
+                        </td>
                         <td class="text-center">
                             <a target="_blank" href="{{ $user->profile_photo_url ?? "" }}">
                                 <img width="40" height="40" class="img-profile rounded-circle" src="{{ $user->profile_photo_url ?? "" }}">

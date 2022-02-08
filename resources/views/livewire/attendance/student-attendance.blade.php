@@ -26,7 +26,7 @@
                     <select wire:model.debounce.500ms="student" class="form-control">
                         <option value="">Select Student</option>
                         @foreach ($students as $student)
-                            <option value="{{ $student->id }}">{{ $student->name }} - {{ $student->email }}</option>
+                            <option value="{{ $student->id }}"> ID:{{ $student->id }} - {{ $student->name }} - {{ $student->email }}</option>
                         @endforeach
                     </select>
                 </div>
