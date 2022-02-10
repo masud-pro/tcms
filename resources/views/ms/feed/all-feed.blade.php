@@ -30,7 +30,6 @@
         @endif
 
         @if ( Auth::user()->role == "Admin" || $is_active == 1 )
-
             <div class="">
                 @if ( auth()->user()->role == "Admin" )  
 

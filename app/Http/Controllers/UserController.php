@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Account;
 use App\Models\Course;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -74,15 +76,53 @@ class UserController extends Controller {
         $data['password'] = Hash::make( $data['password'] );
 
         if ( isset( $data['course_id'] ) ) {
-            $corurses = $data['course_id'];
+            $courses = $data['course_id'];
             unset( $data['course_id'] );
         } else {
-            $corurses = [];
+            $courses = [];
         }
 
         $user = User::create( $data );
 
-        $user->course()->sync( $corurses );
+        $user->course()->sync( $courses );
+
+        $accounts = [];
+
+        foreach ( $courses as $course ) {
+
+            $course = Course::findOrFail( $course, ["id", "fee"] );
+
+            // Generate payment first
+            $accountsCount = Account::whereMonth( "month", Carbon::today() )
+                ->where( "course_id", $course->id )
+                ->count();
+            
+            if ( $accountsCount == 0 ) {
+
+                $allaccounts = Account::whereMonth( "month", Carbon::today() )
+                    ->where( "course_id", $course->id )
+                    ->pluck( "id" );
+
+                $accountController = new AccountController();
+                $accountController->generate_payments( $course, $allaccounts );
+                continue; // Generate paments and iterate to the next execution
+            }
+
+            // Add the account if payment is generated previously
+            if( $user->is_active == 1 ){
+                $accounts[] = [
+                    'user_id'     => $user->id,
+                    'course_id'   => $course->id,
+                    'status'      => "Unpaid",
+                    'paid_amount' => $course->fee - $user->waiver,
+                    'month'       => Carbon::now(),
+                    'created_at'  => Carbon::now(),
+                    'updated_at'  => Carbon::now(),
+                ];
+            }
+        }
+
+        Account::insert( $accounts );
 
         return redirect()->route( "user.index" )->with( "success", "Student created Successfully" );
 
@@ -91,7 +131,7 @@ class UserController extends Controller {
     public function store_admin( Request $request ) {
         $data = $request->validate( [
             'name'     => ['required', 'string', 'max:255'],
-            'phone_no' => ['required','max:11', 'min:11'],
+            'phone_no' => ['required', 'max:11', 'min:11'],
             'email'    => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed'],
             'terms'    => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['required', 'accepted'] : '',
@@ -153,7 +193,7 @@ class UserController extends Controller {
             "roll"             => "nullable|integer",
             "reg_no"           => "nullable|integer",
             "waiver"           => "required|integer",
-            "phone_no"         => ["required", 'min:11', 'max:11',Rule::unique( 'users', 'phone_no' )->ignore( $user->id )],
+            "phone_no"         => ["required", 'min:11', 'max:11', Rule::unique( 'users', 'phone_no' )->ignore( $user->id )],
             "fathers_name"     => "nullable|string",
             "fathers_phone_no" => "nullable|string",
             "mothers_name"     => "nullable|string",
@@ -169,15 +209,59 @@ class UserController extends Controller {
         }
 
         if ( isset( $data['course_id'] ) ) {
-            $corurses = $data['course_id'];
+            $courses = $data['course_id'];
             unset( $data['course_id'] );
         } else {
-            $corurses = [];
+            $courses = [];
         }
 
         $user->update( $data );
 
-        $user->course()->sync( $corurses );
+        $user->course()->sync( $courses );
+
+        $accounts = [];
+
+        foreach ( $courses as $course ) { // Creating account based on chosen courses
+            $course = Course::findOrFail( $course, ["id", "fee"] );
+            
+            $accountsCount = Account::whereMonth( "month", Carbon::today() )
+                ->where( "course_id", $course->id )
+                ->count();
+            
+            // Generate the payments for the course first
+            if ( $accountsCount == 0 ) {
+
+                $allaccounts = Account::whereMonth( "month", Carbon::today() )
+                    ->where( "course_id", $course->id )
+                    ->pluck( "id" );
+
+                $accountController = new AccountController();
+                $accountController->generate_payments( $course, $allaccounts );
+                continue; // Generate paments and iterate to the next execution
+            }
+            
+            // Check if the account is already exists
+            $accountcount = Account::whereMonth( "month", Carbon::today() )
+                ->where( "user_id", $user->id )
+                ->where( "course_id", $course->id )
+                ->count();
+            
+            // Add the account if payment is generated previously
+            if ( $accountcount == 0 && $user->is_active == 1 ) {
+                $accounts[] = [
+                    'user_id'     => $user->id,
+                    'course_id'   => $course->id,
+                    'status'      => "Unpaid",
+                    'paid_amount' => $course->fee - $user->waiver,
+                    'month'       => Carbon::now(),
+                    'created_at'  => Carbon::now(),
+                    'updated_at'  => Carbon::now(),
+                ];
+            }
+
+        }
+
+        Account::insert( $accounts );
 
         return redirect()->route( "user.index" )->with( "success", "Student updated Successfully" );
 

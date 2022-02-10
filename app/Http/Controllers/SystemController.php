@@ -19,7 +19,7 @@ class SystemController extends Controller {
             $allAttendances     = Attendance::select( 'attendance' )->whereMonth( "created_at", Carbon::now() )->get();
             $allAttendanceCount = $allAttendances->count();
             $present            = $allAttendances->where( "attendance", 1 )->count();
-            $absent             = $allAttendanceCount - $present;
+            // $absent             = $allAttendanceCount - $present;
             $emoji              = Option::where( "slug", "emoji_visibility" )->first()->value;
 
             if ( $allAttendanceCount > 0 ) {
@@ -50,7 +50,7 @@ class SystemController extends Controller {
                 "totalCourses"         => $courses->count(),
                 "totalStudents"        => User::where( "role", "Student" )->count(),
                 "studentWithBatch"     => User::where( "role", "Student" )->has( "course" )->count(),
-                "absentCount"          => $absent,
+                "isactiveUsers"          => User::where("is_active", 0)->count(),
                 "attendancePercentage" => sprintf( "%.1f", $attendancePercentage ),
                 "emoji"                => $emoji,
                 "courseView"           => $courseView,

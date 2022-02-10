@@ -57,12 +57,35 @@ class CourseController extends Controller {
         ] );
     }
 
+    /**
+     * Enroll a student
+     *
+     * @param Course $course
+     * @return void
+     */
     public function enroll( Course $course ) {
 
         if ( $course->capacity > $course->user->where( "is_active", 1 )->count() ) {
 
+            // If student enroll and the payment is not generated yet it will first check and generate the payment
+            $accountsCount = Account::whereMonth( "month", Carbon::today() )
+                ->where( "course_id", $course->id )
+                ->count();
+
+            if( $accountsCount == 0 ){ // Generating payments
+
+                $accounts = Account::whereMonth( "month", Carbon::today() )
+                    ->where( "course_id", $course->id )
+                    ->pluck("id");
+                
+                $accountController = new AccountController();
+                $accountController->generate_payments( $course, $accounts );
+            }
+
+            // Enrol the student
             $course->user()->attach( Auth::user()->id );
 
+            // Create an account for the student
             Account::create( [
                 'user_id'     => Auth::user()->id,
                 'course_id'   => $course->id,

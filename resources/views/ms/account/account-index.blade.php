@@ -31,6 +31,10 @@
             </div>
         @endif
 
+        <ul class="list-unstyled">
+            <li><b>- If someone's payment is not showing then see whether is the student is <a href="{{ route("user.index") }}">active</a>, then press regenerate.</b></li>
+            <li><b>- If you've made a lots of mistakes, press of newly generate payments to generate payments newly.</b></li>
+        </ul>
 
         <form method="POST" class="d-inline" action="{{ route("account.sms-report",['parent'=>"father"]) }}">
             @csrf

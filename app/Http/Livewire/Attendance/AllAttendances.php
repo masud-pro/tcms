@@ -2,9 +2,10 @@
 
 namespace App\Http\Livewire\Attendance;
 
-use App\Models\Attendance;
+use Carbon\Carbon;
 use App\Models\Course;
 use Livewire\Component;
+use App\Models\Attendance;
 
 class AllAttendances extends Component {
 
@@ -21,6 +22,7 @@ class AllAttendances extends Component {
 
     public function mount() {
         $this->batches = Course::all();
+        $this->date = Carbon::today()->format("Y-m-d");
     }
 
     public function render() {

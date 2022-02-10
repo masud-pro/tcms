@@ -2,8 +2,10 @@
 
 namespace App\Http\Livewire\Account;
 
+use App\Http\Controllers\AccountController;
 use App\Models\Account;
 use App\Models\Course;
+use Carbon\Carbon;
 use Livewire\Component;
 
 /**
@@ -29,6 +31,7 @@ class AllAccounts extends Component {
 
     public function mount() {
         $this->batches = Course::all();
+        $this->month = Carbon::today()->format("m-Y");
     }
 
     public function deleteId( $id ) {
@@ -42,6 +45,17 @@ class AllAccounts extends Component {
     public function render() {
 
         if ( isset( $this->month ) && isset( $this->batch ) && $this->batch != "" ) {
+
+            $thisMonthAccount = Account::whereMonth( "month", Carbon::today() )->where( "course_id", $this->batch )->count();
+
+            if ( $thisMonthAccount == 0 ) {
+                $accountController = new AccountController();
+
+                $course      = Course::findOrFail( $this->batch );
+                $allaccounts = Account::whereMonth( "month", Carbon::today() )->where( "course_id", $this->batch )->pluck( "id" );
+
+                $accountController->generate_payments( $course, $allaccounts );
+            }
 
             $everything = Account::select( ["accounts.*", "accounts.id as account_id", "users.id as user_id", "users.name as user_name", "users.email as user_email"] )
                 ->with( "user" )
