@@ -185,7 +185,7 @@
                                 </tr>
                             </tfoot>
                             <tbody> 
-                                @foreach ($accounts as $account)
+                                @forelse ($accounts as $account)
                                     <tr>
                                         <td>{!! $account->course ? "<a href='".route("course.feeds.index",["course"=>$account->course->id])."'>{$account->course->name}</a>"   : "Not from course" !!}</td>
                                         <td>{{ $account->user_name ? "ID: " . $account->user_id . " " . $account->user_name . " (Student)" : $account->name }}</td>
@@ -211,7 +211,13 @@
                                             @endif
                                         </td>
                                     </tr>
-                                @endforeach
+                                @empty
+                                    <tr>
+                                        <td colspan="7" class="text-center">
+                                            <b>No Account Record Found</b>
+                                        </td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
 

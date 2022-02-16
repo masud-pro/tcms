@@ -72,12 +72,12 @@ class CourseController extends Controller {
                 ->where( "course_id", $course->id )
                 ->count();
 
-            if( $accountsCount == 0 ){ // Generating payments
+            if ( $accountsCount == 0 ) { // Generating payments
 
                 $accounts = Account::whereMonth( "month", Carbon::today() )
                     ->where( "course_id", $course->id )
-                    ->pluck("id");
-                
+                    ->pluck( "id" );
+
                 $accountController = new AccountController();
                 $accountController->generate_payments( $course, $accounts );
             }
@@ -94,7 +94,7 @@ class CourseController extends Controller {
                 'month'       => Carbon::now(),
             ] );
 
-            return redirect()->route("account.student.individual",["status"=>"Unpaid"])->with( "success", "Course Enrolled Successfully, Please Pay The Tuition Fee To See The Course Content" );
+            return redirect()->route( "account.student.individual", ["status" => "Unpaid"] )->with( "success", "Course Enrolled Successfully, Please Pay The Tuition Fee To See The Course Content" );
         } else {
             return redirect()->route( "dashboard" )->with( "full", "Course Capacity is Full" );
         }
@@ -103,7 +103,7 @@ class CourseController extends Controller {
 
     public function authorization_panel( Course $course ) {
         return view( "ms.authorization.authorization-panel", [
-            "students" => $course->user()->orderBy("name","asc")->get(),
+            "students" => $course->user()->orderBy( "name", "asc" )->get(),
         ] );
     }
 
@@ -135,16 +135,24 @@ class CourseController extends Controller {
 
     }
 
-    public function reauthorize_users( Course $course ) {
-
-        $users = $course->user;
+    public function reauthorize_engine( $course, $users ) {
 
         foreach ( $users as $user ) {
-            
+
+            if( !$user->is_active ){
+                $course->user()->updateExistingPivot( $user->id, [
+                    'is_active' => 0,
+                ] );
+
+                continue; // If the user is not active then set authorization to 0 and continue to next iteration
+            }
+
             $unPaid = $user->payment()
+                ->where("course_id",$course->id)
                 ->where( "status", "Unpaid" )
                 ->whereMonth( "created_at", Carbon::today() )
                 ->count();
+
             // if( $user->id == 2 ){
             //     dd($unPaid);
             // }
@@ -161,7 +169,28 @@ class CourseController extends Controller {
 
         }
 
+    }
+
+    public function reauthorize_users( Course $course ) {
+
+        $users = $course->user;
+
+        $this->reauthorize_engine( $course, $users );
+
         return redirect()->back()->with( "success", "Reauthorization Successfull" );
+
+    }
+
+    public function reauthorize_all() {
+        $courses = Course::all();
+
+        foreach ( $courses as $course ) {
+            $users = $course->user;
+
+            $this->reauthorize_engine( $course, $users );
+        }
+        
+        return redirect()->back()->with( "success", "Reauthorization Successful" );
 
     }
 

@@ -49,7 +49,7 @@
                                 </tr>
                             </tfoot>
                             <tbody>
-                                @foreach ($attendances as $attendance)
+                                @forelse ($attendances as $attendance)
                                     <tr>
                                         <td>{{ $attendance->user ? $attendance->user->id : "Not Found" }}</td>
                                         <td>{{ $attendance->user ? $attendance->user->name : "Not Found" }}</td>
@@ -62,7 +62,13 @@
                                         </td>
                                         <td>{{ $attendance->user ? $attendance->user->email : "Not Found" }}</td>
                                     </tr>
-                                @endforeach
+                                @empty
+                                <tr>
+                                    <td colspan="4" class="text-center">
+                                        <b> No attendance found. Maybe the attendance has not been taken. <a href="{{ route("course.attendance.create",["course"=>$batch]) }}">Take today's attendance</a></b>
+                                    </td>
+                                </tr>
+                                @endforelse
                             </tbody>
                         </table>
                         <input type="submit" class="btn btn-primary" value="Update">

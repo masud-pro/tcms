@@ -40,9 +40,19 @@ class AccountController extends Controller {
         return redirect()->back()->with( "success", "Payment Mark As Unpaid" );
     }
 
-    public function regenerate( Course $course ) {
+    public function regenerate_all() {
+        $courses = Course::all();
 
-        $students = $course->user;
+        foreach ( $courses as $course ) {
+            $students = $course->user;
+
+            $this->regenerate_engine( $students, $course );
+        }
+
+        return redirect()->back()->with( "success", "Payments Re-Generated Successfully For This Month" );
+    }
+
+    public function regenerate_engine( $students, $course ) {
 
         if ( $course->type == "Monthly" ) {
 
@@ -90,7 +100,6 @@ class AccountController extends Controller {
                         ->where( "course_id", $course->id )
                         ->count();
 
-// dd("ekhane ashche");
                     if ( $account == 0 ) {
                         $newAccount = [
                             'user_id'     => $student->id,
@@ -110,6 +119,14 @@ class AccountController extends Controller {
             Account::insert( $newAccount );
 
         }
+
+    }
+
+    public function regenerate( Course $course ) {
+
+        $students = $course->user;
+
+        $this->regenerate_engine( $students, $course );
 
         return redirect()->back()->with( "success", "Regenerated Successfully" );
 
@@ -288,6 +305,18 @@ class AccountController extends Controller {
 
     }
 
+    public function generate_all_payments() {
+        $courses = Course::all( ["id", "fee"] );
+
+        foreach ( $courses as $course ) {
+            $accounts = Account::whereMonth( "month", Carbon::today() )->where( "course_id", $course->id )->pluck("id");
+
+            $this->generate_payments( $course, $accounts );
+        }
+
+        return redirect()->back()->with( "success", "Payments For This Month Generated Successfully" );
+    }
+
     public function generate_payments( $course, $accounts ) {
 
         if ( $accounts->count() <= 0 ) {
@@ -319,6 +348,10 @@ class AccountController extends Controller {
             return false;
         }
 
+    }
+
+    public function all_batch_accounts() {
+        return view( "ms.account.all-batch-accounts");
     }
 
     /**
@@ -444,6 +477,7 @@ class AccountController extends Controller {
             "status" => "nullable|array",
             "course" => "nullable|integer",
             "reauth" => "nullable|integer",
+            "reauth_all" => "nullable|integer",
         ] );
 
         if ( isset( $data['status'] ) ) {
@@ -463,38 +497,46 @@ class AccountController extends Controller {
             Account::whereIn( "id", $data["ids"] )->update( ["status" => "Unpaid"] );
         }
 
-// Reauthorize if called to be reauthorize
-        if ( $data['reauth'] ) {
+        // Reauthorize if called to be reauthorize
+        if ( isset($data['reauth'] ) && $data['reauth'] == 1 ) {
             $courseController = new CourseController();
             $courseController->reauthorize_users( Course::find( $data['course'] ) );
+        }
+
+        // Reauth all users is globally called
+        if ( isset($data['reauth_all'] ) && $data['reauth_all'] == 1 ) {
+            $courseController = new CourseController();
+            $courseController->reauthorize_all();
         }
 
         return redirect()->back()->with( "success", "Account updated successfully" );
 
     }
 
+    /*
     public function change_and_reauthorize( Request $request ) {
 
-        $data = $request->validate( [
-            "ids"    => "required|array",
-            "status" => "nullable|array",
-            "course" => "nullable|integer",
-        ] );
+    $data = $request->validate( [
+    "ids"    => "required|array",
+    "status" => "nullable|array",
+    "course" => "nullable|integer",
+    ] );
 
-        if ( isset( $data['status'] ) ) {
-            $paid   = $data['status'];
-            $unpaid = array_diff( $data['ids'], $data['status'] );
+    if ( isset( $data['status'] ) ) {
+    $paid   = $data['status'];
+    $unpaid = array_diff( $data['ids'], $data['status'] );
 
-            Account::whereIn( "id", $paid )->update( ["status" => "Paid"] );
-            Account::whereIn( "id", $unpaid )->update( ["status" => "Unpaid"] );
+    Account::whereIn( "id", $paid )->update( ["status" => "Paid"] );
+    Account::whereIn( "id", $unpaid )->update( ["status" => "Unpaid"] );
 
-        } else {
-            Account::whereIn( "id", $data["ids"] )->update( ["status" => "Unpaid"] );
-        }
+    } else {
+    Account::whereIn( "id", $data["ids"] )->update( ["status" => "Unpaid"] );
+    }
 
-        // return redirect()->back()->with( "success", "Account updated successfully" );
+    // return redirect()->back()->with( "success", "Account updated successfully" );
 
     }
+     */
 
     public function individual_account() {
         return view( "ms.account.student-account" );

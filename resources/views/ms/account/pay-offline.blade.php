@@ -18,6 +18,10 @@
                     <li class="h2 text-dark">Rocket No: <b>{{ $rocketNumber }}</b></li>
                     <li class="h2 text-dark">Nagad No: <b>{{ $nagadNumber }}</b></li>
                     <li class="h2 text-dark">Payable: <b>{{ $account->paid_amount ?? "" }} Tk</b></li>
+                    <li class="h2 text-dark">
+                        User ID: <b>{{ auth()->user()->id ?? "" }}</b>
+                    </li>
+                    <b class="text-danger">You must provide your user ID in reference</b>
                     <li class="h5 text-dark"><b>Note: You can pay via app too</b></li>
                 </ul>
                 <div class="row">

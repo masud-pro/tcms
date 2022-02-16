@@ -86,7 +86,11 @@
                                     <td>{{ $sms->created_at->format("d-M-Y") }}</td>
                                 </tr>
                             @empty
-                                No SMS Record Found
+                                <tr>
+                                    <td colspan="5" class="text-center">
+                                        <b>No SMS Record Found</b>
+                                    </td>
+                                </tr>
                             @endforelse
                         </tbody>
                     </table>

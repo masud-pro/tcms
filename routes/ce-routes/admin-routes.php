@@ -22,6 +22,7 @@ Route::post( "restore/{course}/course", [CourseController::class, "restore"] )->
 Route::get( "course/{course}/authorization-panel", [CourseController::class, "authorization_panel"] )->name( "course.authorize" );
 Route::patch( "course/{course}/authorization-panel", [CourseController::class, "authorize_users"] )->name( "course.users.authorize" );
 Route::post( "course/{course}/reauthorize", [CourseController::class, "reauthorize_users"] )->name( "course.users.reauthorize" );
+Route::get( "reauthorize-all", [CourseController::class, "reauthorize_all"] )->name( "reauthorize.all" );
 
 // User
 Route::resource( 'user', UserController::class );
@@ -54,6 +55,9 @@ Route::post( 'account/sms-due-report/{parent}', [AccountController::class, "send
 Route::post( 'account/update-and-reauth', [AccountController::class, "change_and_reauthorize"] )->name( "account.update-and-reauth" );
 Route::get( 'account/overall-accounts', [AccountController::class, "overall_account"] )->name( "account.overall-account" );
 Route::get( 'account/{account}/mark-unpaid', [AccountController::class, "mark_unpaid"] )->name( "account.mark-unpaid" );
+Route::get( 'generate-payments', [AccountController::class, "generate_all_payments"] )->name( "payments.generate" ); // Generate all payments
+Route::get( 'regenrate-all', [AccountController::class, "regenerate_all"] )->name( "payments.regenerate-all" );
+Route::get( 'all-batch-accounts', [AccountController::class, "all_batch_accounts"] )->name( "account.all-batch-accounts" );
 
 // Assignment
 Route::resource( "assignments", AssignmentController::class )->shallow();

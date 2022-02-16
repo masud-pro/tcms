@@ -169,7 +169,7 @@
             </div>
         </li> --}}
         @if ( auth()->user()->role == "Admin" )   
-            <li class="mt-1"><a href="{{ route("accounts.index") }}" class="btn btn-outline-primary btn-sm mt-3">Update Payments</a></li>
+            <li class="mt-1"><a href="{{ route("account.all-batch-accounts") }}" class="btn btn-outline-primary btn-sm mt-3">Update Payments</a></li>
             <div class="topbar-divider d-none d-sm-block"></div>
         @endif
 
@@ -188,14 +188,23 @@
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                     Profile
                 </a>
-                {{-- <a class="dropdown-item" href="#">
-                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Settings
-                </a>
-                <a class="dropdown-item" href="#">
-                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Activity Log
-                </a> --}}
+
+                @if ( auth()->user()->role == "Admin" )    
+                    <a class="dropdown-item" href="{{ route('payments.generate') }}" 
+                    onclick="return confirm('Generate Payments Now?')">
+                        <i class="fas fa-dollar-sign fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Generate Payments
+                    </a> 
+                    <a class="dropdown-item" href="{{ route("payments.regenerate-all") }}" onclick="return confirm('Re-generate all payments Now?')">
+                        <i class="fas fa-redo-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Re-generate all payments
+                    </a>
+                    <a class="dropdown-item" href="{{ route("reauthorize.all") }}" onclick="return confirm('Reauthorize all users Now?')">
+                        <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Reauthorize All Users
+                    </a>
+                @endif
+
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="{{ route('logout') }}"
                 onclick="event.preventDefault();

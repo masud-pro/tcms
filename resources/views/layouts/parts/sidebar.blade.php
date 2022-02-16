@@ -111,6 +111,7 @@
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Reports:</h6>
                     <a class="collapse-item" href="{{ route("account.overall-account") }}">Overall Accounts</a>
+                    <a class="collapse-item" href="{{ route("account.all-batch-accounts") }}">All Batch Account</a>
                     <a class="collapse-item" href="{{ route("accounts.index") }}">Batch Accounts</a>
                     <a class="collapse-item" href="{{ route("account.student-account") }}">Student Account</a>
                     <h6 class="collapse-header">Add Accounts:</h6>
