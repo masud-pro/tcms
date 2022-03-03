@@ -315,6 +315,8 @@
                 @if ( $unpaid )
                     <h4 class="text-danger mt-5">You Have {{ $unpaid }} Due Payment Please Pay</h4>
                     <a href="{{ route("account.student.individual",['status'=>"Unpaid"]) }}" class="btn btn-block w-25 mx-auto btn-success mt-4">Pay Now</a>
+                @else
+                    <h1 class="mt-3">Authorization Pending. Contact Your Tutor.</h1>
                 @endif
             </div>
         @endif

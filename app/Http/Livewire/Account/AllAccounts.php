@@ -65,7 +65,6 @@ class AllAccounts extends Component {
                 } )
                 ->leftJoin( "users", "accounts.user_id", "=", "users.id" )
                 ->orderBy( "users.name", "asc" )
-
                 ->when( $this->batch, function ( $query, $batch ) {
                     $query->where( "course_id", $batch );
                 } )

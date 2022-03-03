@@ -39,6 +39,7 @@ class AllBatchAccounts extends Component {
         return view( 'livewire.account.all-batch-accounts', [
             "accounts" => Account::select( ["accounts.*", "accounts.id as account_id", "users.id as user_id", "users.name as user_name", "users.email as user_email"] )
             ->with( "user" )
+            ->whereMonth("accounts.created_at", Carbon::today())
             ->whereHas( "user", function ( $query ) {
                 $query->where( 'name', 'like', '%' . $this->q . '%' )
                     ->orWhere( 'id', 'like', '%' . $this->q . '%' );
