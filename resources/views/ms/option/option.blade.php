@@ -62,7 +62,10 @@
                                         </tr>
 
                                     @elseif ( $option->slug == "online_payment")
-                                        @if (  env("STORE_ID") != null &&  env("STORE_PASSWORD") != null )
+                                        @if (  
+                                                ( env("STORE_ID") != null &&  env("STORE_PASSWORD") != null ) || 
+                                                ( env("UDDOKTAPAY_API_KEY") != null &&  env("UDDOKTAPAY_WEBHOOK_DOMAIN") != null && env("UDDOKTAPAY_PAYMENT_DOMAIN") != null) 
+                                            )
                                             <tr>
                                                 <td>{{ $option->name }}</td>
                                                 <td>

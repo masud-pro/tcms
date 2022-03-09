@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\SslCommerzPaymentController;
 use App\Http\Controllers\SystemController;
+use App\Http\Controllers\UddoktaPayController;
 use App\Http\Controllers\UserController;
 use App\Models\Option;
 use Illuminate\Support\Facades\Route;
@@ -20,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 Route::get( '/', function () {
     $frontPageImage = Option::where( "slug", "front_page_image" )->first()->value;
     $fontColor      = Option::where( "slug", "front_page_font_color" )->first()->value;
-    
+
     return view( 'welcome', [
         "frontPageImage" => $frontPageImage,
         "fontColor"      => $fontColor,
@@ -37,14 +38,14 @@ Route::post( "admin-reg", [UserController::class, "store_admin"] )->name( "store
 
 Route::middleware( ['auth:sanctum', 'verified', 'isAdmin'] )->group( function () {
 
-    // Linking admin routes
+// Linking admin routes
     if ( file_exists( __DIR__ . "/ce-routes/admin-routes.php" ) ) {
         require_once __DIR__ . "/ce-routes/admin-routes.php";
     } else {
         echo "Ooops!! Admin Route Files Not Found!";
     }
 
-    // Linking options routes
+// Linking options routes
     if ( file_exists( __DIR__ . "/ce-routes/option-routes.php" ) ) {
         require_once __DIR__ . "/ce-routes/option-routes.php";
     } else {
@@ -55,7 +56,7 @@ Route::middleware( ['auth:sanctum', 'verified', 'isAdmin'] )->group( function ()
 
 Route::middleware( ['auth:sanctum'] )->group( function () {
 
-    // Linking all user routes
+// Linking all user routes
     if ( file_exists( __DIR__ . "/ce-routes/admin-student-routes.php" ) ) {
         require_once __DIR__ . "/ce-routes/admin-student-routes.php";
     } else {
@@ -73,6 +74,11 @@ Route::post( '/fail', [SslCommerzPaymentController::class, 'fail'] );
 Route::post( '/cancel', [SslCommerzPaymentController::class, 'cancel'] );
 
 Route::post( '/ipn', [SslCommerzPaymentController::class, 'ipn'] );
+
+// Uddoktapay
+Route::post( "uddokta-pay", [UddoktaPayController::class, "pay"] );
+Route::view( "payment-success", "ms.payment-gateway.success" );
+Route::view( "payment-cancel", "ms.payment-gateway.cancelled" );
 
 // Route::get('nibir-api',function(){
 
@@ -100,5 +106,3 @@ Route::post( '/ipn', [SslCommerzPaymentController::class, 'ipn'] );
 
 //     return view("ms.sms.test");
 // });
-
-

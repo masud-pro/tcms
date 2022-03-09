@@ -2,13 +2,13 @@
 
 namespace App\Http\Livewire\Assessments;
 
-use Carbon\Carbon;
-use App\Models\User;
-use Livewire\Component;
 use App\Models\Assessment;
 use App\Models\Assignment;
+use App\Models\User;
 use App\Notifications\Assessment\CreateAssessment as AssessmentCreateAssessment;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Notification;
+use Livewire\Component;
 
 class CreateAssessment extends Component {
 
@@ -38,8 +38,8 @@ class CreateAssessment extends Component {
     public function create() {
         $this->validate();
 
-        $this->form['start_time'] = Carbon::createFromFormat("d/m/Y h:i a", $this->form['start_time'] );
-        $this->form['deadline']   = Carbon::createFromFormat("d/m/Y h:i a", $this->form['deadline'] );
+        $this->form['start_time'] = Carbon::createFromFormat( "d/m/Y h:i a", $this->form['start_time'] );
+        $this->form['deadline']   = Carbon::createFromFormat( "d/m/Y h:i a", $this->form['deadline'] );
 
         $postTo = $this->form['user_id'];
         unset( $this->form['user_id'] );
@@ -50,13 +50,13 @@ class CreateAssessment extends Component {
 
         $assessment->user()->sync( $postTo );
 
-        if($assessment){
+        if ( $assessment ) {
             $notificationInfromation['courseName'] = $this->course->name;
-            $notificationInfromation['url'] = route("course.assessments.index",['course'=>$this->course->id]);
+            $notificationInfromation['url']        = route( "course.assessments.index", ['course' => $this->course->id] );
 
             Notification::send(
-                User::whereIn('id',$postTo)->get(),
-                new AssessmentCreateAssessment($notificationInfromation)
+                User::whereIn( 'id', $postTo )->get(),
+                new AssessmentCreateAssessment( $notificationInfromation )
             );
         }
 
@@ -68,4 +68,5 @@ class CreateAssessment extends Component {
         $this->dispatchBrowserEvent( 'contentChanged' );
         return view( 'livewire.assessments.create-assessment' );
     }
+
 }

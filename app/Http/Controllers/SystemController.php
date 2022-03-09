@@ -20,7 +20,7 @@ class SystemController extends Controller {
             $allAttendanceCount = $allAttendances->count();
             $present            = $allAttendances->where( "attendance", 1 )->count();
             // $absent             = $allAttendanceCount - $present;
-            $emoji              = Option::where( "slug", "emoji_visibility" )->first()->value;
+            $emoji = Option::where( "slug", "emoji_visibility" )->first()->value;
 
             if ( $allAttendanceCount > 0 ) {
                 $attendancePercentage = ( $present / $allAttendanceCount ) * 100;
@@ -50,7 +50,7 @@ class SystemController extends Controller {
                 "totalCourses"         => $courses->count(),
                 "totalStudents"        => User::where( "role", "Student" )->count(),
                 "studentWithBatch"     => User::where( "role", "Student" )->has( "course" )->count(),
-                "isactiveUsers"          => User::where("is_active", 0)->count(),
+                "inActiveUsers"        => User::whereRole( "Student" )->where( "is_active", 0 )->count(),
                 "attendancePercentage" => sprintf( "%.1f", $attendancePercentage ),
                 "emoji"                => $emoji,
                 "courseView"           => $courseView,

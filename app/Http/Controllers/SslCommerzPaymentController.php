@@ -31,11 +31,11 @@ class SslCommerzPaymentController extends Controller {
             'account_id' => "required|integer",
         ] );
 
-// dd( $data );
+        // dd( $data );
 
-# Here you have to receive all the order data to initate the payment.
+        # Here you have to receive all the order data to initate the payment.
 
-# Let's say, your oder transaction informations are saving in a table called "orders"
+        # Let's say, your oder transaction informations are saving in a table called "orders"
         # In "orders" table, order unique identity is "transaction_id". "status" field contain status of the transaction, "amount" is the order amount to be paid and "currency" is for storing Site Currency which will be checked with paid currency.
 
         $post_data                 = array();
@@ -43,7 +43,7 @@ class SslCommerzPaymentController extends Controller {
         $post_data['currency']     = "BDT";
         $post_data['tran_id']      = md5( uniqid() );
 
-// tran_id must be unique
+        // tran_id must be unique
 
         # CUSTOMER INFORMATION
         $post_data['cus_name']     = $data['name'];
@@ -183,7 +183,7 @@ class SslCommerzPaymentController extends Controller {
 
     public function success( Request $request ) {
 
-// echo "Transaction is Successful";
+        // echo "Transaction is Successful";
 
         // dd( $request->all() );
 
