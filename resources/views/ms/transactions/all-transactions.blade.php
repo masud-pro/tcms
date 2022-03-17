@@ -84,8 +84,8 @@
                         @foreach ($transactions as $transaction)
                             <tr>
                                 <td>
-                                    <a href="{{ $transaction->account ? route("course.feeds.index", ['course'=>$transaction->account->course->id]) : "" }}">
-                                        {{ $transaction->account ? $transaction->account->course->name : "" }}
+                                    <a href="{{ $transaction->account && $transaction->account->course ? route("course.feeds.index", ['course'=>$transaction->account->course->id]) : "#" }}">
+                                        {{ $transaction->account && $transaction->account->course ? $transaction->account->course->name : "Not Found" }}
                                     </a>
                                 </td>
                                 <td>{{ $transaction->user ? $transaction->user->name : "" }}</td>

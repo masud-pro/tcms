@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AmarpayController;
 use App\Http\Controllers\SslCommerzPaymentController;
 use App\Http\Controllers\SystemController;
 use App\Http\Controllers\UddoktaPayController;
@@ -77,8 +78,19 @@ Route::post( '/ipn', [SslCommerzPaymentController::class, 'ipn'] );
 
 // Uddoktapay
 Route::post( "uddokta-pay", [UddoktaPayController::class, "pay"] );
-Route::view( "payment-success", "ms.payment-gateway.success" );
-Route::view( "payment-cancel", "ms.payment-gateway.cancelled" );
+
+// Payment
+Route::view( "payment-success", "ms.payment-gateway.success" )->name('payment.success');
+Route::view( "payment-cancel", "ms.payment-gateway.cancelled" )->name('payment.fail');
+
+
+
+// Amar Pay
+Route::get('amarpay-payment', [ AmarpayController::class, 'index' ]);
+Route::post( "aamarpay-success", [ AmarpayController::class, 'success' ] )->name('aamarpay.success');
+Route::post( "aamarpay-fail", [ AmarpayController::class, 'fail' ] )->name('aamarpay.fail');
+
+
 
 // Route::get('nibir-api',function(){
 
