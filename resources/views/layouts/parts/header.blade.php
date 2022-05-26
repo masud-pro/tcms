@@ -19,10 +19,10 @@
         </div>
     </form> --}}
 
-    
+
     <h1 class="h4 ml-3 mt-1 text-gray-800 ce-heading">
          <!-- Title same goes for heading -->
-        @yield("title") 
+        @yield("title")
     </h1>
 
     <!-- Topbar Navbar -->
@@ -168,8 +168,11 @@
                 <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
             </div>
         </li> --}}
-        @if ( auth()->user()->role == "Admin" )   
+        @if ( auth()->user()->role == "Admin" )
             <li class="mt-1"><a href="{{ route("account.all-batch-accounts") }}" class="btn btn-outline-primary btn-sm mt-3">Update Payments</a></li>
+            <div class="topbar-divider d-none d-sm-block"></div>
+        @else
+            <li class="mt-1"><h5 class="mt-3">Student ID {{ Auth::user()->id }}</h5></li>
             <div class="topbar-divider d-none d-sm-block"></div>
         @endif
 
@@ -189,12 +192,12 @@
                     Profile
                 </a>
 
-                @if ( auth()->user()->role == "Admin" )    
-                    <a class="dropdown-item" href="{{ route('payments.generate') }}" 
+                @if ( auth()->user()->role == "Admin" )
+                    <a class="dropdown-item" href="{{ route('payments.generate') }}"
                     onclick="return confirm('Generate Payments Now?')">
                         <i class="fas fa-dollar-sign fa-sm fa-fw mr-2 text-gray-400"></i>
                         Generate Payments
-                    </a> 
+                    </a>
                     <a class="dropdown-item" href="{{ route("payments.regenerate-all") }}" onclick="return confirm('Re-generate all payments Now?')">
                         <i class="fas fa-redo-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                         Re-generate all payments
