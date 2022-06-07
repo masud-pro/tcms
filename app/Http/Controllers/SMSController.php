@@ -13,7 +13,7 @@ class SMSController extends Controller {
 
     public function index() {
         return view( "ms.sms.all-sms", [
-            "smss"         => SMS::paginate( 15 ),
+            "smss"         => SMS::latest()->paginate( 1 ),
             "remainingSMS" => Option::select( 'value' )->where( 'slug', 'remaining_sms' )->first(),
         ] );
     }
@@ -25,7 +25,7 @@ class SMSController extends Controller {
     }
 
     public function calculate_sms_and_remaining_sms() {
-        
+
     }
 
     public function send_exam_results( Request $request ) {

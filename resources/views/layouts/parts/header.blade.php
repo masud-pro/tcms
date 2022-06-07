@@ -172,7 +172,7 @@
             <li class="mt-1"><a href="{{ route("account.all-batch-accounts") }}" class="btn btn-outline-primary btn-sm mt-3">Update Payments</a></li>
             <div class="topbar-divider d-none d-sm-block"></div>
         @else
-            <li class="mt-1"><h5 class="mt-3">Student ID {{ Auth::user()->id }}</h5></li>
+            <li class="mt-1"><h5 class="mt-3">Student ID: {{ Auth::user()->id }}</h5></li>
             <div class="topbar-divider d-none d-sm-block"></div>
         @endif
 
