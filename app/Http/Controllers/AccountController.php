@@ -239,8 +239,11 @@ class AccountController extends Controller {
     }
 
     public function get_phone_numbers( $row, $course ) {
+        $accounts = Account::where( "course_id", $course )
+            ->whereMonth( "month", Carbon::today() )
+            ->where( "status", "Unpaid" )
+            ->get();
 
-        $accounts = Account::where( "course_id", $course )->where( "month", Carbon::today() )->where( "status", "Unpaid" )->get();
         $numbers  = [];
 
         foreach ( $accounts as $account ) {
@@ -275,7 +278,7 @@ class AccountController extends Controller {
 
         if ( $numberCount > 0 ) {
             $numbers = implode( ",", $numbers );
-            $message = "You have a payment due on month: " . Carbon::today()->format( "M-Y" ) . " - " . env( "APP_NAME" );
+            $message = "Dear Parent, Your child have a payment due on month: " . Carbon::today()->format( "M-Y" ) . " - " . env( "APP_NAME" );
 
             $status = SMSController::send_sms( $numbers, $message );
 
