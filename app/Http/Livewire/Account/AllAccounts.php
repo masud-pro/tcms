@@ -2,11 +2,13 @@
 
 namespace App\Http\Livewire\Account;
 
+use App\Exports\AccountsExport;
 use App\Http\Controllers\AccountController;
 use App\Models\Account;
 use App\Models\Course;
 use Carbon\Carbon;
 use Livewire\Component;
+use Maatwebsite\Excel\Facades\Excel;
 
 /**
  * This class is of mailnly batch accounts with paid unpaid but no expense
@@ -40,6 +42,11 @@ class AllAccounts extends Component {
 
     public function delete() {
         Account::find( $this->deleteId )->delete();
+    }
+
+    public function downloadPDF() {
+        return Excel::download(new AccountsExport($this->q, $this->batch, $this->month), 
+        'Accounts - ' . $this->month . '.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
     }
 
     public function render() {

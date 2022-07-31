@@ -4,7 +4,7 @@
             <h6 class="m-0 font-weight-bold text-primary">
                 
                 <div class="row">
-                    <div class="col">Account</div>
+                    <div class="col">Account @if( $batch ) - <a class="small" href="" wire:click.prevent="downloadPDF">Download as PDF</a> @endif</div>
                     @if ( !$q )
                         <div class="col text-right"> 
                             @if ( $total != null )

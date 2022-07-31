@@ -8,6 +8,7 @@
         "php": "^7.3|^8.0",
         "alexusmai/laravel-file-manager": "^2.5",
         "doctrine/dbal": "^3.3",
+        "dompdf/dompdf": "^2.0",
         "fideloper/proxy": "^4.4",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.40",
@@ -16,6 +17,7 @@
         "laravel/tinker": "^2.5",
         "league/flysystem-aws-s3-v3": "~1.0",
         "livewire/livewire": "^2.5",
+        "maatwebsite/excel": "^3.1.21",
         "predis/predis": "^1.1"
     },
     "require-dev": {
