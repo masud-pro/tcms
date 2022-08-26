@@ -182,7 +182,8 @@ class AttendanceController extends Controller {
 
         if ( $numberCount > 0 ) {
             $numbers = implode( ",", $numbers );
-            $message = "Your child is absent today - Date: " . Carbon::today()->format( "d-M-Y" ) . " - " . env( "APP_NAME" );
+            $message = "সম্মানিত অভিভাবক, আপনার সন্তান আজ " . Carbon::today()->format( "d-M-Y" ) . " ক্লাসে অনুপস্থিত - " . env( "APP_NAME" );
+            // $message = "Your child is absent today - Date: " . Carbon::today()->format( "d-M-Y" ) . " - " . env( "APP_NAME" );
 
             $status = SMSController::send_sms( $numbers, $message );
 

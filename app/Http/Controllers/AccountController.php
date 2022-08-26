@@ -278,7 +278,9 @@ class AccountController extends Controller {
 
         if ( $numberCount > 0 ) {
             $numbers = implode( ",", $numbers );
-            $message = "Dear Parent, Your child have a payment due on month: " . Carbon::today()->format( "M-Y" ) . " - " . env( "APP_NAME" );
+
+            $message = "সম্মানিত অভিভাবক, আপ্ননার সন্তানের" . Carbon::today()->format( "M-Y" ) . " মাসের পেমেন্ট বাকি আছে - " . env( "APP_NAME" );
+            // $message = "Dear Parent, Your child have a payment due on month: " . Carbon::today()->format( "M-Y" ) . " - " . env( "APP_NAME" );
 
             $status = SMSController::send_sms( $numbers, $message );
 
