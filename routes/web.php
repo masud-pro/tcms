@@ -5,6 +5,7 @@ use App\Http\Controllers\SslCommerzPaymentController;
 use App\Http\Controllers\SystemController;
 use App\Http\Controllers\UddoktaPayController;
 use App\Http\Controllers\UserController;
+use App\Models\Course;
 use App\Models\Option;
 use Illuminate\Support\Facades\Route;
 
@@ -118,3 +119,7 @@ Route::post( "aamarpay-fail", [ AmarpayController::class, 'fail' ] )->name('aama
 
 //     return view("ms.sms.test");
 // });
+
+Route::get('nibs', function(){
+    dd(Course::with(['students'])->toArray());
+});
