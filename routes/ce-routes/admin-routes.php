@@ -13,6 +13,7 @@ use App\Http\Controllers\SMSController;
 use App\Http\Controllers\SslCommerzPaymentController;
 use App\Http\Controllers\SystemController;
 use App\Http\Controllers\UserController;
+use App\Models\Account;
 use App\Models\Option;
 use Illuminate\Support\Facades\Route;
 
@@ -77,6 +78,7 @@ Route::get( 'all-sms', [SMSController::class, 'index'] )->name( 'sms.index' );
 Route::get( 'batch-sms', [SMSController::class, 'create_batch_sms'] )->name( 'batch.sms' );
 Route::post( 'batch-sms', [SMSController::class, 'send_batch_sms'] )->name( 'batch.sms.send' );
 Route::post( 'send/results', [SMSController::class, 'send_exam_results'] )->name( 'exam.result.sms' );
+Route::post('send-all-absent-sms,{send_to}', [AccountController::class,'all_students_account_sms'])->name('send.all.student.account.sms');
 
 // Filemanager
 Route::get( 'filemanager', function () {

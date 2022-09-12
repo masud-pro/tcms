@@ -27,6 +27,14 @@
                 </button>
             </div>
         @endif
+        @if ( session('failed') )
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('failed') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
 
         {{-- <div class="row">
             <div class="col">
@@ -37,7 +45,39 @@
             </div>
         </div> --}}
 
-        <div class="text-right">
+        <div class="text-left">
+            <a class="btn btn-primary mb-3" href="{{ route("batch.sms") }}">Send Batch SMS</a>
+
+            <div class="btn-group mb-3">
+                <button 
+                class="btn btn-primary dropdown-toggle" 
+                type="button" 
+                id="dropdownMenuButton" 
+                data-toggle="dropdown" 
+                aria-haspopup="true" 
+                aria-expanded="false">
+                    Send Account SMS
+                </button>
+    
+                <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton">
+    
+                    <form class="dropdown-item" action="{{ route('send.all.student.account.sms',['send_to'=>'fathers_phone_no']) }}" method="POST" class="d-inline">
+                        @csrf
+                            <input type="hidden" name="to" value="fathers_phone_no">
+                        <input type="submit" class="btn btn-link text-dark" value="Send SMS To Father"
+                        onclick="return confirm('Are you sure you want send now?')">
+                    </form>
+
+                    <form class="dropdown-item" action="{{ route('send.all.student.account.sms',['send_to'=>'mothers_phone_no']) }}" method="POST" class="d-inline">
+                        @csrf
+        
+                        <input type="hidden" name="to" value="mothers_phone_no">
+                        <input type="submit" class="btn btn-link text-dark" value="Send SMS To Mother"
+                        onclick="return confirm('Are you sure you want send now?')">
+                    </form>     
+    
+                </div>
+            </div>
         </div>
 
         <div class="card shadow mb-4">

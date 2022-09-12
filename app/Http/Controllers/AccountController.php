@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Account;
+use Carbon\Carbon;
+use App\Models\SMS;
+use App\Models\User;
+use App\Models\Order;
 use App\Models\Course;
 use App\Models\Option;
-use App\Models\Order;
-use App\Models\SMS;
-use Carbon\Carbon;
+use App\Models\Account;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -307,6 +308,49 @@ class AccountController extends Controller {
         } else {
             return redirect()->back()->with( "failed", "Numbers not found, everyone may be have paid" );
         }
+
+    }
+
+    public function all_students_account_sms($send_to) {
+        $students = User::where('role', 'Student')->whereHas('payment', function($query){
+            $query->where('status', 'Unpaid');
+        })->get();
+        // dd($students[1]->payment);
+
+        $numberCount = count( $students );
+
+        $smsrow        = Option::where( "slug", "remaining_sms" )->first();
+        $remaining_sms = (int) $smsrow->value;
+
+        if ( $remaining_sms < $numberCount ) {
+            return redirect()->back()->with( "failed", "Not Enough SMS" );
+        }
+
+        foreach( $students as $student ){
+            $message = "সম্মানিত অভিভাবক, আপনার সন্তানের "; 
+            $payments = $student->payment;
+            foreach( $payments as $payment  ){
+                $message .= Carbon::parse($payment->month)->format( "M-Y" ) . ", ";
+            }
+            $message .= " মাসের পেমেন্ট বাকি আছে - " . env( "APP_NAME" );
+            
+            $number = $student->$send_to;
+            SMSController::send_sms($number, $message);
+        }
+
+        $remaining_sms = $remaining_sms - $numberCount;
+
+        SMS::create( [
+            'for'       => "Overall Account Report",
+            'count'     => $numberCount,
+            'message'   => $message,
+        ] );
+
+        $smsrow->update( [
+            'value' => $remaining_sms,
+        ] );
+
+        return redirect()->back()->with('success', 'All guardian informed successfully');
 
     }
 
