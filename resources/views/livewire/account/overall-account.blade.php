@@ -127,7 +127,7 @@
             <h6 class="m-0 font-weight-bold text-primary">
                 
                 <div class="row">
-                    <div class="col">Account</div>
+                    <div class="col">Account  - <a class="small" href="" wire:click.prevent="downloadPDF">Download as PDF</a> </div>
                     <div class="col text-right"> 
                         {{-- @if ( $total != null )
                             Total this month - {{ $total }} Tk

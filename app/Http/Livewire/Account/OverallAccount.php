@@ -2,9 +2,12 @@
 
 namespace App\Http\Livewire\Account;
 
-use App\Models\Account;
 use Carbon\Carbon;
+use App\Models\Course;
+use App\Models\Account;
 use Livewire\Component;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\OverAllAccountExport;
 
 class OverallAccount extends Component {
 
@@ -29,7 +32,9 @@ class OverallAccount extends Component {
     ];
 
     public function mount() {
+        $this->batches = Course::all();
         $this->account['status'] = "Revenue";
+        $this->month = Carbon::now()->format( "m-Y" );
     }
 
     public function flushCreate() {
@@ -78,6 +83,14 @@ class OverallAccount extends Component {
         $this->dispatchBrowserEvent( 'accountCreated' );
 
         session()->flash( "success", "Account added successfully" );
+    }
+
+    
+    public function downloadPDF() {
+        return Excel::download(new OverAllAccountExport($this->q, $this->month), 'Accounts - '. $this->month . '.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
+
+        // return Excel::download(new AccountsExport($this->q, $this->batch, $this->month), 
+        // 'Accounts - ' . $this->month . '.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
     }
 
     public function render() {
