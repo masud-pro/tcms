@@ -8,6 +8,7 @@
                         <span class="sr-only">Loading...</span>
                     </div>
                 </div>
+                @if( $user ) - <a class="small" href="" wire:click.prevent="downloadPDF">Download as PDF</a> @endif
             </h6>
         </div>
         <div class="card-body">

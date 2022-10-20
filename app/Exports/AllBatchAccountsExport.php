@@ -11,29 +11,25 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class OverAllAccountExport implements FromCollection, WithMapping, WithHeadings, WithColumnWidths, WithStyles {
-
+class AllBatchAccountsExport implements FromCollection, WithMapping, WithHeadings, WithColumnWidths, WithStyles {
+   
     private $q;
-    private $month;
 
     /**
      * @param $q
-     * @param $month
      */
-    public function __construct( $q, $month ) {
-        $this->q     = $q;
-        $this->month = $month;
+    public function __construct( $q ) {
+        $this->q = $q;
     }
 
     public function headings(): array
     {
         return [
-            'Course Name',
             'Name',
+            'Status',
+            'Course',
             'Email',
             'Amount',
-            'Is Paid',
-            'Date',
         ];
     }
 
@@ -42,29 +38,26 @@ class OverAllAccountExport implements FromCollection, WithMapping, WithHeadings,
      */
     public function map( $account ): array
     {
-        // dd($account);
         return [
-            $account->course->name ?? "",
-            $account->user->name ?? $account->name,
-            $account->user->email ?? $account->description,
+            $account->user->name ?? '',
             $account->status,
+            $account->course->name ?? $account->name,
+            $account->user->email ?? '',
             $account->paid_amount,
-            Carbon::parse( $account->month )->format( 'M-Y' ),
         ];
     }
 
     public function columnWidths(): array{
         return [
-            'A' => 22,
-            'B' => 20,
+            'A' => 20,
+            'B' => 15,
             'C' => 25,
-            'D' => 12,
-            'E' => 11,
-            'F' => 10,
+            'D' => 30,
+            'E' => 10,
         ];
     }
 
-    /**
+        /**
      * @param Worksheet $sheet
      */
     public function styles( Worksheet $sheet ) {
@@ -83,16 +76,15 @@ class OverAllAccountExport implements FromCollection, WithMapping, WithHeadings,
      * @return \Illuminate\Support\Collection
      */
     public function collection() {
-
         return Account::select( ["accounts.*", "accounts.id as account_id", "users.id as user_id", "users.name as user_name", "users.email as user_email"] )
-            ->with( ["user", "course"] )
+            ->with( "user" )
+            ->whereMonth( "accounts.created_at", Carbon::today() )
+            ->whereHas( "user", function ( $query ) {
+                $query->where( 'name', 'like', '%' . $this->q . '%' )
+                      ->orWhere( 'id', 'like', '%' . $this->q . '%' );
+            } )
             ->leftJoin( "users", "accounts.user_id", "=", "users.id" )
             ->orderBy( "users.name", "asc" )
-            ->orderBy( "accounts.created_at", "desc" )
-            ->when( $this->q, function ( $query, $q ) {$query->where( 'users.name', 'like', '%' . $q . '%' );} )
-            // ->where( 'users.name', 'like', '%' . $this->q . '%' )
-            ->when( $this->month, function ( $query, $month ) {
-                $query->whereMonth( "month", $month );
-            } )->get();
+            ->simplePaginate( 50 );
     }
 }

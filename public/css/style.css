@@ -16,6 +16,10 @@ body{
     color: #222!important;
 }
 
+.pointer{
+    cursor: pointer;
+}
+
 @media all and ( max-width: 768px ){
     .ce-heading{
         font-size: 20px;

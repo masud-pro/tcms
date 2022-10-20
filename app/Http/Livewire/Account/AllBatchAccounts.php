@@ -6,6 +6,8 @@ use Carbon\Carbon;
 use App\Models\Account;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\AllBatchAccountsExport;
 
 class AllBatchAccounts extends Component {
 
@@ -33,6 +35,11 @@ class AllBatchAccounts extends Component {
                 'status' => "Unpaid",
             ]);
         }
+    }
+
+    public function downloadPDF()
+    {
+        return Excel::download(new AllBatchAccountsExport($this->q), 'Accounts - ' . Carbon::now()->format( 'M-Y' ) . '.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
     }
 
     public function render() {
