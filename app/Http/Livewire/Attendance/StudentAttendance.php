@@ -6,6 +6,8 @@ use App\Models\Course;
 use Livewire\Component;
 use App\Models\Attendance;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\AttendanceIndividualStudentExport;
 
 class StudentAttendance extends Component {
 
@@ -45,6 +47,11 @@ class StudentAttendance extends Component {
             $this->batch    = "";
         }
 
+    }
+
+         
+    public function downloadPDF() {
+        return Excel::download(new AttendanceIndividualStudentExport($this->student, $this->month), 'Attendance - ' . $this->month . '.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
     }
 
     public function render() {

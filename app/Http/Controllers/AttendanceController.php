@@ -16,7 +16,7 @@ class AttendanceController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        // dd("Hit korse");
+        // dd("Hit corse");
         return view( "ms.attendances.all-attendances" );
     }
 

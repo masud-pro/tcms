@@ -8,10 +8,11 @@ use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithProperties;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class AllBatchAccountsExport implements FromCollection, WithMapping, WithHeadings, WithColumnWidths, WithStyles {
+class AllBatchAccountsExport implements FromCollection, WithMapping, WithHeadings, WithColumnWidths, WithStyles, WithProperties {
    
     private $q;
 
@@ -69,6 +70,12 @@ class AllBatchAccountsExport implements FromCollection, WithMapping, WithHeading
             ],
             'E' => ['alignment' => ['horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,]],
             'D' => ['alignment' => ['horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,]],
+        ];
+    }
+
+    public function properties(): array{
+        return [
+            'title' => 'Account Report Of All Batch - ' . $this->month,
         ];
     }
 

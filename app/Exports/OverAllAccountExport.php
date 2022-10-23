@@ -8,10 +8,11 @@ use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithProperties;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class OverAllAccountExport implements FromCollection, WithMapping, WithHeadings, WithColumnWidths, WithStyles {
+class OverAllAccountExport implements FromCollection, WithMapping, WithHeadings, WithColumnWidths, WithStyles, WithProperties {
 
     private $q;
     private $month;
@@ -76,6 +77,13 @@ class OverAllAccountExport implements FromCollection, WithMapping, WithHeadings,
             ],
             'E' => ['alignment' => ['horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,]],
             'D' => ['alignment' => ['horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,]],
+        ];
+    }
+
+
+    public function properties(): array{
+        return [
+            'title' => 'Account Report Of All Accounts -',
         ];
     }
 
