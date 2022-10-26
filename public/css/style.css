@@ -20,6 +20,10 @@ body{
     cursor: pointer;
 }
 
+.mt-x2{
+    margin-top: 2rem;
+}
+
 @media all and ( max-width: 768px ){
     .ce-heading{
         font-size: 20px;

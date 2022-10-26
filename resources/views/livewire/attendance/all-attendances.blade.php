@@ -15,7 +15,7 @@
             <div class="form-row mb-4">
                 <div class="col-md">
                     <label><b>Batch / Course</b></label>
-                    <select wire:model.debounce.500ms="batch" class="form-control">
+                    <select wire:model.debounce.500ms="batch" class="form-control js-example-disabled-results">
                         <option value="">Select Batch / Course</option>
                         @foreach ( $batches as $sbatch )
                             <option value="{{ $sbatch->id }}">{{ $sbatch->name }}</option>
