@@ -13,10 +13,10 @@
         </div>
         <div class="card-body">
             <div class="form-row mb-4">
-                <div class="col-md">
+                <div class="col-md" wire:ignore >
                     <label><b>Batch / Course</b></label>
                     {{-- <select wire:model.debounce.500ms="batch" class="form-control js-example-disabled-results"> --}}
-                    <select wire:model.debounce.500ms="batch" class="form-control js-example-disabled-results">
+                    <select wire:model.debounce.500ms="batch" id="batch" class="form-control js-example-disabled-results">
                         <option value="">Select Batch / Course</option>
                         @foreach ( $batches as $sbatch )
                             <option value="{{ $sbatch->id }}">{{ $sbatch->name }}</option>
@@ -99,6 +99,10 @@
         });
         $('#date').on('change', function (e) {
             @this.set('date', e.target.value);
+        });
+        $('#batch').change(function(){
+            var batch = $('#batch').val();
+            @this.set('batch', this.value);
         });
     </script>
 @endpush

@@ -13,18 +13,18 @@
         </div>
         <div class="card-body">
             <div class="form-row mb-4">
-                <div class="col-md">
+                <div class="col-md" wire:ignore>
                     <label><b>Batch / Course</b></label>
-                    <select wire:model.debounce.500ms="batch" class="form-control">
+                    <select wire:model.debounce.500ms="batch" id="batch" class="form-control js-example-disabled-results">
                         <option value="">Select Batch / Course</option>
                         @foreach ($batches as $sbatch)
                             <option value="{{ $sbatch->id }}">{{ $sbatch->name }}</option>
                         @endforeach
                     </select>
                 </div>
-                <div class="col-md">
+                <div class="col-md" wire:ignore.self>
                     <label><b>Student</b></label>
-                    <select wire:model.debounce.500ms="user" class="form-control">
+                    <select wire:model.debounce.500ms="user" id="user" class="form-control js-example-disabled-results">
                         <option value="0">Select Student</option>
                         @foreach ($students as $student)
                             <option value="{{ $student->id }}">ID: {{ $student->id }} - {{ $student->name }} - {{ $student->email }}</option>
@@ -91,5 +91,21 @@
 @endpush
 @push('scripts')
     @livewireScripts()
+
+    <script>
+       window.addEventListener('reInitJquery', event => {
+            var $disabledResults = $(".js-example-disabled-results");
+            $disabledResults.select2();
+        })
+
+        $('#batch').change(function(){
+            var batch = $('#batch').val();
+            @this.set('batch', this.value);
+        });
+        $('#user').change(function(){
+            var user = $('#user').val();
+            @this.set('user',user);
+        });
+    </script>
 @endpush
 

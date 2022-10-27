@@ -10,14 +10,29 @@ use App\Exports\StudentAccountsExport;
 
 class StudentAccount extends Component {
 
+    /**
+     * @var mixed
+     */
     public $batch;
 
+    /**
+     * @var mixed
+     */
     public $batches;
 
+    /**
+     * @var mixed
+     */
     public $students;
 
+    /**
+     * @var mixed
+     */
     public $user;
 
+    /**
+     * @var array
+     */
     protected $queryString = [
         'user'  => ["except" => ""],
         'batch' => ["except" => ""],
@@ -28,7 +43,7 @@ class StudentAccount extends Component {
         $this->students = [];
 
         if ( $this->batch != "" ) {
-            $this->students = Course::findOrFail( $this->batch )->user->sortBy("name");
+            $this->students = Course::findOrFail( $this->batch )->user->sortBy( "name" );
         }
 
     }
@@ -36,18 +51,20 @@ class StudentAccount extends Component {
     public function updatedBatch() {
 
         if ( $this->batch != "" ) {
-            $this->students = Course::findOrFail( $this->batch )->user->sortBy("name");
+            $this->students = Course::findOrFail( $this->batch )->user->sortBy( "name" );
         } else {
             $this->students = [];
-            $this->user  = "";
+            $this->user     = "";
             $this->batch    = "";
         }
-
     }
 
-    public function downloadPDF()
-    {
-        return Excel::download(new StudentAccountsExport($this->user, $this->students), 'hello.pdf');
+    public function updated() {
+        $this->dispatchBrowserEvent( 'reInitJquery' );
+    }
+
+    public function downloadPDF() {
+        return Excel::download( new StudentAccountsExport( $this->user, $this->students ), 'hello.pdf' );
     }
 
     public function render() {
