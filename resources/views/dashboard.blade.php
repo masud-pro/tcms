@@ -496,7 +496,7 @@
                     @empty
                         <div class="text-center mx-auto">
                             <h5>No Course Found</h5> 
-                            <a class="btn btn-primary mt-4 btn-block" href="{{ route("display.course") }}">Enroll Now</a>
+                            <a class="btn btn-primary mt-4 btn-block" href="{{ route("courses.all") }}">Enroll Now</a>
                         </div>
                     @endforelse
             </div>

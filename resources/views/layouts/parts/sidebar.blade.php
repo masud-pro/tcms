@@ -15,7 +15,7 @@
     <hr class="sidebar-divider my-0">
 
     <!-- Nav Item - Dashboard -->
-    <li class="nav-item">
+    <li class="nav-item {{ request()->is('dashboard') ? 'active' : '' }} ">
         <a class="nav-link" href="/dashboard">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
@@ -27,7 +27,7 @@
     
 
     @if (auth()->user()->role == "Admin")
-        <li class="nav-item">
+        <li class="nav-item {{ request()->routeIs('course.*') ? 'active' : '' }} ">
 
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#batchCollapse"
                 aria-expanded="true" aria-controls="batchCollapse">
@@ -35,17 +35,17 @@
                 <span>Batches / Courses</span>
             </a>
 
-            <div id="batchCollapse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div id="batchCollapse" class="collapse {{ request()->routeIs('course.*') ? 'show' : '' }}" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Batch Operations:</h6>
-                    <a class="collapse-item" href="{{ route("course.index") }}">All Batches / Courses</a>
-                    <a class="collapse-item" href="{{ route("course.create") }}">Add Batches / Courses</a>
+                    <a class="collapse-item {{ request()->is('course') ? 'active' : '' }}" href="{{ route("course.index") }}">All Batches / Courses</a>
+                    <a class="collapse-item {{ request()->is('course/create') ? 'active' : '' }}" href="{{ route("course.create") }}">Add Batches / Courses</a>
                 </div>
             </div>
 
         </li>
 
-        <li class="nav-item">
+        <li class="nav-item {{ request()->routeIs('user.*') ? 'active' : '' }}">
 
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#userCollapse"
                 aria-expanded="true" aria-controls="userCollapse">
@@ -53,17 +53,17 @@
                 <span>Students</span>
             </a>
 
-            <div id="userCollapse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div id="userCollapse" class="collapse {{ request()->routeIs('user.*') ? 'show' : '' }}" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Student Operations:</h6>
-                    <a class="collapse-item" href="{{ route("user.index") }}">All Students</a>
-                    <a class="collapse-item" href="{{ route("user.create") }}">Add Students</a>
+                    <a class="collapse-item {{ request()->is('user') ? 'active' : '' }}" href="{{ route("user.index") }}">All Students</a>
+                    <a class="collapse-item {{ request()->is('user/create') ? 'active' : '' }}" href="{{ route("user.create") }}">Add Students</a>
                 </div>
             </div>
 
         </li>
 
-        <li class="nav-item">
+        <li class="nav-item {{ request()->routeIs('assignments.*') ? 'active' : '' }}">
 
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#assessmentCollaple"
                 aria-expanded="true" aria-controls="assessmentCollaple">
@@ -71,17 +71,17 @@
                 <span>Assessments</span>
             </a>
 
-            <div id="assessmentCollaple" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div id="assessmentCollaple" class="collapse {{ request()->routeIs('assignments.*') ? 'show' : '' }}" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Assessment Operations:</h6>
-                    <a class="collapse-item" href="{{ route("assignments.index") }}">All Assignments</a>
-                    <a class="collapse-item" href="{{ route("assignments.create") }}">Create Assignments</a>
+                    <a class="collapse-item {{ request()->is('assignments') ? 'active' : '' }}" href="{{ route("assignments.index") }}">All Assignments</a>
+                    <a class="collapse-item {{ request()->is('assignments/create') ? 'active' : '' }}" href="{{ route("assignments.create") }}">Create Assignments</a>
                 </div>
             </div>
 
         </li>
 
-        <li class="nav-item">
+        <li class="nav-item {{ request()->is('attendance*') ? 'active' : '' }}">
 
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#attendaceCollapse"
                 aria-expanded="true" aria-controls="attendaceCollapse">
@@ -89,17 +89,17 @@
                 <span>Attendances</span>
             </a>
     
-            <div id="attendaceCollapse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div id="attendaceCollapse" class="collapse {{ request()->routeIs('attendance*') ? 'show' : '' }}" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Attendance Operations:</h6>
-                    <a class="collapse-item" href="{{ route("attendances.index") }}">Batch Attendances</a>
-                    <a class="collapse-item" href="{{ route("attendance.student-attendance") }}">Student Attendance</a>
+                    <a class="collapse-item {{ request()->routeIs('attendances.index') ? 'active' : '' }}" href="{{ route("attendances.index") }}">Batch Attendances</a>
+                    <a class="collapse-item {{ request()->routeIs('attendance.student-attendance') ? 'active' : '' }}" href="{{ route("attendance.student-attendance") }}">Student Attendance</a>
                 </div>
             </div>
     
         </li>
     
-        <li class="nav-item">
+        <li class="nav-item {{ request()->routeIs('account*') ? 'active' : '' }}">
     
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#paymentsCollapse"
                 aria-expanded="true" aria-controls="paymentsCollapse">
@@ -107,30 +107,30 @@
                 <span>Payments</span>
             </a>
     
-            <div id="paymentsCollapse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div id="paymentsCollapse" class="collapse {{ request()->routeIs('account*') ? 'show' : '' }}" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Reports:</h6>
-                    <a class="collapse-item" href="{{ route("account.overall-account") }}">Overall Accounts</a>
-                    <a class="collapse-item" href="{{ route("account.all-batch-accounts") }}">All Batch Account</a>
-                    <a class="collapse-item" href="{{ route("accounts.index") }}">Batch Accounts</a>
-                    <a class="collapse-item" href="{{ route("account.student-account") }}">Student Account</a>
+                    <a class="collapse-item {{ request()->routeIs('account.overall-account') ? 'active' : '' }}" href="{{ route("account.overall-account") }}">Overall Accounts</a>
+                    <a class="collapse-item {{ request()->routeIs('account.all-batch-accounts') ? 'active' : '' }}" href="{{ route("account.all-batch-accounts") }}">All Batch Account</a>
+                    <a class="collapse-item {{ request()->routeIs('accounts.index') ? 'active' : '' }}" href="{{ route("accounts.index") }}">Batch Accounts</a>
+                    <a class="collapse-item {{ request()->routeIs('account.student-account') ? 'active' : '' }}" href="{{ route("account.student-account") }}">Student Account</a>
                     <h6 class="collapse-header">Add Accounts:</h6>
-                    <a class="collapse-item" href="{{ route("account.manual.create") }}">Add Student Account</a>
+                    <a class="collapse-item {{ request()->routeIs('account.manual.create') ? 'active' : '' }}" href="{{ route("account.manual.create") }}">Add Student Account</a>
                 </div>
             </div>
     
         </li>
 
-        <li class="nav-item">
+        <li class="nav-item {{ request()->routeIs('transactions') ? 'active' : '' }}">
     
-            <a class="nav-link" href="{{ route("account.transactions") }}">
+            <a class="nav-link" href="{{ route("transactions") }}">
                 <i class="fas fa-money-check-alt"></i>
                 <span>Transactions</span>
             </a>
 
         </li>
 
-        <li class="nav-item">
+        <li class="nav-item {{ request()->routeIs('sms*') ? 'active' : '' }}">
 
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#smsCollapse"
                 aria-expanded="true" aria-controls="smsCollapse">
@@ -138,17 +138,17 @@
                 <span>SMS Panel</span>
             </a>
     
-            <div id="smsCollapse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div id="smsCollapse" class="collapse {{ request()->routeIs('sms*') ? 'show' : '' }}" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">SMS Operations:</h6>
-                    <a class="collapse-item" href="{{ route("sms.index") }}">SMS Dashboard</a>
-                    <a class="collapse-item" href="{{ route("batch.sms") }}">Send Batch SMS</a>
+                    <a class="collapse-item {{ request()->routeIs('sms.index') ? 'active' : '' }}" href="{{ route("sms.index") }}">SMS Dashboard</a>
+                    <a class="collapse-item {{ request()->routeIs('sms.batch') ? 'active' : '' }}" href="{{ route("sms.batch") }}">Send Batch SMS</a>
                 </div>
             </div>
     
         </li>
 
-        <li class="nav-item">
+        <li class="nav-item {{ request()->routeIs('filemanager') ? 'active' : '' }}">
     
             <a class="nav-link" href="{{ route("filemanager") }}">
                 <i class="fas fa-folder-open"></i>
@@ -158,7 +158,7 @@
     
         </li>
 
-        <li class="nav-item">
+        <li class="nav-item {{ request()->routeIs('settings') ? 'active' : '' }}">
     
             <a class="nav-link" href="{{ route('settings') }}">
                 <i class="fas fa-sliders-h"></i>
@@ -170,7 +170,7 @@
     
 
     @else
-        <li class="nav-item">
+        <li class="nav-item {{ request()->routeIs('courses.*') ? 'active' : '' }}">
 
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#batchCollapse"
                 aria-expanded="true" aria-controls="batchCollapse">
@@ -178,17 +178,16 @@
                 <span>Batches / Courses</span>
             </a>
 
-            <div id="batchCollapse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div id="batchCollapse" class="collapse {{ request()->routeIs('courses.*') ? 'show' : '' }}" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Batch Operations:</h6>
-                    <a class="collapse-item" href="{{ route("my.courses") }}">My Batches / Courses</a>
-                    <a class="collapse-item" href="{{ route("display.course") }}">All Batches / Courses</a>
+                    <a class="collapse-item {{ request()->routeIs('courses.individual.student') ? 'active' : '' }}" href="{{ route("courses.individual.student") }}">My Batches / Courses</a>
+                    <a class="collapse-item {{ request()->routeIs('courses.all') ? 'active' : '' }}" href="{{ route("courses.all") }}">All Batches / Courses</a>
                 </div>
             </div>
-
         </li>
 
-        <li class="nav-item">
+        <li class="nav-item {{ request()->routeIs('attendance.student.individual') ? 'active' : '' }}">
 
             <a class="nav-link" href="{{ route("attendance.student.individual") }}">
                 <i class="far fa-clock"></i>
@@ -197,7 +196,7 @@
     
         </li>
     
-        <li class="nav-item">
+        <li class="nav-item {{ request()->routeIs('account.student.individual') ? 'active' : '' }}">
     
             <a class="nav-link" href="{{ route("account.student.individual") }}">
                 <i class="fas fa-money-check-alt"></i>
@@ -206,7 +205,7 @@
     
         </li>
 
-        <li class="nav-item">
+        <li class="nav-item {{ request()->routeIs('profile.show') ? 'active' : '' }}">
     
             <a class="nav-link" href="{{ route("profile.show") }}">
                 <i class="fas fa-user"></i>

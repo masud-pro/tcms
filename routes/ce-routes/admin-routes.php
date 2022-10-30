@@ -49,7 +49,7 @@ Route::patch( 'account/change', [AccountController::class, "change"] )->name( "a
 Route::get( 'accounts', [AccountController::class, "index"] )->name( "accounts.index" );
 Route::get( 'account/add-manually', [AccountController::class, 'create_manually'] )->name( "account.manual.create" );
 Route::get( 'account/individual-student', [AccountController::class, "individual_account"] )->name( "account.student-account" );
-Route::get( 'account/transactions', [AccountController::class, "transactions"] )->name( "account.transactions" );
+Route::get( 'account/transactions', [AccountController::class, "transactions"] )->name( "transactions" );
 Route::post( 'account/{course}/regenerate', [AccountController::class, "regenerate"] )->name( "account.regenerate" );
 Route::post( 'account/{course}/generate-new', [AccountController::class, "regenerate_new"] )->name( "account.regenerate.new" );
 Route::post( 'account/sms-due-report/{parent}', [AccountController::class, "send_sms_due_report"] )->name( "account.sms-report" );
@@ -75,7 +75,7 @@ Route::patch( "settings", [OptionController::class, 'update'] )->name( 'settings
 //SMS
 Route::post( 'sms', [SMSController::class, 'send'] )->name( 'send.sms' );
 Route::get( 'all-sms', [SMSController::class, 'index'] )->name( 'sms.index' );
-Route::get( 'batch-sms', [SMSController::class, 'create_batch_sms'] )->name( 'batch.sms' );
+Route::get( 'batch-sms', [SMSController::class, 'create_batch_sms'] )->name( 'sms.batch' );
 Route::post( 'batch-sms', [SMSController::class, 'send_batch_sms'] )->name( 'batch.sms.send' );
 Route::post( 'send/results', [SMSController::class, 'send_exam_results'] )->name( 'exam.result.sms' );
 Route::post('send-all-absent-sms,{send_to}', [AccountController::class,'all_students_account_sms'])->name('send.all.student.account.sms');

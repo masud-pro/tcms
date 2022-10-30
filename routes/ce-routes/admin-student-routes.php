@@ -12,10 +12,10 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
 // Courses
-Route::get( "my-course", [CourseController::class, "my_courses"] )->name( "my.courses" );
+Route::get( "my-course", [CourseController::class, "my_courses"] )->name( "courses.individual.student" );
 Route::resource( 'course', CourseController::class );
 Route::resource( 'course.feeds', FeedController::class )->shallow();
-Route::get( "display-courses", [CourseController::class, "display"] )->name( "display.course" );
+Route::get( "display-courses", [CourseController::class, "display"] )->name( "courses.all" );
 Route::post( "course/{course}/enroll", [CourseController::class, "enroll"] )->name( "course.enroll" );
 Route::get( 'course/{course}/students', [UserController::class, "course_students"] )->name( "course.students" )->middleware( "canSeeStudents" );
 
