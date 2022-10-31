@@ -1,38 +1,46 @@
 #fm-main-block .btn-group:last-child,
-.tox-statusbar__branding{
+.tox-statusbar__branding {
     display: none;
 }
 
 .ce-logo i,
-.ce-logo svg{
+.ce-logo svg {
     font-size: 55px;
-    color: #6875F5;
+    color: #6875f5;
 }
-.ce-logo img{
+.ce-logo img {
     width: 200px;
     margin-bottom: 20px;
 }
-body{
-    color: #222!important;
+body {
+    color: #222 !important;
 }
 
-.pointer{
+.pointer {
     cursor: pointer;
 }
 
-.mt-x2{
+.mt-x2 {
     margin-top: 2rem;
 }
+.px-8 {
+    padding-left: 8px;
+    padding-right: 8px;
+}
 
-@media all and ( max-width: 768px ){
-    .ce-heading{
+.sm-hight {
+    height: calc(1.2em + 0.75rem + 2px);
+}
+
+@media all and (max-width: 768px) {
+    .ce-heading {
         font-size: 20px;
-        margin-left: 0px!important;
+        margin-left: 0px !important;
     }
-    .ce-welcome-heading{
+    .ce-welcome-heading {
         font-size: 34px;
     }
-    .ce-welcome-description{
+    .ce-welcome-description {
         font-size: 18px;
     }
 }

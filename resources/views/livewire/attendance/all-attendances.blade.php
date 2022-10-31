@@ -1,15 +1,27 @@
 <div>
+    
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">
-                Attendance
-                <div wire:loading>
-                    <div class="spinner-border" role="status">
-                        <span class="sr-only">Loading...</span>
-                    </div>
+            <div class="row">
+                <div class="col-6">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        Attendance
+                        <div wire:loading>
+                            <div class="spinner-border" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                    </h6>
                 </div>
-                @if( $batch ) - <a class="small" href="" wire:click.prevent="downloadPDF">Download as PDF</a> @endif
-            </h6>
+                <div class="col-6 text-right">
+                    @if( $batch )
+                    <a class=" btn btn-danger btn-sm" wire:click.prevent="downloadPDF">
+                        <i class="fa-solid fa-file-pdf"></i> Download as PDF
+                    </a>
+                    @endif
+                </div>
+            </div>
+            
         </div>
         <div class="card-body">
             <div class="form-row mb-4">
@@ -87,6 +99,7 @@
 @push('styles')
     @livewireStyles()
     <link href="{{ asset("assets") }}/css/datepicker/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endpush
 @push('scripts')
     @livewireScripts()
@@ -104,5 +117,6 @@
             var batch = $('#batch').val();
             @this.set('batch', this.value);
         });
+
     </script>
 @endpush
