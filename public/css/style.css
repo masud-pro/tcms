@@ -32,6 +32,10 @@ body {
     height: calc(1.2em + 0.75rem + 2px);
 }
 
+.ml-x-15{
+    margin-left: 15% !important;
+}
+
 @media all and (max-width: 768px) {
     .ce-heading {
         font-size: 20px;

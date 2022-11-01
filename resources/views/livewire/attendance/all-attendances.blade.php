@@ -4,7 +4,7 @@
         <div class="card-header py-3">
             <div class="row">
                 <div class="col-6">
-                    <h6 class="m-0 font-weight-bold text-primary">
+                    <h6 class="m-0 pt-2 font-weight-bold text-primary">
                         Attendance
                         <div wire:loading>
                             <div class="spinner-border" role="status">
@@ -99,7 +99,6 @@
 @push('styles')
     @livewireStyles()
     <link href="{{ asset("assets") }}/css/datepicker/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endpush
 @push('scripts')
     @livewireScripts()

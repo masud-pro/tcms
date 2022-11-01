@@ -75,7 +75,7 @@ class AllBatchAccountsExport implements FromCollection, WithMapping, WithHeading
 
     public function properties(): array{
         return [
-            'title' => 'Account Report Of All Batch - ' . $this->month,
+            'title' => 'Account Report Of All Batch - ',
         ];
     }
 
