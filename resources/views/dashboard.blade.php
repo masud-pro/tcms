@@ -272,10 +272,10 @@
 
                                         <h5 class="card-title text-dark">
                                             <a class="text-dark" href="{{ route("course.feeds.index",['course'=>$course->id]) }}">
-                                                {{ $course->name }}
+                                                {{ $course->name }}  <span class="flot-r">Fee : <span class="text-primary font-weight-bold">{{ $course->fee }}</span>
                                             </a>
                                         </h5>
-                                        <p class="card-text">
+                                        {{-- <p class="card-text">
                                             {{ Illuminate\Support\Str::words( $course->description ,10) }}
                                             @if (Illuminate\Support\Str::wordCount( $course->description) > 10)   
                                                 <a data-toggle="collapse" href="#collapseExample{{ $course->id }}" role="button" aria-expanded="false" aria-controls="collapseExample">Read More</a>
@@ -285,17 +285,26 @@
                                             <div class="card card-body">
                                                 {{ $course->description }}
                                             </div>
-                                        </div>
+                                        </div> --}}
 
                                     </div>
                                     <ul class="list-group list-group-flush">
-                                        <li class="list-group-item">Students: <span class="text-primary font-weight-bold">{{ $course->user ? $course->user->count() : "" }}</span></li>
-                                        <li class="list-group-item">Time: <span class="text-primary font-weight-bold">{{ $course->time }}</span></li>
-                                        <li class="list-group-item">Fee: <span class="text-primary font-weight-bold">{{ $course->fee }}</span></li>
+                                        <li class="list-group-item">
+                                        <span> Students: <span class="text-primary font-weight-bold">{{ $course->user ? $course->user->count() : "" }}</span></span>
+                                        <span class="flot-r"> Time: <span class="text-primary font-weight-bold">{{ $course->time }}</span>
+                                        </li>
+                                        {{-- <li class="list-group-item">Time: <span class="text-primary font-weight-bold">{{ $course->time }}</span></li> --}}
+                                        {{-- <li class="list-group-item">Fee: <span class="text-primary font-weight-bold">{{ $course->fee }}</span></li> --}}
                                     </ul>
-                                    <div class="card-body">
-                                        {{-- <a href="#" class="card-link float-left">Enroll</a> --}}
-                                        <a href="{{ route("course.feeds.index",['course'=>$course->id]) }}" class="card-link btn btn-success font-weight-bold btn-block">Go To Feed</a>
+                                    <div class="card-body d-flex justify-content-between">
+                                        {{-- <a href="#" class="card-link float-left">Enroll</a>
+                                        <a href="{{ route("course.feeds.index",['course'=>$course->id]) }}" class="btn btn-success font-weight-bold">Feed</a>
+                                        <a href="{{ route("course.feeds.index",['course'=>$course->id]) }}" class="btn btn-success font-weight-bold">Go To Feed</a>
+                                        <a href="{{ route("course.feeds.index",['course'=>$course->id]) }}" class="btn btn-success font-weight-bold">Go To Feed</a> --}}
+
+                                        <a href="{{ route("course.feeds.index",['course'=>$course->id]) }}" class="btn btn-success font-weight-bold">Go To Feed</a>
+                                        <a href="{{ route("course.feeds.index",['course'=>$course->id]) }}" class="btn btn-success font-weight-bold">Attendance</a>
+                                        <a href="{{ route("course.feeds.index",['course'=>$course->id]) }}" class="btn btn-success font-weight-bold">Payment</a>
                                     </div>
                                 </div> 
                             </div>

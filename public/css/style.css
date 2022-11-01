@@ -36,6 +36,10 @@ body {
     margin-left: 15% !important;
 }
 
+.flot-r{
+    float: right;
+}
+
 @media all and (max-width: 768px) {
     .ce-heading {
         font-size: 20px;
