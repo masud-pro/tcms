@@ -154,7 +154,7 @@
                 </div>
                 <div class="col-md">
                     <label><b>Search</b></label>
-                    <input type="text" id="search" class="form-control" wire:model.debounce.1000ms="q" placeholder="Search">
+                    <input type="text" id="search" class="form-control" wire:model.debounce.1000ms="q" placeholder="Search by Student Name">
                 </div>
             </div>
 

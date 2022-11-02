@@ -68,14 +68,14 @@
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#assessmentCollaple"
                 aria-expanded="true" aria-controls="assessmentCollaple">
                 <i class="fas fa-pen"></i>
-                <span>Assessments</span>
+                <span>Exam Questions</span>
             </a>
 
             <div id="assessmentCollaple" class="collapse {{ request()->routeIs('assignments.*') ? 'show' : '' }}" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Assessment Operations:</h6>
-                    <a class="collapse-item {{ request()->is('assignments') ? 'active' : '' }}" href="{{ route("assignments.index") }}">All Assignments</a>
-                    <a class="collapse-item {{ request()->is('assignments/create') ? 'active' : '' }}" href="{{ route("assignments.create") }}">Create Assignments</a>
+                    <a class="collapse-item {{ request()->is('assignments') ? 'active' : '' }}" href="{{ route("assignments.index") }}">All Questions</a>
+                    <a class="collapse-item {{ request()->is('assignments/create') ? 'active' : '' }}" href="{{ route("assignments.create") }}">Create Questions</a>
                 </div>
             </div>
 
@@ -104,18 +104,19 @@
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#paymentsCollapse"
                 aria-expanded="true" aria-controls="paymentsCollapse">
                 <i class="fas fa-dollar-sign"></i>
-                <span>Payments</span>
+                <span>Accounts</span>
             </a>
     
             <div id="paymentsCollapse" class="collapse {{ request()->routeIs('account*') ? 'show' : '' }}" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Update Accounts:</h6>
+                    <a class="collapse-item {{ request()->routeIs('account.all-batch-accounts') ? 'active' : '' }}" href="{{ route("account.all-batch-accounts") }}">Update Payments</a>
+                    <a class="collapse-item {{ request()->routeIs('accounts.index') ? 'active' : '' }}" href="{{ route("accounts.index") }}">Batch Accounts</a>
                     <h6 class="collapse-header">Reports:</h6>
                     <a class="collapse-item {{ request()->routeIs('account.overall-account') ? 'active' : '' }}" href="{{ route("account.overall-account") }}">Overall Accounts</a>
-                    <a class="collapse-item {{ request()->routeIs('account.all-batch-accounts') ? 'active' : '' }}" href="{{ route("account.all-batch-accounts") }}">All Batch Account</a>
-                    <a class="collapse-item {{ request()->routeIs('accounts.index') ? 'active' : '' }}" href="{{ route("accounts.index") }}">Batch Accounts</a>
                     <a class="collapse-item {{ request()->routeIs('account.student-account') ? 'active' : '' }}" href="{{ route("account.student-account") }}">Student Account</a>
-                    <h6 class="collapse-header">Add Accounts:</h6>
-                    <a class="collapse-item {{ request()->routeIs('account.manual.create') ? 'active' : '' }}" href="{{ route("account.manual.create") }}">Add Student Account</a>
+                    {{-- <h6 class="collapse-header">Add Accounts:</h6>
+                    <a class="collapse-item {{ request()->routeIs('account.manual.create') ? 'active' : '' }}" href="{{ route("account.manual.create") }}">Add Student Account</a> --}}
                 </div>
             </div>
     

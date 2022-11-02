@@ -290,7 +290,7 @@
                                     </div>
                                     <ul class="list-group list-group-flush">
                                         <li class="list-group-item">
-                                        <span> Students: <span class="text-primary font-weight-bold">{{ $course->user ? $course->user->count() : "" }}</span></span>
+                                        <span> Students: <span class="text-primary font-weight-bold">{{ $course->user ? $course->user->count() : "" }} / {{ $course->capacity ?? "Not Found" }} </span></span>
                                         <span class="flot-r"> Time: <span class="text-primary font-weight-bold">{{ $course->time }}</span>
                                         </li>
                                         {{-- <li class="list-group-item">Time: <span class="text-primary font-weight-bold">{{ $course->time }}</span></li> --}}
@@ -302,9 +302,9 @@
                                         <a href="{{ route("course.feeds.index",['course'=>$course->id]) }}" class="btn btn-success font-weight-bold">Go To Feed</a>
                                         <a href="{{ route("course.feeds.index",['course'=>$course->id]) }}" class="btn btn-success font-weight-bold">Go To Feed</a> --}}
 
-                                        <a href="{{ route("course.feeds.index",['course'=>$course->id]) }}" class="btn btn-success font-weight-bold">Go To Feed</a>
-                                        <a href="{{ route("course.feeds.index",['course'=>$course->id]) }}" class="btn btn-success font-weight-bold">Attendance</a>
-                                        <a href="{{ route("course.feeds.index",['course'=>$course->id]) }}" class="btn btn-success font-weight-bold">Payment</a>
+                                        <a href="{{ route("course.feeds.index",['course'=>$course->id]) }}" class="btn btn-outline-primary font-weight-bold">Go To Feed</a>
+                                        <a href="{{ route("course.attendance.create",[ "course" => $course->id ]) }}" class="btn btn-outline-secondary font-weight-bold">Attendance</a>
+                                        <a href="{{ route("course.accounts.create",[ "course" => $course->id ]) }}" class="btn btn-outline-success font-weight-bold">Payment</a>
                                     </div>
                                 </div> 
                             </div>

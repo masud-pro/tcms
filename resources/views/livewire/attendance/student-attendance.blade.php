@@ -4,7 +4,7 @@
          <div class="row">
             <div class="col-6">
                 <h6 class="m-0 pt-2 font-weight-bold text-primary">
-                    Attendance
+                    Attendance Of Individual Student 
                     <div wire:loading>
                         <div class="spinner-border" role="status">
                             <span class="sr-only">Loading...</span>
