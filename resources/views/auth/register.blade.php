@@ -132,7 +132,6 @@
                     </div>
                 @endif
 
-                <input type="hidden" value="Student" name="role">
 
                 <div class="mb-0">
                     <div class="d-flex justify-content-end align-items-baseline">
