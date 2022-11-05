@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire\Attendance;
 
-use App\Models\Course;
+
 use Livewire\Component;
 use App\Models\Attendance;
 use Illuminate\Support\Facades\Auth;

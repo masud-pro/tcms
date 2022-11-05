@@ -84,4 +84,3 @@ Route::post('send-all-absent-sms,{send_to}', [AccountController::class,'all_stud
 Route::get( 'filemanager', function () {
     return view( "ms.filemanager.filemanager" );
 } )->name( "filemanager" );
-

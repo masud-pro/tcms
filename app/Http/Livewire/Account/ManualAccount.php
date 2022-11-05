@@ -2,26 +2,50 @@
 
 namespace App\Http\Livewire\Account;
 
-use App\Models\Account;
-use App\Models\Course;
 use Carbon\Carbon;
+use App\Models\Course;
+use App\Models\Account;
 use Livewire\Component;
 
 class ManualAccount extends Component {
+    /**
+     * @var mixed
+     */
     public $batch;
 
+    /**
+     * @var mixed
+     */
     public $month;
 
+    /**
+     * @var mixed
+     */
     public $student;
 
+    /**
+     * @var mixed
+     */
     public $batches;
 
+    /**
+     * @var mixed
+     */
     public $students;
 
+    /**
+     * @var mixed
+     */
     public $paid_amount;
 
+    /**
+     * @var mixed
+     */
     public $status;
 
+    /**
+     * @var array
+     */
     protected $rules = [
         'student'     => 'required',
         'batch'       => 'required',
@@ -30,6 +54,9 @@ class ManualAccount extends Component {
         'status'      => 'required',
     ];
 
+    /**
+     * @var array
+     */
     protected $queryString = [
         'student' => ["except" => ""],
         'batch'   => ["except" => ""],
@@ -42,7 +69,7 @@ class ManualAccount extends Component {
         $this->status   = "Unpaid";
 
         if ( $this->batch != "" ) {
-            $this->students = Course::findOrFail( $this->batch )->user->sortBy("name");
+            $this->students = Course::findOrFail( $this->batch )->user->sortBy( "name" );
         }
 
     }
@@ -57,11 +84,11 @@ class ManualAccount extends Component {
         $validatedData['course_id'] = $this->batch;
 
         // Format the month
-        $month                      = "01" . "-" . $validatedData['month'];
-        $month                      = Carbon::createFromFormat( 'd-m-Y', $month );
+        $month = "01" . "-" . $validatedData['month'];
+        $month = Carbon::createFromFormat( 'd-m-Y', $month );
 
-        $validatedData['month']     = $month;
-        
+        $validatedData['month'] = $month;
+
         Account::create( $validatedData );
 
         return redirect()->route( "course.accounts.create", ['course' => $this->batch] )->with( "success", "Account Added Successfully" );
@@ -70,13 +97,16 @@ class ManualAccount extends Component {
     public function updatedBatch() {
 
         if ( $this->batch != "" ) {
-            $this->students = Course::findOrFail( $this->batch )->user->sortBy("name");
+            $this->students = Course::findOrFail( $this->batch )->user->sortBy( "name" );
         } else {
             $this->students = [];
             $this->student  = "";
             $this->batch    = "";
         }
+    }
 
+    public function updated() {
+        $this->dispatchBrowserEvent( 'reInitJquery' );
     }
 
     public function render() {

@@ -13,9 +13,10 @@
         </div>
         <div class="card-body">
             <div class="form-row mb-4">
-                <div class="col-md">
+                <div class="col-md" wire:ignore >
                     <label><b>Batch / Course</b></label>
-                    <select wire:model.debounce.500ms="batch" class="form-control">
+                    {{-- <select wire:model.debounce.500ms="batch" class="form-control"> --}}
+                    <select wire:model.debounce.500ms="batch" id="batch" class="form-control js-example-disabled-results">
                         <option value="">Select Batch / Course</option>
                         @foreach ($batches as $sbatch)
                             <option value="{{ $sbatch->id }}">{{ $sbatch->name }}</option>
@@ -24,7 +25,8 @@
                 </div>
                 <div class="col-md">
                     <label><b>Students</b></label>
-                    <select wire:model.debounce.500ms="student" class="form-control">
+                    {{-- <select wire:model.debounce.500ms="student" class="form-control"> --}}
+                    <select wire:model.debounce.500ms="student" id="student" class="form-control js-example-disabled-results">
                         <option value="">Select Student</option>
                         @foreach ($students as $student)
                             <option value="{{ $student->id }}"> ID:{{ $student->id }} - {{ $student->name }} - {{ $student->email }}</option>
@@ -103,5 +105,30 @@
         $('#month').on('change', function (e) {
             @this.set('month', e.target.value);
         });
+
+        /*
+        
+          $('#user_id').change(function(){
+            var users = $('#user_id').val();
+            @this.set('form.user_id',users);
+        });
+
+        */
+
+        window.addEventListener('reInitJquery', event => {
+            var $disabledResults = $(".js-example-disabled-results");
+            $disabledResults.select2();
+        })
+
+        $('#batch').change(function(){
+            var batch = $('#batch').val();
+            @this.set('batch', this.value);
+        });
+        $('#student').change(function(){
+            var student = $('#student').val();
+            @this.set('student',student);
+        });
+
+
     </script>
 @endpush
