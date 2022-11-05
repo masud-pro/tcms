@@ -2,9 +2,11 @@
 
 namespace App\Http\Livewire\Account;
 
-use App\Models\Account;
 use App\Models\Course;
+use App\Models\Account;
 use Livewire\Component;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\StudentAccountsExport;
 
 class StudentAccount extends Component {
 
@@ -41,6 +43,11 @@ class StudentAccount extends Component {
             $this->batch    = "";
         }
 
+    }
+
+    public function downloadPDF()
+    {
+        return Excel::download(new StudentAccountsExport($this->user, $this->students), 'hello.pdf');
     }
 
     public function render() {

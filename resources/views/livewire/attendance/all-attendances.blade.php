@@ -8,13 +8,15 @@
                         <span class="sr-only">Loading...</span>
                     </div>
                 </div>
+                @if( $batch ) - <a class="small" href="" wire:click.prevent="downloadPDF">Download as PDF</a> @endif
             </h6>
         </div>
         <div class="card-body">
             <div class="form-row mb-4">
                 <div class="col-md">
                     <label><b>Batch / Course</b></label>
-                    <select wire:model.debounce.500ms="batch" class="form-control">
+                    {{-- <select wire:model.debounce.500ms="batch" class="form-control js-example-disabled-results"> --}}
+                    <select wire:model.debounce.500ms="batch" class="form-control js-example-disabled-results">
                         <option value="">Select Batch / Course</option>
                         @foreach ( $batches as $sbatch )
                             <option value="{{ $sbatch->id }}">{{ $sbatch->name }}</option>

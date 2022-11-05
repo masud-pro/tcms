@@ -6,6 +6,8 @@ use Carbon\Carbon;
 use App\Models\Course;
 use Livewire\Component;
 use App\Models\Attendance;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\AttendanceBatchExport;
 
 class AllAttendances extends Component {
 
@@ -24,6 +26,12 @@ class AllAttendances extends Component {
         $this->batches = Course::all();
         $this->date = Carbon::today()->format("Y-m-d");
     }
+
+ 
+    public function downloadPDF() {
+        return Excel::download(new AttendanceBatchExport($this->batch, $this->date), 'Attendance - ' . $this->date . '.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
+    }
+    
 
     public function render() {
 

@@ -74,6 +74,7 @@
     <div class="row">
         <div class="col-lg mt-4">
             {{ $accounts->links() }}
+            <a class="small" id="pdf" hidden href="" wire:click.prevent="downloadPDF">Download as PDF</a>
         </div>
         <div class="col-lg mt-4 text-right">
             <a href="{{ route("reauthorize.all") }}" class="btn btn-primary"
@@ -123,6 +124,11 @@
                 $("input#reauth_all").val("1");
                 $("#updateForm").submit();
             });
+
+            function clickpdf() {
+                document.getElementById("pdf").click();
+            }
+
     </script>
 @endpush
 

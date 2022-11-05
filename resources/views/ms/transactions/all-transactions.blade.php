@@ -35,7 +35,7 @@
                 </div>
                 <div class="col-lg-2">
                     <label class="d-none d-lg-block"></label>
-                    <input type="submit" class="btn btn-primary btn-block mt-2">
+                    <input type="submit" class="btn btn-primary btn-block mt-x2">
                 </div>
             </div>
         </form>
