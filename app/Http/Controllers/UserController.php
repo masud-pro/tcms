@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Course;
 use App\Models\Account;
-use App\Models\Assessment;
 use App\Models\Attendance;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
