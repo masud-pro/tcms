@@ -46,7 +46,7 @@
         </div> --}}
 
         <div class="text-left">
-            <a class="btn btn-primary mb-3" href="{{ route("batch.sms") }}">Send Batch SMS</a>
+            <a class="btn btn-primary mb-3" href="{{ route("sms.batch") }}">Send Batch SMS</a>
 
             <div class="btn-group mb-3">
                 <button 

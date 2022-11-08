@@ -127,8 +127,10 @@
             <h6 class="m-0 font-weight-bold text-primary">
                 
                 <div class="row">
-                    <div class="col">Account  - <a class="small" href="" wire:click.prevent="downloadPDF">Download as PDF</a> </div>
-                    <div class="col text-right"> 
+                    <div class="col-6 m-0 pt-2">Account </div>
+                    <div class="col-6 text-right"> 
+                        <a class="btn btn-danger btn-sm" wire:click.prevent="downloadPDF">
+                            <i class="fa-solid fa-file-pdf"></i> Download as PDF</a>
                         {{-- @if ( $total != null )
                             Total this month - {{ $total }} Tk
                         @endif 
@@ -152,7 +154,7 @@
                 </div>
                 <div class="col-md">
                     <label><b>Search</b></label>
-                    <input type="text" id="search" class="form-control" wire:model.debounce.1000ms="q" placeholder="Search">
+                    <input type="text" id="search" class="form-control" wire:model.debounce.1000ms="q" placeholder="Search by Student Name">
                 </div>
             </div>
 

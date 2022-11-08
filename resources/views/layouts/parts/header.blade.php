@@ -21,8 +21,8 @@
 
 
     <h1 class="h4 ml-3 mt-1 text-gray-800 ce-heading">
-         <!-- Title same goes for heading -->
-        @yield("title")
+        <!-- Title same goes for heading -->
+        @yield('title')
     </h1>
 
     <!-- Topbar Navbar -->
@@ -35,13 +35,11 @@
                 <i class="fas fa-search fa-fw"></i>
             </a> --}}
             <!-- Dropdown - Messages -->
-            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                aria-labelledby="searchDropdown">
+            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
                 <form class="form-inline mr-auto w-100 navbar-search">
                     <div class="input-group">
-                        <input type="text" class="form-control bg-light border-0 small"
-                            placeholder="Search for..." aria-label="Search"
-                            aria-describedby="basic-addon2">
+                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
+                            aria-label="Search" aria-describedby="basic-addon2">
                         <div class="input-group-append">
                             <button class="btn btn-primary" type="button">
                                 <i class="fas fa-search fa-sm"></i>
@@ -168,50 +166,58 @@
                 <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
             </div>
         </li> --}}
-        @if ( auth()->user()->role == "Admin" )
-            <li class="mt-1"><a href="{{ route("account.all-batch-accounts") }}" class="btn btn-outline-primary btn-sm mt-3">Update Payments</a></li>
+        @if (auth()->user()->role == 'Admin')
+            {{-- <li class="mt-1 mr-3"><a href="{{ route("account.all-batch-accounts") }}" class="btn btn-outline-primary btn-sm mt-3">Update Payments</a></li> --}}
+
+            @livewire("attendance.take-attendance")
+
+            <li class="mt-1"><a href="{{ route('account.all-batch-accounts') }}"
+                    class="btn btn-outline-primary btn-sm mt-3">Update Payments</a></li>
             <div class="topbar-divider d-none d-sm-block"></div>
         @else
-            <li class="mt-1"><h5 class="mt-3">Student ID: {{ Auth::user()->id }}</h5></li>
+            <li class="mt-1">
+                <h5 class="mt-3">Student ID: {{ Auth::user()->id }}</h5>
+            </li>
             <div class="topbar-divider d-none d-sm-block"></div>
         @endif
 
         <!-- Nav Item - User Information -->
         <li class="nav-item dropdown no-arrow">
-            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->name }}</span>
-                <img class="img-profile rounded-circle"
-                    src="{{ Auth::user()->profile_photo_url }}">
+                <img class="img-profile rounded-circle" src="{{ Auth::user()->profile_photo_url }}">
             </a>
             <!-- Dropdown - User Information -->
-            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                aria-labelledby="userDropdown">
+            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
                 <a class="dropdown-item" href="/user/profile">
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                     Profile
                 </a>
 
-                @if ( auth()->user()->role == "Admin" )
+                @if (auth()->user()->role == 'Admin')
                     <a class="dropdown-item" href="{{ route('payments.generate') }}"
-                    onclick="return confirm('Generate Payments Now?')">
+                        onclick="return confirm('Generate Payments Now?')">
                         <i class="fas fa-dollar-sign fa-sm fa-fw mr-2 text-gray-400"></i>
                         Generate Payments
                     </a>
-                    <a class="dropdown-item" href="{{ route("payments.regenerate-all") }}" onclick="return confirm('Re-generate all payments Now?')">
+                    <a class="dropdown-item" href="{{ route('payments.regenerate-all') }}"
+                        onclick="return confirm('Re-generate all payments Now?')">
                         <i class="fas fa-redo-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                         Re-generate all payments
                     </a>
-                    <a class="dropdown-item" href="{{ route("reauthorize.all") }}" onclick="return confirm('Reauthorize all users Now?')">
+                    <a class="dropdown-item" href="{{ route('reauthorize.all') }}"
+                        onclick="return confirm('Reauthorize all users Now?')">
                         <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                        Reauthorize All Users
+                        Reauthorize All Users>
                     </a>
                 @endif
 
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="{{ route('logout') }}"
-                onclick="event.preventDefault();
-                        document.getElementById('logout-form').submit();" data-toggle="modal">
+                    onclick="event.preventDefault();
+                        document.getElementById('logout-form').submit();"
+                    data-toggle="modal">
                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                     Logout
                 </a>

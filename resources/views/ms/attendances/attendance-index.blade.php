@@ -48,9 +48,16 @@
         <div class="card shadow mb-4">
 
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">
-                    Attendance for {{ \Carbon\Carbon::today()->format('d-M-Y') }}
-                </h6>
+                <div class="d-flex justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        Attendance for {{ \Carbon\Carbon::today()->format('d-M-Y') }}
+                    </h6>
+                    <span class="font-weight-bold text-primary">  Batch Name : {{ request()->course->name }}</span>
+                </div>
+                
+                {{-- <h6 class="m-0 font-weight-bold text-primary text-right">
+                    Batch Name : {{ request()->course->name }}
+                </h6> --}}
             </div>
 
             <div class="card-body">

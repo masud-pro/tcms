@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Account;
-use App\Models\Course;
-use App\Models\User;
 use Carbon\Carbon;
+use App\Models\User;
+use App\Models\Course;
+use App\Models\Account;
+use App\Models\Attendance;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Laravel\Jetstream\Jetstream;
+use App\Models\AssignmentResponse;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller {
     /**
@@ -22,6 +24,9 @@ class UserController extends Controller {
         return view( "ms.students.all-students" );
     }
 
+    /**
+     * @param $course
+     */
     public function course_students( $course ) {
         $course = Course::withTrashed()->findOrFail( $course );
 
@@ -47,7 +52,7 @@ class UserController extends Controller {
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request    $request
      * @return \Illuminate\Http\Response
      */
     public function store( Request $request ) {
@@ -96,7 +101,7 @@ class UserController extends Controller {
             $accountsCount = Account::whereMonth( "month", Carbon::today() )
                 ->where( "course_id", $course->id )
                 ->count();
-            
+
             if ( $accountsCount == 0 ) {
 
                 $allaccounts = Account::whereMonth( "month", Carbon::today() )
@@ -109,7 +114,7 @@ class UserController extends Controller {
             }
 
             // Add the account if payment is generated previously
-            if( $user->is_active == 1 ){
+            if ( $user->is_active == 1 ) {
                 $accounts[] = [
                     'user_id'     => $user->id,
                     'course_id'   => $course->id,
@@ -128,6 +133,9 @@ class UserController extends Controller {
 
     }
 
+    /**
+     * @param Request $request
+     */
     public function store_admin( Request $request ) {
         $data = $request->validate( [
             'name'     => ['required', 'string', 'max:255'],
@@ -150,7 +158,7 @@ class UserController extends Controller {
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int                         $id
      * @return \Illuminate\Http\Response
      */
     public function show( $id ) {
@@ -160,7 +168,7 @@ class UserController extends Controller {
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int                         $id
      * @return \Illuminate\Http\Response
      */
     public function edit( User $user ) {
@@ -174,8 +182,8 @@ class UserController extends Controller {
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request    $request
+     * @param  int                         $id
      * @return \Illuminate\Http\Response
      */
     public function update( Request $request, User $user ) {
@@ -223,11 +231,11 @@ class UserController extends Controller {
 
         foreach ( $courses as $course ) { // Creating account based on chosen courses
             $course = Course::findOrFail( $course, ["id", "fee"] );
-            
+
             $accountsCount = Account::whereMonth( "month", Carbon::today() )
                 ->where( "course_id", $course->id )
                 ->count();
-            
+
             // Generate the payments for the course first
             if ( $accountsCount == 0 ) {
 
@@ -239,13 +247,13 @@ class UserController extends Controller {
                 $accountController->generate_payments( $course, $allaccounts );
                 continue; // Generate paments and iterate to the next execution
             }
-            
+
             // Check if the account is already exists
             $accountcount = Account::whereMonth( "month", Carbon::today() )
                 ->where( "user_id", $user->id )
                 ->where( "course_id", $course->id )
                 ->count();
-            
+
             // Add the account if payment is generated previously
             if ( $accountcount == 0 && $user->is_active == 1 ) {
                 $accounts[] = [
@@ -270,10 +278,16 @@ class UserController extends Controller {
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int                         $id
      * @return \Illuminate\Http\Response
      */
     public function destroy( User $user ) {
+
+        $user->course()->detach();
+        Account::where( 'user_id', $user->id )->delete();
+        Attendance::where( 'user_id', $user->id )->delete();
+        AssignmentResponse::where( 'user_id', $user->id )->delete();
+        
         $user->deleteProfilePhoto();
         $user->tokens->each->delete();
         $user->delete();

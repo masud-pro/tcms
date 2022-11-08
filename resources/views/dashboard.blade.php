@@ -1,18 +1,22 @@
-@extends("layouts.cms")
+@extends('layouts.cms')
 
 
-@section("title")
+@section('title')
     Dashboard
 @endsection
 
 
 @section('content')
-    
-    @if ( Auth::user()->role == "Admin" || (Auth::user()->role == "Student" && Auth::user()->is_active == 1) )
 
-        <h1 class="h3 mb-4 text-primary">Welcome to {{ env("APP_NAME") }}  @if ( $emoji ) 😀 @endif</h1>
+    @if (Auth::user()->role == 'Admin' || (Auth::user()->role == 'Student' && Auth::user()->is_active == 1))
 
-        @if ( session('success') )
+        <h1 class="h3 mb-4 text-primary">
+            Welcome to {{ env('APP_NAME') }} @if ($emoji)
+                😀
+            @endif
+        </h1>
+
+        @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ session('success') }}
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -20,7 +24,7 @@
                 </button>
             </div>
         @endif
-        @if ( session('full') )
+        @if (session('full'))
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 {{ session('full') }}
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -29,21 +33,22 @@
             </div>
         @endif
 
-        @if (Auth::user()->role == "Student" && $pendingPayments > 0)
+        @if (Auth::user()->role == 'Student' && $pendingPayments > 0)
             <div class="text-center">
                 <h2 class="text-danger mb-3">You Have {{ $pendingPayments }} Due Payment(s) </h2>
-                <a href="{{ route("account.student.individual",["status"=>"Unpaid"]) }}" class="btn btn-primary">Pay Now</a>
+                <a href="{{ route('account.student.individual', ['status' => 'Unpaid']) }}" class="btn btn-primary">Pay
+                    Now</a>
             </div>
         @endif
 
-        @if (Auth::user()->role == "Admin")
+        @if (Auth::user()->role == 'Admin')
 
             <!-- Page Heading -->
             <div class="d-sm-flex align-items-center justify-content-between mb-4">
                 <h1 class="h5 mb-0 text-gray-800">Overview</h1>
             </div>
             <div class="container-fluid">
-                
+
             </div>
             <div class="row">
                 <div class="col-xl mb-4">
@@ -53,7 +58,8 @@
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                         Net Income</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ number_format($total, 2, '.', ',') }} Tk</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                        {{ number_format($total, 2, '.', ',') }} Tk</div>
                                 </div>
                                 <div class="col-auto">
                                     <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -70,7 +76,8 @@
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                                         Student Payments</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ number_format($reveivedPayments, 2, '.', ',') }} Tk</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                        {{ number_format($reveivedPayments, 2, '.', ',') }} Tk</div>
                                 </div>
                                 <div class="col-auto">
                                     <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -79,7 +86,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="col-xl mb-4">
                     <div class="card border-left-warning shadow h-100 py-2">
                         <div class="card-body">
@@ -87,7 +94,8 @@
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                         Expense</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ number_format($expense, 2, '.', ',') }} Tk</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                        {{ number_format($expense, 2, '.', ',') }} Tk</div>
                                 </div>
                                 <div class="col-auto">
                                     <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -105,7 +113,8 @@
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                         Revenue</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ number_format($revenue, 2, '.', ',') }} Tk</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                        {{ number_format($revenue, 2, '.', ',') }} Tk</div>
                                 </div>
                                 <div class="col-auto">
                                     <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -123,7 +132,8 @@
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
                                         Due Payments</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ number_format($duePayments, 2, '.', ',') }} Tk</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                        {{ number_format($duePayments, 2, '.', ',') }} Tk</div>
                                 </div>
                                 <div class="col-auto">
                                     <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -170,7 +180,7 @@
                         </div>
                     </div>
                 </div>
-        
+
                 <!-- Earnings (Annual) Card Example -->
                 <div class="col-xl col-md-6 mb-4">
                     <div class="card border-left-success shadow h-100 py-2">
@@ -195,17 +205,19 @@
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Attendance Percentage
+                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Attendance
+                                        Percentage
                                     </div>
                                     <div class="row no-gutters align-items-center">
                                         <div class="col-auto">
-                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{ $attendancePercentage }}%</div>
+                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
+                                                {{ $attendancePercentage }}%</div>
                                         </div>
                                         <div class="col">
                                             <div class="progress progress-sm mr-2">
                                                 <div class="progress-bar bg-info" role="progressbar"
-                                                    style="width: {{ $attendancePercentage }}%" aria-valuenow="50" aria-valuemin="0"
-                                                    aria-valuemax="100"></div>
+                                                    style="width: {{ $attendancePercentage }}%" aria-valuenow="50"
+                                                    aria-valuemin="0" aria-valuemax="100"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -217,8 +229,8 @@
                         </div>
                     </div>
                 </div>
-        
-        
+
+
                 <div class="col-xl col-md-6 mb-4">
                     <div class="card border-left-warning shadow h-100 py-2">
                         <div class="card-body">
@@ -235,76 +247,17 @@
                         </div>
                     </div>
                 </div>
-                
+
             </div>
-            <div class="row">
-                <div class="col-12">
-                    <h5 class="mb-4 mt-3">All Courses</h5>
-                </div>
 
-                    @if ( $courseView == "grid" )
-                  
-                    {{-- <div class="col-12">
-                         <!-- Topbar Search -->
-                            <form
-                            class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                            <div class="input-group">
-                                <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                                    aria-label="Search" aria-describedby="basic-addon2">
-                                <div class="input-group-append">
-                                    <button class="btn btn-primary" type="button">
-                                        <i class="fas fa-search fa-sm"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div> --}}
 
-                    
-                        @forelse ($courses as $course)
-
-                            <div class="col-md-3 mt-3">
-                                <div class="card">
-
-                                    <img class="card-img-top" height="250px" src="{{ $course->image ? Storage::url($course->image) : asset("images/default-banner.jpg") }}" alt="Card image cap">
-
-                                    <div class="card-body">
-
-                                        <h5 class="card-title text-dark">
-                                            <a class="text-dark" href="{{ route("course.feeds.index",['course'=>$course->id]) }}">
-                                                {{ $course->name }}
-                                            </a>
-                                        </h5>
-                                        <p class="card-text">
-                                            {{ Illuminate\Support\Str::words( $course->description ,10) }}
-                                            @if (Illuminate\Support\Str::wordCount( $course->description) > 10)   
-                                                <a data-toggle="collapse" href="#collapseExample{{ $course->id }}" role="button" aria-expanded="false" aria-controls="collapseExample">Read More</a>
-                                            @endif
-                                        </p>
-                                        <div class="collapse" id="collapseExample{{ $course->id }}">
-                                            <div class="card card-body">
-                                                {{ $course->description }}
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <ul class="list-group list-group-flush">
-                                        <li class="list-group-item">Students: <span class="text-primary font-weight-bold">{{ $course->user ? $course->user->count() : "" }}</span></li>
-                                        <li class="list-group-item">Time: <span class="text-primary font-weight-bold">{{ $course->time }}</span></li>
-                                        <li class="list-group-item">Fee: <span class="text-primary font-weight-bold">{{ $course->fee }}</span></li>
-                                    </ul>
-                                    <div class="card-body">
-                                        {{-- <a href="#" class="card-link float-left">Enroll</a> --}}
-                                        <a href="{{ route("course.feeds.index",['course'=>$course->id]) }}" class="card-link btn btn-success font-weight-bold btn-block">Go To Feed</a>
-                                    </div>
-                                </div> 
-                            </div>
-                            
-                            
-                        @empty
-                            No Course Found
-                        @endforelse
-                    @elseif($courseView == "table")
+            @if ($courseView == 'grid')
+                @livewire('dashboard.course-search')
+            @elseif($courseView == 'table')
+                <div class="row">
+                    <div class="col-12">
+                        <h5 class="mb-4 mt-3">All Courses</h5>
+                    </div>
                     <div class="table-responsive">
                         <table class="table table-hover table-bordered" id="dataTable" width="100%" cellspacing="0">
                             <thead>
@@ -333,26 +286,29 @@
                                     <th>Feed</th>
                                 </tr>
                             </tfoot>
-                            <tbody> 
+                            <tbody>
                                 @foreach ($courses as $course)
                                     <tr>
-                                        <td>{!! $course->image ? "<a href='". Storage::url($course->image)  ."'><img width='100' src='" . Storage::url($course->image) . "' />" : "" !!}</td>
-                                        <td>{{ $course->name ?? "" }}</td>
-                                        <td>{{ $course->fee ?? "" }}</td>
-                                        <td>{{ $course->type ?? "" }}</td>
-                                        <td>{{ $course->time ?? "" }}</td>
-                                        <td>{{ $course->subject ?? "" }}</td>
-                                        <td>{{ $course->capacity ?? "" }}</td>
+                                        <td>{!! $course->image
+                                            ? "<a href='" . Storage::url($course->image) . "'><img width='100' src='" . Storage::url($course->image) . "' />"
+                                            : '' !!}</td>
+                                        <td>{{ $course->name ?? '' }}</td>
+                                        <td>{{ $course->fee ?? '' }}</td>
+                                        <td>{{ $course->type ?? '' }}</td>
+                                        <td>{{ $course->time ?? '' }}</td>
+                                        <td>{{ $course->subject ?? '' }}</td>
+                                        <td>{{ $course->capacity ?? '' }}</td>
                                         <td>{{ $course->user ? $course->user->count() : 0 }}</td>
-                                        <td><a class="btn btn-primary" href="{{ route("course.feeds.index",["course"=> $course->id]) }}">Feed</a></td>
+                                        <td><a class="btn btn-primary"
+                                                href="{{ route('course.feeds.index', ['course' => $course->id]) }}">Feed</a>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
-                    @endif
-                
-            </div>
+                </div>
+            @endif
         @else
             <!-- Page Heading -->
             <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -403,17 +359,19 @@
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Attendance Percentage
+                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Attendance
+                                        Percentage
                                     </div>
                                     <div class="row no-gutters align-items-center">
                                         <div class="col-auto">
-                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{ $attendancePercentage }}%</div>
+                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
+                                                {{ $attendancePercentage }}%</div>
                                         </div>
                                         <div class="col">
                                             <div class="progress progress-sm mr-2">
                                                 <div class="progress-bar bg-info" role="progressbar"
-                                                    style="width: {{ $attendancePercentage }}%" aria-valuenow="50" aria-valuemin="0"
-                                                    aria-valuemax="100"></div>
+                                                    style="width: {{ $attendancePercentage }}%" aria-valuenow="50"
+                                                    aria-valuemin="0" aria-valuemax="100"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -435,11 +393,12 @@
                                     <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                         Pending Payments</div>
                                     <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                        {{ $pendingPayments ?? "" }} 
-                                        @if ( $pendingPayments > 0 )
-                                            <a href="{{ route("account.student.individual",["status"=>"Unpaid"]) }}" class="h6 ml-2 font-weight-normal">Pay Now</a>
+                                        {{ $pendingPayments ?? '' }}
+                                        @if ($pendingPayments > 0)
+                                            <a href="{{ route('account.student.individual', ['status' => 'Unpaid']) }}"
+                                                class="h6 ml-2 font-weight-normal">Pay Now</a>
                                         @endif
-                                        
+
                                     </div>
                                 </div>
                                 <div class="col-auto">
@@ -449,83 +408,90 @@
                         </div>
                     </div>
                 </div>
-                    
-                
+
+
             </div>
             <div class="row">
                 <div class="col-12">
                     <h5 class="mb-4 mt-3">Enrolled Courses</h5>
                 </div>
-                    @forelse ($courses as $course)
-                        <div class="col-md-4">
-                            <div class="card">
+                @forelse ($courses as $course)
+                    <div class="col-md-4">
+                        <div class="card">
 
-                                <img class="card-img-top" height="250px" src="{{ $course->image ? Storage::url($course->image) : asset("images/default-banner.jpg") }}" alt="Card image cap">
+                            <img class="card-img-top" height="250px"
+                                src="{{ $course->image ? Storage::url($course->image) : asset('images/default-banner.jpg') }}"
+                                alt="Card image cap">
 
-                                <div class="card-body">
+                            <div class="card-body">
 
-                                    <h5 class="card-title text-dark">
-                                        <a class="text-dark" href="{{ route("course.feeds.index",['course'=>$course->id]) }}">
-                                            {{ $course->name }}
-                                        </a>
-                                    </h5>
-                                    <p class="card-text">
-                                        {{ Illuminate\Support\Str::words( $course->description ,10) }}
-                                        @if (Illuminate\Support\Str::wordCount( $course->description) > 10)   
-                                            <a data-toggle="collapse" href="#collapseExample{{ $course->id }}" role="button" aria-expanded="false" aria-controls="collapseExample">Read More</a>
-                                        @endif
-                                    </p>
-                                    <div class="collapse" id="collapseExample{{ $course->id }}">
-                                        <div class="card card-body">
-                                            {{ $course->description }}
-                                        </div>
+                                <h5 class="card-title text-dark">
+                                    <a class="text-dark"
+                                        href="{{ route('course.feeds.index', ['course' => $course->id]) }}">
+                                        {{ $course->name }}
+                                    </a>
+                                </h5>
+                                <p class="card-text">
+                                    {{ Illuminate\Support\Str::words($course->description, 10) }}
+                                    @if (Illuminate\Support\Str::wordCount($course->description) > 10)
+                                        <a data-toggle="collapse" href="#collapseExample{{ $course->id }}"
+                                            role="button" aria-expanded="false" aria-controls="collapseExample">Read
+                                            More</a>
+                                    @endif
+                                </p>
+                                <div class="collapse" id="collapseExample{{ $course->id }}">
+                                    <div class="card card-body">
+                                        {{ $course->description }}
                                     </div>
+                                </div>
 
-                                </div>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">Time: <span class="text-primary font-weight-bold">{{ $course->time }}</span></li>
-                                    <li class="list-group-item">Status: <span class="text-primary font-weight-bold">{{ $course->pivot->is_active == 0 ? "Not Active" : "Active" }}</span></li>
-                                    <li class="list-group-item">Fee: <span class="text-primary font-weight-bold">{{ $course->fee }}</span></li>
-                                </ul>
-                                <div class="card-body">
-                                    {{-- <a href="#" class="card-link float-left">Enroll</a> --}}
-                                    <a href="{{ route("course.feeds.index",['course'=>$course->id]) }}" class="card-link btn btn-success font-weight-bold btn-block">Go To Feed</a>
-                                </div>
-                            </div> 
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Time: <span
+                                        class="text-primary font-weight-bold">{{ $course->time }}</span></li>
+                                <li class="list-group-item">Status: <span
+                                        class="text-primary font-weight-bold">{{ $course->pivot->is_active == 0 ? 'Not Active' : 'Active' }}</span>
+                                </li>
+                                <li class="list-group-item">Fee: <span
+                                        class="text-primary font-weight-bold">{{ $course->fee }}</span></li>
+                            </ul>
+                            <div class="card-body">
+                                {{-- <a href="#" class="card-link float-left">Enroll</a> --}}
+                                <a href="{{ route('course.feeds.index', ['course' => $course->id]) }}"
+                                    class="card-link btn btn-success font-weight-bold btn-block">Go To Feed</a>
+                            </div>
                         </div>
-                    @empty
-                        <div class="text-center mx-auto">
-                            <h5>No Course Found</h5> 
-                            <a class="btn btn-primary mt-4 btn-block" href="{{ route("display.course") }}">Enroll Now</a>
-                        </div>
-                    @endforelse
+                    </div>
+                @empty
+                    <div class="text-center mx-auto">
+                        <h5>No Course Found</h5>
+                        <a class="btn btn-primary mt-4 btn-block" href="{{ route('courses.all') }}">Enroll Now</a>
+                    </div>
+                @endforelse
             </div>
         @endif
-
-    
     @else
+        <div class="container text-center">
+            <h2 class="text-primary mt-3">
+                Hello and Welcome to {{ env('APP_NAME') }}
+            </h2>
+            <h5 class="text-dark mt-4">
+                Your registration to {{ env('APP_NAME') }} is successful. We will review and approve your account very
+                soon. Add all your <b>profile information</b> and add a <b>profile picture</b> to get authorized soon.
+                We will notify you via email when your account status is changed.
+            </h5>
+            <a href="{{ route('profile.show') }}" class="btn btn-primary text-center mt-3">Update Profile</a>
+            <p class="lead mt-3 text-info">To update profile picture just simply upload the profile picture and click on
+                save.</p>
+        </div>
 
-    
-    <div class="container text-center">
-        <h2 class="text-primary mt-3">
-            Hello and Welcome to {{ env("APP_NAME") }}
-        </h2>
-        <h5 class="text-dark mt-4">
-            Your registration to {{ env("APP_NAME") }} is successful. We will review and approve your account very 
-            soon. Add all your <b>profile information</b> and add a <b>profile picture</b> to get authorized soon. 
-            We will notify you via email when your account status is changed.
-        </h5>
-        <a href="{{ route("profile.show") }}" class="btn btn-primary text-center mt-3">Update Profile</a>
-        <p class="lead mt-3 text-info">To update profile picture just simply upload the profile picture and click on save.</p>
-    </div>
-        
     @endif
 @endsection
 
-@push("styles")
-    <link href="{{ asset("assets") }}/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+@push('styles')
+    <link href="{{ asset('assets') }}/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <style>
-        #dataTable_info{
+        #dataTable_info {
             display: none;
         }
     </style>
@@ -533,8 +499,8 @@
 
 @push('scripts')
     <!-- Page level plugins -->
-    <script src="{{ asset("assets") }}/vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="{{ asset("assets") }}/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="{{ asset('assets') }}/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="{{ asset('assets') }}/vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
     <!-- Page level custom scripts -->
     <script>
@@ -545,6 +511,3 @@
         });
     </script>
 @endpush
-
-
-

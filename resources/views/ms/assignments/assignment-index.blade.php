@@ -69,7 +69,7 @@
                                     <td>{{ $assignment->marks ?? "" }}</td>
                                     <td>
                                         <a class="btn btn-primary" href="{{ route("assignments.edit",['assignment'=>$assignment->id]) }}">Edit</a>
-                                        <a class="btn btn-primary" href="{{ route("assignments.show",['assignment'=>$assignment->id]) }}">Show</a>
+                                        {{-- <a class="btn btn-primary" href="{{ route("assignments.show",['assignment'=>$assignment->id]) }}">Show</a> --}}
                                     </td>
 
                                 </tr>

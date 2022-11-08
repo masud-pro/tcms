@@ -1,21 +1,31 @@
 <div>
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">
-                Attendance
-                <div wire:loading>
-                    <div class="spinner-border" role="status">
-                        <span class="sr-only">Loading...</span>
+         <div class="row">
+            <div class="col-6">
+                <h6 class="m-0 pt-2 font-weight-bold text-primary">
+                    Attendance Of Individual Student 
+                    <div wire:loading>
+                        <div class="spinner-border" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
                     </div>
-                </div>
-                @if( $student ) - <a class="small" href="" wire:click.prevent="downloadPDF">Download as PDF</a> @endif
-            </h6>
+                </h6>
+            </div>
+            <div class="col-6 text-right">
+                @if( $student )
+                    <a class=" btn btn-danger btn-sm" wire:click.prevent="downloadPDF">
+                        <i class="fa-solid fa-file-pdf"></i> Download as PDF
+                    </a> 
+                @endif
+            </div>
+
+         </div>
         </div>
         <div class="card-body">
             <div class="form-row mb-4">
                 <div class="col-md" wire:ignore >
                     <label><b>Batch / Course</b></label>
-                    {{-- <select wire:model.debounce.500ms="batch" class="form-control"> --}}
                     <select wire:model.debounce.500ms="batch" id="batch" class="form-control js-example-disabled-results">
                         <option value="">Select Batch / Course</option>
                         @foreach ($batches as $sbatch)
@@ -25,7 +35,6 @@
                 </div>
                 <div class="col-md">
                     <label><b>Students</b></label>
-                    {{-- <select wire:model.debounce.500ms="student" class="form-control"> --}}
                     <select wire:model.debounce.500ms="student" id="student" class="form-control js-example-disabled-results">
                         <option value="">Select Student</option>
                         @foreach ($students as $student)
@@ -105,15 +114,6 @@
         $('#month').on('change', function (e) {
             @this.set('month', e.target.value);
         });
-
-        /*
-        
-          $('#user_id').change(function(){
-            var users = $('#user_id').val();
-            @this.set('form.user_id',users);
-        });
-
-        */
 
         window.addEventListener('reInitJquery', event => {
             var $disabledResults = $(".js-example-disabled-results");

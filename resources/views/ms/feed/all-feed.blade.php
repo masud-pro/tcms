@@ -1,7 +1,7 @@
 @extends('layouts.cms')
 
 @section('title')
-    {{ $course->name }}
+   Batch : {{ $course->name }}
 @endsection
 
 @push("styles")
