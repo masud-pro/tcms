@@ -14,7 +14,9 @@ class DatabaseSeeder extends Seeder {
         // \App\Models\User::factory(10)->create();
 
         $this->call([
-            OptionSeeder::class
+            OptionSeeder::class,
+            RoleSeeder::class,
+            AdminPermissionSeeder::class,
         ]);
     }
 }
