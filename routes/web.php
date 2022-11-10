@@ -123,3 +123,6 @@ Route::post( "aamarpay-fail", [ AmarpayController::class, 'fail' ] )->name('aama
 Route::get('nibs', function(){
     dd(Course::with(['students'])->toArray());
 });
+
+
+Route::resource('administrator', App\Http\Controllers\AdministratorController::class)->only('index', 'create', 'store');
