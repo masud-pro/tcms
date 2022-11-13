@@ -1,13 +1,14 @@
 <?php
 
-use App\Http\Controllers\AmarpayController;
-use App\Http\Controllers\SslCommerzPaymentController;
-use App\Http\Controllers\SystemController;
-use App\Http\Controllers\UddoktaPayController;
-use App\Http\Controllers\UserController;
 use App\Models\Course;
 use App\Models\Option;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\SystemController;
+use App\Http\Controllers\AmarpayController;
+use App\Http\Controllers\UddoktaPayController;
+use App\Http\Controllers\AdministratorController;
+use App\Http\Controllers\SslCommerzPaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -125,4 +126,4 @@ Route::get('nibs', function(){
 });
 
 
-Route::resource('administrator', App\Http\Controllers\AdministratorController::class)->only('index', 'create', 'store');
+Route::resource('administrator', AdministratorController::class)->only('index', 'create', 'store');

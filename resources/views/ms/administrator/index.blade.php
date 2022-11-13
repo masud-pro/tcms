@@ -9,7 +9,7 @@
 @endpush
 
 @section('content')
-    <a href="{{ route('account.manual.create') }}" class="btn btn-primary mb-3">Add New User</a>
+    <a href="{{ route('administrator.create') }}" class="btn btn-primary mb-3">Add New User</a>
     <div class="row">
         <div class="col-md-12">
 
@@ -22,7 +22,17 @@
                 </div>
             @endif
 
-            @livewire('administrator.index')
+
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">All User Account</h6>
+                </div>
+                <div class="card-body">
+
+                    @livewire('administrator.index')
+
+                </div>
+            </div>
 
 
         </div>

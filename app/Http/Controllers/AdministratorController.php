@@ -12,21 +12,17 @@ class AdministratorController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index( Request $request ) {
-        $administrators = User::where( 'role', 'Admin' )->get();
 
-        // return $administrators;
-
-        return view('ms.administrator.index', compact( 'administrators' ) );
+        return view('ms.administrator.index' );
     }
 
     /**
      * @param  \Illuminate\Http\Request    $request
      * @return \Illuminate\Http\Response
      */
-    public function create( Request $request ) {
-        $user = User::find( $id );
+    public function create( ) {
 
-        return view( 'ms.administrator.create', compact( 'user' ) );
+        return view('ms.administrator.create' );
     }
 
     /**
@@ -36,6 +32,6 @@ class AdministratorController extends Controller {
     public function store( AdministratorStoreRequest $request ) {
         $user = User::create( $request->validated() );
 
-        return redirect()->route( 'administrator.show', ['administrator' => $administrator] );
+        // return redirect()->route( 'administrator.show', ['administrator' => $administrator] );
     }
 }

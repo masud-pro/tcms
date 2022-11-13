@@ -110,11 +110,19 @@ class User extends Authenticatable {
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function assessment(): BelongsToMany
-    {
-        return $this->belongsToMany(Assessment::class);
+    public function assessment(): BelongsToMany {
+        return $this->belongsToMany( Assessment::class );
     }
 
-    
+    // Account filter methods for super admin endpoint
+    /**
+     * @param $query
+     */
+    public function scopeFilter( $query, $search ) {
+        $query->when( $search, function ( $filter, $search ) {
+            $filter->where( 'name', 'like', "%" . $search . "%" )
+                   ->orWhere( 'id', 'like', "%" . $search . "%" );
+        } );
+    }
 
 }
