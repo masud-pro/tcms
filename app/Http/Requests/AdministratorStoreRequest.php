@@ -22,15 +22,18 @@ class AdministratorStoreRequest extends FormRequest {
     public function rules() {
         return [
             'name'            => ['required'],
-            'email'           => ['required', 'string', 'email:rfc,dns,SpoofCheckValidation', 'max:255', 'unique:users'],
+            'email'           => ['required', 'string', 'email:dns', 'max:255', 'unique:users'],
             'password'        => ['required', 'string', 'min:8', 'confirmed'],
             "dob"             => ['required', 'date'],
-            "gender"          => ['nullable', 'string'],
-            "phone_no"        => ['nullable', 'string'],
-            "address"         => ['nullable', 'string'],
+            "gender"          => ['required', 'in:"male","female"'],
+            "phone_no"        => ['required', 'numeric'],
             "bank_account_no" => ['nullable', 'numeric'],
             "nid"             => ['nullable', 'numeric'],
-
+            "nid_img"         => ['nullable', 'string'],
+            "institute"       => ['nullable', 'string'],
+            "address"         => ['required', 'string'],
+            "curriculum"      => ['required', 'string'],
+            "teaching_level"  => ['required', 'string'],
         ];
     }
 

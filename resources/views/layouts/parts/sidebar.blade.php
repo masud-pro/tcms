@@ -37,7 +37,7 @@
                     aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">User Operations:</h6>
-                        <a class="collapse-item" href="#">All User</a>
+                        <a class="collapse-item" href="{{ route('administrator.index') }}">All User</a>
                         <a class="collapse-item" href="#">Permission</a>
                     </div>
                 </div>
