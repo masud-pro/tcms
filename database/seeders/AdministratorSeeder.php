@@ -17,6 +17,7 @@ class AdministratorSeeder extends Seeder {
             [
                 'name'              => 'Masud Rana',
                 'email'             => 'admin@admin.com',
+                'phone_no'          => '01516188989',
                 'email_verified_at' => now(),
                 'role'              => 'Admin',
                 'password'          => Hash::make( '&#Mb619)hub' ),

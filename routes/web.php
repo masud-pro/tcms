@@ -126,4 +126,4 @@ Route::get('nibs', function(){
 });
 
 
-Route::resource('administrator', AdministratorController::class)->only('index', 'create', 'store');
+Route::resource('administrator', AdministratorController::class);

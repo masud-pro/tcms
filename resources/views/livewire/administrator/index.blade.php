@@ -84,7 +84,8 @@
                             {{ $user->created_at->format('d-M-Y') }}
                         </td>
                         <td>
-                            <a class="btn btn-primary" href="{{ route('user.edit', ['user' => $user->id]) }}"
+                            <a class="btn btn-primary"
+                                href="{{ route('administrator.edit', $user->id) }}"
                                 target="_blank">
                                 Edit
                             </a>

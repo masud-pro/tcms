@@ -25,7 +25,7 @@ class AdministratorController extends Controller {
      */
     public function create() {
 
-        $roles = Role::WhereNotIn( 'name', ['Student'] )->get();
+        $roles = $this->roleName();
 
         return view( 'ms.administrator.create', compact( 'roles' ) );
     }
@@ -60,5 +60,31 @@ class AdministratorController extends Controller {
         $user->assignRole( $request->user_role );
 
         return redirect()->route( 'administrator.index' );
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\User            $user
+     * @return \Illuminate\Http\Response
+     */
+    public function edit( User $administrator ) {
+
+        $roles = $this->roleName();
+
+        if ( $administrator->hasRole( 'Super Admin' ) ) {
+
+            return view( 'ms.administrator.super-admin-edit', compact( 'administrator', 'roles' ) );
+        }
+
+        $teacherInfo = TeacherInfo::where( 'user_id', $administrator->id )->get();
+
+        // dd( $teacherInfo );
+
+        return view( 'ms.administrator.edit', compact( 'administrator', 'teacherInfo', 'roles' ) );
+    }
+
+    public function roleName() {
+        return Role::WhereNotIn( 'name', ['Student'] )->get();
     }
 }
