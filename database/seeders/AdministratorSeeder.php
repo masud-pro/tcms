@@ -26,6 +26,5 @@ class AdministratorSeeder extends Seeder {
         );
 
         $user->assignRole( 'Super Admin' );
-        info( 'successfully' );
     }
 }
