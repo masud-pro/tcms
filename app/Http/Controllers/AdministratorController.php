@@ -10,11 +10,13 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\AdministratorStoreRequest;
 
 class AdministratorController extends Controller {
+
     /**
-     * @param  \Illuminate\Http\Request    $request
-     * @return \Illuminate\Http\Response
+     * Display a listing of the resource.
+     *
+     * @return Response
      */
-    public function index( Request $request ) {
+    public function index() {
 
         return view( 'ms.administrator.index' );
     }

@@ -20,11 +20,37 @@ class AdministratorSeeder extends Seeder {
                 'phone_no'          => '01516188989',
                 'email_verified_at' => now(),
                 'role'              => 'Admin',
-                'password'          => Hash::make( '&#Mb619)hub' ),
+                'password'          => Hash::make( 'password' ),
                 'created_at'        => now(),
             ]
         );
 
         $user->assignRole( 'Super Admin' );
+
+        $user = User::create(
+            [
+                'name'              => 'Test Teacher',
+                'email'             => 'test@teacher.com',
+                'email_verified_at' => now(),
+                'role'              => 'Admin',
+                'password'          => Hash::make( 'password' ),
+                'created_at'        => now(),
+            ]
+        );
+
+        $user->assignRole( 'Teacher ' );
+
+        $user = User::create(
+            [
+                'name'              => 'Test Teacher2',
+                'email'             => 'test@teacher2.com',
+                'email_verified_at' => now(),
+                'role'              => 'Admin',
+                'password'          => Hash::make( 'password' ),
+                'created_at'        => now(),
+            ]
+        );
+
+        $user->assignRole( 'Teacher ' );
     }
 }

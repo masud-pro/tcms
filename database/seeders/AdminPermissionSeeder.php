@@ -3,18 +3,17 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\PermissionRegistrar;
 
-class AdminPermissionSeeder extends Seeder
-{
+class AdminPermissionSeeder extends Seeder {
     /**
      * Run the database seeds.
      *
      * @return void
      */
-    public function run()
-    {
+    public function run() {
         // Reset cached roles and permissions
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
@@ -36,19 +35,34 @@ class AdminPermissionSeeder extends Seeder
             // 'user_show',
             // 'user_delete',
             // 'user_access',
-           
-            // 
-            'courses_create',
-            'courses_edit',
-            'courses_delete',
-            'courses_update',
-            'courses_access',
+
+            //
+            // 'courses_create',
+            // 'courses_edit',
+            // 'courses_delete',
+            // 'courses_update',
+            // 'courses_access',
+            // 'courses.edit',
+            //
+
+            'courses.index',
+            'courses.archived',
+            'courses.authorization_panel',
+            'courses.authorize_users',
+            'courses.reauthorize_users',
+            'courses.create',
+            'courses.edit',
+            'courses.update',
+            'courses.destroy',
         ];
 
-        foreach ($permissions as $permission)   {
-            Permission::create([
-                'name' => $permission
-            ]);
+        foreach ( $permissions as $permission ) {
+            Permission::create( [
+                'name' => $permission,
+            ] );
         }
+
+        $role = Role::find( 2 );
+        $role->givePermissionTo( Permission::all() );
     }
 }

@@ -127,3 +127,18 @@ Route::get('nibs', function(){
 
 
 Route::resource('administrator', AdministratorController::class);
+
+
+
+
+
+
+
+// Route::get('test', function(){});
+
+
+
+
+
+
+// 

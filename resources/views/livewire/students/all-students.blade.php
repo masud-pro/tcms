@@ -1,5 +1,5 @@
 <div>
-    @if ( session('status') )
+    @if (session('status'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session('status') }}
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -9,7 +9,8 @@
     @endif
     <div class="row">
         <div class="col-lg-3 offset-lg-9 text-right">
-            <input type="text" class="form-control mb-3" placeholder="Search Name or ID" wire:model.debounce.500ms="q">
+            <input type="text" class="form-control mb-3" placeholder="Search Name or ID"
+                wire:model.debounce.500ms="q">
         </div>
     </div>
     <div class="table-responsive">
@@ -47,26 +48,28 @@
                 </tr>
             </tfoot>
             <tbody>
-                @foreach ($users as $user)
+                @forelse ($users as $user)
                     <tr>
                         <td>
                             {{ $user->id }}
                         </td>
                         <td class="text-center">
-                            <a target="_blank" href="{{ $user->profile_photo_url ?? "" }}">
-                                <img width="40" height="40" class="img-profile rounded-circle" src="{{ $user->profile_photo_url ?? "" }}">
+                            <a target="_blank" href="{{ $user->profile_photo_url ?? '' }}">
+                                <img width="40" height="40" class="img-profile rounded-circle"
+                                    src="{{ $user->profile_photo_url ?? '' }}">
                             </a>
                         </td>
-                        <td><b>{{ $user->name ?? "Not Found" }}</b></td>
-                        <td>{{ $user->email ?? "Not Found" }}</td>
-                        <td>{{ $user->class ?? "Not Found" }}</td>
-                        <td>{{ $user->phone_no ?? "Not Found" }}</td>
-                        <td>{{ $user->fathers_phone_no ?? "Not Found" }}</td>
-                        <td>{{ $user->mothers_phone_no ?? "Not Found" }}</td>
+                        <td><b>{{ $user->name ?? 'Not Found' }}</b></td>
+                        <td>{{ $user->email ?? 'Not Found' }}</td>
+                        <td>{{ $user->class ?? 'Not Found' }}</td>
+                        <td>{{ $user->phone_no ?? 'Not Found' }}</td>
+                        <td>{{ $user->fathers_phone_no ?? 'Not Found' }}</td>
+                        <td>{{ $user->mothers_phone_no ?? 'Not Found' }}</td>
                         <td>
                             <div class="form-check form-switch ml-3">
-                                <input wire:change="change_status({{$user->id}},{{$user->is_active}})" 
-                                    class="form-check-input" type="checkbox" @if ($user->is_active == 1) checked @endif 
+                                <input wire:change="change_status({{ $user->id }},{{ $user->is_active }})"
+                                    class="form-check-input" type="checkbox"
+                                    @if ($user->is_active == 1) checked @endif
                                     id="flexSwitchCheckDefault{{ $user->id }}">
                                 <label class="form-check-label" for="flexSwitchCheckDefault{{ $user->id }}">
                                     Is Active
@@ -76,25 +79,33 @@
                         <td>
                             @forelse ($user->course as $course)
                                 <b>
-                                    <a href="{{ route("course.feeds.index",["course"=>$course->id]) }}"
+                                    <a href="{{ route('course.feeds.index', ['course' => $course->id]) }}"
                                         class="text-secondary">
-                                        {{ $course->name . ", " }}
+                                        {{ $course->name . ', ' }}
                                     </a>
                                 </b>
                             @empty
-                                {{ "Not Found" }}
+                                {{ 'Not Found' }}
                             @endforelse
                         </td>
                         <td>
-                            {{ $user->created_at->format("d-M-Y") }}
+                            {{ $user->created_at->format('d-M-Y') }}
                         </td>
                         <td>
-                            <a class="btn btn-primary" href="{{ route("user.edit",[ 'user' => $user->id ]) }}" target="_blank">
+                            <a class="btn btn-primary" href="{{ route('user.edit', ['user' => $user->id]) }}"
+                                target="_blank">
                                 Edit
                             </a>
                         </td>
                     </tr>
-                @endforeach
+                @empty
+                    <tr>
+                        <td class="text-center" colspan="12"> No matching records found </td>
+                    </tr>
+                @endforelse
+
+
+
             </tbody>
         </table>
         {{ $users->links() }}
@@ -103,19 +114,20 @@
 
 
 
-@push("scripts")
+@push('scripts')
     @livewireScripts()
 @endpush
 
-@push("styles")
+@push('styles')
     @livewireStyles()
     <style>
         .form-check-input:checked {
             background-color: #1cc88a;
             border-color: #1cc88a;
         }
+
         .sidebar-dark hr.sidebar-divider {
-            border-top: 1px solid rgba(255,255,255,.7);
+            border-top: 1px solid rgba(255, 255, 255, .7);
             box-sizing: content-box;
             height: 0;
             overflow: visible;
@@ -124,5 +136,5 @@
 @endpush
 
 @push('styles-before')
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">   
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 @endpush

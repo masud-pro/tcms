@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Account;
-use App\Models\Course;
 use Carbon\Carbon;
+use App\Models\Course;
+use App\Models\Account;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -12,29 +12,38 @@ use Illuminate\Support\Facades\Storage;
 class CourseController extends Controller {
 
     public function __construct() {
-        $this->middleware( 'isAdmin' )->only( [
-            'edit',
-            'index',
-            'archived',
-            'authorization_panel',
-            'authorize_users',
-            'reauthorize_users',
-            'create',
-            'edit',
-            'update',
-            'destroy',
-        ] );
+        // $this->middleware( 'isAdmin' )->only( [
+        //     'edit',
+        //     'index',
+        //     'archived',
+        //     'authorization_panel',
+        //     'authorize_users',
+        //     'reauthorize_users',
+        //     'create',
+        //     'edit',
+        //     'update',
+        //     'destroy',
+        // ] );
+
+        $this->middleware( 'permission:courses.index', ['only' => ['index']] );
+        $this->middleware( 'permission:courses.edit', ['only' => ['edit', 'update']] );
+        $this->middleware( 'permission:courses.update', ['only' => ['edit', 'update']] );
+        $this->middleware( 'permission:courses.destroy', ['only' => ['edit', 'update']] );
+        $this->middleware( 'permission:courses.archived', ['only' => ['show']] );
+        $this->middleware( 'permission:courses.authorization_panel', ['only' => ['edit', 'update']] );
+        $this->middleware( 'permission:courses.authorize_users', ['only' => ['edit', 'update']] );
     }
 
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index() {
-        return view( "ms.courses.all-courses", [
-            "courses" => Course::latest()->get(),
-        ] );
+
+        $courses = Auth::user()->addedCourses()->latest()->get();
+
+        return view( "ms.courses.all-courses", compact( 'courses' ) );
     }
 
     public function archived() {
@@ -60,7 +69,7 @@ class CourseController extends Controller {
     /**
      * Enroll a student
      *
-     * @param Course $course
+     * @param  Course $course
      * @return void
      */
     public function enroll( Course $course ) {
@@ -101,12 +110,19 @@ class CourseController extends Controller {
 
     }
 
+    /**
+     * @param Course $course
+     */
     public function authorization_panel( Course $course ) {
         return view( "ms.authorization.authorization-panel", [
             "students" => $course->user()->orderBy( "name", "asc" )->get(),
         ] );
     }
 
+    /**
+     * @param Request $request
+     * @param Course  $course
+     */
     public function authorize_users( Request $request, Course $course ) {
         $data = $request->validate( [
             "ids"      => "required|array",
@@ -135,11 +151,15 @@ class CourseController extends Controller {
 
     }
 
+    /**
+     * @param $course
+     * @param $users
+     */
     public function reauthorize_engine( $course, $users ) {
 
         foreach ( $users as $user ) {
 
-            if( !$user->is_active ){
+            if ( !$user->is_active ) {
                 $course->user()->updateExistingPivot( $user->id, [
                     'is_active' => 0,
                 ] );
@@ -148,10 +168,10 @@ class CourseController extends Controller {
             }
 
             $unPaid = $user->payment()
-                ->where("course_id",$course->id)
-                ->where( "status", "Unpaid" )
-                ->whereMonth( "created_at", Carbon::today() )
-                ->count();
+                           ->where( "course_id", $course->id )
+                           ->where( "status", "Unpaid" )
+                           ->whereMonth( "created_at", Carbon::today() )
+                           ->count();
 
             // if( $user->id == 2 ){
             //     dd($unPaid);
@@ -171,6 +191,9 @@ class CourseController extends Controller {
 
     }
 
+    /**
+     * @param Course $course
+     */
     public function reauthorize_users( Course $course ) {
 
         $users = $course->user;
@@ -189,7 +212,7 @@ class CourseController extends Controller {
 
             $this->reauthorize_engine( $course, $users );
         }
-        
+
         return redirect()->back()->with( "success", "Reauthorization Successful" );
 
     }
@@ -206,7 +229,7 @@ class CourseController extends Controller {
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request    $request
      * @return \Illuminate\Http\Response
      */
     public function store( Request $request ) {
@@ -241,7 +264,7 @@ class CourseController extends Controller {
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Course  $course
+     * @param  \App\Models\Course          $course
      * @return \Illuminate\Http\Response
      */
     public function show( Course $course ) {
@@ -251,7 +274,7 @@ class CourseController extends Controller {
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Course  $course
+     * @param  \App\Models\Course          $course
      * @return \Illuminate\Http\Response
      */
     public function edit( Course $course ) {
@@ -263,8 +286,8 @@ class CourseController extends Controller {
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Course  $course
+     * @param  \Illuminate\Http\Request    $request
+     * @param  \App\Models\Course          $course
      * @return \Illuminate\Http\Response
      */
     public function update( Request $request, Course $course ) {
@@ -304,7 +327,7 @@ class CourseController extends Controller {
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Course  $course
+     * @param  \App\Models\Course          $course
      * @return \Illuminate\Http\Response
      */
     public function destroy( Course $course ) {
@@ -313,6 +336,9 @@ class CourseController extends Controller {
         return redirect()->route( "course.index" )->with( "delete", "Course Archived Successfuly" );
     }
 
+    /**
+     * @param $course
+     */
     public function restore( $course ) {
         Course::withTrashed()->findOrFail( $course )->restore();
 

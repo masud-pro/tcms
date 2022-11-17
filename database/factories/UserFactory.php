@@ -27,7 +27,7 @@ class UserFactory extends Factory {
             'password'          => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random( 10 ),
             'role'              => 'Student',
-            'dob'               => $this->faker->dateTime('d-m-Y'),
+            'dob'               => $this->faker->dateTime( 'd-m-Y' ),
             'gender'            => $this->faker->randomElement( ['male', 'female'] ),
             'reg_no'            => $this->faker->randomNumber(),
             'roll'              => $this->faker->randomNumber(),
@@ -40,6 +40,8 @@ class UserFactory extends Factory {
             'mothers_phone_no'  => $this->faker->phoneNumber,
             'address'           => $this->faker->address,
             'is_active'         => $this->faker->numberBetween( 0, 1 ),
+            'is_active'         => $this->faker->numberBetween( 0, 1 ),
+            'teacher_id'        => $this->faker->numberBetween( 3, 4 ),
         ];
     }
 

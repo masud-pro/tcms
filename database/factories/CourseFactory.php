@@ -33,6 +33,7 @@ class CourseFactory extends Factory {
             'room'        => $this->faker->numberBetween( 15, 150 ),
             'address'     => $this->faker->address,
             'image'       => null,
+            'teacher_id'  => $this->faker->numberBetween( 3, 4 ),
         ];
     }
 }

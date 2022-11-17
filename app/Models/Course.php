@@ -2,18 +2,21 @@
 
 namespace App\Models;
 
+use App\Models\Feed;
 use App\Models\Account;
 use App\Models\Attendance;
-use App\Models\Feed;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Course extends Model {
     use HasFactory, SoftDeletes;
 
+    /**
+     * @var array
+     */
     protected $fillable = [
         "name",
         "description",
@@ -27,6 +30,7 @@ class Course extends Model {
         "room",
         "address",
         "image",
+        "teacher_id",
     ];
 
     /**
@@ -36,6 +40,15 @@ class Course extends Model {
      */
     public function user(): BelongsToMany {
         return $this->belongsToMany( User::class )->withPivot( "is_active" );
+    }
+
+    /**
+     * The user that belong to the Course
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function instructors() {
+        return $this->belongsTo( User::class );
     }
 
     /**

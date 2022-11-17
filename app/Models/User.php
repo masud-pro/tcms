@@ -46,6 +46,7 @@ class User extends Authenticatable {
         'mothers_phone_no',
         'address',
         'is_active',
+        'teacher_id',
     ];
 
     /**
@@ -88,6 +89,15 @@ class User extends Authenticatable {
     }
 
     /**
+     * Get all of the all of the course for the
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function addedCourses():HasMany {
+        return $this->hasMany( Course::class ,'teacher_id');
+    }
+
+    /**
      * Get all of the payment for the User
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -123,6 +133,22 @@ class User extends Authenticatable {
             $filter->where( 'name', 'like', "%" . $search . "%" )
                    ->orWhere( 'id', 'like', "%" . $search . "%" );
         } );
+    }
+
+    /**
+     * @return mixed
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function students(): HasMany {
+        return $this->hasMany( User::class, 'teacher_id', 'id' );
+    }
+
+    /**
+     * @return mixed
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function teachers(): BelongsTo {
+        return $this->belongsTo( User::class, 'id', 'teacher_id' );
     }
 
 }
