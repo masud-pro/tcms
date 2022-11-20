@@ -54,7 +54,7 @@ class FakeDataInsert extends Command {
                 'role'              => 'Admin',
             ] );
 
-            Artisan::call( 'db:seed --class=AdministratorSeeder' );
+            // Artisan::call( 'db:seed --class=AdministratorSeeder' );
             
             $courseNumber = $this->ask( 'How many Course do need ..?' );
             

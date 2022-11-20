@@ -2,30 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Account;
-use App\Models\Course;
 use App\Models\Feed;
+use App\Models\Course;
 use App\Models\Option;
-use App\Notifications\Feed\CreateFeed;
+use App\Models\Account;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\Feed\CreateFeed;
 use Illuminate\Support\Facades\Notification;
 
 class FeedController extends Controller {
 
     public function __construct() {
         $this->middleware( "isAdmin" )
-            ->only( [
-                "edit",
-                "destroy",
-                "create",
-                "create_link",
-                "store",
-                "store_link",
-                "edit_link",
-                "update",
-                "update_link",
-            ] );
+             ->only( [
+                 "feed.edit",
+                 "feed.destroy",
+                 "feed.create",
+                 "feed.create_link",
+                 "feed.store",
+                 "feed.store_link",
+                 "feed.edit_link",
+                 "feed.update",
+                 "feed.update_link",
+             ] );
     }
 
     /**
@@ -92,6 +92,9 @@ class FeedController extends Controller {
         ] );
     }
 
+    /**
+     * @param Course $course
+     */
     public function create_link( Course $course ) {
         return view( "ms.feed.create.create-link", [
             'course' => $course,
@@ -101,7 +104,7 @@ class FeedController extends Controller {
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request    $request
      * @return \Illuminate\Http\Response
      */
     public function store( Request $request, Course $course ) {
@@ -131,6 +134,10 @@ class FeedController extends Controller {
             ->with( "success", "Feed added Successfully" );
     }
 
+    /**
+     * @param Request $request
+     * @param Course $course
+     */
     public function store_link( Request $request, Course $course ) {
 
         $data = $request->validate( [
@@ -161,7 +168,7 @@ class FeedController extends Controller {
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Feed  $feed
+     * @param  \App\Models\Feed            $feed
      * @return \Illuminate\Http\Response
      */
     public function show( Feed $feed ) {
@@ -171,7 +178,7 @@ class FeedController extends Controller {
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Feed  $feed
+     * @param  \App\Models\Feed            $feed
      * @return \Illuminate\Http\Response
      */
     public function edit( Feed $feed, Request $request ) {
@@ -186,7 +193,6 @@ class FeedController extends Controller {
      * Edit feed links
      *
      * @param $request, $feed
-     *
      */
     public function edit_link( Feed $feed, Request $request ) {
         // dd($request->course);
@@ -199,8 +205,8 @@ class FeedController extends Controller {
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Feed  $feed
+     * @param  \Illuminate\Http\Request    $request
+     * @param  \App\Models\Feed            $feed
      * @return \Illuminate\Http\Response
      */
     public function update( Request $request, Feed $feed ) {
@@ -218,6 +224,10 @@ class FeedController extends Controller {
             ->with( "success", "Feed upated Successfully" );
     }
 
+    /**
+     * @param Request $request
+     * @param Feed $feed
+     */
     public function update_link( Request $request, Feed $feed ) {
         $data = $request->validate( [
             'name'      => 'required|string',
@@ -236,7 +246,7 @@ class FeedController extends Controller {
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Feed  $feed
+     * @param  \App\Models\Feed            $feed
      * @return \Illuminate\Http\Response
      */
     public function destroy( Feed $feed ) {

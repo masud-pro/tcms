@@ -8,7 +8,7 @@
         <div class="sidebar-brand-text mx-3">{{ env('DASH_TITLE', 'CE CMS') }}</div>
     </a>
 
-    @if (Auth::user()->role == 'Admin' || (Auth::user()->role == 'Student' && Auth::user()->is_active == 1))
+    @if (Auth::user()->hasRole('Teacher') || (Auth::user()->role == 'Student' && Auth::user()->is_active == 1))
 
 
         <!-- Divider -->

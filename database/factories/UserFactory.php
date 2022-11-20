@@ -41,7 +41,7 @@ class UserFactory extends Factory {
             'address'           => $this->faker->address,
             'is_active'         => $this->faker->numberBetween( 0, 1 ),
             'is_active'         => $this->faker->numberBetween( 0, 1 ),
-            'teacher_id'        => $this->faker->numberBetween( 3, 4 ),
+            'teacher_id'        => $this->faker->numberBetween( 2, 3 ),
         ];
     }
 

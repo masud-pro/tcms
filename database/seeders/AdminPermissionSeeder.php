@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\PermissionRegistrar;
 
@@ -19,6 +21,7 @@ class AdminPermissionSeeder extends Seeder {
 
         // create permissions
         $permissions = [
+            //
             // 'user_management_access',
             // 'permission_create',
             // 'permission_edit',
@@ -54,6 +57,15 @@ class AdminPermissionSeeder extends Seeder {
             'courses.edit',
             'courses.update',
             'courses.destroy',
+            'feed.edit',
+            'feed.destroy',
+            'feed.create',
+            'feed.create_link',
+            'feed.store',
+            'feed.store_link',
+            'feed.edit_link',
+            'feed.update',
+            'feed.update_link',
         ];
 
         foreach ( $permissions as $permission ) {
@@ -62,7 +74,93 @@ class AdminPermissionSeeder extends Seeder {
             ] );
         }
 
-        $role = Role::find( 2 );
-        $role->givePermissionTo( Permission::all() );
+        // gets all permissions via Gate::before rule; see AuthServiceProvider
+        $superAdmin = Role::create( ['name' => 'Super Admin'] );
+        $superAdmin->givePermissionTo( [
+            'courses.index',
+            'courses.archived',
+            'courses.authorization_panel',
+            'courses.authorize_users',
+            'courses.reauthorize_users',
+            'courses.create',
+            'courses.edit',
+            'courses.update',
+            'courses.destroy',
+            'feed.edit',
+            'feed.destroy',
+            'feed.create',
+            'feed.create_link',
+            'feed.store',
+            'feed.store_link',
+            'feed.edit_link',
+            'feed.update',
+            'feed.update_link',
+        ] );
+
+        $teacher = Role::create( ['name' => 'Teacher'] );
+
+        $teacher->givePermissionTo( [
+            'courses.index',
+            'courses.archived',
+            'courses.authorization_panel',
+            'courses.authorize_users',
+            'courses.reauthorize_users',
+            'courses.create',
+            'courses.edit',
+            'courses.update',
+            'courses.destroy',
+            'feed.edit',
+            'feed.destroy',
+            'feed.create',
+            'feed.create_link',
+            'feed.store',
+            'feed.store_link',
+            'feed.edit_link',
+            'feed.update',
+            'feed.update_link',
+        ] );
+
+        Role::create( ['name' => 'Student'] );
+        Role::create( ['name' => 'Moderator'] );
+
+        $admin = User::create(
+            [
+                'name'              => 'Masud Rana',
+                'email'             => 'admin@admin.com',
+                'phone_no'          => '01516188989',
+                'email_verified_at' => now(),
+                'role'              => 'Admin',
+                'password'          => Hash::make( 'password' ),
+                'created_at'        => now(),
+            ]
+        );
+
+        $admin->assignRole( 'Super Admin' );
+
+        $teacher = User::create(
+            [
+                'name'              => 'Test Teacher',
+                'email'             => 'test@teacher.com',
+                'email_verified_at' => now(),
+                'role'              => 'Admin',
+                'password'          => Hash::make( 'password' ),
+                'created_at'        => now(),
+            ]
+        );
+
+        $teacher->assignRole( 'Teacher' );
+        
+        $teacher = User::create(
+            [
+                'name'              => 'Test Teacher',
+                'email'             => 'test@teacher2.com',
+                'email_verified_at' => now(),
+                'role'              => 'Admin',
+                'password'          => Hash::make( 'password' ),
+                'created_at'        => now(),
+            ]
+        );
+
+        $teacher->assignRole( 'Teacher' );
     }
 }

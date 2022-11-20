@@ -209,7 +209,7 @@
                     <a class="dropdown-item" href="{{ route('reauthorize.all') }}"
                         onclick="return confirm('Reauthorize all users Now?')">
                         <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                        Reauthorize All Users>
+                        Reauthorize All Users
                     </a>
                 @endif
 
