@@ -8,7 +8,7 @@
         <div class="sidebar-brand-text mx-3">{{ env('DASH_TITLE', 'CE CMS') }}</div>
     </a>
 
-    @if (Auth::user()->hasRole('Teacher') || (Auth::user()->role == 'Student' && Auth::user()->is_active == 1))
+    @if (Auth::user()->hasRole(['Teacher','Super Admin']) || (Auth::user()->hasRole(['Student']) && Auth::user()->is_active == 1))
 
 
         <!-- Divider -->
@@ -51,7 +51,7 @@
 
 
 
-        @if (auth()->user()->role == 'Admin')
+        @if (auth()->user()->hasRole(['Teacher','Super Admin']))
             <li class="nav-item {{ request()->routeIs('course.*') ? 'active' : '' }} ">
 
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#batchCollapse"

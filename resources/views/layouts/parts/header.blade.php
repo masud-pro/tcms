@@ -166,9 +166,8 @@
                 <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
             </div>
         </li> --}}
-        @if (auth()->user()->role == 'Admin')
+        @if (auth()->user()->hasRole(['Teacher','Super Admin']))
             {{-- <li class="mt-1 mr-3"><a href="{{ route("account.all-batch-accounts") }}" class="btn btn-outline-primary btn-sm mt-3">Update Payments</a></li> --}}
-
             @livewire("attendance.take-attendance")
 
             <li class="mt-1"><a href="{{ route('account.all-batch-accounts') }}"
@@ -195,7 +194,7 @@
                     Profile
                 </a>
 
-                @if (auth()->user()->role == 'Admin')
+                @if (auth()->user()->hasRole(['Teacher','Super Admin']))
                     <a class="dropdown-item" href="{{ route('payments.generate') }}"
                         onclick="return confirm('Generate Payments Now?')">
                         <i class="fas fa-dollar-sign fa-sm fa-fw mr-2 text-gray-400"></i>

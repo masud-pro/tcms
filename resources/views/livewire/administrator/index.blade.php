@@ -27,6 +27,7 @@
                     <th>Role</th>
                     <th>Created At</th>
                     <th>Actions</th>
+                    <th>Permission</th>
                 </tr>
             </thead>
             <tfoot>
@@ -40,6 +41,7 @@
                     <th>Role</th>
                     <th>Created At</th>
                     <th>Actions</th>
+                    <th>Permission</th>
                 </tr>
             </tfoot>
             <tbody>
@@ -90,9 +92,16 @@
                                 Edit
                             </a>
                         </td>
+                        <td>
+                            <a class="btn btn-primary"
+                                href="{{ route('administrator.edit', $user->id) }}"
+                                target="_blank">
+                                Permissions
+                            </a>
+                        </td>
                     </tr>
                 @empty
-                    <tr>
+                    <tr>    
                         <td class="text-center" colspan="9"> No matching records found </td>
                     </tr>
                 @endforelse

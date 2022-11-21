@@ -39,7 +39,7 @@ Route::middleware( ['auth:sanctum', 'verified'] )->get( '/dashboard', [SystemCon
 
 Route::post( "admin-reg", [UserController::class, "store_admin"] )->name( "store.admin" );
 
-Route::middleware( ['auth:sanctum', 'verified', 'isAdmin'] )->group( function () {
+Route::middleware( ['auth:sanctum', 'verified'] )->group( function () {
 
 // Linking admin routes
     if ( file_exists( __DIR__ . "/ce-routes/admin-routes.php" ) ) {
