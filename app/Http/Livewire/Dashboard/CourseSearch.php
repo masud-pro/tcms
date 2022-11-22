@@ -2,8 +2,8 @@
 
 namespace App\Http\Livewire\Dashboard;
 
-use App\Models\Course;
 use Livewire\Component;
+use Illuminate\Support\Facades\Auth;
 
 class CourseSearch extends Component {
 
@@ -21,12 +21,12 @@ class CourseSearch extends Component {
     public $filteredCourses;
 
     public function mount() {
-        // $this->courses = cache()->remember( 'course', 60 * 60, function () {
-        //     Course::with( "user" )->get();
+        $this->courses = cache()->remember( 'course', 60 * 60, function () {
+            return Auth::user()->addedCourses()->with( "user" )->latest()->get();
+        } );
 
-        // } );
-
-        $this->courses = Course::with( "user" )->get();
+        // $this->courses = Course::with( "user" )->get();
+        // $this->courses = Auth::user()->addedCourses()->with( "user" )->latest()->get();
 
         $this->filteredCourses = $this->courses;
 

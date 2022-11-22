@@ -4,6 +4,8 @@ namespace App\Http\Livewire\Attendance;
 
 use App\Models\Course;
 use Livewire\Component;
+use Illuminate\Support\Facades\Auth;
+
 
 class TakeAttendance extends Component {
 
@@ -13,7 +15,7 @@ class TakeAttendance extends Component {
 
     public function mount() {
         $this->batches = cache()->remember( 'course', 60 * 60, function () {
-            return Course::all();
+            return Auth::user()->addedCourses()->latest()->get();
         } );
 
         $this->filteredBatches = $this->batches;

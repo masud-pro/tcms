@@ -8,7 +8,8 @@
         <div class="sidebar-brand-text mx-3">{{ env('DASH_TITLE', 'CE CMS') }}</div>
     </a>
 
-    @if (Auth::user()->hasRole(['Teacher','Super Admin']) || (Auth::user()->hasRole(['Student']) && Auth::user()->is_active == 1))
+    @if (Auth::user()->is_active == 1 || Auth::user()->hasRole(['Super Admin']))
+        {{-- @if (Auth::user()->hasRole(['Teacher', 'Super Admin']) || (Auth::user()->hasRole(['Student']) && Auth::user()->is_active == 1)) --}}
 
 
         <!-- Divider -->
@@ -33,8 +34,7 @@
                     <span>Administrator</span>
                 </a>
 
-                <div id="administrator" class="collapse"
-                    aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div id="administrator" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">User Operations:</h6>
                         <a class="collapse-item" href="{{ route('administrator.index') }}">All User</a>
@@ -51,27 +51,32 @@
 
 
 
-        @if (auth()->user()->hasRole(['Teacher','Super Admin']))
-            <li class="nav-item {{ request()->routeIs('course.*') ? 'active' : '' }} ">
+        {{-- @if (auth()->user()->hasRole(['Teacher', 'Super Admin'])) --}}
+        @if (auth()->user()->can(['courses.index','courses.archived']))
 
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#batchCollapse"
-                    aria-expanded="true" aria-controls="batchCollapse">
-                    <i class="fas fa-tasks"></i>
-                    <span>Batches / Courses</span>
-                </a>
+            @if (hasCourseAccess())
+                <li class="nav-item {{ request()->routeIs('course.*') ? 'active' : '' }} ">
 
-                <div id="batchCollapse" class="collapse {{ request()->routeIs('course.*') ? 'show' : '' }}"
-                    aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Batch Operations:</h6>
-                        <a class="collapse-item {{ request()->is('course') ? 'active' : '' }}"
-                            href="{{ route('course.index') }}">All Batches / Courses</a>
-                        <a class="collapse-item {{ request()->is('course/create') ? 'active' : '' }}"
-                            href="{{ route('course.create') }}">Add Batches / Courses</a>
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#batchCollapse"
+                        aria-expanded="true" aria-controls="batchCollapse">
+                        <i class="fas fa-tasks"></i>
+                        <span>Batches / Courses</span>
+                    </a>
+
+                    <div id="batchCollapse" class="collapse {{ request()->routeIs('course.*') ? 'show' : '' }}"
+                        aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Batch Operations:</h6>
+                            <a class="collapse-item {{ request()->is('course') ? 'active' : '' }}"
+                                href="{{ route('course.index') }}">All Batches / Courses</a>
+                            <a class="collapse-item {{ request()->is('course/create') ? 'active' : '' }}"
+                                href="{{ route('course.create') }}">Add Batches / Courses</a>
+                        </div>
                     </div>
-                </div>
 
-            </li>
+                </li>
+            @endif
+
 
             <li class="nav-item {{ request()->routeIs('user.*') ? 'active' : '' }}">
 
