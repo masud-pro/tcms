@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\Result\ResultSMS;
-use App\Models\Assessment;
+use App\Models\SMS;
 use App\Models\Course;
 use App\Models\Option;
-use App\Models\SMS;
+use App\Models\Assessment;
 use Illuminate\Http\Request;
+use App\Jobs\Result\ResultSMS;
+use Illuminate\Support\Facades\Auth;
 
 class SMSController extends Controller {
 
@@ -20,7 +21,7 @@ class SMSController extends Controller {
 
     public function create_batch_sms() {
         return view( "ms.sms.batch-sms", [
-            'courses' => Course::all()->pluck( 'name', 'id' ),
+            'courses' => Auth::user()->addedCourses()->pluck( 'name', 'id' ),
         ] );
     }
 
@@ -28,6 +29,9 @@ class SMSController extends Controller {
 
     }
 
+    /**
+     * @param Request $request
+     */
     public function send_exam_results( Request $request ) {
         $data = $request->validate( [
             'assessment_id' => 'required',
@@ -88,6 +92,9 @@ class SMSController extends Controller {
 
     }
 
+    /**
+     * @param Request $request
+     */
     public function send_batch_sms( Request $request ) {
         $data = $request->validate( [
             'for'       => 'required|string',
@@ -156,6 +163,10 @@ class SMSController extends Controller {
 
     }
 
+    /**
+     * @param $numbers
+     * @param $message
+     */
     public static function send_sms( $numbers, $message ) {
 
         $output = SMSController::sent_sdk( $numbers, $message );
@@ -168,15 +179,20 @@ class SMSController extends Controller {
 
     }
 
+    /**
+     * @param $numbers
+     * @param $message
+     * @return mixed
+     */
     public static function sent_sdk( $numbers, $message ) {
 
         $url  = 'https://24smsbd.com/api/bulkSmsApi';
-        $data = array(
+        $data = [
             'sender_id' => 1088,
             'apiKey'    => "Q29kZUVjc3Rhc3k6RWNzdGFzeTQ0",
             'mobileNo'  => $numbers,
             'message'   => $message,
-        );
+        ];
 
         $curl = curl_init( $url );
         curl_setopt( $curl, CURLOPT_POST, true );
@@ -200,11 +216,11 @@ class SMSController extends Controller {
         $message   = "SMS From Software";
 
         $url  = 'https://24smsbd.com/api/bulkSmsApi';
-        $data = array( 'sender_id' => $sender_id,
+        $data = [ 'sender_id' => $sender_id,
             'apiKey'                  => $apiKey,
             'mobileNo'                => $mobileNo,
             'message'                 => $message,
-        );
+        ];
 
         $curl = curl_init( $url );
         curl_setopt( $curl, CURLOPT_POST, true );

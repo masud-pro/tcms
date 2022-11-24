@@ -2,12 +2,13 @@
 
 namespace App\Http\Livewire\Attendance;
 
+use Carbon\Carbon;
 use App\Models\Course;
 use Livewire\Component;
 use App\Models\Attendance;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\AttendanceIndividualStudentExport;
-use Carbon\Carbon;
 
 class StudentAttendance extends Component {
 
@@ -46,10 +47,9 @@ class StudentAttendance extends Component {
     ];
 
     public function mount() {
-        $this->batches  = Course::all();
+        $this->batches  = Auth::user()->addedCourses()->get();
         $this->students = [];
-        $this->month = Carbon::today()->format('m-Y');
-        
+        $this->month    = Carbon::today()->format( 'm-Y' );
 
         if ( $this->batch != "" ) {
             $this->students = Course::findOrFail( $this->batch )->user->sortBy( "name" );
@@ -69,8 +69,7 @@ class StudentAttendance extends Component {
         $this->dispatchBrowserEvent( 'reInitJquery' );
     }
 
-    public function updated()
-    {
+    public function updated() {
         $this->dispatchBrowserEvent( 'reInitJquery' );
     }
 

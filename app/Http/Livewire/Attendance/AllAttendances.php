@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\Course;
 use Livewire\Component;
 use App\Models\Attendance;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\AttendanceBatchExport;
 
@@ -23,7 +24,7 @@ class AllAttendances extends Component {
     ];
 
     public function mount() {
-        $this->batches = Course::all();
+        $this->batches = Auth::user()->addedCourses()->get();
         $this->date = Carbon::today()->format("Y-m-d");
     }
 

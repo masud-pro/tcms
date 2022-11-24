@@ -3,7 +3,8 @@
         <div class="col-12 d-flex justify-content-between mt-2">
             <h5 class="mb-4 mt-3">All Courses</h5>
             <div class="searchBox">
-                <input class="searchInput form-control" type="text" wire:model.prevent="search" placeholder="Search Course">
+                <input class="searchInput form-control" type="text" wire:model.prevent="search"
+                    placeholder="Search Course">
             </div>
         </div>
     </div>
@@ -21,7 +22,7 @@
 
                         <h5 class="card-title text-dark">
                             <a class="text-dark" href="{{ route('course.feeds.index', ['course' => $course->id]) }}">
-                                {{ $course->name }} <span class="flot-r">Fee : <span
+                                {{ Str::limit($course->name, 16) }} <span class="flot-r">Fee : <span
                                         class="text-primary font-weight-bold">{{ $course->fee }}</span>
                             </a>
                         </h5>
@@ -37,22 +38,21 @@
                                     class="text-primary font-weight-bold">{{ $course->time }}</span>
                         </li>
 
-                    <div class="card-body d-flex justify-content-between">
+                        <div class="card-body d-flex justify-content-between">
 
-
-                        <a href="{{ route('course.feeds.index', ['course' => $course->id]) }}"
-                            class="btn btn-outline-primary font-weight-bold">Go To Feed</a>
-                        <a href="{{ route('course.attendance.create', ['course' => $course->id]) }}"
-                            class="btn btn-outline-secondary font-weight-bold">Attendance</a>
-                        <a href="{{ route('course.accounts.create', ['course' => $course->id]) }}"
-                            class="btn btn-outline-success font-weight-bold">Payment</a>
-                    </div>
+                            <a href="{{ route('course.feeds.index', ['course' => $course->id]) }}"
+                                class="btn btn-outline-primary font-weight-bold fs-12">Go To Feed</a>
+                            <a href="{{ route('course.attendance.create', ['course' => $course->id]) }}"
+                                class="btn btn-outline-secondary font-weight-bold fs-12">Attendance</a>
+                            <a href="{{ route('course.accounts.create', ['course' => $course->id]) }}"
+                                class="btn btn-outline-success font-weight-bold fs-12">Payment</a>
+                        </div>
                 </div>
             </div>
 
 
         @empty
-            No Course Found
+            <div class="ml-3" >No Course Found</div>
         @endforelse
     </div>
 

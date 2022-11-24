@@ -51,8 +51,8 @@
 
 
 
-        {{-- @if (auth()->user()->hasRole(['Teacher', 'Super Admin'])) --}}
-        @if (auth()->user()->can(['courses.index','courses.archived']))
+        @if (auth()->user()->hasRole(['Teacher', 'Super Admin']))
+        {{-- @if (auth()->user()->can(['courses.index','courses.archived'])) --}}
 
             @if (hasCourseAccess())
                 <li class="nav-item {{ request()->routeIs('course.*') ? 'active' : '' }} ">

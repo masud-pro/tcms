@@ -15,6 +15,31 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller {
+
+    // public function __construct() {
+    //     // $this->middleware( 'isAdmin' )->only( [
+    //     //     'edit',
+    //     //     'index',
+    //     //     'archived',
+    //     //     'authorization_panel',
+    //     //     'authorize_users',
+    //     //     'reauthorize_users',
+    //     //     'create',
+    //     //     'edit',
+    //     //     'update',
+    //     //     'destroy',
+    //     // ] );
+
+    //     $this->middleware( 'permission:courses.index', ['only' => ['index']] );
+    //     $this->middleware( 'permission:courses.edit', ['only' => ['edit', 'update']] );
+    //     $this->middleware( 'permission:courses.update', ['only' => ['edit', 'update']] );
+    //     $this->middleware( 'permission:courses.destroy', ['only' => ['edit', 'update']] );
+    //     $this->middleware( 'permission:courses.archived', ['only' => ['show']] );
+    //     $this->middleware( 'permission:courses.authorization_panel', ['only' => ['edit', 'update']] );
+    //     $this->middleware( 'permission:courses.authorize_users', ['only' => ['edit', 'update']] );
+    // }
+
+    
     /**
      * Display a listing of the resource.
      *
@@ -45,7 +70,7 @@ class UserController extends Controller {
      */
     public function create() {
         return view( "ms.students.create-student", [
-            "batches" => Course::all(),
+            "batches" => Auth::user()->addedCourses()->latest()->get(),
         ] );
     }
 
@@ -175,7 +200,7 @@ class UserController extends Controller {
         // dd($user);
         return view( 'ms.students.edit-student', [
             "user"    => $user,
-            "batches" => Course::all(),
+            "batches" => Auth::user()->addedCourses()->latest()->get(),
         ] );
     }
 

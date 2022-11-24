@@ -2,13 +2,14 @@
 
 namespace App\Http\Livewire\Account;
 
-use App\Exports\AccountsExport;
-use App\Http\Controllers\AccountController;
-use App\Models\Account;
-use App\Models\Course;
 use Carbon\Carbon;
+use App\Models\Course;
+use App\Models\Account;
 use Livewire\Component;
+use App\Exports\AccountsExport;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Http\Controllers\AccountController;
 
 /**
  * This class is of mailnly batch accounts with paid unpaid but no expense
@@ -32,7 +33,7 @@ class AllAccounts extends Component {
     ];
 
     public function mount() {
-        $this->batches = Course::all();
+        $this->batches = Auth::user()->addedCourses()->get();
         $this->month = Carbon::today()->format("m-Y");
     }
 

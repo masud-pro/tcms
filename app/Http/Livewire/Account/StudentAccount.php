@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Account;
 use App\Models\Course;
 use App\Models\Account;
 use Livewire\Component;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\StudentAccountsExport;
 
@@ -39,7 +40,7 @@ class StudentAccount extends Component {
     ];
 
     public function mount() {
-        $this->batches  = Course::all();
+        $this->batches  = Auth::user()->addedCourses()->get();
         $this->students = [];
 
         if ( $this->batch != "" ) {

@@ -205,7 +205,7 @@ class CourseController extends Controller {
     }
 
     public function reauthorize_all() {
-        $courses = Course::all();
+        $courses = Auth::user()->addedCourses()->latest()->get();
 
         foreach ( $courses as $course ) {
             $users = $course->user;

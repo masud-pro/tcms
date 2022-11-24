@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\Course;
 use App\Models\Account;
 use Livewire\Component;
+use Illuminate\Support\Facades\Auth;
 
 class ManualAccount extends Component {
     /**
@@ -64,7 +65,7 @@ class ManualAccount extends Component {
     ];
 
     public function mount() {
-        $this->batches  = Course::all();
+        $this->batches  = Auth::user()->addedCourses()->latest()->get();
         $this->students = [];
         $this->status   = "Unpaid";
 

@@ -42,7 +42,7 @@ class AccountController extends Controller {
     }
 
     public function regenerate_all() {
-        $courses = Course::all();
+        $courses = Auth::user()->addedCourses()->latest()->get();
 
         foreach ( $courses as $course ) {
             $students = $course->user;

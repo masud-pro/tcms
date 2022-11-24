@@ -32,8 +32,15 @@ body {
     height: calc(1.2em + 0.75rem + 2px);
 }
 
+.ml-x-10{
+    margin-left: 10% !important;
+}
 .ml-x-15{
     margin-left: 15% !important;
+}
+
+.fs-12{
+    font-size: 12px !important;
 }
 
 .flot-r{

@@ -18,7 +18,7 @@
                 <div class="col-6 text-right">
                     <h6 class="m-0 font-weight-bold text-primary pt-2">
                         @if (!$q)
-                            <div class="col text-right ml-x-15">
+                            <div class="col text-right ml-x-10">
                                 @if ($total != null)
                                     Total this month - {{ $total }} Tk
                                 @endif
