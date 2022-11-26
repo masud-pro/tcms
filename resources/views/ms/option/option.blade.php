@@ -46,91 +46,92 @@
                                 </tr>
                             </tfoot>
                             <tbody>
-                                @forelse ($options as $option)
-                                    @if ($option->slug == "manual_payment")
+                                {{-- {{ dd($settings) }} --}}
+                                @forelse ($settings as $setting)
+                                    @if ($setting->option->slug == "manual_payment")
                                         
                                         <tr>
-                                            <td>{{ $option->name }}</td>
+                                            <td>{{ $setting->option->name }}</td>
                                             <td>
                                                 
-                                                <select name="options[{{ $option->slug }}][value]" class="form-control">
-                                                    <option @if( $option->value == 1 ) selected @endif value="1">Active</option>
-                                                    <option @if( $option->value == 0 ) selected @endif value="0">Not Active</option>
+                                                <select name="options[{{ $setting->option->slug }}][value]" class="form-control">
+                                                    <option @if( $setting->value == 1 ) selected @endif value="1">Active</option>
+                                                    <option @if( $setting->value == 0 ) selected @endif value="0">Not Active</option>
                                                 </select>
                                                 
                                             </td>
                                         </tr>
 
-                                    @elseif ( $option->slug == "online_payment")
+                                    @elseif ( $setting->option->slug == "online_payment")
                                         @if (  
                                                 ( env("STORE_ID") != null &&  env("STORE_PASSWORD") != null ) || 
                                                 ( env("UDDOKTAPAY_API_KEY") != null &&  env("UDDOKTAPAY_WEBHOOK_DOMAIN") != null && env("UDDOKTAPAY_PAYMENT_DOMAIN") != null) 
                                             )
                                             <tr>
-                                                <td>{{ $option->name }}</td>
+                                                <td>{{ $setting->option->name }}</td>
                                                 <td>
                                                     
-                                                    <select name="options[{{ $option->slug }}][value]" class="form-control">
-                                                        <option @if($option->value == 1) selected @endif value="1">Active</option>
-                                                        <option @if($option->value == 0) selected @endif value="0">Not Active</option>
+                                                    <select name="options[{{ $setting->option->slug }}][value]" class="form-control">
+                                                        <option @if($setting->value == 1) selected @endif value="1">Active</option>
+                                                        <option @if($setting->value == 0) selected @endif value="0">Not Active</option>
                                                     </select>
                                                     
                                                 </td>
                                             </tr>
                                         @endif
                                         
-                                    @elseif ( $option->slug == "bkash_number" || $option->slug == "rocket_number" || $option->slug == "nagad_number" )
+                                    @elseif ( $setting->option->slug == "bkash_number" || $setting->option->slug == "rocket_number" || $setting->option->slug == "nagad_number" )
                                         <tr>
-                                            <td>{{ $option->name }}</td>
+                                            <td>{{ $setting->option->name }}</td>
                                             <td>      
-                                                <textarea class="form-control" name="options[{{ $option->slug }}][value]">{{ $option->value }}</textarea> 
+                                                <textarea class="form-control" name="options[{{ $setting->option->slug }}][value]">{{ $setting->value }}</textarea> 
                                             </td>
                                         </tr>
-                                    @elseif ( $option->slug == "remaining_sms" )
+                                    @elseif ( $setting->option->slug == "remaining_sms" )
                                         <tr>
-                                            <td>{{ $option->name }}</td>
+                                            <td>{{ $setting->option->name  }}</td>
                                             <td>
                                                 
-                                                <input disabled type="text" class="form-control" value="{{ $option->value }}">
+                                                <input disabled type="text" class="form-control" value="{{ $setting->value }}">
                                                 
                                             </td>
                                         </tr>
-                                    @elseif ( $option->slug == "can_student_see_friends" )
+                                    @elseif ( $setting->option->slug == "can_student_see_friends" )
                                         <tr>
-                                            <td>{{ $option->name }}</td>
+                                            <td>{{ $setting->option->name  }}</td>
                                             <td>
                                                 
-                                                <select name="options[{{ $option->slug }}][value]" class="form-control">
-                                                    <option @if( $option->value == 1 ) selected @endif value="1">Students Can See Friends</option>
-                                                    <option @if( $option->value == 0 ) selected @endif value="0">Students Cannot See Friends</option>
+                                                <select name="options[{{ $setting->option->slug }}][value]" class="form-control">
+                                                    <option @if( $setting->value == 1 ) selected @endif value="1">Students Can See Friends</option>
+                                                    <option @if( $setting->value == 0 ) selected @endif value="0">Students Cannot See Friends</option>
                                                 </select>
                                                 
                                             </td>
                                         </tr>
-                                    @elseif ( $option->slug == "emoji_visibility" )
+                                    @elseif ( $setting->option->slug == "emoji_visibility" )
                                         <tr>
-                                            <td>{{ $option->name }}</td>
+                                            <td>{{ $setting->option->name  }}</td>
                                             <td>
                                                 
-                                                <select name="options[{{ $option->slug }}][value]" class="form-control">
-                                                    <option @if( $option->value == 1 ) selected @endif value="1">Emoji Visible</option>
-                                                    <option @if( $option->value == 0 ) selected @endif value="0">Emoji Not Visible</option>
+                                                <select name="options[{{ $setting->option->slug }}][value]" class="form-control">
+                                                    <option @if( $setting->value == 1 ) selected @endif value="1">Emoji Visible</option>
+                                                    <option @if( $setting->value == 0 ) selected @endif value="0">Emoji Not Visible</option>
                                                 </select>
                                                 
                                             </td>
                                         </tr>
-                                    @elseif ( $option->slug == "front_page_image" )
+                                    @elseif ( $setting->option->slug == "front_page_image" )
                                         <tr>
-                                            <td>{{ $option->name }}</td>
+                                            <td>{{ $setting->option->name  }}</td>
                                             <td>
                                                 
-                                                <input type="file" name="options[{{ $option->slug }}][value]" 
+                                                <input type="file" name="options[{{ $setting->option->slug }}][value]" 
                                                     class="form-control-file" onchange="readURL(this);">
 
                                                 <a target="_blank" 
-                                                    href="{{ $option->value == 0 ? asset("images/frontpage/bg.jpg") : Storage::url($option->value) }}">
+                                                    href="{{ $setting->value == 0 ? asset("images/frontpage/bg.jpg") : Storage::url($setting->value) }}">
 
-                                                    <img src="{{ $option->value == 0 ? asset("images/frontpage/bg.jpg") : Storage::url($option->value) }}" class="img-fluid" 
+                                                    <img src="{{ $setting->value == 0 ? asset("images/frontpage/bg.jpg") : Storage::url($setting->value) }}" class="img-fluid" 
                                                         style="width: 400px; margin-top: 10px" id="front-page-image"> <br>
 
                                                     <a href="{{ route("options.reset-frontpage-image") }}" class="mt-1 d-block" 
@@ -140,26 +141,26 @@
                                                 </a>
                                             </td>
                                         </tr>
-                                    @elseif ( $option->slug == "front_page_font_color" )
+                                    @elseif ( $setting->option->slug == "front_page_font_color" )
                                         <tr>
-                                            <td>{{ $option->name }}</td>
+                                            <td>{{ $setting->option->name  }}</td>
                                             <td>
                                     
-                                                <select name="options[{{ $option->slug }}][value]" class="form-control">
-                                                    <option @if( $option->value == "dark" ) selected @endif value="dark">Dark</option>
-                                                    <option @if( $option->value == "light" ) selected @endif value="light">Light</option>
+                                                <select name="options[{{ $setting->option->slug }}][value]" class="form-control">
+                                                    <option @if( $setting->value == "dark" ) selected @endif value="dark">Dark</option>
+                                                    <option @if( $setting->value == "light" ) selected @endif value="light">Light</option>
                                                 </select>
 
                                             </td>
                                         </tr>
-                                    @elseif ( $option->slug == "dashboard_course_view" )
+                                    @elseif ( $setting->option->slug == "dashboard_course_view" )
                                         <tr>
-                                            <td>{{ $option->name }}</td>
+                                            <td>{{ $setting->option->name  }}</td>
                                             <td>
                                     
-                                                <select name="options[{{ $option->slug }}][value]" class="form-control">
-                                                    <option @if( $option->value == "grid" ) selected @endif value="grid">Grid</option>
-                                                    <option @if( $option->value == "table" ) selected @endif value="table">Table</option>
+                                                <select name="options[{{ $setting->option->slug }}][value]" class="form-control">
+                                                    <option @if( $setting->value == "grid" ) selected @endif value="grid">Grid</option>
+                                                    <option @if( $setting->value == "table" ) selected @endif value="table">Table</option>
                                                 </select>
 
                                             </td>

@@ -93,8 +93,8 @@ class User extends Authenticatable {
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function addedCourses():HasMany {
-        return $this->hasMany( Course::class ,'teacher_id');
+    public function addedCourses(): HasMany {
+        return $this->hasMany( Course::class, 'teacher_id' );
     }
 
     /**
@@ -149,6 +149,14 @@ class User extends Authenticatable {
      */
     public function teachers(): BelongsTo {
         return $this->belongsTo( User::class, 'id', 'teacher_id' );
+    }
+
+    /**
+     * @return mixed
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function settings(): HasMany {
+        return $this->hasMany( Setting::class );
     }
 
 }

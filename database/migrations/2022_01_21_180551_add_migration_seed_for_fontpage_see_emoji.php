@@ -22,35 +22,35 @@ class AddMigrationSeedForFontpageSeeEmoji extends Migration {
             $table->foreignId( "course_id" )->nullable()->change();
         });        
 
-        Option::create( [
-            'name'  => "Front Page Image",
-            'slug'  => "front_page_image",
-            'value' => 0,
-        ] );
+        // Option::create( [
+        //     'name'  => "Front Page Image",
+        //     'slug'  => "front_page_image",
+        //     'value' => 0,
+        // ] );
 
-        Option::create( [
-            'name'  => "Can Students See Their Friends",
-            'slug'  => "can_student_see_friends",
-            'value' => 1,
-        ] );
+        // Option::create( [
+        //     'name'  => "Can Students See Their Friends",
+        //     'slug'  => "can_student_see_friends",
+        //     'value' => 1,
+        // ] );
 
-        Option::create( [
-            'name'  => "Emoji Visibility",
-            'slug'  => "emoji_visibility",
-            'value' => 1,
-        ] );
+        // Option::create( [
+        //     'name'  => "Emoji Visibility",
+        //     'slug'  => "emoji_visibility",
+        //     'value' => 1,
+        // ] );
 
-        Option::create( [
-            'name'  => "Front Page Font Color",
-            'slug'  => "front_page_font_color",
-            'value' => "dark", // light
-        ] );
+        // Option::create( [
+        //     'name'  => "Front Page Font Color",
+        //     'slug'  => "front_page_font_color",
+        //     'value' => "dark", // light
+        // ] );
 
-        Option::create( [
-            'name'  => "Dashboard Course View",
-            'slug'  => "dashboard_course_view",
-            'value' => "grid", // table
-        ] );
+        // Option::create( [
+        //     'name'  => "Dashboard Course View",
+        //     'slug'  => "dashboard_course_view",
+        //     'value' => "grid", // table
+        // ] );
 
     }
 
@@ -69,10 +69,10 @@ class AddMigrationSeedForFontpageSeeEmoji extends Migration {
             $table->foreignId( "course_id" )->required()->change();
         }); 
 
-        Option::where( "slug", "front_page_image" )->delete();
-        Option::where( "slug", "can_student_see_friends" )->delete();
-        Option::where( "slug", "emoji_visibility" )->delete();
-        Option::where( "slug", "front_page_font_color" )->delete();
-        Option::where( "slug", "dashboard_course_view" )->delete();
+        // Option::where( "slug", "front_page_image" )->delete();
+        // Option::where( "slug", "can_student_see_friends" )->delete();
+        // Option::where( "slug", "emoji_visibility" )->delete();
+        // Option::where( "slug", "front_page_font_color" )->delete();
+        // Option::where( "slug", "dashboard_course_view" )->delete();
     }
 }
