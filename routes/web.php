@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SystemController;
 use App\Http\Controllers\AmarpayController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\UddoktaPayController;
 use App\Http\Controllers\AdministratorController;
 use App\Http\Controllers\SslCommerzPaymentController;
@@ -41,19 +42,23 @@ Route::post( "admin-reg", [UserController::class, "store_admin"] )->name( "store
 
 Route::middleware( ['auth:sanctum', 'verified'] )->group( function () {
 
-// Linking admin routes
+    // Linking admin routes
     if ( file_exists( __DIR__ . "/ce-routes/admin-routes.php" ) ) {
         require_once __DIR__ . "/ce-routes/admin-routes.php";
     } else {
         echo "Ooops!! Admin Route Files Not Found!";
     }
 
-// Linking options routes
+    // Linking options routes
     if ( file_exists( __DIR__ . "/ce-routes/option-routes.php" ) ) {
         require_once __DIR__ . "/ce-routes/option-routes.php";
     } else {
         echo "Ooops!! Option Route Files Not Found!";
     }
+
+    //
+    
+    Route::resource('administrator', AdministratorController::class);
 
 } );
 
@@ -126,15 +131,16 @@ Route::get('nibs', function(){
 });
 
 
-Route::resource('administrator', AdministratorController::class);
 
-
+Route::get( '/test', [PermissionController::class, 'index'] );
+Route::get( '/test1', [PermissionController::class, 'create'] );
 
 
 
 
 
 // Route::get('test', function(){});
+
 
 
 

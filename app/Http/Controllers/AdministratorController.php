@@ -4,12 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\TeacherInfo;
+use App\Jobs\DefaultSetting;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
+use App\Traits\DefaultSettingTraits;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\AdministratorStoreRequest;
 
 class AdministratorController extends Controller {
+
+    use DefaultSettingTraits;
 
     /**
      * Display a listing of the resource.
@@ -61,6 +65,12 @@ class AdministratorController extends Controller {
 
         $user->assignRole( $request->user_role );
 
+        // dd($user->id);
+        // This job for create a new default setting;
+        // dispatch( new DefaultSetting( $user->id ) );
+
+        $this->defaultSetting( $user->id );
+
         return redirect()->route( 'administrator.index' );
     }
 
@@ -89,4 +99,5 @@ class AdministratorController extends Controller {
     public function roleName() {
         return Role::WhereNotIn( 'name', ['Student'] )->get();
     }
+
 }

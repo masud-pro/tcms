@@ -38,6 +38,24 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">User Operations:</h6>
                         <a class="collapse-item" href="{{ route('administrator.index') }}">All User</a>
+                        {{-- <a class="collapse-item" href="#">Role Permission</a> --}}
+                    </div>
+                </div>
+
+            </li>
+
+            <li class="nav-item">
+
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#roleManagement"
+                    aria-expanded="true" aria-controls="roleManagement">
+                    <i class="fas fa-users-cog"></i>
+                    <span>Role Management</span>
+                </a>
+
+                <div id="roleManagement" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Role Management:</h6>
+                        <a class="collapse-item" href="#">User Roles</a>
                         <a class="collapse-item" href="#">Role Permission</a>
                     </div>
                 </div>
