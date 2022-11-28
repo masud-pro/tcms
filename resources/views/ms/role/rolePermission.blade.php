@@ -9,7 +9,7 @@
 @endpush
 
 @section('content')
-    <a href="{{ route('administrator.create') }}" class="btn btn-primary mb-3">Add New Role</a>
+    {{-- <a href="{{ route('role.create') }}" class="btn btn-primary mb-3">Add New Role</a> --}}
     <div class="row">
         <div class="col-md-12">
 
@@ -25,11 +25,11 @@
 
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">All Role</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Role Permission</h6>
                 </div>
                 <div class="card-body">
 
-                    @livewire('permission.index')
+                    @livewire('role.role-permission')
 
                 </div>
             </div>

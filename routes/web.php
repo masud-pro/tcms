@@ -5,8 +5,9 @@ use App\Models\Option;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SystemController;
+use App\Http\Livewire\Role\RolePermission;
 use App\Http\Controllers\AmarpayController;
-use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\UserRoleController;
 use App\Http\Controllers\UddoktaPayController;
 use App\Http\Controllers\AdministratorController;
 use App\Http\Controllers\SslCommerzPaymentController;
@@ -132,8 +133,9 @@ Route::get('nibs', function(){
 
 
 
-Route::get( '/test', [PermissionController::class, 'index'] );
-Route::get( '/test1', [PermissionController::class, 'create'] );
+Route::resource( 'role', UserRoleController::class );
+Route::get('permission', [UserRoleController::class, 'rolePermission']);
+// Route::get( '/test1', [PermissionController::class, 'create'] );
 
 
 

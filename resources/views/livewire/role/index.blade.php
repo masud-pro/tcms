@@ -61,7 +61,7 @@
                         </td>
                         <td>
                             <a class="btn btn-primary"
-                                href="{{ route('administrator.edit', $role->id) }}"
+                                href="{{ route('role.edit', $role->id) }}"
                                 target="_blank">
                                 Edit
                             </a>
