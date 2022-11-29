@@ -39,7 +39,7 @@ class UserRoleController extends Controller {
 
         Role::create( $roleData );
 
-        return redirect()->route( 'role.index' );
+        return redirect()->route( 'role.permission' );
     }
 
     /**

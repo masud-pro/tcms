@@ -134,7 +134,7 @@ Route::get('nibs', function(){
 
 
 Route::resource( 'role', UserRoleController::class );
-Route::get('permission', [UserRoleController::class, 'rolePermission']);
+Route::get('permission', [UserRoleController::class, 'rolePermission'])->name('role.permission');
 // Route::get( '/test1', [PermissionController::class, 'create'] );
 
 
