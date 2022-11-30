@@ -23,6 +23,10 @@
                 </div>
             </div>
 
+            {{-- @php
+                $allPermission =  array($permission);
+            @endphp --}}
+
             {{-- 
                 
             
@@ -56,7 +60,7 @@
 
                         {{-- courses.index --}}
                         <div class="form-check">
-                            <input class="form-check-input checkbox" type="checkbox" value="2" name="checkHh" id="2">
+                            <input class="form-check-input checkbox" type="checkbox" value="2" name="courses.index" id="2" {{ in_array("courses.index", $b) ? 'checked' : '' }}>
                             <label class="form-check-label" for="chcek-{{ 2 }}">Course List</label>
                         </div>
 

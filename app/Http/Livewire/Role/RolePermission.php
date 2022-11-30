@@ -4,32 +4,22 @@ namespace App\Http\Livewire\Role;
 
 use Livewire\Component;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class RolePermission extends Component {
 
-    /**
-     * @var mixed
-     */
-    public $checks = [];
-
-    /**
-     * @return mixed
-     */
-    public function updatedChecks() {
-        // dump( $this->checks );
-
-        // return $this->checks[2] = true;
-    }
-
-    public function selectAll() {
-        // dd( $this->checks );
-        // foreach ( $this->checks as $check ) {
-        //     $this->checks[$check] = true;
-        // }
-    }
-
     public function render() {
-        $roles = Role::all();
-        return view( 'livewire.role.role-permission', compact( 'roles' ) );
+        $roles      = Role::all();
+        $permission = Role::find( 2 );
+
+        $b = $permission->permissions->pluck('name')->toArray();
+        
+        // dd($roles2);
+
+        $g = in_array( 'courses.index', $b );
+
+        // dd( $g );
+
+        return view( 'livewire.role.role-permission', compact( 'roles', 'b' ) );
     }
 }
