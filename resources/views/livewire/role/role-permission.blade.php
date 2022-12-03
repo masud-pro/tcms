@@ -16,7 +16,7 @@
 
         {{-- Pages permission --}}
         @if ($role == null)
-            <form id="#" action="#" method="POST">
+            <form wire:submit.prevent="submit" action="#" method="POST">
                 @csrf
 
                 {{-- start --}}
@@ -24,7 +24,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-check mt-3 mb-3">
-                            <input class="form-check-input" id="selectAll" type="checkbox">
+                            <input class="form-check-input" id="selectAll" wire:click="checkedAll" type="checkbox">
                             <label class="form-check-label" for="selectAll">Select All Check</label>
                         </div>
                     </div>
@@ -66,39 +66,42 @@
 
                                 {{-- courses.index --}}
                                 <div class="form-check">
-                                    <input class="form-check-input checkbox" type="checkbox" value="2"
-                                        name="courses.index" id="2"
+                                    <input class="form-check-input checkbox" type="checkbox" value="courses.index"
+                                        wire:model="permissions" id="coursesIndex"
                                         {{ in_array('courses.index', $permission) ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="chcek-{{ 2 }}">Course List</label>
+                                    <label class="form-check-label" for="coursesIndex">Course List</label>
                                 </div>
 
                                 {{-- courses.create --}}
                                 <div class="form-check">
-                                    <input class="form-check-input checkbox" type="checkbox" value="3"
-                                        name="checkHh" id="3">
-                                    <label class="form-check-label" for="chcek-{{ 3 }}">Course
-                                        Create</label>
+                                    <input class="form-check-input checkbox" type="checkbox" value="courses.create"
+                                        wire:model="permissions" id="coursesCreate"
+                                        {{ in_array('courses.create', $permission) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="coursesCreate">Course Create</label>
                                 </div>
 
                                 {{-- courses.authorization_panel --}}
                                 <div class="form-check">
-                                    <input class="form-check-input checkbox" type="checkbox" value="4"
-                                        name="checkHh" id="flexCheckDefault">
-                                    <label class="form-check-label" for="flexCheckDefault">Courses Edit</label>
+                                    <input class="form-check-input checkbox" type="checkbox" value="courses.edit"
+                                        wire:model="permissions" id="coursesEdit"
+                                        {{ in_array('courses.edit', $permission) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="coursesEdit">Courses Edit</label>
+                                </div>
+
+                                {{-- courses.authorization_panel --}}
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="courses.delete"
+                                        wire:model="permissions" id="coursesDelete"
+                                        {{ in_array('courses.delete', $permission) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="coursesDelete">Courses Delete</label>
                                 </div>
 
                                 {{-- courses.authorization_panel --}}
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value="courses.index"
-                                        id="flexCheckDefault">
-                                    <label class="form-check-label" for="flexCheckDefault">Courses Delete</label>
-                                </div>
-
-                                {{-- courses.authorization_panel --}}
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="courses.index"
-                                        id="flexCheckDefault">
-                                    <label class="form-check-label" for="flexCheckDefault">Courses Archived</label>
+                                        id="coursesAuthorization_panel">
+                                    <label class="form-check-label" for="coursesAuthorization_panel">Courses
+                                        Archived</label>
                                 </div>
 
                                 {{-- courses.authorization_panel --}}
@@ -444,11 +447,14 @@
     <script>
         $("#selectAll").click(function() {
             $("input[type=checkbox]").prop("checked", $(this).prop("checked"));
+            // $("input[type=checkbox]").prop("checked", $(this).val());
+            //  $("input[type='checkbox']").val();
         });
 
         $('#role').change(function() {
             var role = $('#role').val();
             @this.set('role', this.value);
         });
+
     </script>
 @endpush

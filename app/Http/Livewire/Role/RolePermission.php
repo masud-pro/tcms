@@ -11,6 +11,10 @@ class RolePermission extends Component {
      * @var mixed
      */
     public $role;
+    /**
+     * @var string
+     */
+    public $permissions = [];
 
     /**
      * @var array
@@ -34,6 +38,45 @@ class RolePermission extends Component {
     //     // dd( $g );
     // }
 
+    /**
+     * @return mixed
+     */
+    public function checkedAll() {
+
+        if ( $this->permissions == true ) {
+            return $this->permissions = [];
+        }
+
+        if ( $this->permissions == false ) {
+
+            $this->permissions = ['courses.index'];
+        }
+
+        // dd( $this->permissions[0] == 'courses.index' );
+    }
+
+    public function submit() {
+        // $this->validate();
+
+        dd( $this->permissions );
+
+        // $permissions = array($this->courses);
+
+        // // dd($permissions);
+
+        // // Execution doesn't reach here if validation fails.
+
+        // foreach ( $permissions as $permission ) {
+
+        //     dd($permission);
+        //     Permission::create( [
+        //         'name' => $this->courses.$permission,
+        //     ] );
+        // }
+
+        // dd($this->courses);
+    }
+
     public function mount() {
         # code...
     }
@@ -52,12 +95,11 @@ class RolePermission extends Component {
 
         if ( !$userId ) {
             $permission = [''];
-            return view('livewire.role.role-permission', compact( 'roles' ,'permission') );
-            
+            return view( 'livewire.role.role-permission', compact( 'roles', 'permission' ) );
+
         } else {
 
- 
-            $allPermission= Role::find( $this->role );
+            $allPermission = Role::find( $this->role );
 
             $permission = $allPermission->permissions->pluck( 'name' )->toArray();
 
