@@ -21,51 +21,45 @@ class AdminPermissionSeeder extends Seeder {
 
         // create permissions
         $permissions = [
-            //
-            // 'user_management_access',
-            // 'permission_create',
-            // 'permission_edit',
-            // 'permission_show',
-            // 'permission_delete',
-            // 'permission_access',
-            // 'role_create',
-            // 'role_edit',
-            // 'role_show',
-            // 'role_delete',
-            // 'role_access',
-            // 'user_create',
-            // 'user_edit',
-            // 'user_show',
-            // 'user_delete',
-            // 'user_access',
-
-            //
-            // 'courses_create',
-            // 'courses_edit',
-            // 'courses_delete',
-            // 'courses_update',
-            // 'courses_access',
-            // 'courses.edit',
-            //
-
             'courses.index',
+            'courses.create',
+            'courses.edit',
+            'courses.destroy',
             'courses.archived',
             'courses.authorization_panel',
             'courses.authorize_users',
-            'courses.reauthorize_users',
-            'courses.create',
-            'courses.edit',
-            'courses.update',
-            'courses.destroy',
+
+            'student.index',
+            'student.create',
+            'student.edit',
+            'student.destroy',
+
+            'feed.create',
             'feed.edit',
             'feed.destroy',
-            'feed.create',
             'feed.create_link',
-            'feed.store',
-            'feed.store_link',
             'feed.edit_link',
-            'feed.update',
-            'feed.update_link',
+            'feed.destroy_link',
+
+            'exam_question.index',
+            'exam_question.create',
+            'exam_question.edit',
+            'exam_question.destroy',
+            'exam_question.assigned_course',
+
+            'attendance.course_students',
+            'attendance.individual_students',
+
+            'accounts.update',
+            'accounts.course_update',
+            'accounts.overall_user_account',
+            'accounts.individual_student',
+
+            'transactions.user_online_transactions',
+
+            'file_manager.individual_teacher',
+
+            'settings.individual_teacher',
         ];
 
         foreach ( $permissions as $permission ) {
@@ -78,46 +72,88 @@ class AdminPermissionSeeder extends Seeder {
         $superAdmin = Role::create( ['name' => 'Super Admin'] );
         $superAdmin->givePermissionTo( [
             'courses.index',
+            'courses.create',
+            'courses.edit',
+            'courses.destroy',
             'courses.archived',
             'courses.authorization_panel',
             'courses.authorize_users',
-            'courses.reauthorize_users',
-            'courses.create',
-            'courses.edit',
-            'courses.update',
-            'courses.destroy',
+
+            'student.index',
+            'student.create',
+            'student.edit',
+            'student.destroy',
+
+            'feed.create',
             'feed.edit',
             'feed.destroy',
-            'feed.create',
             'feed.create_link',
-            'feed.store',
-            'feed.store_link',
             'feed.edit_link',
-            'feed.update',
-            'feed.update_link',
+            'feed.destroy_link',
+
+            'exam_question.index',
+            'exam_question.create',
+            'exam_question.edit',
+            'exam_question.destroy',
+            'exam_question.assigned_course',
+
+            'attendance.course_students',
+            'attendance.individual_students',
+
+            'accounts.update',
+            'accounts.course_update',
+            'accounts.overall_user_account',
+            'accounts.individual_student',
+
+            'transactions.user_online_transactions',
+
+            'file_manager.individual_teacher',
+
+            'settings.individual_teacher',
         ] );
 
         $teacher = Role::create( ['name' => 'Teacher'] );
 
         $teacher->givePermissionTo( [
             'courses.index',
+            'courses.create',
+            'courses.edit',
+            'courses.destroy',
             'courses.archived',
             'courses.authorization_panel',
             'courses.authorize_users',
-            'courses.reauthorize_users',
-            'courses.create',
-            'courses.edit',
-            'courses.update',
-            'courses.destroy',
+
+            'student.index',
+            'student.create',
+            'student.edit',
+            'student.destroy',
+
+            'feed.create',
             'feed.edit',
             'feed.destroy',
-            'feed.create',
             'feed.create_link',
-            'feed.store',
-            'feed.store_link',
             'feed.edit_link',
-            'feed.update',
-            'feed.update_link',
+            'feed.destroy_link',
+
+            'exam_question.index',
+            'exam_question.create',
+            'exam_question.edit',
+            'exam_question.destroy',
+            'exam_question.assigned_course',
+
+            'attendance.course_students',
+            'attendance.individual_students',
+
+            'accounts.update',
+            'accounts.course_update',
+            'accounts.overall_user_account',
+            'accounts.individual_student',
+
+            'transactions.user_online_transactions',
+
+            'file_manager.individual_teacher',
+
+            'settings.individual_teacher',
         ] );
 
         Role::create( ['name' => 'Student'] );
@@ -149,7 +185,7 @@ class AdminPermissionSeeder extends Seeder {
         );
 
         $teacher->assignRole( 'Teacher' );
-        
+
         $teacher = User::create(
             [
                 'name'              => 'Test Teacher',

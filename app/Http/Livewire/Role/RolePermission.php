@@ -10,11 +10,20 @@ class RolePermission extends Component {
     /**
      * @var mixed
      */
-    public $role;
+    public $roles; // all roles
+    /**
+     * @var mixed
+     */
+    public $permission; // permission from role
+
+    /**
+     * @var mixed
+     */
+    public $role; // role selected
     /**
      * @var string
      */
-    public $permissions = [];
+    public $permissions; // selected permissions
 
     /**
      * @var array
@@ -23,20 +32,9 @@ class RolePermission extends Component {
         "role" => ["except" => ""],
     ];
 
-    // public function updatedRole() {
-
-    //     // dd($this->role);
-
-    //     $permission = Role::find( $this->role );
-
-    //     $b = $permission->permissions->pluck( 'name' )->toArray();
-
-    //     // dd($roles2);
-
-    //     $g = in_array( 'courses.index', $b );
-
-    //     // dd( $g );
-    // }
+    public function updatedRole() {
+        dd( $this->permissions );
+    }
 
     /**
      * @return mixed
@@ -49,62 +47,77 @@ class RolePermission extends Component {
 
         if ( $this->permissions == false ) {
 
-            $this->permissions = ['courses.index'];
+            $this->permissions = [
+                'courses.index'               => true,
+                'courses.create'              => true,
+                'courses.edit'                => true,
+                'courses.destroy'             => true,
+                'courses.archived'            => true,
+                'courses.authorization_panel' => true,
+                'courses.authorize_users'     => true,
+
+                'student.index',
+                'student.create',
+                'student.edit',
+                'student.destroy',
+
+                'feed.create',
+                'feed.edit',
+                'feed.destroy',
+                'feed.create_link',
+                'feed.edit_link',
+                'feed.destroy_link',
+
+                'exam_question.index',
+                'exam_question.create',
+                'exam_question.edit',
+                'exam_question.destroy',
+                'exam_question.assigned_course',
+
+                'attendance.course_students',
+                'attendance.individual_students',
+
+                'accounts.update',
+                'accounts.course_update',
+                'accounts.overall_user_account',
+                'accounts.individual_student',
+
+                'transactions.user_online_transactions',
+
+                'file_manager.individual_teacher',
+
+                'settings.individual_teacher',
+            ];
         }
 
         // dd( $this->permissions[0] == 'courses.index' );
     }
 
     public function submit() {
-        // $this->validate();
 
         dd( $this->permissions );
-
-        // $permissions = array($this->courses);
-
         // // dd($permissions);
 
-        // // Execution doesn't reach here if validation fails.
-
-        // foreach ( $permissions as $permission ) {
-
-        //     dd($permission);
-        //     Permission::create( [
-        //         'name' => $this->courses.$permission,
-        //     ] );
-        // }
-
-        // dd($this->courses);
     }
 
     public function mount() {
-        # code...
+        $this->roles = Role::all();
+
+        if ( !$this->role ) {
+            $this->permission = [];
+
+        } else {
+
+            $role = Role::find( $this->role );
+
+            $this->permission = $role->permissions->pluck( 'name' )->toArray();
+
+        }
     }
 
     public function render() {
 
-        $roles = Role::all();
-
-        $userId = $this->role;
-
-        // dd($roles2);
-
-        // $g = in_array( 'courses.index', $b );
-
-        // dd( $g );
-
-        if ( !$userId ) {
-            $permission = [''];
-            return view( 'livewire.role.role-permission', compact( 'roles', 'permission' ) );
-
-        } else {
-
-            $allPermission = Role::find( $this->role );
-
-            $permission = $allPermission->permissions->pluck( 'name' )->toArray();
-
-            return view( 'livewire.role.role-permission', compact( 'roles', 'permission' ) );
-        }
+        return view( 'livewire.role.role-permission' );
 
     }
 }
