@@ -4,36 +4,83 @@ namespace App\Http\Livewire\Role;
 
 use Livewire\Component;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class RolePermission extends Component {
 
     /**
      * @var mixed
      */
-    public $roles; // all roles
+    public $allRoles; // all roles
     /**
      * @var mixed
      */
-    public $permission; // permission from role
+    public $selectedRole; // selected role
 
     /**
      * @var mixed
      */
-    public $role; // role selected
+    public $allPermissions; // all permissions
     /**
      * @var string
      */
-    public $permissions; // selected permissions
+    public $selectedPermissions; // selected permissions
+
+    /**
+     * @var mixed
+     */
+    public $allChecked; // all checked permissions
 
     /**
      * @var array
      */
     protected $queryString = [
-        "role" => ["except" => ""],
+        'selectedRole' => ['except' => '', 'as' => 'role'],
     ];
 
-    public function updatedRole() {
-        dd( $this->permissions );
+    /**
+     * @return mixed
+     */
+    public function mount() {
+        $this->allRoles = Role::all();
+
+        $this->populateFields();
+
+        $this->allChecked = count( Permission::all() );
+    }
+
+    public function updatedSelectedRole() {
+        $this->populateFields();
+    }
+
+    public function populateFields() {
+
+        if ( $this->selectedRole == true ) {
+            $role                      = $this->allRoles->where( 'id', $this->selectedRole )->first();
+            $this->allPermissions      = $role->permissions->pluck( 'name' )->toArray();
+            $this->selectedPermissions = $this->allPermissions;
+        } else {
+            $this->allPermissions      = [];
+            $this->selectedPermissions = [];
+        }
+
+    }
+
+    //
+    public function submit() {
+
+        $role = Role::find( $this->selectedRole );
+
+        if ( $role->permissions == true ) {
+
+            $role->syncPermissions( $this->selectedPermissions );
+
+            session()->flash( 'updated', 'Role permission modified successfully.' );
+        } else {
+            $role->givePermissionTo( $this->selectedPermissions );
+            session()->flash( 'created', 'Permission assigned successfully.' );
+        }
+
     }
 
     /**
@@ -41,79 +88,23 @@ class RolePermission extends Component {
      */
     public function checkedAll() {
 
-        if ( $this->permissions == true ) {
-            return $this->permissions = [];
+        // dd($this->selectedPermissions);
+
+        // if ($this->selectedPermissions == true) {
+        //     $this->selectedPermissions = Permission::pluck( 'name' );
+        // }
+
+        if ( $this->selectedPermissions == true ) {
+            return $this->selectedPermissions = [];
         }
 
-        if ( $this->permissions == false ) {
+        if ( $this->selectedPermissions == false ) {
 
-            $this->permissions = [
-                'courses.index'               => true,
-                'courses.create'              => true,
-                'courses.edit'                => true,
-                'courses.destroy'             => true,
-                'courses.archived'            => true,
-                'courses.authorization_panel' => true,
-                'courses.authorize_users'     => true,
-
-                'student.index',
-                'student.create',
-                'student.edit',
-                'student.destroy',
-
-                'feed.create',
-                'feed.edit',
-                'feed.destroy',
-                'feed.create_link',
-                'feed.edit_link',
-                'feed.destroy_link',
-
-                'exam_question.index',
-                'exam_question.create',
-                'exam_question.edit',
-                'exam_question.destroy',
-                'exam_question.assigned_course',
-
-                'attendance.course_students',
-                'attendance.individual_students',
-
-                'accounts.update',
-                'accounts.course_update',
-                'accounts.overall_user_account',
-                'accounts.individual_student',
-
-                'transactions.user_online_transactions',
-
-                'file_manager.individual_teacher',
-
-                'settings.individual_teacher',
-            ];
+            $this->selectedPermissions = Permission::pluck( 'name' );
         }
-
-        // dd( $this->permissions[0] == 'courses.index' );
-    }
-
-    public function submit() {
-
-        dd( $this->permissions );
-        // // dd($permissions);
 
     }
 
-    public function mount() {
-        $this->roles = Role::all();
-
-        if ( !$this->role ) {
-            $this->permission = [];
-
-        } else {
-
-            $role = Role::find( $this->role );
-
-            $this->permission = $role->permissions->pluck( 'name' )->toArray();
-
-        }
-    }
 
     public function render() {
 
