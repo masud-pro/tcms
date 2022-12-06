@@ -11,6 +11,11 @@ class RolePermission extends Component {
     /**
      * @var mixed
      */
+    public $checkedAll;
+
+    /**
+     * @var mixed
+     */
     public $allRoles; // all roles
     /**
      * @var mixed
@@ -30,6 +35,11 @@ class RolePermission extends Component {
      * @var mixed
      */
     public $allChecked; // all checked permissions
+
+    /**
+     * @var array
+     */
+    public $tempSelected = []; // temporary data for select all
 
     /**
      * @var array
@@ -74,37 +84,35 @@ class RolePermission extends Component {
         if ( $role->permissions == true ) {
 
             $role->syncPermissions( $this->selectedPermissions );
-
+            $this->tempSelected = [];
             session()->flash( 'updated', 'Role permission modified successfully.' );
         } else {
             $role->givePermissionTo( $this->selectedPermissions );
+            $this->tempSelected = [];
             session()->flash( 'created', 'Permission assigned successfully.' );
         }
 
     }
 
+    public function clearSelected() {
+        $this->selectedPermissions = [];
+        $this->checkedAll          = false;
+    }
+
     /**
      * @return mixed
      */
-    public function checkedAll() {
+    public function updatedCheckedAll() {
 
-        // dd($this->selectedPermissions);
-
-        // if ($this->selectedPermissions == true) {
-        //     $this->selectedPermissions = Permission::pluck( 'name' );
-        // }
-
-        if ( $this->selectedPermissions == true ) {
-            return $this->selectedPermissions = [];
-        }
-
-        if ( $this->selectedPermissions == false ) {
-
-            $this->selectedPermissions = Permission::pluck( 'name' );
+        if ( $this->checkedAll ) {
+            $this->tempSelected        = $this->selectedPermissions;
+            $this->selectedPermissions = Permission::pluck( 'name' )->toArray();
+        } else {
+            $this->selectedPermissions = $this->tempSelected;
+            $this->tempSelected        = [];
         }
 
     }
-
 
     public function render() {
 

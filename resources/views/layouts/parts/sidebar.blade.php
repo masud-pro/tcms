@@ -56,7 +56,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Role Management:</h6>
                         <a class="collapse-item" href="{{ route('role.index') }}">User Roles</a>
-                        <a class="collapse-item" href="#">Role Permission</a>
+                        <a class="collapse-item" href="{{ route('role.permission') }}">Role Permission</a>
                     </div>
                 </div>
 
