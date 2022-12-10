@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreSubscriptionRequest;
-use App\Http\Requests\UpdateSubscriptionRequest;
-use App\Models\Subscription;
+use App\Http\Requests\StoreSubscriptionUserRequest;
+use App\Http\Requests\UpdateSubscriptionUserRequest;
+use App\Models\SubscriptionUser;
 
-class SubscriptionController extends Controller
+class SubscriptionUserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,7 @@ class SubscriptionController extends Controller
      */
     public function index()
     {
-        return view('ms.subscription.index');
+        //
     }
 
     /**
@@ -31,10 +31,10 @@ class SubscriptionController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreSubscriptionRequest  $request
+     * @param  \App\Http\Requests\StoreSubscriptionUserRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreSubscriptionRequest $request)
+    public function store(StoreSubscriptionUserRequest $request)
     {
         //
     }
@@ -42,10 +42,10 @@ class SubscriptionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Subscription  $subscription
+     * @param  \App\Models\SubscriptionUser  $subscriptionUser
      * @return \Illuminate\Http\Response
      */
-    public function show(Subscription $subscription)
+    public function show(SubscriptionUser $subscriptionUser)
     {
         //
     }
@@ -53,10 +53,10 @@ class SubscriptionController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Subscription  $subscription
+     * @param  \App\Models\SubscriptionUser  $subscriptionUser
      * @return \Illuminate\Http\Response
      */
-    public function edit(Subscription $subscription)
+    public function edit(SubscriptionUser $subscriptionUser)
     {
         //
     }
@@ -64,11 +64,11 @@ class SubscriptionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateSubscriptionRequest  $request
-     * @param  \App\Models\Subscription  $subscription
+     * @param  \App\Http\Requests\UpdateSubscriptionUserRequest  $request
+     * @param  \App\Models\SubscriptionUser  $subscriptionUser
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateSubscriptionRequest $request, Subscription $subscription)
+    public function update(UpdateSubscriptionUserRequest $request, SubscriptionUser $subscriptionUser)
     {
         //
     }
@@ -76,10 +76,10 @@ class SubscriptionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Subscription  $subscription
+     * @param  \App\Models\SubscriptionUser  $subscriptionUser
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Subscription $subscription)
+    public function destroy(SubscriptionUser $subscriptionUser)
     {
         //
     }

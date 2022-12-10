@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSubscriptionsTable extends Migration
+class CreateSubAccountsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,14 @@ class CreateSubscriptionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('subscriptions', function (Blueprint $table) {
+        Schema::create('sub_accounts', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->double('price', 8, 2);
-            $table->bigInteger('days');
+            $table->foreignId('subscription_user_id')->index();
+            $table->double('total_price', 8, 2);
+            $table->date('to_date');
+            $table->date('from_date');
+            $table->boolean('status');
+            
             $table->timestamps();
         });
     }
@@ -29,6 +32,6 @@ class CreateSubscriptionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('subscriptions');
+        Schema::dropIfExists('sub_accounts');
     }
 }

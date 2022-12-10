@@ -5,15 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Subscription extends Model {
+class SubscriptionUser extends Model {
     use HasFactory;
 
     /**
      * @var array
      */
     protected $fillable = [
-        'name',
-        'price',
-        'days',
+        'user_id',
+        'subscription_id',
+        'expiry_date',
     ];
 }
