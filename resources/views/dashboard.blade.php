@@ -458,7 +458,7 @@
                             <div class="card-body">
                                 {{-- <a href="#" class="card-link float-left">Enroll</a> --}}
                                 <a href="{{ route('course.feeds.index', ['course' => $course->id]) }}"
-                                    class="card-link btn btn-success font-weight-bold btn-block">Go To Feed</a>
+                                    class="card-link btn btn-success font-weight-bold btn-block">Feed</a>
                             </div>
                         </div>
                     </div>

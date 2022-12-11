@@ -41,7 +41,7 @@
 
 
                         <a href="{{ route('course.feeds.index', ['course' => $course->id]) }}"
-                            class="btn btn-outline-primary font-weight-bold">Go To Feed</a>
+                            class="btn btn-outline-primary font-weight-bold">Feed</a>
                         <a href="{{ route('course.attendance.create', ['course' => $course->id]) }}"
                             class="btn btn-outline-secondary font-weight-bold">Attendance</a>
                         <a href="{{ route('course.accounts.create', ['course' => $course->id]) }}"
