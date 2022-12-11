@@ -40,68 +40,37 @@
             </tfoot>
             <tbody>
 
-                {{-- @forelse  ($administrators as $user)
+                @forelse  ($subscriptions as $subscription)
                     <tr>
                         <td>
-                            {{ $user->id }}
+                            {{ $subscription->id }}
                         </td>
-                        <td class="text-center">
-                            <a target="_blank" href="{{ $user->profile_photo_url ?? '' }}">
-                                <img width="40" height="40" class="img-profile rounded-circle"
-                                    src="{{ $user->profile_photo_url ?? '' }}">
-                            </a>
-                        </td>
-                        <td><b>{{ $user->name ?? 'Not Found' }}</b></td>
-                        <td>{{ $user->email ?? 'Not Found' }}</td>
 
-                        <td>{{ $user->phone_no ?? 'Not Found' }}</td>
+                        <td><b>{{ $subscription->name ?? 'Not Found' }}</b></td>
+                        <td>{{ $subscription->price ?? 'Not Found' }}</td>
 
 
                         <td>
-                            <div class="form-check form-switch ml-3">
-                                <input wire:change="change_status({{ $user->id }},{{ $user->is_active }})"
-                                    class="form-check-input" type="checkbox"
-                                    @if ($user->is_active == 1) checked @endif
-                                    id="flexSwitchCheckDefault{{ $user->id }}">
-                                <label class="form-check-label" for="flexSwitchCheckDefault{{ $user->id }}">
-                                    Is Active
-                                </label>
-                            </div>
+                            {{ $subscription->days }}
                         </td>
                         <td>
-
-                            @php
-                                $roleName = collect($user->getRoleNames())->implode('-');
-                            @endphp
-                            {{ $roleName ?? 'Not Found' }}
-
+                            {{ $subscription->created_at->format('d-M-Y') }}
                         </td>
                         <td>
-                            {{ $user->created_at->format('d-M-Y') }}
-                        </td>
-                        <td>
-                            <a class="btn btn-primary"
-                                href="{{ route('administrator.edit', $user->id) }}"
+                            <a class="btn btn-primary" href="{{ route('subscription.edit', $subscription->id) }}"
                                 target="_blank">
                                 Edit
                             </a>
                         </td>
-                        <td>
-                            <a class="btn btn-primary"
-                                href="{{ route('administrator.edit', $user->id) }}"
-                                target="_blank">
-                                Permissions
-                            </a>
-                        </td>
                     </tr>
                 @empty
-                    <tr>    
+                    <tr>
                         <td class="text-center" colspan="9"> No matching records found </td>
                     </tr>
-                @endforelse --}}
+                @endforelse
             </tbody>
         </table>
-        {{-- {{ $administrators->links() }} --}}
+        {{ $subscriptions->links() }}
     </div>
 </div>
 

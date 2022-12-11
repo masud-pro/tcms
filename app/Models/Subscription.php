@@ -16,4 +16,11 @@ class Subscription extends Model {
         'price',
         'days',
     ];
+
+    public function scopeFilter( $query, $search ) {
+        $query->when( $search, function ( $filter, $search ) {
+            $filter->where( 'name', 'like', "%" . $search . "%" )
+                   ->orWhere( 'id', 'like', "%" . $search . "%" );
+        } );
+    }
 }

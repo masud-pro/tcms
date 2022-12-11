@@ -9,7 +9,7 @@
 @endpush
 
 @section('content')
-    <a href="{{ route('administrator.create') }}" class="btn btn-primary mb-3">Add New Subscription</a>
+    <a href="{{ route('subscription.create') }}" class="btn btn-primary mb-3">Add New Subscription</a>
     <div class="row">
         <div class="col-md-12">
 

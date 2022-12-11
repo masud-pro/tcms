@@ -15,7 +15,7 @@ class SubscriptionUserController extends Controller
      */
     public function index()
     {
-        //
+        return view();
     }
 
     /**
