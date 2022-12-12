@@ -21,9 +21,10 @@ class StoreSubscriptionRequest extends FormRequest {
      */
     public function rules() {
         return [
-            'name'  => ['required', 'string', 'unique:subscriptions'],
-            'price' => ['required'],
-            'days'  => ['required'],
+            'name'       => ['required', 'string', 'unique:subscriptions'],
+            'price'      => ['required'],
+            'permission' => ['required'],
+            'days'       => ['required'],
         ];
     }
 }
