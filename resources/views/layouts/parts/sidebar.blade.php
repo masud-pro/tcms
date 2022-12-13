@@ -60,7 +60,7 @@
                         <h6 class="collapse-header">Role Management:</h6>
                         <a class="collapse-item {{ request()->is('role') ? 'active' : '' }}"
                             href="{{ route('role.index') }}">User Roles</a>
-                        <a class="collapse-item {{ route('role.permission') ? 'active' : '' }}"
+                        <a class="collapse-item {{ request()->is('role.permission') ? 'active' : '' }}"
                             href="{{ route('role.permission') }}">Role Permission</a>
                     </div>
                 </div>
@@ -70,16 +70,30 @@
             {{-- <hr class="sidebar-divider"> --}}
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item {{ request()->is('subscription') ? 'active' : '' }} ">
-                <a class="nav-link " href="{{ route('subscription.index') }}">
+            <li class="nav-item {{ request()->routeIs('subscription.*') ? 'active' : '' }} ">
+                <a class="nav-link" href="{{ route('subscription.index') }}">
                     <i class="fas fa-sack-dollar"></i>
                     <span>Subscription</span></a>
             </li>
 
-            <li class="nav-item {{ request()->is('subscription') ? 'active' : '' }} ">
-                <a class="nav-link " href="{{ route('subscription.index') }}">
-                    <i class="fa-solid fa-hourglass-half"></i>
-                    <span>Subscriber User</span></a>
+
+            <li class="nav-item">
+
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#subscriberManagement"
+                    aria-expanded="true" aria-controls="subscriberManagement">
+                    <i class="fa-solid fa-robot"></i>
+                    <span>Subscribers</span>
+                </a>
+
+                <div id="subscriberManagement" class="collapse"
+                    aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Subscriber Management:</h6>
+                        <a class="collapse-item" href="#">Subscriber List</a>
+                        <a class="collapse-item" href="#">Subscriber Transactions</a>
+                    </div>
+                </div>
+
             </li>
             <hr class="sidebar-divider">
         @endrole
@@ -138,8 +152,8 @@
 
             <li class="nav-item {{ request()->routeIs('assignments.*') ? 'active' : '' }}">
 
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#assessmentCollaple"
-                    aria-expanded="true" aria-controls="assessmentCollaple">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse"
+                    data-target="#assessmentCollaple" aria-expanded="true" aria-controls="assessmentCollaple">
                     <i class="fas fa-pen"></i>
                     <span>Exam Questions</span>
                 </a>

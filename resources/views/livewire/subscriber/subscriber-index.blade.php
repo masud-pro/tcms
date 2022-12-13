@@ -1,6 +1,3 @@
-
-
-
 <div>
     @if (session('status'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -22,10 +19,10 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Name</th>
-                    <th>Price</th>
-                    <th>Days</th>
-                    <th>Created At</th>
+                    <th>Subscriber Name</th>
+                    <th>Package Name</th>
+                    <th>Expiry Day</th>
+                    <th>Last Renew</th>
                     <th>Actions</th>
 
                 </tr>
@@ -33,17 +30,17 @@
             <tfoot>
                 <tr>
                     <th>ID</th>
-                    <th>Name</th>
-                    <th>Price</th>
-                    <th>Days</th>
-                    <th>Created At</th>
+                    <th>Subscriber Name</th>
+                    <th>Package Name</th>
+                    <th>Expiry Day</th>
+                    <th>Last Renew</th>
                     <th>Actions</th>
 
                 </tr>
             </tfoot>
             <tbody>
 
-                @forelse  ($subscriptions as $subscription)
+                {{-- @forelse  ($subscriptions as $subscription)
                     <tr>
                         <td>
                             {{ $subscription->id }}
@@ -70,13 +67,13 @@
                     <tr>
                         <td class="text-center" colspan="9"> No matching records found </td>
                     </tr>
-                @endforelse
+                @endforelse --}}
             </tbody>
         </table>
-        {{ $subscriptions->links() }}
+        {{-- {{ $subscriptions->links() }} --}}
     </div>
 </div>
-@endsection
+
 
 
 @push('scripts')
@@ -87,6 +84,3 @@
     @livewireStyles()
 @endpush
 
-@push('styles-before')
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-@endpush

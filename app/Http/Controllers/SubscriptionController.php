@@ -20,7 +20,7 @@ class SubscriptionController extends Controller {
      *
      */
     public function create() {
-        return view( 'ms.subscription.create' );
+        return view('ms.subscription.create' );
     }
 
     /**

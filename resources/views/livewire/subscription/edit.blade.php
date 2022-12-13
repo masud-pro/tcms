@@ -66,7 +66,8 @@
                                         {{-- courses.index --}}
                                         <div class="form-check">
                                             <input class="form-check-input checkbox" type="checkbox"
-                                                value="courses.index" wire:model="selectedFeature" id="coursesIndex">
+                                                value="courses.index" wire:model="selectedFeature" id="coursesIndex"
+                                                {{-- {{ in_array('courses.index', $selectedFeature) ? 'checked' : '' }}> --}}
                                             <label class="form-check-label" for="coursesIndex">Course List</label>
                                         </div>
 

@@ -11,6 +11,11 @@ class Edit extends Component {
     /**
      * @var mixed
      */
+    public $subscription;
+
+    /**
+     * @var mixed
+     */
     public $name;
     /**
      * @var mixed
@@ -41,7 +46,12 @@ class Edit extends Component {
 
     public function mount() {
 
-        $this->selectedFeature = [];
+        $selectedFeature = explode( ',', $this->subscription['selected_feature'] );
+
+        $this->name            = $this->subscription['name'];
+        $this->price           = $this->subscription['price'];
+        $this->selectedFeature = $selectedFeature;
+        $this->days            = $this->subscription['days'];
 
     }
 
@@ -70,12 +80,13 @@ class Edit extends Component {
         $subscription['days']             = $data['days'];
         $subscription['selected_feature'] = $feature;
 
-        Subscription::create( $subscription );
-
+        $this->subscription->update( $subscription );
+        session()->flash( 'updated', 'Subscription updated successfully.' );
         return redirect()->route( 'subscription.index' );
     }
 
     public function render() {
-        return view('livewire.subscription.edit' );
+
+        return view( 'livewire.subscription.edit' );
     }
 }

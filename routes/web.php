@@ -8,10 +8,10 @@ use App\Http\Controllers\SystemController;
 use App\Http\Livewire\Role\RolePermission;
 use App\Http\Controllers\AmarpayController;
 use App\Http\Controllers\UserRoleController;
+use App\Http\Controllers\SubscriberController;
 use App\Http\Controllers\UddoktaPayController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\AdministratorController;
-use App\Http\Controllers\SubscriptionUserController;
 use App\Http\Controllers\SslCommerzPaymentController;
 
 /*
@@ -137,7 +137,7 @@ Route::get('nibs', function(){
 
 Route::resource( 'role', UserRoleController::class );
 Route::resource( 'subscription', SubscriptionController::class );
-Route::resource( 'subscription-user', SubscriptionUserController::class );
+Route::resource( 'subscriber', SubscriberController::class );
 
 
 

@@ -77,7 +77,7 @@
             </div>
         </div>
     </div> --}}
-    @livewire('subscription.edit')
+    @livewire('subscription.edit', ['subscription' => $subscription])
 @endsection
 
 
