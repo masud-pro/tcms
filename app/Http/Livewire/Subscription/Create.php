@@ -27,7 +27,7 @@ class Create extends Component {
     /**
      * @var mixed
      */
-    public $days;
+    public $months;
 
     /**
      * @var array
@@ -36,7 +36,7 @@ class Create extends Component {
         'name'            => ['required', 'string', 'unique:subscriptions'],
         'price'           => ['required'],
         'selectedFeature' => ['required'],
-        'days'            => ['required'],
+        'months'          => ['required'],
     ];
 
     public function mount() {
@@ -67,7 +67,7 @@ class Create extends Component {
 
         $subscription['name']             = $data['name'];
         $subscription['price']            = $data['price'];
-        $subscription['days']             = $data['days'];
+        $subscription['months']           = $data['months'];
         $subscription['selected_feature'] = $feature;
 
         Subscription::create( $subscription );

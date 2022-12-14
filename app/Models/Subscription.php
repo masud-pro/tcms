@@ -15,7 +15,7 @@ class Subscription extends Model {
         'name',
         'price',
         'selected_feature',
-        'days',
+        'months',
     ];
 
     public function scopeFilter( $query, $search ) {

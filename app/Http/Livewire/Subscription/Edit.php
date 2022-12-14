@@ -28,7 +28,7 @@ class Edit extends Component {
     /**
      * @var mixed
      */
-    public $days;
+    public $months;
     /**
      * @var mixed
      */
@@ -41,7 +41,7 @@ class Edit extends Component {
         'name'            => ['required', 'string'],
         'price'           => ['required'],
         'selectedFeature' => ['required'],
-        'days'            => ['required'],
+        'months'            => ['required'],
     ];
 
     public function mount() {
@@ -51,7 +51,7 @@ class Edit extends Component {
         $this->name            = $this->subscription['name'];
         $this->price           = $this->subscription['price'];
         $this->selectedFeature = $selectedFeature;
-        $this->days            = $this->subscription['days'];
+        $this->months            = $this->subscription['months'];
 
     }
 
@@ -77,7 +77,7 @@ class Edit extends Component {
 
         $subscription['name']             = $data['name'];
         $subscription['price']            = $data['price'];
-        $subscription['days']             = $data['days'];
+        $subscription['months']             = $data['months'];
         $subscription['selected_feature'] = $feature;
 
         $this->subscription->update( $subscription );

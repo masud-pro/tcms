@@ -24,7 +24,7 @@
                     <th>ID</th>
                     <th>Name</th>
                     <th>Price</th>
-                    <th>Days</th>
+                    <th>Months</th>
                     <th>Created At</th>
                     <th>Actions</th>
 
@@ -35,7 +35,7 @@
                     <th>ID</th>
                     <th>Name</th>
                     <th>Price</th>
-                    <th>Days</th>
+                    <th>Months</th>
                     <th>Created At</th>
                     <th>Actions</th>
 
@@ -54,7 +54,7 @@
 
 
                         <td>
-                            {{ $subscription->days }}
+                            {{ $subscription->months ?? 'Not Found' }}
                         </td>
                         <td>
                             {{ $subscription->created_at->format('d-M-Y') }}
@@ -76,7 +76,7 @@
         {{ $subscriptions->links() }}
     </div>
 </div>
-@endsection
+
 
 
 @push('scripts')
@@ -87,6 +87,6 @@
     @livewireStyles()
 @endpush
 
-@push('styles-before')
+{{-- @push('styles-before')
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-@endpush
+@endpush --}}

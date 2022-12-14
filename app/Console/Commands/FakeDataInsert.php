@@ -56,13 +56,13 @@ class FakeDataInsert extends Command {
 
             // Artisan::call( 'db:seed --class=AdministratorSeeder' );
             
-            $courseNumber = $this->ask( 'How many Course do need ..?' );
+            $courseNumber = $this->ask( 'How many Course do you need ..?' );
             
             for ( $i = 0; $i < $courseNumber; $i++ ) {
                 Course::factory( 1 )->create();
             }
             
-            $userNumber = $this->ask( 'How many User do need ..?' );
+            $userNumber = $this->ask( 'How many User do you need ..?' );
             
             for ( $i = 0; $i < $userNumber; $i++ ) {
                 $user = User::factory( 1 )->create();
@@ -72,7 +72,7 @@ class FakeDataInsert extends Command {
             Artisan::call( 'db:seed --class=CourseUserSeeder' );
             $this->comment( 'Fake data insert into the database Successfully ...' );
         } else {
-            $this->error( 'Oops yous successfully ...' );
+            $this->error( 'Oops yours successfully ...' );
         }
 
     }

@@ -13,7 +13,7 @@
 
 
         <!-- Divider -->
-        <hr class="sidebar-divider my-0">
+        <hr class="sidebar-divider dropdown-divider my-0">
 
         <!-- Nav Item - Dashboard -->
         <li class="nav-item {{ request()->is('dashboard') ? 'active' : '' }} ">
@@ -23,7 +23,7 @@
         </li>
 
         <!-- Divider -->
-        <hr class="sidebar-divider">
+        <hr class="sidebar-divider dropdown-divider">
 
         @role('Super Admin')
             <li class="nav-item {{ request()->is('administrator.*') ? 'active' : '' }}">
@@ -67,7 +67,7 @@
 
             </li>
 
-            {{-- <hr class="sidebar-divider"> --}}
+            {{-- <hr class="sidebar-divider dropdown-divider"> --}}
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item {{ request()->routeIs('subscription.*') ? 'active' : '' }} ">
@@ -85,17 +85,17 @@
                     <span>Subscribers</span>
                 </a>
 
-                <div id="subscriberManagement" class="collapse"
-                    aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div id="subscriberManagement" class="collapse" aria-labelledby="headingTwo"
+                    data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Subscriber Management:</h6>
-                        <a class="collapse-item" href="#">Subscriber List</a>
+                        <a class="collapse-item" href="{{ route('subscriber.index') }}">Subscriber List</a>
                         <a class="collapse-item" href="#">Subscriber Transactions</a>
                     </div>
                 </div>
 
             </li>
-            <hr class="sidebar-divider">
+            <hr class="sidebar-divider dropdown-divider">
         @endrole
 
 
@@ -332,7 +332,7 @@
 Doc 
 
 1. Sidebar Divider :
-    <hr class="sidebar-divider">
+    <hr class="sidebar-divider dropdown-divider">
 2. Sidebar Heading : 
     <div class="sidebar-heading">
         Interface
@@ -356,7 +356,7 @@ Doc
 --}}
 
     <!-- Divider -->
-    {{-- <hr class="sidebar-divider d-none d-md-block"> --}}
+    {{-- <hr class="sidebar-divider dropdown-divider d-none d-md-block"> --}}
 
     <!-- Sidebar Toggler (Sidebar) -->
 

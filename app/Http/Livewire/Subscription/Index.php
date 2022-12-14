@@ -28,6 +28,6 @@ class Index extends Component {
 
     public function render() {
         $subscriptions = Subscription::filter( $this->search )->latest()->paginate( 15 );
-        return view( 'livewire.subscription.index', compact( 'subscriptions' ) );
+        return view('livewire.subscription.index', compact( 'subscriptions' ) );
     }
 }

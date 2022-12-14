@@ -26,8 +26,8 @@
                     <th>Status</th>
                     <th>Role</th>
                     <th>Created At</th>
-                    <th>Actions</th>
-                    <th>Permission</th>
+                    {{-- <th>Actions</th>
+                    <th>Permission</th> --}}
                 </tr>
             </thead>
             <tfoot>
@@ -40,8 +40,8 @@
                     <th>Status</th>
                     <th>Role</th>
                     <th>Created At</th>
-                    <th>Actions</th>
-                    <th>Permission</th>
+                    {{-- <th>Actions</th>
+                    <th>Permission</th> --}}
                 </tr>
             </tfoot>
             <tbody>
@@ -85,7 +85,7 @@
                         <td>
                             {{ $user->created_at->format('d-M-Y') }}
                         </td>
-                        <td>
+                        {{-- <td>
                             <a class="btn btn-primary"
                                 href="{{ route('administrator.edit', $user->id) }}"
                                 target="_blank">
@@ -98,7 +98,7 @@
                                 target="_blank">
                                 Permissions
                             </a>
-                        </td>
+                        </td> --}}
                     </tr>
                 @empty
                     <tr>    

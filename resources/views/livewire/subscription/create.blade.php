@@ -30,10 +30,10 @@
                             </div>
 
                             <div class="col-md-4">
-                                <label for="days">Subscription Day Duration</label>
-                                <input class="form-control @error('days') is-invalid @enderror" id="days"
-                                    min="1" wire:model="days" value="{{ old('days') }}" type="number">
-                                @error('days')
+                                <label for="months">Subscription Month Duration</label>
+                                <input class="form-control @error('months') is-invalid @enderror" id="months"
+                                    min="1" wire:model="months" value="{{ old('months') }}" type="number">
+                                @error('months')
                                     <p class="text-danger small mt-1">{{ $message }}</p>
                                 @enderror
                             </div>
@@ -474,4 +474,5 @@
 
 @push('styles')
     @livewireStyles()
+    
 @endpush

@@ -17,7 +17,7 @@ class CreateSubscriptionsTable extends Migration {
             $table->string( 'name' );
             $table->double( 'price', 8, 2 );
             $table->longText( 'selected_feature' );
-            $table->bigInteger( 'days' );
+            $table->bigInteger( 'months' );
             
             $table->timestamps();
         } );
