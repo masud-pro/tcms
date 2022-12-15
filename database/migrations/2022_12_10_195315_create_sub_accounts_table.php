@@ -19,7 +19,7 @@ class CreateSubAccountsTable extends Migration
             $table->double('total_price', 8, 2);
             $table->date('to_date');
             $table->date('from_date');
-            $table->boolean('status');
+            $table->boolean('status')->default(false);
             
             $table->timestamps();
         });
