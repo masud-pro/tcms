@@ -40,26 +40,28 @@
             </tfoot>
             <tbody>
 
-                {{-- @forelse  ($subscriptions as $subscription)
+                @forelse  ($subscriptionUsers as $userData)
                     <tr>
                         <td>
-                            {{ $subscription->id }}
+                            {{ $userData->id }}
                         </td>
 
-                        <td><b>{{ $subscription->name ?? 'Not Found' }}</b></td>
-                        <td>{{ $subscription->price ?? 'Not Found' }}</td>
+                        <td><b>{{ $userData->user->name ?? 'Not Found' }}</b></td>
+                        <td>{{ $userData->subscription->name ?? 'Not Found' }}</td>
 
 
                         <td>
-                            {{ $subscription->days }}
+                            {{ Carbon\Carbon::parse($userData->expiry_date)->format('d M Y') }}
+
+
                         </td>
                         <td>
-                            {{ $subscription->created_at->format('d-M-Y') }}
+                            {{ $userData->created_at->format('d-M-Y') }}
                         </td>
-                        <td>
-                            <a class="btn btn-primary" href="{{ route('subscription.edit', $subscription->id) }}"
+                         <td>
+                            <a class="btn btn-primary" href="{{ route('subscription.edit', $userData->id) }}"
                                 target="_blank">
-                                Edit
+                                Renew
                             </a>
                         </td>
                     </tr>
@@ -67,10 +69,10 @@
                     <tr>
                         <td class="text-center" colspan="9"> No matching records found </td>
                     </tr>
-                @endforelse --}}
+                @endforelse
             </tbody>
         </table>
-        {{-- {{ $subscriptions->links() }} --}}
+        {{ $subscriptionUsers->links() }}
     </div>
 </div>
 
@@ -83,4 +85,3 @@
 @push('styles')
     @livewireStyles()
 @endpush
-

@@ -12,7 +12,7 @@ class SubscriberController extends Controller {
      *
      */
     public function index() {
-        return view( 'ms.subscriber.subscriberIndex' );
+        return view('ms.subscriber.subscriberIndex' );
     }
 
     /**

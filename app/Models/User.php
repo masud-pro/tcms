@@ -159,4 +159,13 @@ class User extends Authenticatable {
         return $this->hasMany( Setting::class );
     }
 
+    /**
+     * Get the assignment that owns the Assessment
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function subscription() {
+        return $this->hasOne( SubscriptionUser::class );
+    }
+
 }

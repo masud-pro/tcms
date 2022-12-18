@@ -22,7 +22,7 @@ class AdministratorController extends Controller {
      */
     public function index() {
 
-        return view( 'ms.administrator.index' );
+        return view('ms.administrator.index' );
     }
 
     /**

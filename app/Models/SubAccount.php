@@ -12,7 +12,7 @@ class SubAccount extends Model {
      * @var array
      */
     protected $fillable = [
-        'sub_user_id',
+        'subscription_user_id',
         'total_price',
         'to_date',
         'from_date',

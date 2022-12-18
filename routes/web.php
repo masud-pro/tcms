@@ -5,7 +5,6 @@ use App\Models\Option;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SystemController;
-use App\Http\Livewire\Role\RolePermission;
 use App\Http\Controllers\AmarpayController;
 use App\Http\Controllers\UserRoleController;
 use App\Http\Controllers\SubscriberController;
@@ -60,8 +59,8 @@ Route::middleware( ['auth:sanctum', 'verified'] )->group( function () {
     }
 
     //
-    
-    Route::resource('administrator', AdministratorController::class);
+
+    Route::resource( 'administrator', AdministratorController::class );
 
 } );
 
@@ -90,17 +89,13 @@ Route::post( '/ipn', [SslCommerzPaymentController::class, 'ipn'] );
 Route::post( "uddokta-pay", [UddoktaPayController::class, "pay"] );
 
 // Payment
-Route::view( "payment-success", "ms.payment-gateway.success" )->name('payment.success');
-Route::view( "payment-cancel", "ms.payment-gateway.cancelled" )->name('payment.fail');
-
-
+Route::view( "payment-success", "ms.payment-gateway.success" )->name( 'payment.success' );
+Route::view( "payment-cancel", "ms.payment-gateway.cancelled" )->name( 'payment.fail' );
 
 // Amar Pay
-Route::get('amarpay-payment', [ AmarpayController::class, 'index' ]);
-Route::post( "aamarpay-success", [ AmarpayController::class, 'success' ] )->name('aamarpay.success');
-Route::post( "aamarpay-fail", [ AmarpayController::class, 'fail' ] )->name('aamarpay.fail');
-
-
+Route::get( 'amarpay-payment', [AmarpayController::class, 'index'] );
+Route::post( "aamarpay-success", [AmarpayController::class, 'success'] )->name( 'aamarpay.success' );
+Route::post( "aamarpay-fail", [AmarpayController::class, 'fail'] )->name( 'aamarpay.fail' );
 
 // Route::get('nibir-api',function(){
 
@@ -129,32 +124,15 @@ Route::post( "aamarpay-fail", [ AmarpayController::class, 'fail' ] )->name('aama
 //     return view("ms.sms.test");
 // });
 
-Route::get('nibs', function(){
-    dd(Course::with(['students'])->toArray());
-});
-
-
+Route::get( 'nibs', function () {
+    dd( Course::with( ['students'] )->toArray() );
+} );
 
 Route::resource( 'role', UserRoleController::class );
 Route::resource( 'subscription', SubscriptionController::class );
 Route::resource( 'subscriber', SubscriberController::class );
 
-
-
-
-Route::get('permission', [UserRoleController::class, 'rolePermission'])->name('role.permission');
-// Route::get( '/test1', [PermissionController::class, 'create'] );
-
-
-
-
-
-// Route::get('test', function(){});
-
-
-
-
-
-
-
-// 
+Route::get( 'permission', [UserRoleController::class, 'rolePermission'] )->name( 'role.permission' );
+Route::get( 'nibir', function () {
+    return 'Nibir';
+} )->middleware( 'check_access:create.courses' );

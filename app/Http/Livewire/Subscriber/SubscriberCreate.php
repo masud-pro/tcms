@@ -5,7 +5,9 @@ namespace App\Http\Livewire\Subscriber;
 use Carbon\Carbon;
 use App\Models\User;
 use Livewire\Component;
+use App\Models\SubAccount;
 use App\Models\Subscription;
+use App\Models\SubscriptionUser;
 
 class SubscriberCreate extends Component {
 
@@ -66,7 +68,7 @@ class SubscriberCreate extends Component {
     public function submit() {
         $data = $this->validate();
 
-        dd( $data );
+        // dd( $data );
         // $monthCount   = Carbon::parse( $this->monthCount );
         // $startDate = Carbon::parse( $this->startDate );
         // $diff      = $startDate->diffInYears( $monthCount );
@@ -74,6 +76,24 @@ class SubscriberCreate extends Component {
         // dd( $diff );
 
         //  dd( $this->subscriberName, $this->subscriberPackage, $this->startDate, $this->monthCount, $this->price );
+
+        $subscriberUser['user_id']         = $data['subscriberName'];
+        $subscriberUser['subscription_id'] = $data['subscriberPackage'];
+        $subscriberUser['expiry_date']     = Carbon::now()->addMonths( $data['monthCount'] );
+
+        $subUser = SubscriptionUser::create( $subscriberUser );
+
+        // dd($subUser->id);
+
+        $subAccountData['subscription_user_id'] = $subUser->id;
+        $subAccountData['total_price']          = $data['price'];
+        $subAccountData['from_date']            = $data['startDate'];
+        $subAccountData['to_date']              = Carbon::now()->addMonths( $data['monthCount'] );
+        $subAccountData['status']               = 1;
+
+        SubAccount::create( $subAccountData );
+        return redirect()->route('subscriber.index');
+
     }
 
     // public function updated() {
