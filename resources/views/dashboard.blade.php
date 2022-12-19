@@ -8,7 +8,10 @@
 
 @section('content')
 
-    @if (Auth::user()->role == 'Admin' || (Auth::user()->role == 'Student' && Auth::user()->is_active == 1))
+    {{-- @if (Auth::user()->role == 'Admin' || (Auth::user()->role == 'Student' && Auth::user()->is_active == 1)) --}}
+
+    @if (auth()->user()->hasRole(['Teacher', 'Super Admin']) ||
+    (Auth::user()->role == 'Student' && Auth::user()->is_active == 1))
 
         <h1 class="h3 mb-4 text-primary">
             Welcome to {{ env('APP_NAME') }} @if ($emoji)
@@ -33,7 +36,7 @@
             </div>
         @endif
 
-        @if (Auth::user()->role == 'Student' && $pendingPayments > 0)
+        @if (Auth::user()->hasRole('Student') && $pendingPayments > 0)
             <div class="text-center">
                 <h2 class="text-danger mb-3">You Have {{ $pendingPayments }} Due Payment(s) </h2>
                 <a href="{{ route('account.student.individual', ['status' => 'Unpaid']) }}" class="btn btn-primary">Pay
@@ -41,11 +44,11 @@
             </div>
         @endif
 
-        @if (Auth::user()->role == 'Admin')
+        @if (auth()->user()->hasRole(['Teacher', 'Super Admin']))
 
             <!-- Page Heading -->
             <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                <h1 class="h5 mb-0 text-gray-800">Overview</h1>
+                <h1 class="h5 mb-0 text-gray-800">Overview Tech</h1>
             </div>
             <div class="container-fluid">
 
@@ -312,7 +315,7 @@
         @else
             <!-- Page Heading -->
             <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                <h1 class="h5 mb-0 text-gray-800">Overview</h1>
+                <h1 class="h5 mb-0 text-gray-800">Overview St</h1>
             </div>
             <!-- Cards -->
             <div class="row">

@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Account;
-use App\Models\Attendance;
+use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Course;
 use App\Models\Option;
-use App\Models\User;
-use Carbon\Carbon;
+use App\Models\Account;
+use App\Models\Setting;
+use App\Models\Attendance;
 use Illuminate\Support\Facades\Auth;
 
 class SystemController extends Controller {
 
     public function dashboard() {
 
-        if ( Auth::user()->role == "Admin" ) {
+        if ( Auth::user()->hasRole( ['Teacher', 'Super Admin'] ) ) {
 
             $allAttendances     = Attendance::select( 'attendance' )->whereMonth( "created_at", Carbon::now() )->get();
             $allAttendanceCount = $allAttendances->count();
@@ -38,7 +39,15 @@ class SystemController extends Controller {
             $total            = $netIncome + $reveivedPayments;
             $revenue          = $total - $expense;
             $courses          = Course::with( "user" )->get();
-            $courseView       = Option::where( "slug", "dashboard_course_view" )->first()['value'];
+
+            // $courseView       = Option::where( "slug", "dashboard_course_view" )->first()['value'];
+            // $courseView = Auth::user()->settings()->with('option')->get();
+            // $courseView = Auth::user()->settings()->with('option')->get();
+
+            $optionId   = Option::where( "slug", "dashboard_course_view" )->pluck( 'id' );
+            $courseView = Setting::where( 'user_id', Auth::user()->id )->where( 'option_id', $optionId )->first()['value'] ?? Option::where( "slug", "dashboard_course_view" )->first()['value'];
+
+            // dd( $courseView);
 
             return view( 'dashboard', [
                 "courses"              => $courses,

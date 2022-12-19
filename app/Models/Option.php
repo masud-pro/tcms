@@ -18,4 +18,13 @@ class Option extends Model {
     ];
 
 
+        /**
+     * The Setting that belong to the Option
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function settings() {
+        return $this->hasMany(Setting::class,);
+    }
+
 }

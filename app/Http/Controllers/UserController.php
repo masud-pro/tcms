@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller {
 
-    // public function __construct() {
+    public function __construct() {
     //     // $this->middleware( 'isAdmin' )->only( [
     //     //     'edit',
     //     //     'index',
@@ -30,14 +30,66 @@ class UserController extends Controller {
     //     //     'destroy',
     //     // ] );
 
-    //     $this->middleware( 'permission:courses.index', ['only' => ['index']] );
-    //     $this->middleware( 'permission:courses.edit', ['only' => ['edit', 'update']] );
-    //     $this->middleware( 'permission:courses.update', ['only' => ['edit', 'update']] );
-    //     $this->middleware( 'permission:courses.destroy', ['only' => ['edit', 'update']] );
-    //     $this->middleware( 'permission:courses.archived', ['only' => ['show']] );
-    //     $this->middleware( 'permission:courses.authorization_panel', ['only' => ['edit', 'update']] );
-    //     $this->middleware( 'permission:courses.authorize_users', ['only' => ['edit', 'update']] );
-    // }
+        $this->middleware( 'check_access:courses.index', ['only' => ['index']] );
+        $this->middleware( 'check_access:courses.create', ['only' => ['create']] );
+        $this->middleware( 'check_access:courses.edit', ['only' => ['edit', 'update']] );
+        $this->middleware( 'check_access:courses.destroy', ['only' => ['destroy']] );
+        // $this->middleware( 'check_access:courses.archived', ['only' => ['destroy']] );
+        // $this->middleware( 'check_access:courses.authorization_panel', ['only' => ['destroy']] );
+        // $this->middleware( 'check_access:courses.authorize_users', ['only' => ['destroy']] );
+
+
+
+
+        
+        // $this->middleware( 'permission:courses.edit', ['only' => ['edit', 'update']] );
+        // $this->middleware( 'permission:courses.update', ['only' => ['edit', 'update']] );
+        // $this->middleware( 'permission:courses.destroy', ['only' => ['edit', 'update']] );
+        // $this->middleware( 'permission:courses.archived', ['only' => ['show']] );
+        // $this->middleware( 'permission:courses.authorization_panel', ['only' => ['edit', 'update']] );
+        // $this->middleware( 'permission:courses.authorize_users', ['only' => ['edit', 'update']] );
+
+
+        // 'courses.index',
+        // 'courses.create',
+        // 'courses.edit',
+        // 'courses.destroy',
+        // 'courses.archived',
+        // 'courses.authorization_panel',
+        // 'courses.authorize_users',
+
+        // 'student.index',
+        // 'student.create',
+        // 'student.edit',
+        // 'student.destroy',
+
+        // 'feed.create',
+        // 'feed.edit',
+        // 'feed.destroy',
+        // 'feed.create_link',
+        // 'feed.edit_link',
+        // 'feed.destroy_link',
+
+        // 'exam_question.index',
+        // 'exam_question.create',
+        // 'exam_question.edit',
+        // 'exam_question.destroy',
+        // 'exam_question.assigned_course',
+
+        // 'attendance.course_students',
+        // 'attendance.individual_students',
+
+        // 'accounts.update',
+        // 'accounts.course_update',
+        // 'accounts.overall_user_account',
+        // 'accounts.individual_student',
+
+        // 'transactions.user_online_transactions',
+
+        // 'file_manager.individual_teacher',
+
+        // 'settings.individual_teacher',
+    }
 
     
     /**

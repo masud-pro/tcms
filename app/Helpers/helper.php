@@ -17,7 +17,7 @@ function hasCourseAccess() {
             'courses.edit',
             'courses.update',
             'courses.destroy',
-    ] ) || ( Auth::user()->hasRole( ['Student'] ) );
+    ] ) || ( Auth::user()->hasRole( ['Teacher' ,'Super Admin'] ) );
     // auth()->user()->can('edit articles');
 }
 
