@@ -2,6 +2,7 @@
 
 use App\Models\Course;
 use App\Models\Option;
+use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SystemController;
@@ -134,5 +135,5 @@ Route::resource( 'subscriber', SubscriberController::class );
 
 Route::get( 'permission', [UserRoleController::class, 'rolePermission'] )->name( 'role.permission' );
 Route::get( 'nibir', function () {
-    return 'Nibir';
+    return Role::findByName( 'Teacher' )->permissions;
 } )->middleware( 'check_access:create.courses' );

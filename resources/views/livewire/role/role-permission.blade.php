@@ -144,6 +144,14 @@
                             <div class="card-body">
                                 <h5 class="card-title"><u>Feed</u> </h5>
 
+                                {{-- feed.index --}}
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="feed.index"
+                                        wire:model="selectedPermissions"
+                                        {{ in_array('feed.index', $allPermissions) ? 'checked' : '' }} id="feedIndex">
+                                    <label class="form-check-label" for="feedIndex">Feed List</label>
+                                </div>
+
                                 {{-- feed.create --}}
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value="feed.create"
@@ -189,15 +197,6 @@
                                         {{ in_array('feed.edit_link', $allPermissions) ? 'checked' : '' }}
                                         id="feedEdit_link">
                                     <label class="form-check-label" for="feedEdit_link">Feed Edit Link</label>
-                                </div>
-
-                                {{-- feed.destroy_link --}}
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="feed.destroy_link"
-                                        wire:model="selectedPermissions"
-                                        {{ in_array('feed.destroy_link', $allPermissions) ? 'checked' : '' }}
-                                        id="feedDestroy_link">
-                                    <label class="form-check-label" for="feedDestroy_link">Feed Delete Link</label>
                                 </div>
 
                             </div>

@@ -17,58 +17,10 @@ use Illuminate\Support\Facades\Hash;
 class UserController extends Controller {
 
     public function __construct() {
-    //     // $this->middleware( 'isAdmin' )->only( [
-    //     //     'edit',
-    //     //     'index',
-    //     //     'archived',
-    //     //     'authorization_panel',
-    //     //     'authorize_users',
-    //     //     'reauthorize_users',
-    //     //     'create',
-    //     //     'edit',
-    //     //     'update',
-    //     //     'destroy',
-    //     // ] );
-
-        $this->middleware( 'check_access:courses.index', ['only' => ['index']] );
-        $this->middleware( 'check_access:courses.create', ['only' => ['create']] );
-        $this->middleware( 'check_access:courses.edit', ['only' => ['edit', 'update']] );
-        $this->middleware( 'check_access:courses.destroy', ['only' => ['destroy']] );
-        // $this->middleware( 'check_access:courses.archived', ['only' => ['destroy']] );
-        // $this->middleware( 'check_access:courses.authorization_panel', ['only' => ['destroy']] );
-        // $this->middleware( 'check_access:courses.authorize_users', ['only' => ['destroy']] );
-
-
-
-
-        
-        // $this->middleware( 'permission:courses.edit', ['only' => ['edit', 'update']] );
-        // $this->middleware( 'permission:courses.update', ['only' => ['edit', 'update']] );
-        // $this->middleware( 'permission:courses.destroy', ['only' => ['edit', 'update']] );
-        // $this->middleware( 'permission:courses.archived', ['only' => ['show']] );
-        // $this->middleware( 'permission:courses.authorization_panel', ['only' => ['edit', 'update']] );
-        // $this->middleware( 'permission:courses.authorize_users', ['only' => ['edit', 'update']] );
-
-
-        // 'courses.index',
-        // 'courses.create',
-        // 'courses.edit',
-        // 'courses.destroy',
-        // 'courses.archived',
-        // 'courses.authorization_panel',
-        // 'courses.authorize_users',
-
-        // 'student.index',
-        // 'student.create',
-        // 'student.edit',
-        // 'student.destroy',
-
-        // 'feed.create',
-        // 'feed.edit',
-        // 'feed.destroy',
-        // 'feed.create_link',
-        // 'feed.edit_link',
-        // 'feed.destroy_link',
+        $this->middleware( 'check_access:student.index', ['only' => ['index']] );
+        $this->middleware( 'check_access:student.create', ['only' => ['create' ,'store']] );
+        $this->middleware( 'check_access:student.edit', ['only' => ['edit', 'update']] );
+        $this->middleware( 'check_access:student.destroy', ['only' => ['destroy']] );
 
         // 'exam_question.index',
         // 'exam_question.create',
@@ -108,6 +60,8 @@ class UserController extends Controller {
         $course = Course::withTrashed()->findOrFail( $course );
 
         $this->authorize( 'view', $course );
+
+        // dd($course);
 
         return view( "ms.students.bulk-students", [
             "users"  => $course->user,

@@ -2,14 +2,38 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Attendance;
+use Carbon\Carbon;
+use App\Models\SMS;
 use App\Models\Course;
 use App\Models\Option;
-use App\Models\SMS;
-use Carbon\Carbon;
+use App\Models\Attendance;
 use Illuminate\Http\Request;
 
 class AttendanceController extends Controller {
+
+    public function __construct() {
+        $this->middleware( 'check_access:attendance.course_students', ['only' => ['index', 'create']] );
+
+        $this->middleware( 'check_access:attendance.individual_students', ['only' => ['student_individual_attendance', 'store']] );
+
+        // $this->middleware( 'check_access:student.edit', ['only' => ['edit', 'update']] );
+        // $this->middleware( 'check_access:student.destroy', ['only' => ['destroy']] );
+
+        // '',
+        // '',
+
+        // 'accounts.update',
+        // 'accounts.course_update',
+        // 'accounts.overall_user_account',
+        // 'accounts.individual_student',
+
+        // 'transactions.user_online_transactions',
+
+        // 'file_manager.individual_teacher',
+
+        // 'settings.individual_teacher',
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -82,7 +106,7 @@ class AttendanceController extends Controller {
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request    $request
      * @return \Illuminate\Http\Response
      */
     public function store( Request $request ) {
@@ -92,7 +116,7 @@ class AttendanceController extends Controller {
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Attendance  $attendance
+     * @param  \App\Models\Attendance      $attendance
      * @return \Illuminate\Http\Response
      */
     public function show( Attendance $attendance ) {
@@ -102,7 +126,7 @@ class AttendanceController extends Controller {
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Attendance  $attendance
+     * @param  \App\Models\Attendance      $attendance
      * @return \Illuminate\Http\Response
      */
     public function edit( Attendance $attendance ) {
@@ -112,8 +136,8 @@ class AttendanceController extends Controller {
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Attendance  $attendance
+     * @param  \Illuminate\Http\Request    $request
+     * @param  \App\Models\Attendance      $attendance
      * @return \Illuminate\Http\Response
      */
     public function update( Request $request, Attendance $attendance ) {
@@ -124,6 +148,9 @@ class AttendanceController extends Controller {
         return view( "ms.attendances.student-attendance" );
     }
 
+    /**
+     * @param Request $request
+     */
     public function change( Request $request ) {
         $data = $request->validate( [
             "ids"        => "required|array",
@@ -145,6 +172,11 @@ class AttendanceController extends Controller {
 
     }
 
+    /**
+     * @param $column
+     * @param $course
+     * @return mixed
+     */
     public function get_phone_numbers( $column, $course ) {
 
         $attendances = Attendance::where( "course_id", $course )->where( "date", Carbon::today() )->where( "attendance", 0 )->get();
@@ -162,6 +194,10 @@ class AttendanceController extends Controller {
         return $numbers;
     }
 
+    /**
+     * @param Request $request
+     * @param $parent
+     */
     public function send_sms_absent_report( Request $request, $parent ) {
 
         if ( $parent == "father" ) {
@@ -216,7 +252,7 @@ class AttendanceController extends Controller {
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Attendance  $attendance
+     * @param  \App\Models\Attendance      $attendance
      * @return \Illuminate\Http\Response
      */
     public function destroy( Attendance $attendance ) {

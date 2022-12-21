@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\OverAllAccountExport;
 
-class OverallAccount extends Component {
+class OverallAccount extends Component { 
 
     public $month;
     public $q;

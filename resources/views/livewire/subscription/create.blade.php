@@ -134,6 +134,13 @@
                                     <div class="card-body">
                                         <h5 class="card-title"><u>Feed</u> </h5>
 
+                                          {{-- feed.index --}}
+                                          <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="feed.index"
+                                                wire:model="selectedFeature" id="feedIndex">
+                                            <label class="form-check-label" for="feedIndex">Feed List</label>
+                                        </div>
+
                                         {{-- feed.create --}}
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" value="feed.create"
@@ -171,14 +178,6 @@
                                             <input class="form-check-input" type="checkbox" value="feed.edit_link"
                                                 wire:model="selectedFeature" id="feedEdit_link">
                                             <label class="form-check-label" for="feedEdit_link">Feed Edit
-                                                Link</label>
-                                        </div>
-
-                                        {{-- feed.destroy_link --}}
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="feed.destroy_link"
-                                                wire:model="selectedFeature" id="feedDestroy_link">
-                                            <label class="form-check-label" for="feedDestroy_link">Feed Delete
                                                 Link</label>
                                         </div>
 

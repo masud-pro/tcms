@@ -34,12 +34,12 @@ class AdminPermissionSeeder extends Seeder {
             'student.edit',
             'student.destroy',
 
+            'feed.index',
             'feed.create',
             'feed.edit',
             'feed.destroy',
             'feed.create_link',
             'feed.edit_link',
-            'feed.destroy_link',
 
             'exam_question.index',
             'exam_question.create',
@@ -84,12 +84,12 @@ class AdminPermissionSeeder extends Seeder {
             'student.edit',
             'student.destroy',
 
+            'feed.index',
             'feed.create',
             'feed.edit',
             'feed.destroy',
             'feed.create_link',
             'feed.edit_link',
-            'feed.destroy_link',
 
             'exam_question.index',
             'exam_question.create',
@@ -128,12 +128,12 @@ class AdminPermissionSeeder extends Seeder {
             'student.edit',
             'student.destroy',
 
+            'feed.index',
             'feed.create',
             'feed.edit',
             'feed.destroy',
             'feed.create_link',
             'feed.edit_link',
-            'feed.destroy_link',
 
             'exam_question.index',
             'exam_question.create',
@@ -188,7 +188,7 @@ class AdminPermissionSeeder extends Seeder {
 
         $teacher = User::create(
             [
-                'name'              => 'Test Teacher',
+                'name'              => 'Test Teacher Two',
                 'email'             => 'test@teacher2.com',
                 'email_verified_at' => now(),
                 'role'              => 'Admin',

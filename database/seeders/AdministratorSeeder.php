@@ -42,7 +42,7 @@ class AdministratorSeeder extends Seeder {
 
         $user = User::create(
             [
-                'name'              => 'Test Teacher2',
+                'name'              => 'Test Teacher Two',
                 'email'             => 'test@teacher2.com',
                 'email_verified_at' => now(),
                 'role'              => 'Admin',

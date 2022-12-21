@@ -8,6 +8,36 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class AssignmentController extends Controller {
+
+    public function __construct() {
+        $this->middleware( 'check_access:exam_question.index', ['only' => ['index']] );
+        $this->middleware( 'check_access:exam_question.create', ['only' => ['create', 'store']] );
+        $this->middleware( 'check_access:exam_question.edit', ['only' => ['edit', 'update']] );
+        $this->middleware( 'check_access:exam_question.destroy', ['only' => ['destroy']] );
+
+        // $this->middleware( 'check_access:exam_question.assigned_course', ['only' => ['edit', 'update']] );
+
+        // '',
+        // '',
+        // '',
+        // '',
+        // '',
+
+        // 'attendance.course_students',
+        // 'attendance.individual_students',
+
+        // 'accounts.update',
+        // 'accounts.course_update',
+        // 'accounts.overall_user_account',
+        // 'accounts.individual_student',
+
+        // 'transactions.user_online_transactions',
+
+        // 'file_manager.individual_teacher',
+
+        // 'settings.individual_teacher',
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -31,7 +61,7 @@ class AssignmentController extends Controller {
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request    $request
      * @return \Illuminate\Http\Response
      */
     public function store( Request $request ) {
@@ -52,7 +82,7 @@ class AssignmentController extends Controller {
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Assignment  $assignment
+     * @param  \App\Models\Assignment      $assignment
      * @return \Illuminate\Http\Response
      */
     public function show( Assignment $assignment ) {
@@ -62,7 +92,7 @@ class AssignmentController extends Controller {
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Assignment  $assignment
+     * @param  \App\Models\Assignment      $assignment
      * @return \Illuminate\Http\Response
      */
     public function edit( Assignment $assignment ) {
@@ -74,8 +104,8 @@ class AssignmentController extends Controller {
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Assignment  $assignment
+     * @param  \Illuminate\Http\Request    $request
+     * @param  \App\Models\Assignment      $assignment
      * @return \Illuminate\Http\Response
      */
     public function update( Request $request, Assignment $assignment ) {
@@ -93,7 +123,7 @@ class AssignmentController extends Controller {
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Assignment  $assignment
+     * @param  \App\Models\Assignment      $assignment
      * @return \Illuminate\Http\Response
      */
     public function destroy( Assignment $assignment ) {

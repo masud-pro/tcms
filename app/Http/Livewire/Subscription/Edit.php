@@ -41,7 +41,7 @@ class Edit extends Component {
         'name'            => ['required', 'string'],
         'price'           => ['required'],
         'selectedFeature' => ['required'],
-        'months'            => ['required'],
+        'months'          => ['required'],
     ];
 
     public function mount() {
@@ -51,7 +51,7 @@ class Edit extends Component {
         $this->name            = $this->subscription['name'];
         $this->price           = $this->subscription['price'];
         $this->selectedFeature = $selectedFeature;
-        $this->months            = $this->subscription['months'];
+        $this->months          = $this->subscription['months'];
 
     }
 
@@ -77,7 +77,7 @@ class Edit extends Component {
 
         $subscription['name']             = $data['name'];
         $subscription['price']            = $data['price'];
-        $subscription['months']             = $data['months'];
+        $subscription['months']           = $data['months'];
         $subscription['selected_feature'] = $feature;
 
         $this->subscription->update( $subscription );

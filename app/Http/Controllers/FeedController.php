@@ -14,19 +14,57 @@ use Illuminate\Support\Facades\Notification;
 class FeedController extends Controller {
 
     public function __construct() {
-        $this->middleware( "isAdmin" )
-             ->only( [
-                 "feed.edit",
-                 "feed.destroy",
-                 "feed.create",
-                 "feed.create_link",
-                 "feed.store",
-                 "feed.store_link",
-                 "feed.edit_link",
-                 "feed.update",
-                 "feed.update_link",
-             ] );
+        $this->middleware( 'check_access:feed.index', ['only' => ['index']] );
+        $this->middleware( 'check_access:feed.create', ['only' => ['create', 'store']] );
+        $this->middleware( 'check_access:feed.edit', ['only' => ['edit', 'update']] );
+        $this->middleware( 'check_access:feed.destroy', ['only' => ['destroy']] );
+        $this->middleware( 'check_access:feed.create_link', ['only' => ['create_link', 'store_link']] );
+        $this->middleware( 'check_access:feed.edit_link', ['only' => ['edit_link' ,'update_link']] );
+
+        // $this->middleware( 'check_access:feed.destroy_link', ['only' => ['destroy']] );
+
+        // 'feed.index',
+        // 'feed.create',
+        // 'feed.edit',
+        // 'feed.destroy',
+        // 'feed.create_link',
+        // 'feed.edit_link',
+
+        // 'exam_question.index',
+        // 'exam_question.create',
+        // 'exam_question.edit',
+        // 'exam_question.destroy',
+        // 'exam_question.assigned_course',
+
+        // 'attendance.course_students',
+        // 'attendance.individual_students',
+
+        // 'accounts.update',
+        // 'accounts.course_update',
+        // 'accounts.overall_user_account',
+        // 'accounts.individual_student',
+
+        // 'transactions.user_online_transactions',
+
+        // 'file_manager.individual_teacher',
+
+        // 'settings.individual_teacher',
     }
+
+    // public function __construct() {
+    //     $this->middleware( "isAdmin" )
+    //          ->only( [
+    //              "feed.edit",
+    //              "feed.destroy",
+    //              "feed.create",
+    //              "feed.create_link",
+    //              "feed.store",
+    //              "feed.store_link",
+    //              "feed.edit_link",
+    //              "feed.update",
+    //              "feed.update_link",
+    //          ] );
+    // }
 
     /**
      * Display a listing of the resource.
@@ -136,7 +174,7 @@ class FeedController extends Controller {
 
     /**
      * @param Request $request
-     * @param Course $course
+     * @param Course  $course
      */
     public function store_link( Request $request, Course $course ) {
 
@@ -226,7 +264,7 @@ class FeedController extends Controller {
 
     /**
      * @param Request $request
-     * @param Feed $feed
+     * @param Feed    $feed
      */
     public function update_link( Request $request, Feed $feed ) {
         $data = $request->validate( [

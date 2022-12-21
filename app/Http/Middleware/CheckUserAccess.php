@@ -31,9 +31,14 @@ class CheckUserAccess {
             : explode( '|', $permission );
 
         if ( $user->hasRole( 'Teacher' ) ) {
+
             if ( $user->subscription === null ) {
                 abort( 403, 'No Subscription' );
             }
+
+            // if ( $user->subscription->status === false ) {
+            //     abort( 403, 'You have been blocked, please contact the software author' );
+            // }
 
             if ( Carbon::parse( $user->subscription->expiry_date )->isPast() ) {
                 abort( 403, 'Subscription Expired' );
@@ -52,6 +57,8 @@ class CheckUserAccess {
                     return $next( $request );
                 }
             }
+
+            abort( 403, 'You are unauthorized for this action' );
 
         } else {
             foreach ( $permissions as $permission ) {

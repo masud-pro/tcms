@@ -13,6 +13,39 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AccountController extends Controller {
+
+    public function __construct() {
+        $this->middleware( 'check_access:accounts.update', ['only' => ['all_batch_accounts']] );
+        
+        // $this->middleware( 'check_access:accounts.course_update', ['only' => ['index' ,'store']] );
+        
+        $this->middleware( 'check_access:accounts.overall_user_account', ['only' => [
+            'overall_account',
+            'index',
+            'create_manually',
+            'individual_account',
+            'transactions',
+            'regenerate',
+            'regenerate_new',
+            'send_sms_due_report',
+            'change_and_reauthorize',
+            'mark_unpaid',
+            'generate_all_payments',
+            'regenerate_all',
+            'all_batch_accounts',
+            ]] );
+        
+        // $this->middleware( 'check_access:accounts.individual_student', ['only' => ['student_individual_attendance' ,'store']] );
+        
+   
+
+        // 'transactions.user_online_transactions',
+
+        // 'file_manager.individual_teacher',
+
+        // 'settings.individual_teacher',
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -23,7 +56,7 @@ class AccountController extends Controller {
     }
 
     public function overall_account() {
-        return view( "ms.account.overall-account" );
+        return view("ms.account.overall-account" );
     }
 
     public function student_pay( Account $account ) {

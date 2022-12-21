@@ -48,6 +48,7 @@ class SystemController extends Controller {
             $courseView = Setting::where( 'user_id', Auth::user()->id )->where( 'option_id', $optionId )->first()['value'] ?? Option::where( "slug", "dashboard_course_view" )->first()['value'];
 
             // dd( $courseView);
+            // logger('debug', [Option::where( "slug", "dashboard_course_view" )->first()['value']] );
 
             return view( 'dashboard', [
                 "courses"              => $courses,

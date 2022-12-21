@@ -12,26 +12,14 @@ use Illuminate\Support\Facades\Storage;
 class CourseController extends Controller {
 
     public function __construct() {
-        // $this->middleware( 'isAdmin' )->only( [
-        //     'edit',
-        //     'index',
-        //     'archived',
-        //     'authorization_panel',
-        //     'authorize_users',
-        //     'reauthorize_users',
-        //     'create',
-        //     'edit',
-        //     'update',
-        //     'destroy',
-        // ] );
 
-        $this->middleware( 'permission:courses.index', ['only' => ['index']] );
-        $this->middleware( 'permission:courses.edit', ['only' => ['edit', 'update']] );
-        $this->middleware( 'permission:courses.update', ['only' => ['edit', 'update']] );
-        $this->middleware( 'permission:courses.destroy', ['only' => ['edit', 'update']] );
-        $this->middleware( 'permission:courses.archived', ['only' => ['show']] );
-        $this->middleware( 'permission:courses.authorization_panel', ['only' => ['edit', 'update']] );
-        $this->middleware( 'permission:courses.authorize_users', ['only' => ['edit', 'update']] );
+        $this->middleware( 'check_access:courses.index', ['only' => ['index']] );
+        $this->middleware( 'check_access:courses.create', ['only' => ['create','store']] );
+        $this->middleware( 'check_access:courses.edit', ['only' => ['edit', 'update']] );
+        $this->middleware( 'check_access:courses.destroy', ['only' => ['destroy']] );
+        $this->middleware( 'check_access:courses.archived', ['only' => ['archived', 'restore']] );
+        $this->middleware( 'check_access:courses.authorization_panel', ['only' => ['authorization_panel']] );
+        $this->middleware( 'check_access:courses.authorize_users', ['only' => ['authorize_users', 'reauthorize_all']] );
     }
 
     /**

@@ -45,7 +45,7 @@ class FakeDataInsert extends Command {
             Artisan::call( 'migrate:fresh' );
             Artisan::call( 'db:seed' );
 
-            User::insert( [
+            User::create( [
                 'name'              => 'Masud Rana',
                 'email'             => '920mash@gmail.com',
                 'phone_no'          => '01743203347',
@@ -55,20 +55,20 @@ class FakeDataInsert extends Command {
             ] );
 
             // Artisan::call( 'db:seed --class=AdministratorSeeder' );
-            
+
             $courseNumber = $this->ask( 'How many Course do you need ..?' );
-            
+
             for ( $i = 0; $i < $courseNumber; $i++ ) {
                 Course::factory( 1 )->create();
             }
-            
+
             $userNumber = $this->ask( 'How many User do you need ..?' );
-            
+
             for ( $i = 0; $i < $userNumber; $i++ ) {
                 $user = User::factory( 1 )->create();
                 $user[0]->assignRole( 'Student' );
             }
-            
+
             Artisan::call( 'db:seed --class=CourseUserSeeder' );
             $this->comment( 'Fake data insert into the database Successfully ...' );
         } else {
