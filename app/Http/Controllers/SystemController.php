@@ -40,15 +40,8 @@ class SystemController extends Controller {
             $revenue          = $total - $expense;
             $courses          = Course::with( "user" )->get();
 
-            // $courseView       = Option::where( "slug", "dashboard_course_view" )->first()['value'];
-            // $courseView = Auth::user()->settings()->with('option')->get();
-            // $courseView = Auth::user()->settings()->with('option')->get();
-
             $optionId   = Option::where( "slug", "dashboard_course_view" )->pluck( 'id' );
             $courseView = Setting::where( 'user_id', Auth::user()->id )->where( 'option_id', $optionId )->first()['value'] ?? Option::where( "slug", "dashboard_course_view" )->first()['value'];
-
-            // dd( $courseView);
-            // logger('debug', [Option::where( "slug", "dashboard_course_view" )->first()['value']] );
 
             return view( 'dashboard', [
                 "courses"              => $courses,

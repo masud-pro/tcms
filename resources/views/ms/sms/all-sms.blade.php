@@ -87,7 +87,7 @@
                         <h6 class="m-0 font-weight-bold text-primary">All SMS</h6>
                     </div>
                     <div class="col text-right">
-                        <span class="m-0 font-weight-bold text-primary">Remaining SMS</span> - <b>{{ $remainingSMS->value }}</b>
+                        <span class="m-0 font-weight-bold text-primary">Remaining SMS</span> - <b>{{ $remainingSMS->value ?? '' }}</b>
                     </div>
                 </div>
             </div>

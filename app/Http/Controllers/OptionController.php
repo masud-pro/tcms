@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\Storage;
 
 class OptionController extends Controller {
 
+    public function __construct() {
+        $this->middleware( 'check_access:settings.individual_teacher', ['only' => ['index', 'update']] );
+    }
+
     /**
      * Display a listing of the resource.
      *

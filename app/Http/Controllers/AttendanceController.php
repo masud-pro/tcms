@@ -13,25 +13,7 @@ class AttendanceController extends Controller {
 
     public function __construct() {
         $this->middleware( 'check_access:attendance.course_students', ['only' => ['index', 'create']] );
-
-        $this->middleware( 'check_access:attendance.individual_students', ['only' => ['student_individual_attendance', 'store']] );
-
-        // $this->middleware( 'check_access:student.edit', ['only' => ['edit', 'update']] );
-        // $this->middleware( 'check_access:student.destroy', ['only' => ['destroy']] );
-
-        // '',
-        // '',
-
-        // 'accounts.update',
-        // 'accounts.course_update',
-        // 'accounts.overall_user_account',
-        // 'accounts.individual_student',
-
-        // 'transactions.user_online_transactions',
-
-        // 'file_manager.individual_teacher',
-
-        // 'settings.individual_teacher',
+        $this->middleware( 'check_access:attendance.individual_students', ['only' => ['individual_student', 'store']] );
     }
 
     /**
@@ -100,7 +82,7 @@ class AttendanceController extends Controller {
     }
 
     public function student_individual_attendance() {
-        return view( "ms.attendances.student-individual-attendance" );
+        return view( "ms.attendances.student-individual-attendance" );   
     }
 
     /**

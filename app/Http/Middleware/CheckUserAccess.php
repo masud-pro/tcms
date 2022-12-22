@@ -68,6 +68,7 @@ class CheckUserAccess {
             }
         }
 
-        return $next( $request );
+        return abort( 403, 'Unauthorized Action' );
+        // return $next( $request );
     }
 }

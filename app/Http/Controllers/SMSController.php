@@ -5,17 +5,34 @@ namespace App\Http\Controllers;
 use App\Models\SMS;
 use App\Models\Course;
 use App\Models\Option;
+use App\Models\Setting;
 use App\Models\Assessment;
 use Illuminate\Http\Request;
 use App\Jobs\Result\ResultSMS;
 use Illuminate\Support\Facades\Auth;
 
 class SMSController extends Controller {
+    
+    // public function __construct() {
+    //     $this->middleware( 'check_access:student.index', ['only' => ['index']] );
+    //     $this->middleware( 'check_access:student.create', ['only' => ['create' ,'store']] );
+    //     $this->middleware( 'check_access:student.edit', ['only' => ['edit', 'update']] );
+    //     $this->middleware( 'check_access:student.destroy', ['only' => ['destroy']] );
+
+
+    //     // 'transactions.user_online_transactions',
+
+    //     // 'file_manager.individual_teacher',
+
+    //     // 'settings.individual_teacher',
+    // }
 
     public function index() {
-        return view( "ms.sms.all-sms", [
+        $optionId = Option::where( "slug", "remaining_sms" )->pluck( 'id' );
+
+        return view("ms.sms.all-sms", [
             "smss"         => SMS::latest()->paginate( 15 ),
-            "remainingSMS" => Option::select( 'value' )->where( 'slug', 'remaining_sms' )->first(),
+            "remainingSMS" => Setting::where( 'user_id', Auth::user()->id )->where( 'option_id', $optionId )->first(),
         ] );
     }
 
@@ -180,8 +197,8 @@ class SMSController extends Controller {
     }
 
     /**
-     * @param $numbers
-     * @param $message
+     * @param  $numbers
+     * @param  $message
      * @return mixed
      */
     public static function sent_sdk( $numbers, $message ) {
@@ -216,10 +233,10 @@ class SMSController extends Controller {
         $message   = "SMS From Software";
 
         $url  = 'https://24smsbd.com/api/bulkSmsApi';
-        $data = [ 'sender_id' => $sender_id,
-            'apiKey'                  => $apiKey,
-            'mobileNo'                => $mobileNo,
-            'message'                 => $message,
+        $data = ['sender_id' => $sender_id,
+            'apiKey'             => $apiKey,
+            'mobileNo'           => $mobileNo,
+            'message'            => $message,
         ];
 
         $curl = curl_init( $url );

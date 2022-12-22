@@ -16,36 +16,13 @@ class AccountController extends Controller {
 
     public function __construct() {
         $this->middleware( 'check_access:accounts.update', ['only' => ['all_batch_accounts']] );
+        $this->middleware( 'check_access:accounts.course_update', ['only' => ['index', 'create_manually']] );
+        $this->middleware( 'check_access:accounts.individual_student', ['only' => ['individual_account']] );
+        $this->middleware( 'check_access:accounts.overall_user_account', ['only' => ['overall_account']] );
         
-        // $this->middleware( 'check_access:accounts.course_update', ['only' => ['index' ,'store']] );
-        
-        $this->middleware( 'check_access:accounts.overall_user_account', ['only' => [
-            'overall_account',
-            'index',
-            'create_manually',
-            'individual_account',
-            'transactions',
-            'regenerate',
-            'regenerate_new',
-            'send_sms_due_report',
-            'change_and_reauthorize',
-            'mark_unpaid',
-            'generate_all_payments',
-            'regenerate_all',
-            'all_batch_accounts',
-            ]] );
-        
-        // $this->middleware( 'check_access:accounts.individual_student', ['only' => ['student_individual_attendance' ,'store']] );
-        
-   
-
-        // 'transactions.user_online_transactions',
-
-        // 'file_manager.individual_teacher',
-
-        // 'settings.individual_teacher',
+        $this->middleware( 'check_access:transactions.user_online_transactions', ['only' => ['transactions']] );
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -56,9 +33,12 @@ class AccountController extends Controller {
     }
 
     public function overall_account() {
-        return view("ms.account.overall-account" );
+        return view( "ms.account.overall-account" );
     }
 
+    /**
+     * @param Account $account
+     */
     public function student_pay( Account $account ) {
 
         $this->authorize( "view", $account );
@@ -68,6 +48,9 @@ class AccountController extends Controller {
         ] );
     }
 
+    /**
+     * @param $account
+     */
     public function mark_unpaid( $account ) {
         Account::findOrFail( $account )->update( ["status" => "Unpaid"] );
 
@@ -86,6 +69,10 @@ class AccountController extends Controller {
         return redirect()->back()->with( "success", "Payments Re-Generated Successfully For This Month" );
     }
 
+    /**
+     * @param $students
+     * @param $course
+     */
     public function regenerate_engine( $students, $course ) {
 
         if ( $course->type == "Monthly" ) {
@@ -156,6 +143,9 @@ class AccountController extends Controller {
 
     }
 
+    /**
+     * @param Course $course
+     */
     public function regenerate( Course $course ) {
 
         $students = $course->user;
@@ -166,6 +156,9 @@ class AccountController extends Controller {
 
     }
 
+    /**
+     * @param Course $course
+     */
     public function regenerate_new( Course $course ) {
 
         if ( $course->type == "Monthly" ) {
@@ -225,6 +218,9 @@ class AccountController extends Controller {
         return redirect()->back()->with( "success", "All Accounts Created Newly For This Month" );
     }
 
+    /**
+     * @param Account $account
+     */
     public function student_pay_offline( Account $account ) {
         $this->authorize( "view", $account );
 
@@ -240,6 +236,9 @@ class AccountController extends Controller {
         ] );
     }
 
+    /**
+     * @param Request $request
+     */
     public function student_pay_offline_store( Request $request ) {
         $data = $request->validate( [
             'name'           => "required|string",
@@ -272,13 +271,18 @@ class AccountController extends Controller {
 
     }
 
+    /**
+     * @param $row
+     * @param $course
+     * @return mixed
+     */
     public function get_phone_numbers( $row, $course ) {
         $accounts = Account::where( "course_id", $course )
             ->whereMonth( "month", Carbon::today() )
             ->where( "status", "Unpaid" )
             ->get();
 
-        $numbers  = [];
+        $numbers = [];
 
         foreach ( $accounts as $account ) {
             $account->user->$row;
@@ -292,6 +296,10 @@ class AccountController extends Controller {
         return $numbers;
     }
 
+    /**
+     * @param Request $request
+     * @param $parent
+     */
     public function send_sms_due_report( Request $request, $parent ) {
 
         if ( $parent == "father" ) {
@@ -344,10 +352,13 @@ class AccountController extends Controller {
 
     }
 
-    public function all_students_account_sms($send_to) {
-        $students = User::where('role', 'Student')->whereHas('payment', function($query){
-            $query->where('status', 'Unpaid');
-        })->get();
+    /**
+     * @param $send_to
+     */
+    public function all_students_account_sms( $send_to ) {
+        $students = User::where( 'role', 'Student' )->whereHas( 'payment', function ( $query ) {
+            $query->where( 'status', 'Unpaid' );
+        } )->get();
         // dd($students[1]->payment);
 
         $numberCount = count( $students );
@@ -359,31 +370,31 @@ class AccountController extends Controller {
             return redirect()->back()->with( "failed", "Not Enough SMS" );
         }
 
-        foreach( $students as $student ){
-            $message = "সম্মানিত অভিভাবক, আপনার সন্তানের "; 
+        foreach ( $students as $student ) {
+            $message  = "সম্মানিত অভিভাবক, আপনার সন্তানের ";
             $payments = $student->payment;
-            foreach( $payments as $payment  ){
-                $message .= Carbon::parse($payment->month)->format( "M-Y" ) . ", ";
+            foreach ( $payments as $payment ) {
+                $message .= Carbon::parse( $payment->month )->format( "M-Y" ) . ", ";
             }
             $message .= " মাসের পেমেন্ট বাকি আছে - " . env( "APP_NAME" );
-            
+
             $number = $student->$send_to;
-            SMSController::send_sms($number, $message);
+            SMSController::send_sms( $number, $message );
         }
 
         $remaining_sms = $remaining_sms - $numberCount;
 
         SMS::create( [
-            'for'       => "Overall Account Report",
-            'count'     => $numberCount,
-            'message'   => $message,
+            'for'     => "Overall Account Report",
+            'count'   => $numberCount,
+            'message' => $message,
         ] );
 
         $smsrow->update( [
             'value' => $remaining_sms,
         ] );
 
-        return redirect()->back()->with('success', 'All guardian informed successfully');
+        return redirect()->back()->with( 'success', 'All guardian informed successfully' );
 
     }
 
@@ -391,7 +402,7 @@ class AccountController extends Controller {
         $courses = Course::all( ["id", "fee"] );
 
         foreach ( $courses as $course ) {
-            $accounts = Account::whereMonth( "month", Carbon::today() )->where( "course_id", $course->id )->pluck("id");
+            $accounts = Account::whereMonth( "month", Carbon::today() )->where( "course_id", $course->id )->pluck( "id" );
 
             $this->generate_payments( $course, $accounts );
         }
@@ -399,6 +410,10 @@ class AccountController extends Controller {
         return redirect()->back()->with( "success", "Payments For This Month Generated Successfully" );
     }
 
+    /**
+     * @param $course
+     * @param $accounts
+     */
     public function generate_payments( $course, $accounts ) {
 
         if ( $accounts->count() <= 0 ) {
@@ -433,7 +448,7 @@ class AccountController extends Controller {
     }
 
     public function all_batch_accounts() {
-        return view( "ms.account.all-batch-accounts");
+        return view( "ms.account.all-batch-accounts" );
     }
 
     /**
@@ -510,7 +525,7 @@ class AccountController extends Controller {
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request    $request
      * @return \Illuminate\Http\Response
      */
     public function store( Request $request ) {
@@ -520,7 +535,7 @@ class AccountController extends Controller {
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Account  $account
+     * @param  \App\Models\Account         $account
      * @return \Illuminate\Http\Response
      */
     public function show( Account $account ) {
@@ -530,7 +545,7 @@ class AccountController extends Controller {
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Account  $account
+     * @param  \App\Models\Account         $account
      * @return \Illuminate\Http\Response
      */
     public function edit( Account $account ) {
@@ -540,8 +555,8 @@ class AccountController extends Controller {
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Account  $account
+     * @param  \Illuminate\Http\Request    $request
+     * @param  \App\Models\Account         $account
      * @return \Illuminate\Http\Response
      */
     public function update( Request $request, Account $account ) {
@@ -555,10 +570,10 @@ class AccountController extends Controller {
      */
     public function change( Request $request ) {
         $data = $request->validate( [
-            "ids"    => "required|array",
-            "status" => "nullable|array",
-            "course" => "nullable|integer",
-            "reauth" => "nullable|integer",
+            "ids"        => "required|array",
+            "status"     => "nullable|array",
+            "course"     => "nullable|integer",
+            "reauth"     => "nullable|integer",
             "reauth_all" => "nullable|integer",
         ] );
 
@@ -580,13 +595,13 @@ class AccountController extends Controller {
         }
 
         // Reauthorize if called to be reauthorize
-        if ( isset($data['reauth'] ) && $data['reauth'] == 1 ) {
+        if ( isset( $data['reauth'] ) && $data['reauth'] == 1 ) {
             $courseController = new CourseController();
             $courseController->reauthorize_users( Course::find( $data['course'] ) );
         }
 
         // Reauth all users is globally called
-        if ( isset($data['reauth_all'] ) && $data['reauth_all'] == 1 ) {
+        if ( isset( $data['reauth_all'] ) && $data['reauth_all'] == 1 ) {
             $courseController = new CourseController();
             $courseController->reauthorize_all();
         }
@@ -627,7 +642,7 @@ class AccountController extends Controller {
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Account  $account
+     * @param  \App\Models\Account         $account
      * @return \Illuminate\Http\Response
      */
     public function destroy( Account $account ) {
