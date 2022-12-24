@@ -28,6 +28,6 @@ class SubscriberIndex extends Component {
     public function render() {
         $subscriptionUsers = SubscriptionUser::filter( $this->search )->latest()->paginate( 15 );
         
-        return view( 'livewire.subscriber.subscriber-index', compact( 'subscriptionUsers' ) );
+        return view('livewire.subscriber.subscriber-index', compact( 'subscriptionUsers' ) );
     }
 }

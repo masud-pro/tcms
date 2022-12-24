@@ -59,7 +59,7 @@
                             {{ $userData->created_at->format('d-M-Y') }}
                         </td>
                          <td>
-                            <a class="btn btn-primary" href="{{ route('subscription.edit', $userData->id) }}"
+                            <a class="btn btn-primary" href="{{ route('subscriber.edit', $userData->id) }}"
                                 target="_blank">
                                 Renew
                             </a>

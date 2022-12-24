@@ -51,7 +51,7 @@ class SubscriptionController extends Controller {
      * @param \App\Models\Subscription $subscription
      */
     public function edit( Subscription $subscription ) {
-        return view( 'ms.subscription.edit', compact( 'subscription' ) );
+        return view('ms.subscription.edit', compact( 'subscription' ) );
     }
 
     /**

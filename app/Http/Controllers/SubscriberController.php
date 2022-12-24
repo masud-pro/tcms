@@ -12,7 +12,7 @@ class SubscriberController extends Controller {
      *
      */
     public function index() {
-        return view('ms.subscriber.subscriberIndex' );
+        return view( 'ms.subscriber.subscriberIndex' );
     }
 
     /**
@@ -20,7 +20,7 @@ class SubscriberController extends Controller {
      *
      */
     public function create() {
-        return view('ms.subscriber.subscriberCreate' );
+        return view( 'ms.subscriber.subscriberCreate' );
     }
 
     /**
@@ -46,8 +46,8 @@ class SubscriberController extends Controller {
      *
      * @param \App\Models\SubscriptionUser $subscriptionUser
      */
-    public function edit( SubscriptionUser $subscriptionUser ) {
-        //
+    public function edit( $subscriptionUser ) {
+        return view('ms.subscriber.subscriberEdit', compact( 'subscriptionUser' ) );
     }
 
     /**
