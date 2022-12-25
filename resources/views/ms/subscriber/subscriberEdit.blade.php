@@ -11,7 +11,7 @@
 @endpush
 
 @section('content')
-    @livewire('subscriber.subscriber-edit'['subscriptionUser' = $subscriptionUser])
+    @livewire('subscriber.subscriber-edit',['subscriptionUser' => $subscriptionUser])
 @endsection
 
 

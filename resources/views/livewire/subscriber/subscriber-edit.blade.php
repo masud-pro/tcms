@@ -3,74 +3,35 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h6 class="m-0 font-weight-bold text-primary">Create New subscriber</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Subscriber </h6>
                 </div>
                 <div class="card-body">
 
                     <form wire:submit.prevent="submit">
 
                         <div class="row">
-                            {{-- <div class="col-md-4">
-                                <label for="name">Subscriber Name</label>
-                                <input class="form-control @error('name') is-invalid @enderror" id="name"
-                                    wire:model="name" value="{{ old('name') }}" type="text">
-                                @error('name')
-                                    <p class="text-danger small mt-1">{{ $message }}</p>
-                                @enderror
-                            </div> --}}
-
 
                             <div class="col-md-4">
-                                <label for="name">Subscriber Name</label>
-                                <div class="" wire:ignore>
-                                    <select wire:model="subscriberName" id="subscriberName"
-                                        class="form-control @error('subscriberPackage') is-invalid @enderror js-example-disabled-results">
-                                        <option value="">Select Subscriber Name</option>
-                                        @foreach ($subscriberList as $data)
-                                            <option value="{{ $data->id }}">{{ $data->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                                <label for="subscriberName">Subscriber Name</label>
+                                <input class="form-control sub-calander @error('subscriberName') is-invalid @enderror"
+                                    disabled id="subscriberName" type="text" placeholder="Enter Month"
+                                    value="{{ old('subscriberName') }}" wire:model="subscriberName">
                                 @error('subscriberName')
                                     <p class="text-danger small mt-1">{{ $message }}</p>
                                 @enderror
                             </div>
 
-                            {{--                             
-                                <div class="col-md-4" wire:ignore>
-                                    <label>Batch / Course</label>
-                                    <select wire:model="batch" id="batch"
-                                        class="form-control js-example-disabled-results">
-                                        <option value="">Select Batch / Course</option>
-                                        <option value="">Select Batch / Course</option>
-                                        <option value="">Select Batch / Course</option>
-                                        <option value="">Select Batch / Course</option>
-                                        <option value="">Select Batch / Course</option>z
-                                        @foreach ($batches as $sbatch)
-                                            <option value="{{ $sbatch->id }}">{{ $sbatch->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div> --}}
-
-
-
-                            {{-- <div class="col-md-4">
-                                <label class="" for="price">Subscription Package</label>
-                                <input class="form-control @error('price') is-invalid @enderror" id="price"
-                                    min="1" wire:model="price" value="{{ old('price') }}" type="number">
-                                @error('price')
-                                    <p class="text-danger small mt-1">{{ $message }}</p>
-                                @enderror
-                            </div> --}}
-
                             <div class="col-md-4">
                                 <label for="name">Subscription Package</label>
+
                                 <div wire:ignore>
                                     <select wire:model="subscriberPackage" id="subscriberPackage"
                                         class="form-control @error('subscriberPackage') is-invalid @enderror js-example-disabled-results">
                                         <option value="">Select Subscription Package</option>
                                         @foreach ($subscriptionList as $data)
-                                            <option value="{{ $data->id }}">{{ $data->name }}
+                                            <option value="{{ $data->id }}"
+                                                {{ $subscriptionUser->subscription_id == $data->id ? ' selected' : '' }}>
+                                                {{ $data->name }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -93,23 +54,12 @@
                         </div>
 
                         <div class="row mt-4">
-                            {{-- <div class="col-md-4">
-                                <label for="name">Subscription Package</label>
-                                <select wire:model="subscriberPackage" id="subscriberPackage"
-                                    class="form-control js-example-disabled-results">
-                                    <option value="">Select Subscription Package</option>
-                                    @foreach ($subscriptionList as $data)
-                                        <option value="{{ $data->id }}">{{ $data->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div> --}}
-
                             <div class="col-md-4">
-                                <label for="startDate">Subscription Start Date</label>
-                                <input class="form-control sub-calander @error('startDate') is-invalid @enderror"
-                                    id="startDate" type="text" placeholder="Enter Month"
-                                    value="{{ old('startDate') }}" wire:model="startDate">
-                                @error('startDate')
+                                <label for="expiryDate">Subscription Expiry Date</label>
+                                <input class="form-control sub-calander @error('expiryDate') is-invalid @enderror"
+                                    disabled id="expiryDate" type="text" placeholder="Enter Month"
+                                    value="{{ old('expiryDate') }}" wire:model="expiryDate">
+                                @error('expiryDate')
                                     <p class="text-danger small mt-1">{{ $message }}</p>
                                 @enderror
                             </div>
@@ -124,15 +74,6 @@
                                     <p class="text-danger small mt-1">{{ $message }}</p>
                                 @enderror
                             </div>
-
-                            {{-- <div class="col-md-4">
-                                <label for="price">Subscription Discount</label>
-                                <input class="form-control @error('price') is-invalid @enderror" id="price"
-                                    min="1" wire:model="price" value="{{ old('price') }}" type="number">
-                                @error('price')
-                                    <p class="text-danger small mt-1">{{ $message }}</p>
-                                @enderror
-                            </div> --}}
                         </div>
 
                         {{-- Feature --}}
@@ -140,7 +81,7 @@
 
                         <div class="row">
                             <div class="col text-left">
-                                <button type="submit" class="btn btn-primary mt-4">Create</button>
+                                <button type="submit" class="btn btn-primary mt-4">Update</button>
                             </div>
                             <div class="col text-right mt-5">
                                 <a href="{{ route('administrator.index') }}">Go Back</a>
@@ -160,8 +101,6 @@
     <script>
         $('.sub-calander').datepicker({
             format: "yyyy-mm-dd",
-            // startView: "months",
-            // minViewMode: "months",
             autoclose: true,
             todayHighlight: true
         });
@@ -171,10 +110,10 @@
             $disabledResults.select2();
         })
 
-        $('#startDate').on('change', function(e) {
-            @this.set('startDate', e.target.value);
+        // $('#expiryDate').on('change', function(e) {
+        //     @this.set('expiryDate', e.target.value);
 
-        });
+        // });
 
         // $('#monthCount').on('change', function(e) {
         //     @this.set('monthCount', e.target.value);
@@ -182,10 +121,10 @@
         // });
 
 
-        $('#subscriberName').change(function() {
-            var subscriberName = $('#subscriberName').val();
-            @this.set('subscriberName', this.value);
-        });
+        // $('#subscriberName').change(function() {
+        //     var subscriberName = $('#subscriberName').val();
+        //     @this.set('subscriberName', this.value);
+        // });
 
 
         $('#subscriberPackage').change(function() {

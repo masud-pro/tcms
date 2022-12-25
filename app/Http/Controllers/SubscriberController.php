@@ -47,7 +47,7 @@ class SubscriberController extends Controller {
      * @param \App\Models\SubscriptionUser $subscriptionUser
      */
     public function edit( $subscriptionUser ) {
-        return view('ms.subscriber.subscriberEdit', compact( 'subscriptionUser' ) );
+        return view( 'ms.subscriber.subscriberEdit', compact( 'subscriptionUser' ) );
     }
 
     /**

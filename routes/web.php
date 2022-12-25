@@ -4,6 +4,7 @@ use App\Models\Course;
 use App\Models\Option;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SystemController;
 use App\Http\Controllers\AmarpayController;
@@ -137,3 +138,14 @@ Route::get( 'permission', [UserRoleController::class, 'rolePermission'] )->name(
 Route::get( 'nibir', function () {
     return Role::findByName( 'Teacher' )->permissions;
 } )->middleware( 'check_access:create.courses' );
+
+Route::get( 'clear', function () {
+    Artisan::call( 'view:clear' );
+    Artisan::call( 'route:clear' );
+    // Artisan::call( 'optimize:clear' );
+    Artisan::call( 'cache:clear' );
+    Artisan::call( 'config:clear' );
+    return "<h4> Everything cache clear </h4>";
+} );
+
+//

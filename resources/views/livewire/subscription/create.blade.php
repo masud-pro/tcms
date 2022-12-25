@@ -273,8 +273,8 @@
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox"
                                                 value="exam_question.destroy" wire:model="selectedFeature"
-                                                id="studentDestroy">
-                                            <label class="form-check-label" for="studentDestroy">Exam Question
+                                                id="examQuestionDestroy">
+                                            <label class="form-check-label" for="examQuestionDestroy">Exam Question
                                                 Delete</label>
                                         </div>
 
