@@ -23,6 +23,7 @@
                     <th>Package Name</th>
                     <th>Expiry Day</th>
                     <th>Last Renew</th>
+                    <th>Status</th>
                     <th>Actions</th>
 
                 </tr>
@@ -34,6 +35,7 @@
                     <th>Package Name</th>
                     <th>Expiry Day</th>
                     <th>Last Renew</th>
+                    <th>Status</th>
                     <th>Actions</th>
 
                 </tr>
@@ -57,6 +59,18 @@
                         </td>
                         <td>
                             {{ $userData->created_at->format('d-M-Y') }}
+                        </td>
+
+                        <td>
+                            <div class="form-check form-switch ml-3">
+                                <input wire:change="change_status({{ $userData->id }},{{ $userData->status }})"
+                                    class="form-check-input" type="checkbox"
+                                    @if ($userData->status == 1) checked @endif
+                                    id="flexSwitchCheckDefault{{ $userData->id }}">
+                                <label class="form-check-label" for="flexSwitchCheckDefault{{ $userData->id }}">
+                                    Is Active
+                                </label>
+                            </div>
                         </td>
                          <td>
                             <a class="btn btn-primary" href="{{ route('subscriber.edit', $userData->id) }}"
@@ -82,6 +96,9 @@
     @livewireScripts()
 @endpush
 
-@push('styles')
-    @livewireStyles()
+
+
+@push('styles-before')
+@livewireStyles()
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 @endpush

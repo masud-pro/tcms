@@ -44,7 +44,7 @@ class Index extends Component {
         $administrators = User::role( $roles )->filter($this->search)->latest()->paginate( 20 );
 
         // return $administrators;
-        return view( 'livewire.administrator.index', compact( 'administrators') );
+        return view('livewire.administrator.index', compact( 'administrators') );
 
     }
 }

@@ -13,6 +13,7 @@ use App\Http\Controllers\SubscriberController;
 use App\Http\Controllers\UddoktaPayController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\AdministratorController;
+use App\Http\Livewire\Register\SubscriberRegister;
 use App\Http\Controllers\SslCommerzPaymentController;
 
 /*
@@ -147,5 +148,8 @@ Route::get( 'clear', function () {
     Artisan::call( 'config:clear' );
     return "<h4> Everything cache clear </h4>";
 } );
+
+Route::get( 'teacher-register', [SystemController::class, 'teacherRegister'] );
+// Route::get( 'teacher-register', SubscriberRegister::class );
 
 //

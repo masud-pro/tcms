@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Subscriber;
 use Carbon\Carbon;
 use App\Models\User;
 use Livewire\Component;
+use App\Models\SubAccount;
 use App\Models\Subscription;
 use App\Models\SubscriptionUser;
 
@@ -56,17 +57,18 @@ class SubscriberEdit extends Component {
 
     public function mount() {
         $this->calculatePrice();
-        $this->subscriptionUser = SubscriptionUser::find( $this->subscriptionUser );
-        $this->subscriberName   = $this->subscriptionUser->user->name;
-        $this->subscriptionList = Subscription::all();
-        $this->expiryDate       = Carbon::parse( $this->subscriptionUser->expiry_date )->format( 'Y-m-d' );
+        $this->subscriptionUser  = SubscriptionUser::find( $this->subscriptionUser );
+        $this->subscriberName    = $this->subscriptionUser->user->name;
+        $this->subscriptionList  = Subscription::all();
+        $this->expiryDate        = Carbon::parse( $this->subscriptionUser->expiry_date )->format( 'Y-m-d' );
+        $this->subscriberPackage = $this->subscriptionUser->subscription->id;
+        // dd( $this->subscriptionUser->subscription );
 
         // dd( $this->expiryDate );
     }
 
     public function updated() {
         $this->calculatePrice();
-
     }
 
     public function calculatePrice() {
@@ -81,6 +83,29 @@ class SubscriberEdit extends Component {
 
     public function submit() {
         $data = $this->validate();
+
+        // dd($data);
+
+        $subscriberUser['user_id']         = $this->subscriptionUser->user_id;
+        $subscriberUser['subscription_id'] = $data['subscriberPackage'];
+        $subscriberUser['expiry_date']     = Carbon::parse( $this->expiryDate )->addMonths( $data['monthCount'] )->format( 'Y-m-d' );
+
+        //    dd($subscriberUser['expiry_date']);
+        //    dd($this->subscriptionUser);
+        //  //return 0;
+
+        $this->subscriptionUser->update( $subscriberUser );
+
+        $subAccountData['subscription_user_id'] = $this->subscriptionUser->id;
+        $subAccountData['total_price']          = $data['price'];
+        $subAccountData['from_date']            = $data['expiryDate'];
+        $subAccountData['to_date']              = Carbon::parse( $this->expiryDate )->addMonths( $data['monthCount'] )->format( 'Y-m-d' );
+        $subAccountData['status']               = 1;
+
+        SubAccount::create( $subAccountData );
+
+        return redirect()->route( 'subscriber.index' );
+
     }
 
     public function render() {

@@ -85,4 +85,11 @@ class SystemController extends Controller {
 
     }
 
+
+
+    public function teacherRegister()
+    {
+       return view('ms.register.subscriber-register');
+    }
+
 }
