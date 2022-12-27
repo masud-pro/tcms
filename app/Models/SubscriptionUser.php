@@ -16,6 +16,7 @@ class SubscriptionUser extends Model {
         'user_id',
         'subscription_id',
         'expiry_date',
+        'status',
     ];
 
     

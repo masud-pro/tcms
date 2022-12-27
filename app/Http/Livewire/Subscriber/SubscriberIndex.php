@@ -31,6 +31,12 @@ class SubscriberIndex extends Component {
      * @param $user_status
      */
     public function change_status( SubscriptionUser $userData, $user_status ) {
+
+        // dd($userData);
+
+
+
+        
         if ( $user_status == 1 ) {
             $userData->update( [
                 'status' => 0,
