@@ -23,7 +23,7 @@
                             <div class="col-md-4">
                                 <label class="" for="price">Subscription Price</label>
                                 <input class="form-control @error('price') is-invalid @enderror" id="price"
-                                    min="1" wire:model="price" value="{{ old('price') }}" type="number">
+                                    min="0" wire:model="price" value="{{ old('price') }}" type="number">
                                 @error('price')
                                     <p class="text-danger small mt-1">{{ $message }}</p>
                                 @enderror

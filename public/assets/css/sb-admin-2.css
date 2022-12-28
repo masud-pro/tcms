@@ -10889,7 +10889,7 @@ form.user .form-control-user {
 }
 
 form.user .form-control-select {
-  font-size: 0.8rem;
+  font-size: 1rem;
   border-radius: 0.5rem;
   padding: 0rem 1rem;
   background-image: linear-gradient(45deg, transparent 50%, gray 50%),linear-gradient(135deg, gray 50%, transparent 50%),linear-gradient(to right, #ccc, #ccc);
@@ -10917,6 +10917,8 @@ form.user .form-control-select {
 
 .form-control-select option {
     color: #6e707e;
+    font-size: 16px;
+    font-weight: 500;
 }
 
 form.user .btn-user {

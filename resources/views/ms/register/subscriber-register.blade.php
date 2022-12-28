@@ -25,12 +25,45 @@
         integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
     <!-- Custom styles for this template-->
     <link href="{{ asset('assets') }}/css/sb-admin-2.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     @stack('styles')
+
+
+    <style>
+        .form-check-input {
+            clear: left;
+        }
+
+        .form-switch.form-switch-lg {
+            margin-bottom: 1.5rem;
+            /* JUST FOR STYLING PURPOSE */
+        }
+
+        .form-switch.form-switch-lg .form-check-input {
+            height: 2rem;
+            width: calc(3rem + 0.75rem);
+            border-radius: 4rem;
+            margin-left: -15%;
+            margin-top: -1%;
+        }
+
+        .pd-18{
+            padding-right: 18%;
+        }
+
+        .pd-4{
+            padding-left: 4%;
+        }
+
+      
+    </style>
 </head>
 
 <body class="bg-gradient-primary">
