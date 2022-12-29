@@ -6,28 +6,27 @@ use Livewire\Component;
 use App\Models\Subscription;
 
 class SubscriberRegister extends Component {
-    /**
-     * @var mixed
-     */
     public $planName;
-    /**
-     * @var mixed
-     */
     public $planList;
-    /**
-     * @var mixed
-     */
     public $planFeature;
-    /**
-     * @var mixed
-     */
     public $planPrice;
-    /**
-     * @var mixed
-     */
     public $billChecked;
     public $freeTrail;
     public $register;
+    public $nextStep;
+    
+    //
+    public $fName;
+    public $lName;
+    public $phoneNumber;
+    public $userName;
+    public $emailAddress;
+    public $dob;
+    public $gender;
+    public $curriculum;
+    public $teachingLevel;
+    public $address;
+    public $password;
 
     public function mount() {
 
@@ -41,14 +40,18 @@ class SubscriberRegister extends Component {
         $this->planFeature = explode( ',', Subscription::find( $freeTrail->id )->selected_feature );
 
         $this->freeTrail = true;
-        $this->register = false;
+        $this->register  = false;
 
         //    dd( Subscription::where('name', 'Trail Plan')->first());
 
     }
 
+    // public function updatedBillChecked() {
+
+    // }
+
     public function updated() {
-        //   dd($this->planName);
+        // dump( $this->billChecked );
 
         $plan = Subscription::find( $this->planName );
 
@@ -61,32 +64,53 @@ class SubscriberRegister extends Component {
         $this->planPrice   = $plan->price;
 
         $this->freeTrail = false;
-        
+
+        if ( $this->billChecked ) {
+            $this->changeMonthsBill( 1 );
+        } elseif ( $this->billChecked ) {
+            $this->changeMonthsBill( 12 );
+        }
 
     }
 
     /**
      * @param $monthly
      */
-    public function changeMonthsBill( $monthly ) {
+    public function changeMonthsBill( $is_yearly ) {
         $plan = Subscription::find( $this->planName );
 
-        if ( $monthly == 1 ) {
-            $this->billChecked = 1;
-            $this->planPrice   = $plan->price;
+        if ( $is_yearly ) {
+            $this->planPrice = $plan->price * 12;
         } else {
-            $this->billChecked = 12;
-            $this->planPrice   = $plan->price * 12;
+            $this->planPrice = $plan->price;
         }
     }
 
-    public function nextStep()
-    {
+    public function nextStep() {
         $this->register = true;
+        $this->nextStep = true;
+    }
+
+    protected function rules() {
+        return [
+            'fName' => ['required'],
+            'lName' => ['required'],
+        ];
+    }
+
+    public function submit() {
+        $this->validate();
+        // $this->validate([
+        //     'fName' => ['required'],
+        //     'lName' => ['required'],
+        // ]);
+
+        // $this->register = true;
     }
 
     public function render() {
 
         return view( 'livewire.register.subscriber-register' );
+
     }
 }
