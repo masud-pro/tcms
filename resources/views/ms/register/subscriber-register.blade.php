@@ -55,19 +55,19 @@
             margin-top: -1%;
         }
 
-        .pd-18{
+        .pd-18 {
             padding-right: 18%;
         }
 
-        .pd-4{
+        .pd-4 {
             padding-left: 4%;
         }
 
-        .ml-x-6{
-            margin-left: -6%;
+        .price-container {
+            margin-top: -6px;
+            padding-bottom: 12px;
+            margin-left: 26px;
         }
-
-      
     </style>
 </head>
 

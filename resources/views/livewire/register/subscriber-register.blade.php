@@ -15,13 +15,32 @@
 
                                         <div class="text-center">
 
+                                            @if ($planPrice == 0)
+                                                <h3 class="text-center fs-4 price-container fw-bold">Free for 30 Days
+                                                </h3>
+                                            @else
+                                                <h3 class="text-center fs-1 price-container fw-bold">
+                                                    {{ $planPrice == 0 ? '' : $planPrice }}<span
+                                                        class="fs-6">Tk</span>
+                                                </h3>
 
-                                            <h3 class="text-center fs-1 ">
-                                                {{ $planPrice == 0 ? '' : $planPrice }}<span
-                                                    class="fs-6">{{ $planPrice == 0 ? 'Free for 30 Days' : 'Tk' }}</span>
-                                            </h3>
+                                                <div class="form-check form-switch form-switch-lg mt-2">
+                                                    <label class="form-check-label pd-18"
+                                                        for="flexSwitchCheckChecked">Bill
+                                                        Monthly</label>
+                                                    <input class="form-check-input" type="checkbox"
+                                                        id="flexSwitchCheckChecked" style="opacity: 1;"
+                                                        wire:click="$toggle('billChecked')">
+                                                    <label class="form-check-label pd-4 "
+                                                        style="opacity: 1; color: #222"
+                                                        for="flexSwitchCheckChecked">Bill
+                                                        Annually</label>
 
-                                            @if ($freeTrail == true)
+
+                                                </div>
+                                            @endif
+
+                                            {{-- @if ($freeTrail == true)
                                                 <h3 class="text-center fs-1"></h3>
                                             @else
                                                 <div class="form-check form-switch form-switch-lg mt-2">
@@ -38,7 +57,7 @@
 
 
                                                 </div>
-                                            @endif
+                                            @endif --}}
 
 
 
@@ -76,7 +95,7 @@
 
                                         <div class="form-group row">
 
-                                            <div class="col-sm-8 mb-3 mb-sm-0">
+                                            <div class="col-sm-{{ $nextStep == false ? '8' : '12' }} mb-3 mb-sm-0">
 
 
                                                 <select class="form-control form-control-select " wire:model="planName"
@@ -113,29 +132,7 @@
                                                                 Step</button>
                                                         @endif
                                                     @else
-                                                        {{-- <h3 class="text-center fs-1">
-                                                            {{ $planPrice == 0 ? '' : $planPrice }}<span
-                                                                class="fs-6">{{ $planPrice == 0 ? 'Free for 2 Month' : 'Tk' }}</span>
-                                                        </h3> --}}
                                                     @endif
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
                                                 </div>
@@ -171,7 +168,7 @@
 
                                         </div>
 
-                                        <div class="form-group row">
+                                        {{-- <div class="form-group row">
 
                                             <div class="col-sm-12 mb-3 mb-sm-0">
 
@@ -181,7 +178,7 @@
                                                         <div class="text-cemter mt-3 ">
                                                             <div class="col-md-12 text-center">
                                                                 <button wire:click="nextStep()" type="button"
-                                                                    class="btn btn-primary ">Free
+                                                                    class="btn btn-primary ">Free sdasd
                                                                     Trail</button>
 
                                                             </div>
@@ -215,7 +212,7 @@
 
                                             </div>
 
-                                        </div>
+                                        </div> --}}
 
 
                                     </div>
@@ -233,7 +230,7 @@
 
 
 
-                        @if ($errors->any())
+                        {{-- @if ($errors->any())
                             <div class="alert alert-danger">
                                 <ul>
                                     @foreach ($errors->all() as $error)
@@ -241,7 +238,7 @@
                                     @endforeach
                                 </ul>
                             </div>
-                        @endif
+                        @endif --}}
 
 
 
@@ -266,12 +263,18 @@
                                                             value="{{ old('fName') }}" wire:model="fName">
 
                                                         @error('fName')
-                                                            <p class="text-danger small mt-1">{{ $message }}</p>
+                                                            <p class="text-start text-danger small mt-1">{{ $message }}
+                                                            </p>
                                                         @enderror
                                                     </div>
                                                     <div class="col-sm-6">
-                                                        <input type="text" class="form-control form-control-user"
+                                                        <input type="text"
+                                                            class="form-control form-control-user @error('lName') is-invalid @enderror"
                                                             id="lName" placeholder="Last Name" wire:model="lName">
+                                                        @error('lName')
+                                                            <p class="text-start text-danger small mt-1">{{ $message }}
+                                                            </p>
+                                                        @enderror
                                                     </div>
                                                 </div>
 
@@ -280,43 +283,70 @@
 
                                                 <div class="form-group row">
                                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                                        <input type="text" class="form-control form-control-user"
+                                                        <input type="text"
+                                                            class="form-control form-control-user @error('phoneNumber') is-invalid @enderror"
                                                             id="phoneNumber" placeholder="Phone Number"
                                                             wire:model="phoneNumber">
+
+                                                        @error('phoneNumber')
+                                                            <p class="text-start text-danger small mt-1">
+                                                                {{ $message }}</p>
+                                                        @enderror
                                                     </div>
 
                                                     <div class="col-sm-6">
-                                                        <input type="text" class="form-control form-control-user"
+                                                        <input type="text"
+                                                            class="form-control form-control-user @error('userName') is-invalid @enderror"
                                                             id="userName" placeholder="User Name"
                                                             wire:model="userName">
+
+                                                        @error('userName')
+                                                            <p class="text-start text-danger small mt-1">
+                                                                {{ $message }}</p>
+                                                        @enderror
                                                     </div>
 
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <input type="email" class="form-control form-control-user"
+                                                    <input type="email"
+                                                        class="form-control form-control-user  @error('emailAddress') is-invalid @enderror"
                                                         id="emailAddress" placeholder="Email Address"
                                                         wire:model="emailAddress">
+
+                                                    @error('emailAddress')
+                                                        <p class="text-start text-danger small mt-1">
+                                                            {{ $message }}</p>
+                                                    @enderror
                                                 </div>
 
 
 
                                                 <div class="form-group row">
                                                     <div class="col-sm-6">
-                                                        <input type="text" class="form-control form-control-user"
-                                                            id="dob" placeholder="Date of Birth"
-                                                            wire:model="dob">
+                                                        <input type="date"
+                                                            class="form-control form-control-user  @error('dob') is-invalid @enderror"
+                                                            id="sub-calander" placeholder="Date of Birth" wire:model="dob">
+                                                        @error('dob')
+                                                            <p class="text-start text-danger small mt-1">
+                                                                {{ $message }}</p>
+                                                        @enderror
                                                     </div>
 
                                                     {{-- select Gender --}}
                                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                                        <select class="form-control form-control-select"
+                                                        <select
+                                                            class="form-control form-control-select @error('gender') is-invalid @enderror"
                                                             id="gender" wire:model="gender">
-                                                            <option selected>Select Gender</option>
-                                                            <option value="1">One</option>
-                                                            <option value="2">Two</option>
-                                                            <option value="3">Three</option>
+                                                            <option disabled selected>Select Gender</option>
+                                                            <option class="" value="male">Male</option>
+                                                            <option value="female">Female</option>
                                                         </select>
+
+                                                        @error('gender')
+                                                            <p class="text-start text-danger small mt-1">
+                                                                {{ $message }}</p>
+                                                        @enderror
                                                     </div>
 
                                                 </div>
@@ -327,27 +357,56 @@
 
                                                     {{-- Select Curriculum --}}
                                                     <div class="col-sm-6">
-                                                        <select class="form-control form-control-select select1"
+                                                        <select
+                                                            class="form-control form-control-select select1 @error('curriculum') is-invalid @enderror"
                                                             id="curriculum" wire:model="curriculum">
-                                                            <option selected>Select Curriculum</option>
-                                                            <option value="1">One</option>
-                                                            <option value="2">Two</option>
-                                                            <option value="3">Three</option>
+                                                            <option disabled selected>Select Curriculum</option>
+                                                            <option value="bangla">Bangla Medium</option>
+                                                            <option value="english">English Medium</option>
+                                                            <option value="other">Other</option>
                                                         </select>
+
+                                                        @error('curriculum')
+                                                            <p class="text-start text-danger small mt-1">
+                                                                {{ $message }}</p>
+                                                        @enderror
                                                     </div>
 
                                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                                        <input type="text" class="form-control form-control-user"
+                                                        <input type="text"
+                                                            class="form-control form-control-user @error('teachingLevel') is-invalid @enderror"
                                                             id="teachingLevel" placeholder="Teaching Level"
                                                             wire:model="teachingLevel">
+
+                                                        @error('teachingLevel')
+                                                            <p class="text-start text-danger small mt-1">
+                                                                {{ $message }}</p>
+                                                        @enderror
                                                     </div>
 
                                                 </div>
 
 
                                                 <div class="form-group">
-                                                    <textarea type="email" class="form-control form-control-user" id="address" placeholder="Address"
-                                                        wire:model="address"></textarea>
+                                                    <input type="text"
+                                                        class="form-control form-control-user @error('institute') is-invalid @enderror"
+                                                        id="institute" placeholder="Institute Name"
+                                                        wire:model="institute">
+
+                                                    @error('institute')
+                                                        <p class="text-start text-danger small mt-1">{{ $message }}
+                                                        </p>
+                                                    @enderror
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <textarea class="form-control form-control-user @error('address') is-invalid @enderror" id="address"
+                                                        placeholder="Address" wire:model="address"></textarea>
+
+                                                    @error('address')
+                                                        <p class="text-start text-danger small mt-1">{{ $message }}
+                                                        </p>
+                                                    @enderror
                                                 </div>
 
 
@@ -356,13 +415,22 @@
 
                                                 <div class="form-group row">
                                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                                        <input type="password" class="form-control form-control-user"
+                                                        <input type="password"
+                                                            class="form-control form-control-user @error('password') is-invalid @enderror"
                                                             id="password" placeholder="Password"
                                                             wire:model="password">
+
+                                                        @error('password')
+                                                            <p class="text-start text-danger small mt-1">
+                                                                {{ $message }}</p>
+                                                        @enderror
                                                     </div>
                                                     <div class="col-sm-6">
-                                                        <input type="password" class="form-control form-control-user"
-                                                            id="exampleRepeatPassword" placeholder="Repeat Password">
+                                                        <input type="password"
+                                                            class="form-control form-control-user @error('password_confirmation') is-invalid @enderror"
+                                                            id="password_confirmation"
+                                                            wire:model="password_confirmation"
+                                                            placeholder="Repeat Password">
                                                     </div>
                                                 </div>
                                                 <button type="submit" class="btn btn-primary btn-user btn-block">
@@ -553,7 +621,7 @@
 
         // });
 
-        $("#checkbox").prop("checked", true);
+        // $("#checkbox").prop("checked", true);
 
 
 
