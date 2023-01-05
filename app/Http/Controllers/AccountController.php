@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
-use App\Models\SMS;
-use App\Models\User;
-use App\Models\Order;
+use App\Models\Account;
 use App\Models\Course;
 use App\Models\Option;
-use App\Models\Account;
+use App\Models\Order;
+use App\Models\SMS;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -245,7 +245,7 @@ class AccountController extends Controller {
             ->where( "status", "Unpaid" )
             ->get();
 
-        $numbers  = [];
+        $numbers = [];
 
         foreach ( $accounts as $account ) {
             $account->user->$row;
@@ -311,10 +311,10 @@ class AccountController extends Controller {
 
     }
 
-    public function all_students_account_sms($send_to) {
-        $students = User::where('role', 'Student')->whereHas('payment', function($query){
-            $query->where('status', 'Unpaid');
-        })->get();
+    public function all_students_account_sms( $send_to ) {
+        $students = User::where( 'role', 'Student' )->whereHas( 'payment', function ( $query ) {
+            $query->where( 'status', 'Unpaid' );
+        } )->get();
         // dd($students[1]->payment);
 
         $numberCount = count( $students );
@@ -326,31 +326,33 @@ class AccountController extends Controller {
             return redirect()->back()->with( "failed", "Not Enough SMS" );
         }
 
-        foreach( $students as $student ){
-            $message = "সম্মানিত অভিভাবক, আপনার সন্তানের "; 
+        foreach ( $students as $student ) {
+            $message  = "সম্মানিত অভিভাবক, আপনার সন্তানের ";
             $payments = $student->payment;
-            foreach( $payments as $payment  ){
-                $message .= Carbon::parse($payment->month)->format( "M-Y" ) . ", ";
+
+            foreach ( $payments as $payment ) {
+                $message .= Carbon::parse( $payment->month )->format( "M-Y" ) . ", ";
             }
+
             $message .= " মাসের পেমেন্ট বাকি আছে - " . env( "APP_NAME" );
-            
+
             $number = $student->$send_to;
-            SMSController::send_sms($number, $message);
+            SMSController::send_sms( $number, $message );
         }
 
         $remaining_sms = $remaining_sms - $numberCount;
 
         SMS::create( [
-            'for'       => "Overall Account Report",
-            'count'     => $numberCount,
-            'message'   => $message,
+            'for'     => "Overall Account Report",
+            'count'   => $numberCount,
+            'message' => $message,
         ] );
 
         $smsrow->update( [
             'value' => $remaining_sms,
         ] );
 
-        return redirect()->back()->with('success', 'All guardian informed successfully');
+        return redirect()->back()->with( 'success', 'All guardian informed successfully' );
 
     }
 
@@ -358,7 +360,7 @@ class AccountController extends Controller {
         $courses = Course::all( ["id", "fee"] );
 
         foreach ( $courses as $course ) {
-            $accounts = Account::whereMonth( "month", Carbon::today() )->where( "course_id", $course->id )->pluck("id");
+            $accounts = Account::whereMonth( "month", Carbon::today() )->where( "course_id", $course->id )->pluck( "id" );
 
             $this->generate_payments( $course, $accounts );
         }
@@ -367,6 +369,10 @@ class AccountController extends Controller {
     }
 
     public function generate_payments( $course, $accounts ) {
+
+        if( $course->should_generate_payments === 0 ){
+            return false;
+        }
 
         if ( $accounts->count() <= 0 ) {
             $students   = $course->user;
@@ -400,7 +406,7 @@ class AccountController extends Controller {
     }
 
     public function all_batch_accounts() {
-        return view( "ms.account.all-batch-accounts");
+        return view( "ms.account.all-batch-accounts" );
     }
 
     /**
@@ -409,9 +415,8 @@ class AccountController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create( Course $course ) {
-
         if ( $course->type == "Monthly" ) {
-
+            
             $accounts = Account::whereMonth( "month", Carbon::today() )->where( "course_id", $course->id )->get();
 
             $generated = $this->generate_payments( $course, $accounts );
@@ -419,27 +424,14 @@ class AccountController extends Controller {
             if ( $generated ) { // If generated then show them the page
 
                 return view( "ms.account.account-index", [
-                    "accounts" => Account::select( ["accounts.*", "accounts.id as account_id", "users.name as user_name", "users.email as user_email"] )
-                        ->with( "user" )
-                        ->leftJoin( "users", "accounts.user_id", "=", "users.id" )
-                        ->orderBy( "users.name", "asc" )
-                        ->whereMonth( "month", Carbon::today() )
-                        ->where( "course_id", $course->id )
-                        ->get(),
+                    "accounts" => $this->get_account_index_data($course),
                 ] );
 
             } else { // or show the previous
 
                 return view( "ms.account.account-index", [
-                    "accounts" => Account::select( ["accounts.*", "accounts.id as account_id", "users.name as user_name", "users.email as user_email"] )
-                        ->with( "user" )
-                        ->leftJoin( "users", "accounts.user_id", "=", "users.id" )
-                        ->orderBy( "users.name", "asc" )
-                        ->whereMonth( "month", Carbon::today() )
-                        ->where( "course_id", $course->id )
-                        ->get(),
+                    "accounts" => $this->get_account_index_data($course),
                 ] );
-
             }
 
         } else {
@@ -464,6 +456,16 @@ class AccountController extends Controller {
 
         }
 
+    }
+
+    public function get_account_index_data( $course ) {
+        return Account::select( ["accounts.*", "accounts.id as account_id", "users.name as user_name", "users.email as user_email"] )
+            ->with( "user" )
+            ->leftJoin( "users", "accounts.user_id", "=", "users.id" )
+            ->orderBy( "users.name", "asc" )
+            ->whereMonth( "month", Carbon::today() )
+            ->where( "course_id", $course->id )
+            ->get();
     }
 
     public function student_individual_account() {
@@ -522,10 +524,10 @@ class AccountController extends Controller {
      */
     public function change( Request $request ) {
         $data = $request->validate( [
-            "ids"    => "required|array",
-            "status" => "nullable|array",
-            "course" => "nullable|integer",
-            "reauth" => "nullable|integer",
+            "ids"        => "required|array",
+            "status"     => "nullable|array",
+            "course"     => "nullable|integer",
+            "reauth"     => "nullable|integer",
             "reauth_all" => "nullable|integer",
         ] );
 
@@ -546,14 +548,14 @@ class AccountController extends Controller {
             Account::whereIn( "id", $data["ids"] )->update( ["status" => "Unpaid"] );
         }
 
-        // Reauthorize if called to be reauthorize
-        if ( isset($data['reauth'] ) && $data['reauth'] == 1 ) {
+// Reauthorize if called to be reauthorize
+        if ( isset( $data['reauth'] ) && $data['reauth'] == 1 ) {
             $courseController = new CourseController();
             $courseController->reauthorize_users( Course::find( $data['course'] ) );
         }
 
-        // Reauth all users is globally called
-        if ( isset($data['reauth_all'] ) && $data['reauth_all'] == 1 ) {
+// Reauth all users is globally called
+        if ( isset( $data['reauth_all'] ) && $data['reauth_all'] == 1 ) {
             $courseController = new CourseController();
             $courseController->reauthorize_all();
         }

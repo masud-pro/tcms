@@ -27,6 +27,7 @@ class Course extends Model {
         "room",
         "address",
         "image",
+        "should_generate_payments",
     ];
 
     /**
