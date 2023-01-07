@@ -1,7 +1,7 @@
 <div>
     <div class="container">
         {{-- <form wire:submit.prevent="submit"> --}}
-        <form wire:submit.prevent="submit">
+        <form wire:submit.prevent="submit" autocomplete="off">
             <div class="row {{ $register == false ? 'justify-content-center' : '' }}">
                 <div class="col-md-5">
                     <div class="card o-hidden border-0 shadow-lg my-5">
@@ -20,7 +20,7 @@
                                                 </h3>
                                             @else
                                                 <h3 class="text-center fs-1 price-container fw-bold">
-                                                    {{ $planPrice == 0 ? '' : $planPrice }}<span
+                                                    {{ $planPrice == 0 ? '' : number_format($planPrice)}}<span
                                                         class="fs-6">Tk</span>
                                                 </h3>
 
@@ -338,8 +338,8 @@
                                                         <select
                                                             class="form-control form-control-select @error('gender') is-invalid @enderror"
                                                             id="gender" wire:model="gender">
-                                                            <option disabled selected>Select Gender</option>
-                                                            <option class="" value="male">Male</option>
+                                                            <option readonly selected>Select Gender</option>
+                                                            <option value="male">Male</option>
                                                             <option value="female">Female</option>
                                                         </select>
 
@@ -360,7 +360,7 @@
                                                         <select
                                                             class="form-control form-control-select select1 @error('curriculum') is-invalid @enderror"
                                                             id="curriculum" wire:model="curriculum">
-                                                            <option disabled selected>Select Curriculum</option>
+                                                            <option readonly selected>Select Curriculum</option>
                                                             <option value="bangla">Bangla Medium</option>
                                                             <option value="english">English Medium</option>
                                                             <option value="other">Other</option>
@@ -391,7 +391,7 @@
                                                     <input type="text"
                                                         class="form-control form-control-user @error('institute') is-invalid @enderror"
                                                         id="institute" placeholder="Institute Name"
-                                                        wire:model="institute">
+                                                        wire:model="institute" autocomplete="off">
 
                                                     @error('institute')
                                                         <p class="text-start text-danger small mt-1">{{ $message }}
