@@ -135,7 +135,12 @@ Route::resource( 'role', UserRoleController::class );
 Route::resource( 'subscription', SubscriptionController::class );
 Route::resource( 'subscriber', SubscriberController::class );
 
+Route::get('subscriber-transaction',[SubscriberController::class, 'subscriberTransaction'])->name('subscriber.transaction');
+Route::get('subscriber-renew',[SubscriberController::class, 'subscriberSubscriptionRenew'])->name('subscriber.subscription.renew');
+
 Route::get( 'permission', [UserRoleController::class, 'rolePermission'] )->name( 'role.permission' );
+
+
 Route::get( 'nibir', function () {
     return Role::findByName( 'Teacher' )->permissions;
 } )->middleware( 'check_access:create.courses' );

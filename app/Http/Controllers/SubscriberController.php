@@ -68,4 +68,18 @@ class SubscriberController extends Controller {
     public function destroy( SubscriptionUser $subscriptionUser ) {
         //
     }
+
+
+    /**
+     * this method is for subscriber transaction list ..
+     * 
+     */
+    public function subscriberTransaction() {
+        return view( 'ms.subscriber.subscriberTransaction' );
+    }
+
+    public function subscriberSubscriptionRenew()
+    {
+        return view('ms.subscriber.subscriberSubscriptionRenew');
+    }
 }

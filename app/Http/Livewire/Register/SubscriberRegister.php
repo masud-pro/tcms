@@ -9,11 +9,14 @@ use App\Models\SubAccount;
 use App\Models\TeacherInfo;
 use App\Models\Subscription;
 use App\Models\SubscriptionUser;
+use App\Traits\DefaultSettingTraits;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 
 class SubscriberRegister extends Component {
+
+    use DefaultSettingTraits;
 
     /**
      * @var mixed
@@ -226,22 +229,27 @@ class SubscriberRegister extends Component {
     public function submit() {
 
         $data = $this->validate();
-
+     
         // dd($this->planName);
         // dd($this->planPrice);
 
         $user = User::query();
 
-        $newTeacher['name']     = $data['fName'] . $data['lName'];
-        $newTeacher['email']    = $data['emailAddress'];
-        $newTeacher['phone_no'] = $data['phoneNumber'];
-        $newTeacher['dob']      = $data['dob'];
-        $newTeacher['gender']   = $data['gender'];
-        $newTeacher['address']  = $data['address'];
-        $newTeacher['password'] = Hash::make( $data['password'] );
+        $newTeacher['name']      = $data['fName'] . $data['lName'];
+        $newTeacher['email']     = $data['emailAddress'];
+        $newTeacher['phone_no']  = $data['phoneNumber'];
+        $newTeacher['dob']       = $data['dob'];
+        $newTeacher['gender']    = $data['gender'];
+        $newTeacher['address']   = $data['address'];
+        $newTeacher['password']  = Hash::make( $data['password'] );
+        $newTeacher['is_active'] = 1;
+
+
 
         //new user created on user table
         $user = $user->create( $newTeacher );
+
+     
 
         // those data for teacher table
         $newTeacherData['curriculum']     = $data['curriculum'];
@@ -252,6 +260,7 @@ class SubscriberRegister extends Component {
         TeacherInfo::create( $newTeacherData );
 
         $user->assignRole( 'Teacher' );
+        $this->defaultSetting( $user->id );
 
         Auth::login( $user );
 
@@ -287,7 +296,7 @@ class SubscriberRegister extends Component {
     public function regSubscription( $planId, $planPrice, $userId ) {
         $subscription = Subscription::find( $planId );
 
-        $month = number_format( $planPrice / number_format($subscription->price)) ;
+        //  $month = number_format( $planPrice / number_format($subscription->price)) ;
 
         // dd($planPrice ,number_format($subscription->price));
 
@@ -307,10 +316,10 @@ class SubscriberRegister extends Component {
             $subAccountData['status']               = 1;
 
             SubAccount::create( $subAccountData );
-            return redirect()->route('dashboard');
+            return redirect()->route( 'dashboard' );
 
             // return redirect()->route('subscriber.index');
-        } elseif ( $month == 1 ) {
+        } elseif ( $subscription->price == $planPrice ) {
             $data['subscription_id'] = $planId;
             $data['user_id']         = $userId;
             $data['expiry_date']     = Carbon::now()->addMonths( 1 );
@@ -327,8 +336,8 @@ class SubscriberRegister extends Component {
             SubAccount::create( $subAccountData );
 
             // dd( 'for 1 Month' );
-            return redirect()->route('dashboard');
-        } elseif ( $month == 10 ) {
+            return redirect()->route( 'dashboard' );
+        } elseif ( $subscription->price * 10 == $planPrice ) {
             $data['subscription_id'] = $planId;
             $data['user_id']         = $userId;
             $data['expiry_date']     = Carbon::now()->addMonths( 12 );
@@ -345,8 +354,8 @@ class SubscriberRegister extends Component {
             SubAccount::create( $subAccountData );
 
             // dd( 'for 12 Month' );
-            
-            return redirect()->route('dashboard');
+
+            return redirect()->route( 'dashboard' );
         }
 
         dd( 'hello' );

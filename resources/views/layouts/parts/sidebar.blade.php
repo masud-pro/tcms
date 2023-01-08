@@ -90,7 +90,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Subscriber Management:</h6>
                         <a class="collapse-item" href="{{ route('subscriber.index') }}">Subscriber List</a>
-                        <a class="collapse-item" href="#">Subscriber Transactions</a>
+                        <a class="collapse-item" href="{{ route('subscriber.transaction') }}">Subscriber Transactions</a>
                     </div>
                 </div>
 
@@ -265,6 +265,17 @@
                 <a class="nav-link" href="{{ route('settings') }}">
                     <i class="fas fa-sliders-h"></i>
                     <span>Settings</span>
+                </a>
+
+
+            </li>
+            
+            
+            <li class="nav-item {{ request()->routeIs('settings') ? 'active' : '' }}">
+
+                <a class="nav-link" href="{{ route('subscriber.subscription.renew') }}">
+                    <i class="fas fa-undo"></i>
+                    <span>Renew</span>
                 </a>
 
 
