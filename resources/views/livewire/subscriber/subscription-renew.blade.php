@@ -34,8 +34,8 @@
                                             </div>
 
                                             <div class="col-sm-6 mb-3">
-                                                <label for="name">Plan Price</label>
-                                                <input type="text" disabled
+                                                <label for="planPrice">Plan Price</label>
+                                                <input type="number" disabled
                                                     class="form-control form-control-user @error('planPrice') is-invalid @enderror"
                                                     id="planPrice" placeholder="Price" wire:model="planPrice">
                                                 @error('planPrice')
@@ -75,23 +75,13 @@
 
                                         </div> --}}
 
-                                       
-
-
-
-
-
-
-                                     
-
-
                                         <div class="form-group">
-                                            <input type="text"
-                                                class="form-control form-control-user @error('institute') is-invalid @enderror"
-                                                id="institute" placeholder="Renew For how many Month's"
-                                                wire:model="institute" autocomplete="off">
+                                            <input type="number" min="0"
+                                                class="form-control form-control-user @error('month') is-invalid @enderror"
+                                                id="month" placeholder="Renew For how many Month's"
+                                                wire:model="month" autocomplete="off">
 
-                                            @error('institute')
+                                            @error('month')
                                                 <p class="text-start text-danger small mt-1">{{ $message }}
                                                 </p>
                                             @enderror
@@ -156,8 +146,8 @@
                             <div class="form-group row">
                                 <div class="col-sm-12 mb-3">
 
-                                    <h2 class="text-end fs-2 price-container fw-bold"> 799 <span
-                                            class="fs-6 ml-xx-8">tk</span></h2>
+                                    <h2 class="text-end fs-2 price-container fw-bold price-digit"> {{ $price }} <span
+                                            class="fs-6 ml-xx-8 price-currency">tk</span></h2>
 
                                 </div>
 
@@ -167,17 +157,17 @@
                                 <h4 class="fs-4 text-bold">Feature list</h4>
                                 <div class="col-sm-12 mb-3 mb-sm-0">
 
-                                    {{-- @foreach ($planFeature ?? [] as $feature)
+                                    @foreach ($featureList ?? [] as $feature)
                                                 <h6> <span class="pr-1">-</span>
                                                     {{ Str::of(Str::of(Str::replace('.', ' ', $feature))->camel())->headline() }}
                                                 </h6>
                                                
-                                            @endforeach --}}
+                                            @endforeach
 
+                                    {{-- <h6> <span class="pr-1">-</span> hello World</h6>
                                     <h6> <span class="pr-1">-</span> hello World</h6>
                                     <h6> <span class="pr-1">-</span> hello World</h6>
-                                    <h6> <span class="pr-1">-</span> hello World</h6>
-                                    <h6> <span class="pr-1">-</span> hello World</h6>
+                                    <h6> <span class="pr-1">-</span> hello World</h6> --}}
 
                                 </div>
                             </div>
@@ -254,6 +244,12 @@
 
         .ml-xx-8 {
             margin-left: -8px;
+        }
+        .price-digit{
+            color: #0d6efd;
+        }
+        .price-currency{
+            color: #000;
         }
     </style>
 @endpush

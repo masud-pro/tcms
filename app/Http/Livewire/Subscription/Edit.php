@@ -17,18 +17,22 @@ class Edit extends Component {
      * @var mixed
      */
     public $name;
+
     /**
      * @var mixed
      */
     public $price;
+
     /**
      * @var mixed
      */
     public $selectedFeature;
+
     /**
      * @var mixed
      */
     public $months;
+
     /**
      * @var mixed
      */

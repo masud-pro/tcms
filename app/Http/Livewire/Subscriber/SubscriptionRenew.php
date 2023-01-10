@@ -2,42 +2,62 @@
 
 namespace App\Http\Livewire\Subscriber;
 
+use Carbon\Carbon;
 use Livewire\Component;
+use App\Models\SubAccount;
 use App\Models\Subscription;
 use App\Models\SubscriptionUser;
 
 class SubscriptionRenew extends Component {
-    /**
-     * @var mixed
-     */
     public $planPrice;
-    /**
-     * @var mixed
-     */
     public $planList;
-    /**
-     * @var mixed
-     */
     public $month;
-    /**
-     * @var mixed
-     */
     public $planName;
+    public $price;
+    public $featureList;
+
+    /**
+     * @var array
+     */
+    protected $rules = [
+        'month'     => 'required',
+        'planName'  => 'required',
+        'planPrice' => 'required',
+    ];
 
     public function mount() {
-        $this->planList = Subscription::WhereNotIn( 'name', ['Trail Plan'] )->get();
-        // $t = Subscription::WhereNotIn('name', ['Trail Plan'])->get();
-        // dd($t);
+        $this->planList    = Subscription::WhereNotIn( 'name', ['Trail Plan'] )->get();
+        $this->planName    = SubscriptionUser::where( 'user_id', auth()->user()->id )->first()['subscription_id'];
+        $this->planPrice   = $this->month * Subscription::where( 'id', $this->planName )->first()['price'];
+        $this->featureList = explode( ',', Subscription::where( 'id', $this->planName )->first()['selected_feature'] );
+        $this->price       = Subscription::where( 'id', $this->planName )->first()['price'];
+    }
 
-        // $b =
-
-        $this->planName =  SubscriptionUser::where( 'user_id',  );
-
-        // dd( $this->planName);
+    public function updated() {
+        $price             = Subscription::where( 'id', $this->planName )->first()['price'];
+        $this->planPrice   = (int) $this->month * $price;
+        $this->featureList = explode( ',', Subscription::where( 'id', $this->planName )->first()['selected_feature'] );
+        $this->price       = Subscription::where( 'id', $this->planName )->first()['price'];
     }
 
     public function submit() {
-        # code...
+        $data = $this->validate();
+
+        $sub = SubscriptionUser::where( 'user_id', auth()->user()->id )->first();
+        
+        $subscription['subscription_id'] = $data['planName'];
+        $subscription['expiry_date']     = Carbon::parse( $sub->expiry_date )->addMonths( $data['month'] );
+        $subscription['status']          = 1;
+
+        $sub->update( $subscription );
+        
+        $subAccount['subscription_user_id'] = $sub->id;
+        $subAccount['total_price']          = $data['planPrice'];
+        $subAccount['to_date']              = now();
+        $subAccount['from_date']            = Carbon::parse( $sub->expiry_date )->addMonths( $data['month'] );
+        $subAccount['status']               = 1;
+
+        SubAccount::create( $subAccount );
     }
 
     public function render() {
