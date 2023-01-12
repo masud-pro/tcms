@@ -5,14 +5,16 @@ namespace App\Http\Livewire\Subscriber;
 use Livewire\Component;
 use App\Models\SubAccount;
 
-class SubscriberTransaction extends Component
-{
+class SubscriberTransaction extends Component {
 
+    /**
+     * @var mixed
+     */
     public $search;
-    
-    public function render()
-    {
+
+    public function render() {
+
         $subscriberUsers = SubAccount::filter( $this->search )->latest()->paginate( 15 );
-        return view('livewire.subscriber.subscriber-transaction',compact('subscriberUsers'));
+        return view( 'livewire.subscriber.subscriber-transaction', compact( 'subscriberUsers' ) );
     }
 }

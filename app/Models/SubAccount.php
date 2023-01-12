@@ -24,19 +24,13 @@ class SubAccount extends Model {
      * @param $query
      * @param $search
      */
-    // public function scopeFilter( $query, $search ) {
-    //     $query->when( $search, function ( $filter, $search ) {
-    //         $filter->where( 'id', 'like', "%" . $search . "%" )
-    //                ->orWhere( 'name', 'like', "%" . $search . "%" )
-    //                ->orWhere( 'subscription', 'like', "%" . $search . "%" );
-    //     } );
-    // }
-
     public function scopeFilter( $query, $search ) {
-        $query->when( $search, function ( $filter, $search ) {
-            $filter->where( 'id', 'like', "%" . $search . "%" )
-                   ->orWhere( 'name', 'like', "%" . $search . "%" )
-                   ->orWhere( 'subscription', 'like', "%" . $search . "%" );
+        $query->when( $search, function ( $query, $search ) {
+            $query->whereHas( 'subscriptionUser.user', function ( $query ) use ( $search ) {
+                $query->where( 'name', 'like', "%" . $search . "%" );
+            } )->orWhereHas( 'subscriptionUser.subscription', function ( $query ) use ( $search ) {
+                $query->where( 'name', 'like', "%" . $search . "%" );
+            } );
         } );
     }
 
