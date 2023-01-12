@@ -1,7 +1,7 @@
 @extends('layouts.cms')
 
 @section('title')
-    Subcriber Transaction
+    Subscriber Transaction
 @endsection
 
 @push('styles')
@@ -9,7 +9,7 @@
 @endpush
 
 @section('content')
-   {{-- <a href="{{ route('subscriber.create') }}" class="btn btn-primary mb-3">Add New Subcriber</a> --}}
+    {{-- <a href="{{ route('subscriber.create') }}" class="btn btn-primary mb-3">Add New Subcriber</a> --}}
     <div class="row">
         <div class="col-md-12">
 
