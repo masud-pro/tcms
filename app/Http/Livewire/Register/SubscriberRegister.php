@@ -9,6 +9,7 @@ use App\Models\SubAccount;
 use App\Models\TeacherInfo;
 use App\Models\Subscription;
 use App\Models\SubscriptionUser;
+use App\Providers\RouteServiceProvider;
 use App\Traits\DefaultSettingTraits;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -77,7 +78,7 @@ class SubscriberRegister extends Component {
     /**
      * @var mixed
      */
-    public $userName;
+    public $username;
 
     /**
      * @var mixed
@@ -195,7 +196,7 @@ class SubscriberRegister extends Component {
             'fName'                 => ['required'],
             'lName'                 => ['required'],
             'phoneNumber'           => ['required'],
-            'userName'              => ['required'],
+            'username'              => ['required', 'alpha', 'max:255', 'unique:teacher_infos,username'],
             'emailAddress'          => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'dob'                   => ['required'],
             'gender'                => ['required'],
@@ -215,7 +216,7 @@ class SubscriberRegister extends Component {
         'fName.required'         => 'Please enter your first name.',
         'lName.required'         => 'Please enter Your last name.',
         'phoneNumber.required'   => 'Please enter Your phone number.',
-        'userName.required'      => 'The user name field is required.',
+        'username.required'      => 'The user name field is required.',
         'emailAddress.required'  => 'The email field is required',
         'dob.required'           => 'The date of birth field is required',
         'gender.required'        => 'The gender field is required',
@@ -244,17 +245,14 @@ class SubscriberRegister extends Component {
         $newTeacher['password']  = Hash::make( $data['password'] );
         $newTeacher['is_active'] = 1;
 
-
-
         //new user created on user table
         $user = $user->create( $newTeacher );
-
-     
 
         // those data for teacher table
         $newTeacherData['curriculum']     = $data['curriculum'];
         $newTeacherData['institute']      = $data['institute'];
         $newTeacherData['teaching_level'] = $data['teachingLevel'];
+        $newTeacherData['username']   = $data['username'];
         $newTeacherData['user_id']        = $user->id;
 
         TeacherInfo::create( $newTeacherData );
@@ -262,10 +260,12 @@ class SubscriberRegister extends Component {
         $user->assignRole( 'Teacher' );
         $this->defaultSetting( $user->id );
 
-        Auth::login( $user );
-
         $this->regSubscription( $this->planName, $this->planPrice, $user->id );
 
+        Auth::login( $user );
+
+        $domainToRedirect = getToBeSubdomain($newTeacherData['username']);
+        return redirect($domainToRedirect. RouteServiceProvider::HOME );
         // $newTeacher['name'] = $data['fName'];
 
         // $data['name']     = $newUserdata['name'];

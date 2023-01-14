@@ -10,12 +10,26 @@ use App\Models\Account;
 use App\Models\Setting;
 use App\Models\Attendance;
 use Illuminate\Support\Facades\Auth;
+use App\Providers\RouteServiceProvider;
 
 class SystemController extends Controller {
 
     public function dashboard() {
+        $authUser = Auth::user();
 
-        if ( Auth::user()->hasRole( ['Teacher', 'Super Admin'] ) ) {
+        // dd();
+
+        // if($authUser->hasRole('Teacher')){
+        //     $domainToRedirect = str_replace( '://', '://'. $authUser->teacherInfo->username . '.', config('app.url') );
+        //     return redirect($domainToRedirect . RouteServiceProvider::HOME);
+        // }elseif( $authUser->teacher_id ){
+        //     $domainToRedirect = str_replace( '://', '://'. $authUser->teacher->teacherInfo->username . '.', config('app.url') );
+        //     return redirect($domainToRedirect . RouteServiceProvider::HOME);
+        // }else{
+        //     return redirect(RouteServiceProvider::HOME);
+        // }
+
+        if ( $authUser->hasRole( ['Teacher', 'Super Admin'] ) ) {
 
             $allAttendances     = Attendance::select( 'attendance' )->whereMonth( "created_at", Carbon::now() )->get();
             $allAttendanceCount = $allAttendances->count();

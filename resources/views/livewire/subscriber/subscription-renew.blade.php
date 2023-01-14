@@ -63,11 +63,11 @@
 
                                             <div class="col-sm-6">
                                                 <input type="text"
-                                                    class="form-control form-control-user @error('userName') is-invalid @enderror"
-                                                    id="userName" placeholder="User Name"
-                                                    wire:model="userName">
+                                                    class="form-control form-control-user @error('username') is-invalid @enderror"
+                                                    id="username" placeholder="User Name"
+                                                    wire:model="username">
 
-                                                @error('userName')
+                                                @error('username')
                                                     <p class="text-start text-danger small mt-1">
                                                         {{ $message }}</p>
                                                 @enderror

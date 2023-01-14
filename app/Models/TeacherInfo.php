@@ -17,6 +17,7 @@ class TeacherInfo extends Model
         'institute',
         'curriculum',
         'teaching_level',
+        'username',
     ];
 
 }

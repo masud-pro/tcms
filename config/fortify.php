@@ -60,8 +60,20 @@ return [
     | and the user is authenticated. You are free to change this value.
     |
     */
-
-    'home' => RouteServiceProvider::HOME,
+//  MD abdul momen
+    // 'home' => RouteServiceProvider::HOME,
+    'home' => function(){
+        $user = auth()->user();
+        if($user->hasRole('Teacher')){
+            $domainToRedirect = getToBeSubdomain($user->teacherInfo->username);
+            return $domainToRedirect . RouteServiceProvider::HOME;
+        }elseif( $user->teacher_id ){
+            $domainToRedirect = getToBeSubdomain($user->teacher->teacherInfo->username);
+            return $domainToRedirect . RouteServiceProvider::HOME;
+        }else{
+            return RouteServiceProvider::HOME;
+        }
+    },
 
     /*
     |--------------------------------------------------------------------------

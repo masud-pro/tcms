@@ -8,6 +8,7 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -147,7 +148,7 @@ class User extends Authenticatable {
      * @return mixed
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function teachers(): BelongsTo {
+    public function teacher(): BelongsTo {
         return $this->belongsTo( User::class, 'id', 'teacher_id' );
     }
 
@@ -166,6 +167,15 @@ class User extends Authenticatable {
      */
     public function subscription() {
         return $this->hasOne( SubscriptionUser::class );
+    }
+
+    /**
+     * Get the info associated with the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function teacherInfo(): HasOne{
+        return $this->hasOne(TeacherInfo::class);
     }
 
 }

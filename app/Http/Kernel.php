@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\CheckSubdomain;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel {
@@ -67,5 +68,6 @@ class Kernel extends HttpKernel {
         'permission'         => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
         'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
         'check_access'       => \App\Http\Middleware\CheckUserAccess::class,
+        'check_subdomain'    => CheckSubdomain::class,
     ];
 }

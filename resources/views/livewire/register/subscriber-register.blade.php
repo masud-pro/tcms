@@ -296,11 +296,11 @@
 
                                                     <div class="col-sm-6">
                                                         <input type="text"
-                                                            class="form-control form-control-user @error('userName') is-invalid @enderror"
-                                                            id="userName" placeholder="User Name"
-                                                            wire:model="userName">
+                                                            class="form-control form-control-user @error('username') is-invalid @enderror"
+                                                            id="username" placeholder="User Name"
+                                                            wire:model="username">
 
-                                                        @error('userName')
+                                                        @error('username')
                                                             <p class="text-start text-danger small mt-1">
                                                                 {{ $message }}</p>
                                                         @enderror
@@ -326,7 +326,7 @@
                                                     <div class="col-sm-6">
                                                         <input type="date"
                                                             class="form-control form-control-user  @error('dob') is-invalid @enderror"
-                                                            id="sub-calander" placeholder="Date of Birth" wire:model="dob">
+                                                            id="sub-calander" placeholder="Date of Birth" wire:model="dob" placeholder="Date of Birth">
                                                         @error('dob')
                                                             <p class="text-start text-danger small mt-1">
                                                                 {{ $message }}</p>

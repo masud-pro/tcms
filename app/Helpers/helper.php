@@ -21,6 +21,11 @@ function hasCourseAccess() {
     // auth()->user()->can('edit articles');
 }
 
+
+function getToBeSubdomain($username){
+    return str_replace( '://', '://'. $username . '.', config('app.url') );
+}
+
 // 'courses.index',
 // 'courses.archived',
 // 'courses.authorization_panel',

@@ -16,7 +16,10 @@ class CreateTeacherInfosTable extends Migration
         Schema::create('teacher_infos', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->constrained()->onDelete('cascade')->index();
+            $table->string('username')->unique()->nullable()->index();
+            $table->integer('bank_account_name')->nullable();
             $table->integer('bank_account_no')->nullable();
+            $table->integer('bank_account_branch')->nullable();
             $table->integer('nid')->nullable();
             $table->string('nid_img')->nullable();
             $table->string('institute')->nullable();

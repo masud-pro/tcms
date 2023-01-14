@@ -41,11 +41,11 @@ Route::get( "/admin-reg", function () {
     return view( "auth.admin-reg" );
 } )->middleware( "guest" );
 
-Route::middleware( ['auth:sanctum', 'verified'] )->get( '/dashboard', [SystemController::class, 'dashboard'] )->name( 'dashboard' );
+Route::middleware( ['auth:sanctum', 'verified', 'check_subdomain'] )->get( '/dashboard', [SystemController::class, 'dashboard'] )->name( 'dashboard' );
 
 Route::post( "admin-reg", [UserController::class, "store_admin"] )->name( "store.admin" );
 
-Route::middleware( ['auth:sanctum', 'verified'] )->group( function () {
+Route::middleware( ['auth:sanctum', 'verified', 'check_subdomain'] )->group( function () {
 
     // Linking admin routes
     if ( file_exists( __DIR__ . "/ce-routes/admin-routes.php" ) ) {
@@ -64,6 +64,15 @@ Route::middleware( ['auth:sanctum', 'verified'] )->group( function () {
     //
 
     Route::resource( 'administrator', AdministratorController::class );
+
+    Route::resource( 'role', UserRoleController::class );
+    Route::resource( 'subscription', SubscriptionController::class );
+    Route::resource( 'subscriber', SubscriberController::class );
+
+    Route::get('subscriber-transaction',[SubscriberController::class, 'subscriberTransaction'])->name('subscriber.transaction');
+    Route::get('subscriber-renew',[SubscriberController::class, 'subscriberSubscriptionRenew'])->name('subscriber.subscription.renew');
+
+    Route::get( 'permission', [UserRoleController::class, 'rolePermission'] )->name( 'role.permission' );
 
 } );
 
@@ -127,23 +136,14 @@ Route::post( "aamarpay-fail", [AmarpayController::class, 'fail'] )->name( 'aamar
 //     return view("ms.sms.test");
 // });
 
-Route::get( 'nibs', function () {
-    dd( Course::with( ['students'] )->toArray() );
-} );
-
-Route::resource( 'role', UserRoleController::class );
-Route::resource( 'subscription', SubscriptionController::class );
-Route::resource( 'subscriber', SubscriberController::class );
-
-Route::get('subscriber-transaction',[SubscriberController::class, 'subscriberTransaction'])->name('subscriber.transaction');
-Route::get('subscriber-renew',[SubscriberController::class, 'subscriberSubscriptionRenew'])->name('subscriber.subscription.renew');
-
-Route::get( 'permission', [UserRoleController::class, 'rolePermission'] )->name( 'role.permission' );
+// Route::get( 'nibs', function () {
+//     dd( Course::with( ['students'] )->toArray() );
+// } );
 
 
-Route::get( 'nibir', function () {
-    return Role::findByName( 'Teacher' )->permissions;
-} )->middleware( 'check_access:create.courses' );
+// Route::get( 'nibir', function () {
+//     return Role::findByName( 'Teacher' )->permissions;
+// } )->middleware( 'check_access:create.courses' );
 
 Route::get( 'clear', function () {
     Artisan::call( 'view:clear' );
