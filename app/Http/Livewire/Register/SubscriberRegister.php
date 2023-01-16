@@ -128,7 +128,7 @@ class SubscriberRegister extends Component {
 
         // $this->planList = ;
         // $this->startDate = Carbon::now()->format( 'Y-m-d' );
-        $freeTrail = Subscription::where( 'name', 'Trail Plan' )->first();
+        $freeTrail = Subscription::where( 'name', 'Free Trail' )->first();
 
         $this->planList = Subscription::all();
 
@@ -138,7 +138,7 @@ class SubscriberRegister extends Component {
         $this->freeTrail = true;
         $this->register  = false;
 
-        //    dd( Subscription::where('name', 'Trail Plan')->first());
+        //    dd( Subscription::where('name', 'Free Trail')->first());
 
     }
 

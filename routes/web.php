@@ -13,7 +13,6 @@ use App\Http\Controllers\SubscriberController;
 use App\Http\Controllers\UddoktaPayController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\AdministratorController;
-use App\Http\Livewire\Register\SubscriberRegister;
 use App\Http\Controllers\SslCommerzPaymentController;
 
 /*
@@ -100,27 +99,20 @@ Route::get( 'amarpay-payment', [AmarpayController::class, 'index'] );
 Route::post( "aamarpay-success", [AmarpayController::class, 'success'] )->name( 'aamarpay.success' );
 Route::post( "aamarpay-fail", [AmarpayController::class, 'fail'] )->name( 'aamarpay.fail' );
 
-// Route::get('nibir-api',function(){
+//
 
-//     $url = "http://cecms.test/api/recharge/sms";
+Route::middleware( ['auth:sanctum'] )->group( function () {
 
-//     $data = Http::acceptJson()->withToken("1|PkQcQeRkrwths6VgBGbVTGQBS8qrroMXIla6ZZ7Y")->post($url,[
+    Route::resource( 'role', UserRoleController::class );
+    Route::resource( 'subscription', SubscriptionController::class );
+    Route::resource( 'subscriber', SubscriberController::class );
 
-//         'amount' => 400
+    Route::get( 'subscriber-transaction', [SubscriberController::class, 'subscriberTransaction'] )->name( 'subscriber.transaction' );
+    Route::get( 'subscriber-renew', [SubscriberController::class, 'subscriberSubscriptionRenew'] )->name( 'subscriber.subscription.renew' );
 
-//     ]);
-
-//     if($data->ok()){
-
-//         dd($data->json()['status']);
-
-//     }else{
-
-//         dd("not okay");
-
-//     }
-
-// });
+    Route::get( 'permission', [UserRoleController::class, 'rolePermission'] )->name( 'role.permission' );
+    
+} );
 
 // Route::get('sms', function(){
 
@@ -130,16 +122,6 @@ Route::post( "aamarpay-fail", [AmarpayController::class, 'fail'] )->name( 'aamar
 Route::get( 'nibs', function () {
     dd( Course::with( ['students'] )->toArray() );
 } );
-
-Route::resource( 'role', UserRoleController::class );
-Route::resource( 'subscription', SubscriptionController::class );
-Route::resource( 'subscriber', SubscriberController::class );
-
-Route::get('subscriber-transaction',[SubscriberController::class, 'subscriberTransaction'])->name('subscriber.transaction');
-Route::get('subscriber-renew',[SubscriberController::class, 'subscriberSubscriptionRenew'])->name('subscriber.subscription.renew');
-
-Route::get( 'permission', [UserRoleController::class, 'rolePermission'] )->name( 'role.permission' );
-
 
 Route::get( 'nibir', function () {
     return Role::findByName( 'Teacher' )->permissions;
@@ -154,7 +136,10 @@ Route::get( 'clear', function () {
     return "<h4> Everything cache clear </h4>";
 } );
 
-Route::get( 'teacher-register', [SystemController::class, 'teacherRegister'] );
+
 // Route::get( 'teacher-register', SubscriberRegister::class );
 
 //
+
+
+Route::get( 'teacher-register', [SystemController::class, 'teacherRegister'] );

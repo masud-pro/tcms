@@ -20,7 +20,7 @@
                                                 </h3>
                                             @else
                                                 <h3 class="text-center fs-1 price-container fw-bold">
-                                                    {{ $planPrice == 0 ? '' : number_format($planPrice)}}<span
+                                                    {{ $planPrice == 0 ? '' : number_format($planPrice) }}<span
                                                         class="fs-6">Tk</span>
                                                 </h3>
 
@@ -324,9 +324,10 @@
 
                                                 <div class="form-group row">
                                                     <div class="col-sm-6">
-                                                        <input type="date"
-                                                            class="form-control form-control-user  @error('dob') is-invalid @enderror"
-                                                            id="sub-calander" placeholder="Date of Birth" wire:model="dob">
+                                                        <input type="text"
+                                                            class="form-control form-control-user sub-calander @error('dob') is-invalid @enderror"
+                                                            id="dob" placeholder="Date of Birth"
+                                                            wire:model="dob">
                                                         @error('dob')
                                                             <p class="text-start text-danger small mt-1">
                                                                 {{ $message }}</p>
@@ -600,21 +601,23 @@
     <script>
         $('.sub-calander').datepicker({
             format: "yyyy-mm-dd",
-            // startView: "months",
+            startView: "months",
             // minViewMode: "months",
-            autoclose: true,
-            todayHighlight: true
+            // autoclose: true,
+            todayHighlight: true,
         });
+
+        // alert("Doesn't Work");
 
         // window.addEventListener('reInitJquery', event => {
         //     var $disabledResults = $(".js-example-disabled-results");
         //     $disabledResults.select2();
         // })
 
-        // $('#startDate').on('change', function(e) {
-        //     @this.set('startDate', e.target.value);
+        $('#dob').on('change', function(e) {
+            @this.set('dob', e.target.value);
 
-        // });
+        });
 
         // $('#monthCount').on('change', function(e) {
         //     @this.set('monthCount', e.target.value);
@@ -635,6 +638,6 @@
 @push('styles')
     @livewireStyles()
     {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"> --}}
-    {{-- <link href="{{ asset('assets') }}/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-    <link href="{{ asset('assets') }}/css/datepicker/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css"> --}}
+    <link href="{{ asset('assets') }}/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="{{ asset('assets') }}/css/datepicker/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css">
 @endpush
