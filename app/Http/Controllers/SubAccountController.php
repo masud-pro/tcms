@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreSubAccountRequest;
-use App\Http\Requests\UpdateSubAccountRequest;
-use App\Models\SubAccount;
+use App\Http\Requests\StoreAdminAccountRequest;
+use App\Http\Requests\UpdateAdminAccountRequest;
+use App\Models\AdminAccount;
 
-class SubAccountController extends Controller
+class AdminAccountController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -31,10 +31,10 @@ class SubAccountController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreSubAccountRequest  $request
+     * @param  \App\Http\Requests\StoreAdminAccountRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreSubAccountRequest $request)
+    public function store(StoreAdminAccountRequest $request)
     {
         //
     }
@@ -42,10 +42,10 @@ class SubAccountController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\SubAccount  $subAccount
+     * @param  \App\Models\AdminAccount  $subAccount
      * @return \Illuminate\Http\Response
      */
-    public function show(SubAccount $subAccount)
+    public function show(AdminAccount $subAccount)
     {
         //
     }
@@ -53,10 +53,10 @@ class SubAccountController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\SubAccount  $subAccount
+     * @param  \App\Models\AdminAccount  $subAccount
      * @return \Illuminate\Http\Response
      */
-    public function edit(SubAccount $subAccount)
+    public function edit(AdminAccount $subAccount)
     {
         //
     }
@@ -64,11 +64,11 @@ class SubAccountController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateSubAccountRequest  $request
-     * @param  \App\Models\SubAccount  $subAccount
+     * @param  \App\Http\Requests\UpdateAdminAccountRequest  $request
+     * @param  \App\Models\AdminAccount  $subAccount
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateSubAccountRequest $request, SubAccount $subAccount)
+    public function update(UpdateAdminAccountRequest $request, AdminAccount $subAccount)
     {
         //
     }
@@ -76,10 +76,10 @@ class SubAccountController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\SubAccount  $subAccount
+     * @param  \App\Models\AdminAccount  $subAccount
      * @return \Illuminate\Http\Response
      */
-    public function destroy(SubAccount $subAccount)
+    public function destroy(AdminAccount $subAccount)
     {
         //
     }

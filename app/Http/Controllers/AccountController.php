@@ -384,6 +384,8 @@ class AccountController extends Controller {
 
         $remaining_sms = $remaining_sms - $numberCount;
 
+        dd($message ); 
+
         SMS::create( [
             'for'     => "Overall Account Report",
             'count'   => $numberCount,

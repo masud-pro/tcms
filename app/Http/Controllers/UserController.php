@@ -18,7 +18,7 @@ class UserController extends Controller {
 
     public function __construct() {
         $this->middleware( 'check_access:student.index', ['only' => ['index']] );
-        $this->middleware( 'check_access:student.create', ['only' => ['create' ,'store']] );
+        $this->middleware( 'check_access:student.create', ['only' => ['create', 'store']] );
         $this->middleware( 'check_access:student.edit', ['only' => ['edit', 'update']] );
         $this->middleware( 'check_access:student.destroy', ['only' => ['destroy']] );
 
@@ -43,7 +43,6 @@ class UserController extends Controller {
         // 'settings.individual_teacher',
     }
 
-    
     /**
      * Display a listing of the resource.
      *
@@ -109,7 +108,8 @@ class UserController extends Controller {
             "password"         => "required|confirmed|string",
         ] );
 
-        $data['password'] = Hash::make( $data['password'] );
+        $data['password']   = Hash::make( $data['password'] );
+        $data['teacher_id'] = Auth::user()->id;
 
         if ( isset( $data['course_id'] ) ) {
             $courses = $data['course_id'];
@@ -119,6 +119,7 @@ class UserController extends Controller {
         }
 
         $user = User::create( $data );
+        $user->assignRole( 'Student' );
 
         $user->course()->sync( $courses );
 
@@ -318,7 +319,7 @@ class UserController extends Controller {
         Account::where( 'user_id', $user->id )->delete();
         Attendance::where( 'user_id', $user->id )->delete();
         AssignmentResponse::where( 'user_id', $user->id )->delete();
-        
+
         $user->deleteProfilePhoto();
         $user->tokens->each->delete();
         $user->delete();

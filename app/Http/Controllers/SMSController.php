@@ -127,7 +127,7 @@ class SMSController extends Controller {
         $courseUsers = Course::findOrFail( $data['course_id'] )->user;
         $numbers     = [];
         $send_to     = $data['send_to'];
-// Father or monther
+// Father or mother
 
         foreach ( $courseUsers as $user ) {
 

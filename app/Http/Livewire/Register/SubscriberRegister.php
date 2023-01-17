@@ -5,8 +5,8 @@ namespace App\Http\Livewire\Register;
 use Carbon\Carbon;
 use App\Models\User;
 use Livewire\Component;
-use App\Models\SubAccount;
 use App\Models\TeacherInfo;
+use App\Models\AdminAccount;
 use App\Models\Subscription;
 use App\Models\SubscriptionUser;
 use App\Traits\DefaultSettingTraits;
@@ -315,7 +315,7 @@ class SubscriberRegister extends Component {
             $subAccountData['to_date']              = Carbon::now()->addMonths( 1 );
             $subAccountData['status']               = 1;
 
-            SubAccount::create( $subAccountData );
+            AdminAccount::create( $subAccountData );
             return redirect()->route( 'dashboard' );
 
             // return redirect()->route('subscriber.index');
@@ -333,7 +333,7 @@ class SubscriberRegister extends Component {
             $subAccountData['to_date']              = Carbon::now()->addMonths( 1 );
             $subAccountData['status']               = 1;
 
-            SubAccount::create( $subAccountData );
+            AdminAccount::create( $subAccountData );
 
             // dd( 'for 1 Month' );
             return redirect()->route( 'dashboard' );
@@ -351,7 +351,7 @@ class SubscriberRegister extends Component {
             $subAccountData['to_date']              = Carbon::now()->addMonths( 12 );
             $subAccountData['status']               = 1;
 
-            SubAccount::create( $subAccountData );
+            AdminAccount::create( $subAccountData );
 
             // dd( 'for 12 Month' );
 

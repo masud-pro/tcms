@@ -4,7 +4,7 @@ namespace App\Http\Livewire\Subscriber;
 
 use Carbon\Carbon;
 use Livewire\Component;
-use App\Models\SubAccount;
+use App\Models\AdminAccount;
 use App\Models\Subscription;
 use App\Models\SubscriptionUser;
 
@@ -57,7 +57,7 @@ class SubscriptionRenew extends Component {
         $subAccount['from_date']            = Carbon::parse( $sub->expiry_date )->addMonths( $data['month'] );
         $subAccount['status']               = 1;
 
-        SubAccount::create( $subAccount );
+        AdminAccount::create( $subAccount );
     }
 
     public function render() {
