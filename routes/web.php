@@ -103,14 +103,21 @@ Route::post( "aamarpay-fail", [AmarpayController::class, 'fail'] )->name( 'aamar
 
 Route::middleware( ['auth:sanctum'] )->group( function () {
 
-    Route::resource( 'role', UserRoleController::class );
-    Route::resource( 'subscription', SubscriptionController::class );
-    Route::resource( 'subscriber', SubscriberController::class );
+    // Route::resource( 'role', UserRoleController::class );
+    // Route::resource( 'subscription', SubscriptionController::class );
+    // Route::resource( 'subscriber', SubscriberController::class );
+    // Route::get( 'permission', [UserRoleController::class, 'rolePermission'] )->name( 'role.permission' );
+
+    Route::group(['middleware' => ['role:Super Admin']], function () {
+        Route::resource( 'role', UserRoleController::class );
+        Route::resource( 'subscription', SubscriptionController::class );
+        Route::resource( 'subscriber', SubscriberController::class );
+        Route::get( 'permission', [UserRoleController::class, 'rolePermission'] )->name( 'role.permission' );
+    });
 
     Route::get( 'subscriber-transaction', [SubscriberController::class, 'subscriberTransaction'] )->name( 'subscriber.transaction' );
     Route::get( 'subscriber-renew', [SubscriberController::class, 'subscriberSubscriptionRenew'] )->name( 'subscriber.subscription.renew' );
 
-    Route::get( 'permission', [UserRoleController::class, 'rolePermission'] )->name( 'role.permission' );
     
 } );
 

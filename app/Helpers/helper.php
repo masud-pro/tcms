@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Option;
 use Illuminate\Support\Facades\Auth;
 
 // Start Functions
@@ -55,7 +56,6 @@ function hasAttendanceAccess() {
     ] ) && ( Auth::user()->hasRole( ['Teacher'] ) );
 }
 
-
 /**
  * only teacher can access those options from sidebar.
  */
@@ -68,7 +68,6 @@ function hasAccountAccess() {
     ] ) && ( Auth::user()->hasRole( ['Teacher'] ) );
 }
 
-
 /**
  * only teacher can access those options from sidebar.
  */
@@ -77,7 +76,6 @@ function hasTransactionsAccess() {
         'transactions.user_online_transactions',
     ] ) && ( Auth::user()->hasRole( ['Teacher'] ) );
 }
-
 
 /**
  * only teacher can access those options from sidebar.
@@ -88,7 +86,6 @@ function hasMassageAccess() {
     ] ) && ( Auth::user()->hasRole( ['Teacher'] ) );
 }
 
-
 /**
  * only teacher can access those options from sidebar.
  */
@@ -98,8 +95,6 @@ function hasFileManagerAccess() {
     ] ) && ( Auth::user()->hasRole( ['Teacher'] ) );
 }
 
-
-
 /**
  * only teacher can access those options with renew from sidebar.
  */
@@ -107,6 +102,17 @@ function hasSettingAccess() {
     return Auth::user()->can( [
         'settings.individual_teacher',
     ] ) && ( Auth::user()->hasRole( ['Teacher'] ) );
+}
+
+/**
+ * @param $data
+ */
+function getSettingValue( $data ) {
+    // dd( $data );
+
+    $optionId = Option::where( "slug", $data )->first()['id'];
+
+    return Auth::user()->load( 'settings.option' )->settings->where( "option_id", $optionId )->first();
 }
 
 // End of Helper Functions

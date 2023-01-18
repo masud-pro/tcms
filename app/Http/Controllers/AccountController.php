@@ -7,7 +7,6 @@ use App\Models\SMS;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\Course;
-use App\Models\Option;
 use App\Models\Account;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +18,7 @@ class AccountController extends Controller {
         $this->middleware( 'check_access:accounts.course_update', ['only' => ['index', 'create_manually']] );
         $this->middleware( 'check_access:accounts.individual_student', ['only' => ['individual_account']] );
         $this->middleware( 'check_access:accounts.overall_user_account', ['only' => ['overall_account']] );
-        
+
         $this->middleware( 'check_access:transactions.user_online_transactions', ['only' => ['transactions']] );
     }
 
@@ -224,9 +223,9 @@ class AccountController extends Controller {
     public function student_pay_offline( Account $account ) {
         $this->authorize( "view", $account );
 
-        $bkashNumber  = Option::where( "slug", "bkash_number" )->pluck( 'value' )->first();
-        $rocketNumber = Option::where( "slug", "rocket_number" )->pluck( 'value' )->first();
-        $nagadNumber  = Option::where( "slug", "nagad_number" )->pluck( 'value' )->first();
+        $bkashNumber  = getSettingValue( 'bkash_number' )->value;
+        $rocketNumber = getSettingValue( 'rocket_number' )->value;
+        $nagadNumber  = getSettingValue( 'nagad_number' )->value;
 
         return view( "ms.account.pay-offline", [
             'account'      => $account,
@@ -272,8 +271,8 @@ class AccountController extends Controller {
     }
 
     /**
-     * @param $row
-     * @param $course
+     * @param  $row
+     * @param  $course
      * @return mixed
      */
     public function get_phone_numbers( $row, $course ) {
@@ -297,7 +296,7 @@ class AccountController extends Controller {
     }
 
     /**
-     * @param Request $request
+     * @param Request   $request
      * @param $parent
      */
     public function send_sms_due_report( Request $request, $parent ) {
@@ -311,11 +310,11 @@ class AccountController extends Controller {
 
         $numberCount = count( $numbers );
 
-        $smsrow        = Option::where( "slug", "remaining_sms" )->first();
+        $smsrow        = getSettingValue( 'remaining_sms' );
         $remaining_sms = (int) $smsrow->value;
 
         if ( $remaining_sms < $numberCount ) {
-            return redirect()->back()->with( "failed", "Not Enough SMS" );
+            return redirect()->back()->with( "failed", "1Not Enough SMS" );
         }
 
         if ( $numberCount > 0 ) {
@@ -363,13 +362,21 @@ class AccountController extends Controller {
 
         $numberCount = count( $students );
 
-        $smsrow        = Option::where( "slug", "remaining_sms" )->first();
+        // $smsId = Option::where( "slug", "remaining_sms" )->first()['id'];
+
+        //$smsrow = Auth::user()->load( 'settings.option' )->settings->where( "option_id",  $smsId )->first();
+
+        $smsrow = getSettingValue( 'remaining_sms' );
+
+        // dd( $smsrow );
+
         $remaining_sms = (int) $smsrow->value;
 
         if ( $remaining_sms < $numberCount ) {
             return redirect()->back()->with( "failed", "Not Enough SMS" );
         }
 
+        // dd( $remaining_sms );
         foreach ( $students as $student ) {
             $message  = "সম্মানিত অভিভাবক, আপনার সন্তানের ";
             $payments = $student->payment;
@@ -378,13 +385,13 @@ class AccountController extends Controller {
             }
             $message .= " মাসের পেমেন্ট বাকি আছে - " . env( "APP_NAME" );
 
+            // dd($message );
             $number = $student->$send_to;
             SMSController::send_sms( $number, $message );
+
         }
 
         $remaining_sms = $remaining_sms - $numberCount;
-
-        dd($message ); 
 
         SMS::create( [
             'for'     => "Overall Account Report",

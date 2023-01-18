@@ -26,7 +26,7 @@ class SubscriptionRenew extends Component {
     ];
 
     public function mount() {
-        $this->planList    = Subscription::WhereNotIn( 'name', ['Trail Plan'] )->get();
+        $this->planList    = Subscription::WhereNotIn( 'name', ['Free Trail'] )->get();
         $this->planName    = SubscriptionUser::where( 'user_id', auth()->user()->id )->first()['subscription_id'];
         $this->planPrice   = $this->month * Subscription::where( 'id', $this->planName )->first()['price'];
         $this->featureList = explode( ',', Subscription::where( 'id', $this->planName )->first()['selected_feature'] );
@@ -44,13 +44,13 @@ class SubscriptionRenew extends Component {
         $data = $this->validate();
 
         $sub = SubscriptionUser::where( 'user_id', auth()->user()->id )->first();
-        
+
         $subscription['subscription_id'] = $data['planName'];
         $subscription['expiry_date']     = Carbon::parse( $sub->expiry_date )->addMonths( $data['month'] );
         $subscription['status']          = 1;
 
         $sub->update( $subscription );
-        
+
         $subAccount['subscription_user_id'] = $sub->id;
         $subAccount['total_price']          = $data['planPrice'];
         $subAccount['to_date']              = now();
