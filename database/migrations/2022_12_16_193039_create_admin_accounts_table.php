@@ -19,7 +19,7 @@ class CreateAdminAccountsTable extends Migration
             $table->foreignId( 'subscription_user_id' )->index();
             $table->double( 'total_price', 8, 2 );
             $table->date( 'to_date' );
-            $table->date( 'from_date' );
+            $table->date( 'from_date' )->nullable();
             $table->string('purpose')->nullable();
             $table->string( 'status' )->default( 'Unpaid' );
 

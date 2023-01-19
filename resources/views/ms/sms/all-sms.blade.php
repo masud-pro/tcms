@@ -48,8 +48,6 @@
             <div class="text-left">
                 <a class="btn btn-primary mb-3" href="{{ route('sms.batch') }}">Send Batch SMS</a>
 
-
-
                 <div class="btn-group mb-3">
                     <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -79,7 +77,11 @@
 
                     </div>
                 </div>
-
+                
+                <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#createModal">
+                    Buy Message
+                </button>
+                
                 @livewire('sms.buy-sms')
             </div>
 

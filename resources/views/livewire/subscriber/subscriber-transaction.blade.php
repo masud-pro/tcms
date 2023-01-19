@@ -20,6 +20,7 @@
                 <tr>
                     <th>ID</th>
                     <th>Subscriber Name</th>
+                    <th>Purpose Of Payment</th>
                     <th>Package Name</th>
                     <th>Last Payment Date</th>
                     <th>Extended Date</th>
@@ -33,6 +34,7 @@
                 <tr>
                     <th>ID</th>
                     <th>Subscriber Name</th>
+                    <th>Purpose Of Payment</th>
                     <th>Package Name</th>
                     <th>Last Payment Date</th>
                     <th>Extended Date</th>
@@ -51,6 +53,7 @@
                         </td>
 
                         <td><b>{{ $subscriber->subscriptionUser->user->name ?? 'Not Found' }}</b></td>
+                        <td><b>{{ $subscriber->purpose ?? 'Regular Transaction' }}</b></td>
                         <td><b>{{ $subscriber->subscriptionUser->subscription->name ?? 'Not Found' }}</b></td>
                         <td>
                             {{ Carbon\Carbon::parse($subscriber->to_date)->format('d M Y') }}

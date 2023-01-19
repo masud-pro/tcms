@@ -41,7 +41,7 @@ class FakeDataInsert extends Command {
         $dataInsert = $this->ask( 'Do you want to insert data into the database[Yes|No]?' );
 
         if ( $dataInsert == "yes" ) {
-            $this->info( 'Hello console...!' );
+            $this->info( "Console Is Working...!" );
             Artisan::call( 'migrate:fresh' );
             Artisan::call( 'db:seed' );
 
