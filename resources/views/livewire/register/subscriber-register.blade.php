@@ -8,13 +8,10 @@
                         <div class="card-body p-0">
                             <div class="row">
 
-
-                                {{-- <div class="col-lg-5 d-none d-lg-block bg-register-image"></div> --}}
                                 <div class="col-lg-12">
                                     <div class="p-5">
-
+                                        
                                         <div class="text-center">
-
                                             @if ($planPrice == 0)
                                                 <h3 class="text-center fs-4 price-container fw-bold">Free for 30 Days
                                                 </h3>
@@ -23,82 +20,34 @@
                                                     {{ $planPrice == 0 ? '' : number_format($planPrice) }}<span
                                                         class="fs-6">Tk</span>
                                                 </h3>
+                                                @if (!$customPlanData)
 
-                                                <div class="form-check form-switch form-switch-lg mt-2">
-                                                    <label class="form-check-label pd-18"
-                                                        for="flexSwitchCheckChecked">Bill
-                                                        Monthly</label>
-                                                    <input class="form-check-input" type="checkbox"
-                                                        id="flexSwitchCheckChecked" style="opacity: 1;"
-                                                        wire:click="$toggle('billChecked')">
-                                                    <label class="form-check-label pd-4 "
-                                                        style="opacity: 1; color: #222"
-                                                        for="flexSwitchCheckChecked">Bill
-                                                        Annually</label>
+                                                    <div class="form-check form-switch form-switch-lg mt-2">
+                                                        <label class="form-check-label pd-18" for="flexSwitchCheckChecked">Bill Monthly</label>
+                                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" style="opacity: 1;" wire:click="$toggle('billChecked')">
+                                                        <label class="form-check-label pd-4 " style="opacity: 1; color: #222" for="flexSwitchCheckChecked">Bill Annually</label>
+                                                    </div>
 
 
-                                                </div>
+                                                    <a class="small text-dark" wire:click="$toggle('customPlanData')" href="#">Custom</a>
+                                                @else
+                                                    <label>Select Month</label>
+                                                    <input wire:model="month" type="number" class="form-control" min="2">
+
+                                                    <a class="small text-dark" wire:click="$toggle('customPlanData')" href="#">Back</a>
+                                                @endif
+
+                                                
                                             @endif
-
-                                            {{-- @if ($freeTrail == true)
-                                                <h3 class="text-center fs-1"></h3>
-                                            @else
-                                                <div class="form-check form-switch form-switch-lg mt-2">
-                                                    <label class="form-check-label pd-18"
-                                                        for="flexSwitchCheckChecked">Bill
-                                                        Monthly</label>
-                                                    <input class="form-check-input" type="checkbox"
-                                                        id="flexSwitchCheckChecked" style="opacity: 1;"
-                                                        wire:click="$toggle('billChecked')">
-                                                    <label class="form-check-label pd-4 "
-                                                        style="opacity: 1; color: #222"
-                                                        for="flexSwitchCheckChecked">Bill
-                                                        Annually</label>
-
-
-                                                </div>
-                                            @endif --}}
-
-
-
-
-
 
                                         </div>
 
-                                        {{-- <div class="row">
-                                          
-
-
-                                           <div class="col-md-8">
-                                           
-                                           </div>
-
-                                           <div class="col-md-3">
-                                            <div class="">
-                                           
-                                                <h3 class="text-center fs-1">
-                                                    {{ $planPrice == 0 ? '' : $planPrice }}<span
-                                                        class="fs-6">{{ $planPrice == 0 ? 'Free for 2 Month' : 'Tk' }}</span>
-                                                </h3>
-                                            </div>
-                                           </div>
-                                        </div> --}}
-
-
-
-
-
-
-
-
-
-                                        <div class="form-group row">
+                                        <div class="form-group row mt-3">
 
                                             <div class="col-sm-{{ $nextStep == false ? '8' : '12' }} mb-3 mb-sm-0">
 
 
-                                                <select class="form-control form-control-select " wire:model="planName"
+                                                <select class="form-control form-control-select " wire:model.defer="planName"
                                                     id="planName">
                                                     <option disabled selected>Please Select Plan</option>
                                                     @foreach ($planList as $data)
@@ -106,32 +55,16 @@
                                                             {{ $planName == $data->id ? 'selected' : '' }}>
                                                             {{ $data->name }}</option>
                                                     @endforeach
-                                                    {{-- <option value="2">Two</option>
-                                                    <option value="3">Three</option> --}}
+
                                                 </select>
                                             </div>
 
                                             <div class="col-sm-4 mb-3 mb-sm-0">
 
                                                 <div class="text-center mt-1">
-                                                    {{-- <button wire:click="nextStep()" type="button"
-                                                            class="btn btn-primary ">Free
-                                                            Trail</button> --}}
-
-
 
                                                     @if ($nextStep == false)
-
-                                                        @if ($freeTrail == true)
-                                                            <button wire:click="nextStep()" type="button"
-                                                                class="btn btn-primary ">Free
-                                                                Trail</button>
-                                                        @else
-                                                            <button wire:click="nextStep()" type="button"
-                                                                class="btn btn-primary ">Next
-                                                                Step</button>
-                                                        @endif
-                                                    @else
+                                                        <button wire:click="nextStep()" type="button" class="btn btn-primary ">Next Step</button>
                                                     @endif
 
 
@@ -152,69 +85,12 @@
                                                 @foreach ($planFeature ?? [] as $feature)
                                                     <h6> <span class="pr-1">-</span>
                                                         {{ Str::of(Str::of(Str::replace('.', ' ', $feature))->camel())->headline() }}
-                                                        {{-- {{ Str::replace('.', ' ', Str::of(Str::of($feature)->camel())->headline()) }} --}}
                                                     </h6>
-                                                    {{-- <h6> <span class="pr-1">-</span> {{    Str::of(Str::of($feature)->camel())->replace('.') }}</h6> --}}
                                                 @endforeach
-
-
-
-                                                {{-- <h6> <span class="pr-1">-</span> hello World</h6>
-                                               <h6> <span class="pr-1">-</span> hello World</h6>
-                                               <h6> <span class="pr-1">-</span> hello World</h6>
-                                               <h6> <span class="pr-1">-</span> hello World</h6> --}}
 
                                             </div>
 
                                         </div>
-
-                                        {{-- <div class="form-group row">
-
-                                            <div class="col-sm-12 mb-3 mb-sm-0">
-
-                                                @if ($nextStep == false)
-
-                                                    @if ($freeTrail == true)
-                                                        <div class="text-cemter mt-3 ">
-                                                            <div class="col-md-12 text-center">
-                                                                <button wire:click="nextStep()" type="button"
-                                                                    class="btn btn-primary ">Free sdasd
-                                                                    Trail</button>
-
-                                                            </div>
-                                                        </div>
-                                                    @else
-                                                        <h3 class="text-center fs-1">
-                                                            {{ $planPrice['price'] ?? '' }}<span
-                                                                class="fs-6">Tk</span> </h3>
-
-
-                                                        <div class="text-cemter mt-3 ">
-                                                            <div class="col-md-12 text-center">
-                                                                <button wire:click="nextStep()" type="button"
-                                                                    class="btn btn-primary ">Next
-                                                                    Step</button>
-
-                                                            </div>
-                                                        </div>
-                                                    @endif
-                                                @else
-                                                    <h3 class="text-center fs-1">
-                                                        {{ $planPrice == 0 ? '' : $planPrice }}<span
-                                                            class="fs-6">{{ $planPrice == 0 ? 'Free for 2 Month' : 'Tk' }}</span>
-                                                    </h3>
-                                                @endif
-
-
-
-
-
-
-                                            </div>
-
-                                        </div> --}}
-
-
                                     </div>
                                 </div>
                             </div>
@@ -222,28 +98,8 @@
                     </div>
                 </div>
 
-
-
-
                 @if ($register == true)
                     <div class="col-md-7 w3-container w3-center w3-animate-right">
-
-
-
-                        {{-- @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif --}}
-
-
-
-
-
 
                         <div class="card o-hidden border-0 shadow-lg my-5">
                             <div class="card-body p-0">
@@ -260,7 +116,7 @@
                                                         <input type="text"
                                                             class="form-control form-control-user @error('fName') is-invalid @enderror"
                                                             id="fName" placeholder="First Name"
-                                                            value="{{ old('fName') }}" wire:model="fName">
+                                                            value="{{ old('fName') }}" wire:model.defer="fName">
 
                                                         @error('fName')
                                                             <p class="text-start text-danger small mt-1">{{ $message }}
@@ -270,7 +126,7 @@
                                                     <div class="col-sm-6">
                                                         <input type="text"
                                                             class="form-control form-control-user @error('lName') is-invalid @enderror"
-                                                            id="lName" placeholder="Last Name" wire:model="lName">
+                                                            id="lName" placeholder="Last Name" wire:model.defer="lName">
                                                         @error('lName')
                                                             <p class="text-start text-danger small mt-1">{{ $message }}
                                                             </p>
@@ -286,7 +142,7 @@
                                                         <input type="text"
                                                             class="form-control form-control-user @error('phoneNumber') is-invalid @enderror"
                                                             id="phoneNumber" placeholder="Phone Number"
-                                                            wire:model="phoneNumber">
+                                                            wire:model.defer="phoneNumber">
 
                                                         @error('phoneNumber')
                                                             <p class="text-start text-danger small mt-1">
@@ -298,7 +154,7 @@
                                                         <input type="text"
                                                             class="form-control form-control-user @error('userName') is-invalid @enderror"
                                                             id="userName" placeholder="User Name"
-                                                            wire:model="userName">
+                                                            wire:model.defer="userName">
 
                                                         @error('userName')
                                                             <p class="text-start text-danger small mt-1">
@@ -312,7 +168,7 @@
                                                     <input type="email"
                                                         class="form-control form-control-user  @error('emailAddress') is-invalid @enderror"
                                                         id="emailAddress" placeholder="Email Address"
-                                                        wire:model="emailAddress">
+                                                        wire:model.defer="emailAddress">
 
                                                     @error('emailAddress')
                                                         <p class="text-start text-danger small mt-1">
@@ -324,10 +180,10 @@
 
                                                 <div class="form-group row">
                                                     <div class="col-sm-6">
-                                                        <input type="text"
+                                                        <input type="date"
                                                             class="form-control form-control-user sub-calander @error('dob') is-invalid @enderror"
                                                             id="dob" placeholder="Date of Birth"
-                                                            wire:model="dob">
+                                                            wire:model.defer="dob">
                                                         @error('dob')
                                                             <p class="text-start text-danger small mt-1">
                                                                 {{ $message }}</p>
@@ -338,7 +194,7 @@
                                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                                         <select
                                                             class="form-control form-control-select @error('gender') is-invalid @enderror"
-                                                            id="gender" wire:model="gender">
+                                                            id="gender" wire:model.defer="gender">
                                                             <option readonly selected>Select Gender</option>
                                                             <option value="male">Male</option>
                                                             <option value="female">Female</option>
@@ -360,7 +216,7 @@
                                                     <div class="col-sm-6">
                                                         <select
                                                             class="form-control form-control-select select1 @error('curriculum') is-invalid @enderror"
-                                                            id="curriculum" wire:model="curriculum">
+                                                            id="curriculum" wire:model.defer="curriculum">
                                                             <option readonly selected>Select Curriculum</option>
                                                             <option value="bangla">Bangla Medium</option>
                                                             <option value="english">English Medium</option>
@@ -377,7 +233,7 @@
                                                         <input type="text"
                                                             class="form-control form-control-user @error('teachingLevel') is-invalid @enderror"
                                                             id="teachingLevel" placeholder="Teaching Level"
-                                                            wire:model="teachingLevel">
+                                                            wire:model.defer="teachingLevel">
 
                                                         @error('teachingLevel')
                                                             <p class="text-start text-danger small mt-1">
@@ -392,7 +248,7 @@
                                                     <input type="text"
                                                         class="form-control form-control-user @error('institute') is-invalid @enderror"
                                                         id="institute" placeholder="Institute Name"
-                                                        wire:model="institute" autocomplete="off">
+                                                        wire:model.defer="institute" autocomplete="off">
 
                                                     @error('institute')
                                                         <p class="text-start text-danger small mt-1">{{ $message }}
@@ -402,7 +258,7 @@
 
                                                 <div class="form-group">
                                                     <textarea class="form-control form-control-user @error('address') is-invalid @enderror" id="address"
-                                                        placeholder="Address" wire:model="address"></textarea>
+                                                        placeholder="Address" wire:model.defer="address"></textarea>
 
                                                     @error('address')
                                                         <p class="text-start text-danger small mt-1">{{ $message }}
@@ -410,16 +266,12 @@
                                                     @enderror
                                                 </div>
 
-
-
-
-
                                                 <div class="form-group row">
                                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                                         <input type="password"
                                                             class="form-control form-control-user @error('password') is-invalid @enderror"
                                                             id="password" placeholder="Password"
-                                                            wire:model="password">
+                                                            wire:model.defer="password">
 
                                                         @error('password')
                                                             <p class="text-start text-danger small mt-1">
@@ -430,7 +282,7 @@
                                                         <input type="password"
                                                             class="form-control form-control-user @error('password_confirmation') is-invalid @enderror"
                                                             id="password_confirmation"
-                                                            wire:model="password_confirmation"
+                                                            wire:model.defer="password_confirmation"
                                                             placeholder="Repeat Password">
                                                     </div>
                                                 </div>
@@ -454,144 +306,12 @@
                     </div>
                 @endif
 
-
-
             </div>
 
 
         </form>
 
     </div>
-
-
-
-
-    {{-- <div class="container">
-
-        <div class="card o-hidden border-0 shadow-lg my-5">
-            <div class="card-body p-0">
-                <div class="row">
-                    <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
-
-
-
-                    <div class="col-lg-12">
-                        <div class="p-5">
-                            <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
-                            </div>
-                            <form class="user">
-                                <div class="form-group row">
-                                    <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="text" class="form-control form-control-user"
-                                            id="exampleFirstName" placeholder="First Name">
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <input type="text" class="form-control form-control-user"
-                                            id="exampleLastName" placeholder="Last Name">
-                                    </div>
-                                </div>
-
-
-
-
-                                <div class="form-group row">
-                                    <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="text" class="form-control form-control-user"
-                                            id="exampleFirstName" placeholder="Phone Number">
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <input type="text" class="form-control form-control-user"
-                                            id="exampleLastName" placeholder="Date of Birth">
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <input type="email" class="form-control form-control-user"
-                                        id="exampleInputEmail" placeholder="Email Address">
-                                </div>
-
-
-
-                                <div class="form-group row">
-                                    <div class="col-sm-6">
-                                        <input type="text" class="form-control form-control-user"
-                                            id="exampleLastName" placeholder="User Name">
-                                    </div>
-                                    <div class="col-sm-6 mb-3 mb-sm-0">
-
-
-                                        <select class="form-control form-control-select ">
-                                            <option selected>Select Gender</option>
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
-                                        </select>
-                                    </div>
-
-                                </div>
-
-
-                                <div class="form-group row">
-                                    <div class="col-sm-6">
-
-
-
-                                        <select class="form-control form-control-select select1 ">
-                                            <option selected>Select Curriculum</option>
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="text" class="form-control form-control-user"
-                                            id="exampleFirstName" placeholder="Teaching Level">
-                                    </div>
-
-                                </div>
-
-
-                                <div class="form-group">
-
-
-                                    <textarea type="email" class="form-control form-control-user" id="exampleInputEmail" placeholder="Address"></textarea>
-                                </div>
-
-
-
-
-
-                                <div class="form-group row">
-                                    <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="password" class="form-control form-control-user"
-                                            id="exampleInputPassword" placeholder="Password">
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <input type="password" class="form-control form-control-user"
-                                            id="exampleRepeatPassword" placeholder="Repeat Password">
-                                    </div>
-                                </div>
-                                <a href="#" class="btn btn-primary btn-user btn-block">
-                                    Register Account
-                                </a>
-
-                            </form>
-                            <hr>
-                            <div class="text-center">
-                                <a class="small" href="forgot-password.html">Forgot Password?</a>
-                            </div>
-                            <div class="text-center">
-                                <a class="small" href="login.html">Already have an account? Login!</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div> --}}
 </div>
 
 
