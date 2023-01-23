@@ -10,7 +10,7 @@
 
                                 <div class="col-lg-12">
                                     <div class="p-5">
-                                        
+
                                         <div class="text-center">
                                             @if ($planPrice == 0)
                                                 <h3 class="text-center fs-4 price-container fw-bold">Free for 30 Days

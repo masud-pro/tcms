@@ -78,12 +78,19 @@ Route::middleware( ['auth:sanctum'] )->group( function () {
 } );
 
 // SSLCOMMERZ
+Route::view('/example', 'exampleHosted');
 Route::post( '/pay', [SslCommerzPaymentController::class, 'index'] );
+
 Route::post( '/pay-via-ajax', [SslCommerzPaymentController::class, 'payViaAjax'] );
 
 Route::post( '/success', [SslCommerzPaymentController::class, 'success'] );
+Route::post( '/subscription/success', [SslCommerzPaymentController::class, 'subscription_success'] );
+
 Route::post( '/fail', [SslCommerzPaymentController::class, 'fail'] );
+Route::post( '/subscription/failed', [SslCommerzPaymentController::class, 'subscription_fail'] );
+
 Route::post( '/cancel', [SslCommerzPaymentController::class, 'cancel'] );
+Route::post( '/subscription/cancel', [SslCommerzPaymentController::class, 'subscription_cancel'] );
 
 Route::post( '/ipn', [SslCommerzPaymentController::class, 'ipn'] );
 

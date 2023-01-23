@@ -64,8 +64,7 @@
                             </div>
                         </td>
                         <td>
-                            <a class="btn btn-primary" href="{{ route('subscriber.edit', $userData->id) }}"
-                                target="_blank">
+                            <a class="btn btn-primary" href="{{ route('subscriber.edit', $userData->id) }}">
                                 Renew
                             </a>
                         </td>

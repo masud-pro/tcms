@@ -2,17 +2,20 @@
 
 namespace App\Http\Livewire\Register;
 
+use Carbon\Carbon;
+use App\Models\User;
+use Livewire\Component;
+use App\Models\TeacherInfo;
 use App\Models\AdminAccount;
 use App\Models\Subscription;
 use App\Models\SubscriptionUser;
-use App\Models\TeacherInfo;
-use App\Models\User;
 use App\Traits\DefaultSettingTraits;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\Rules\Password;
-use Livewire\Component;
+use App\Library\SslCommerz\SslCommerzNotification;
+use App\Http\Controllers\SslCommerzPaymentController;
 
 class SubscriberRegister extends Component {
 
@@ -74,8 +77,7 @@ class SubscriberRegister extends Component {
         $this->month    = 1;
     }
 
-    public function updated() {
-
+    public function updatedPlanName(){
         $plan = Subscription::find( $this->planName );
 
         $featureList = explode( ',', $plan->selected_feature );
@@ -164,10 +166,8 @@ class SubscriberRegister extends Component {
     ];
 
     public function submit() {
-
         $data = $this->validate();
 
-        // dd($data);
 
         $user = User::query();
 
@@ -179,7 +179,7 @@ class SubscriberRegister extends Component {
         $newTeacher['address']   = $data['address'];
         $newTeacher['password']  = Hash::make( $data['password'] );
         $newTeacher['is_active'] = 1;
-
+        
         //new user created on user table
         $user = $user->create( $newTeacher );
 
@@ -194,32 +194,53 @@ class SubscriberRegister extends Component {
         $user->assignRole( 'Teacher' );
         $this->defaultSetting( $user->id );
 
-        Auth::login( $user );
-
-        $this->regSubscription( $this->planName, $this->planPrice, $user->id );
+        $this->regSubscription( $this->planName, $this->planPrice, $user );
 
     }
 
-    public function regSubscription( $planId, $planPrice, $userId ) {
-        Subscription::find( $planId );
+    public function regSubscription( $planId, $planPrice, $user ) {
 
         $data['subscription_id'] = $planId;
-        $data['user_id']         = $userId;
+        $data['user_id']         = $user->id;
         $data['expiry_date']     = Carbon::now()->addMonths( $this->month );
-        $data['status']          = 1;
+        $data['status']          = 0;
 
         $subUser = SubscriptionUser::create( $data );
 
         $subAccountData['subscription_user_id'] = $subUser->id;
         $subAccountData['total_price']          = $planPrice;
         $subAccountData['from_date']            = Carbon::now();
-        $subAccountData['status']               = 1;
+        $subAccountData['status']               = 0;
         $subAccountData['to_date']              = Carbon::now()->addMonths( $this->month );
 
-        AdminAccount::create( $subAccountData );
-        return redirect()->route( 'dashboard' );
+        $adminAccount = AdminAccount::create( $subAccountData );
+        
+        if($planPrice != 0){
+            
+            $paymentData['name'] = $user->name;
+            $paymentData['email'] = $user->email;
+            $paymentData['address'] = $user->address;
+            $paymentData['phone_no'] = $user->phone_no;
+            $paymentData['amount'] = $this->planPrice;
+            $paymentData['admin_account_id'] = $adminAccount->id;
+            $paymentData['user_id'] = $user->id;
+
+            $payOptions = SslCommerzPaymentController::subscription_payment($paymentData);
+            $paymentLink = json_decode($payOptions)->data;
+            return redirect($paymentLink);
+        }else{
+            $subUser->update([
+                'status' => 1
+            ]);
+            $adminAccount->update([
+                'status' => 1
+            ]);
+            Auth::login( $user );
+            return redirect()->route( 'dashboard' );
+        }
 
     }
+
 
     public function render() {
         return view( 'livewire.register.subscriber-register' );
