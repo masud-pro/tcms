@@ -8,17 +8,16 @@ use App\Models\Option;
 use App\Models\Setting;
 use App\Models\Assessment;
 use Illuminate\Http\Request;
-use App\Jobs\Result\ResultSMS;
+use App\Jobs\Message\ProcessSMS;
 use Illuminate\Support\Facades\Auth;
 
 class SMSController extends Controller {
-    
+
     // public function __construct() {
     //     $this->middleware( 'check_access:student.index', ['only' => ['index']] );
     //     $this->middleware( 'check_access:student.create', ['only' => ['create' ,'store']] );
     //     $this->middleware( 'check_access:student.edit', ['only' => ['edit', 'update']] );
     //     $this->middleware( 'check_access:student.destroy', ['only' => ['destroy']] );
-
 
     //     // 'transactions.user_online_transactions',
 
@@ -30,7 +29,7 @@ class SMSController extends Controller {
     public function index() {
         $optionId = Option::where( "slug", "remaining_sms" )->pluck( 'id' );
 
-        return view("ms.sms.all-sms", [
+        return view( "ms.sms.all-sms", [
             "smss"         => SMS::latest()->paginate( 15 ),
             "remainingSMS" => Setting::where( 'user_id', Auth::user()->id )->where( 'option_id', $optionId )->first(),
         ] );
@@ -63,7 +62,7 @@ class SMSController extends Controller {
 
         $smsCount = $assessment->responses()->count() * $numberOfSmsPerMessage; // Count the number of sms
 
-        $smsrow        = Option::where( "slug", "remaining_sms" )->first(); // Remaining SMS row
+        $smsrow        =  getSettingValue( 'remaining_sms' ); // Remaining SMS row
         $remaining_sms = (int) $smsrow->value;
 
 // Remaining SMS
@@ -78,15 +77,15 @@ class SMSController extends Controller {
 // Responses to loop
 
             foreach ( $loopResponses as $response ) {
-                $result['number'] = $response->user->$send_to;
+                $sms['number'] = $response->user->$send_to;
 
-                $result['message'] = $assessment->name . " " .
+                $sms['message'] = $assessment->name . " " .
                 "result: " .
                 $response->marks . "/" .
                 $response->assignment->marks . " - " .
                 env( 'APP_NAME' );
 
-                ResultSMS::dispatch( $result );
+                ProcessSMS::dispatch( $sms );
             }
 
             $remaining_sms = $remaining_sms - $smsCount;
@@ -125,6 +124,9 @@ class SMSController extends Controller {
         $numberOfSmsPerMessage = (int) ceil( $characters / 160 );
 
         $courseUsers = Course::findOrFail( $data['course_id'] )->user;
+
+        dd($courseUsers);
+        
         $numbers     = [];
         $send_to     = $data['send_to'];
 // Father or mother
@@ -171,7 +173,7 @@ class SMSController extends Controller {
 
                 return redirect()->route( "sms.index" )->with( "success", "All guardian reported successfully" );
             } else {
-                return redirect()->route( "sms.index" )->with( "failed", "Report failed for unknown reasosns, Check all studnets phone no is correct or not!" );
+                return redirect()->route( "sms.index" )->with( "failed", "Report failed for unknown reasons, Check all students phone no is correct or not!" );
             }
 
         } else {

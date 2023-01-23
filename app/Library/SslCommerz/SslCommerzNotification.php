@@ -236,6 +236,8 @@ class SslCommerzNotification extends AbstractSslCommerz
     {
         if($this->paymentType === 'subscription'){
             $this->successUrl = url('/') . '/subscription/success';
+        }elseif($this->paymentType === 'sms'){
+            $this->successUrl = url('/') . '/sms/success';
         }else{
             $this->successUrl = url('/') . $this->config['success_url'];
         }
@@ -250,6 +252,8 @@ class SslCommerzNotification extends AbstractSslCommerz
     {
         if($this->paymentType === 'subscription'){
             $this->failedUrl = url('/') . '/subscription/failed';
+        }elseif($this->paymentType === 'sms'){
+            $this->failedUrl = url('/') . '/sms/failed';
         }else{
             $this->failedUrl = url('/') . $this->config['failed_url'];
         }
@@ -264,6 +268,8 @@ class SslCommerzNotification extends AbstractSslCommerz
     {
         if($this->paymentType === 'subscription'){
             $this->cancelUrl = url('/') . '/subscription/cancel';
+        }elseif($this->paymentType === 'sms'){
+            $this->cancelUrl = url('/') . '/sms/cancel';
         }else{
             $this->cancelUrl = url('/') . $this->config['cancel_url'];
         }

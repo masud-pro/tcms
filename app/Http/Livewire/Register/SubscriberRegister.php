@@ -12,61 +12,37 @@ use App\Models\SubscriptionUser;
 use App\Traits\DefaultSettingTraits;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\Rules\Password;
-use App\Library\SslCommerz\SslCommerzNotification;
 use App\Http\Controllers\SslCommerzPaymentController;
 
 class SubscriberRegister extends Component {
 
     use DefaultSettingTraits;
-
     public $planName;
-
     public $planList;
-
     public $planFeature;
-
     public $planPrice;
-
     public $customPlanData = false;
-
     public $billChecked;
-
     public $month;
-
     public $register;
-
     public $nextStep;
-
     public $fName;
-
     public $lName;
-
     public $phoneNumber;
-
     public $userName;
-
     public $emailAddress;
-
     public $dob;
-
     public $gender;
-
     public $curriculum;
-
     public $teachingLevel;
-
     public $address;
-
     public $institute;
-
     public $password;
-
     public $password_confirmation;
 
     public function mount() {
-        $freeTrail = Subscription::where( 'name', 'Free Trail' )->first();
+        $freeTrail = Subscription::where( 'name', 'Free Trial' )->first();
 
         $this->planList = Subscription::all();
 
@@ -77,7 +53,7 @@ class SubscriberRegister extends Component {
         $this->month    = 1;
     }
 
-    public function updatedPlanName(){
+    public function updatedPlanName() {
         $plan = Subscription::find( $this->planName );
 
         $featureList = explode( ',', $plan->selected_feature );
@@ -168,10 +144,9 @@ class SubscriberRegister extends Component {
     public function submit() {
         $data = $this->validate();
 
-
         $user = User::query();
 
-        $newTeacher['name']      = $data['fName'] . " " .  $data['lName'];
+        $newTeacher['name']      = $data['fName'] . " " . $data['lName'];
         $newTeacher['email']     = $data['emailAddress'];
         $newTeacher['phone_no']  = $data['phoneNumber'];
         $newTeacher['dob']       = $data['dob'];
@@ -179,7 +154,7 @@ class SubscriberRegister extends Component {
         $newTeacher['address']   = $data['address'];
         $newTeacher['password']  = Hash::make( $data['password'] );
         $newTeacher['is_active'] = 1;
-        
+
         //new user created on user table
         $user = $user->create( $newTeacher );
 
@@ -198,6 +173,11 @@ class SubscriberRegister extends Component {
 
     }
 
+    /**
+     * @param $planId
+     * @param $planPrice
+     * @param $user
+     */
     public function regSubscription( $planId, $planPrice, $user ) {
 
         $data['subscription_id'] = $planId;
@@ -214,33 +194,32 @@ class SubscriberRegister extends Component {
         $subAccountData['to_date']              = Carbon::now()->addMonths( $this->month );
 
         $adminAccount = AdminAccount::create( $subAccountData );
-        
-        if($planPrice != 0){
-            
-            $paymentData['name'] = $user->name;
-            $paymentData['email'] = $user->email;
-            $paymentData['address'] = $user->address;
-            $paymentData['phone_no'] = $user->phone_no;
-            $paymentData['amount'] = $this->planPrice;
-            $paymentData['admin_account_id'] = $adminAccount->id;
-            $paymentData['user_id'] = $user->id;
 
-            $payOptions = SslCommerzPaymentController::subscription_payment($paymentData);
-            $paymentLink = json_decode($payOptions)->data;
-            return redirect($paymentLink);
-        }else{
-            $subUser->update([
-                'status' => 1
-            ]);
-            $adminAccount->update([
-                'status' => 1
-            ]);
+        if ( $planPrice != 0 ) {
+
+            $paymentData['name']             = $user->name;
+            $paymentData['email']            = $user->email;
+            $paymentData['address']          = $user->address;
+            $paymentData['phone_no']         = $user->phone_no;
+            $paymentData['amount']           = $this->planPrice;
+            $paymentData['admin_account_id'] = $adminAccount->id;
+            $paymentData['user_id']          = $user->id;
+
+            $payOptions  = SslCommerzPaymentController::subscription_payment( $paymentData );
+            $paymentLink = json_decode( $payOptions )->data;
+            return redirect( $paymentLink );
+        } else {
+            $subUser->update( [
+                'status' => 1,
+            ] );
+            $adminAccount->update( [
+                'status' => 1,
+            ] );
             Auth::login( $user );
             return redirect()->route( 'dashboard' );
         }
 
     }
-
 
     public function render() {
         return view( 'livewire.register.subscriber-register' );

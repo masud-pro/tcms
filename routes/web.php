@@ -92,6 +92,11 @@ Route::post( '/subscription/failed', [SslCommerzPaymentController::class, 'subsc
 Route::post( '/cancel', [SslCommerzPaymentController::class, 'cancel'] );
 Route::post( '/subscription/cancel', [SslCommerzPaymentController::class, 'subscription_cancel'] );
 
+// SMS Payment
+Route::post( '/sms/success', [SslCommerzPaymentController::class, 'sms_success'] );
+Route::post( '/sms/failed', [SslCommerzPaymentController::class, 'sms_fail'] );
+Route::post( '/sms/cancel', [SslCommerzPaymentController::class, 'sms_cancel'] );  
+
 Route::post( '/ipn', [SslCommerzPaymentController::class, 'ipn'] );
 
 // Uddoktapay
@@ -151,8 +156,7 @@ Route::get( 'clear', function () {
 } );
 
 
-// Route::get( 'teacher-register', SubscriberRegister::class );
-
+Route::view('test-sms', 'ms.sms.test');
 //
 
 

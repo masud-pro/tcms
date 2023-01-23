@@ -80,6 +80,7 @@ class SubscriberCreate extends Component {
         $subscriberUser['user_id']         = $data['subscriberName'];
         $subscriberUser['subscription_id'] = $data['subscriberPackage'];
         $subscriberUser['expiry_date']     = Carbon::now()->addMonths( $data['monthCount'] );
+        $subscriberUser['price']           = $data['price'];
 
         $subUser = SubscriptionUser::create( $subscriberUser );
 
@@ -92,7 +93,7 @@ class SubscriberCreate extends Component {
         $subAccountData['status']               = 1;
 
         AdminAccount::create( $subAccountData );
-        return redirect()->route('subscriber.index');
+        return redirect()->route( 'subscriber.index' );
 
     }
 

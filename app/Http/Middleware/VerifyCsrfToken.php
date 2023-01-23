@@ -21,5 +21,8 @@ class VerifyCsrfToken extends Middleware {
         '/subscription/success',
         '/subscription/failed',
         '/subscription/cancel',
+        '/sms/success',
+        '/sms/failed',
+        '/sms/cancel',
     ];
 }
