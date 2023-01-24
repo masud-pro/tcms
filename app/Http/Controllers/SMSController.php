@@ -190,7 +190,7 @@ class SMSController extends Controller {
 
         $output = SMSController::sent_sdk( $numbers, $message );
 
-        if ( $output->status == "ok" ) {
+        if ( json_decode($output)->message == "Successfull" ) {
             return true;
         } else {
             return false;
@@ -203,28 +203,14 @@ class SMSController extends Controller {
      * @param  $message
      * @return mixed
      */
-    public static function sent_sdk( $numbers, $message ) {
+    public static function sent_sdk( $mobile_no, $message ) {
 
-        $url  = 'https://24smsbd.com/api/bulkSmsApi';
-        $data = [
-            'sender_id' => 1088,
-            'apiKey'    => "Q29kZUVjc3Rhc3k6RWNzdGFzeTQ0",
-            'mobileNo'  => $numbers,
-            'message'   => $message,
-        ];
+        $ap_key='175589388382444820230124030139pmShsZYiQC'; 
+        $sender_id='361';
+        $user_email='thenibirahmed@gmail.com';
+        $response = techno_bulk_sms($ap_key,$sender_id,$mobile_no,$message,$user_email);
 
-        $curl = curl_init( $url );
-        curl_setopt( $curl, CURLOPT_POST, true );
-        curl_setopt( $curl, CURLOPT_POSTFIELDS, $data );
-        curl_setopt( $curl, CURLOPT_RETURNTRANSFER, TRUE );
-        curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, false );
-        curl_setopt( $curl, CURLOPT_SSL_VERIFYHOST, false );
-        $output = curl_exec( $curl );
-        curl_close( $curl );
-
-        $output = json_decode( $output );
-
-        return $output;
+        return $response;
     }
 
     public function send() {
