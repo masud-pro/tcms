@@ -163,13 +163,3 @@ Route::view('test-sms', 'ms.sms.test');
 Route::get( 'teacher-register', [SystemController::class, 'teacherRegister'] );
 
 
-Route::get('send-sms', function(){
-    $ap_key='175589388382444820230124030139pmShsZYiQC'; 
-    $sender_id='361';
-    // $mobile_no='01798449001,01516188989,01610974946,01743203343';
-    $mobile_no='01610974946';
-    $message='New test SMS from techno71';
-    $user_email='thenibirahmed@gmail.com';
-    $response = techno_bulk_sms($ap_key,$sender_id,$mobile_no,$message,$user_email);
-    dd($response);
-});
