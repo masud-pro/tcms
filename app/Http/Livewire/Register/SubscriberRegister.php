@@ -9,11 +9,10 @@ use App\Models\TeacherInfo;
 use App\Models\AdminAccount;
 use App\Models\Subscription;
 use App\Models\SubscriptionUser;
-use Illuminate\Support\Facades\DB;
+use App\Providers\RouteServiceProvider;
 use App\Traits\DefaultSettingTraits;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Validation\Rules\Password;
 use App\Http\Controllers\SslCommerzPaymentController;
 
@@ -165,24 +164,22 @@ class SubscriberRegister extends Component {
         $newTeacher['password']  = Hash::make( $data['password'] );
         $newTeacher['is_active'] = 1;
 
-        DB::transaction(function () {
-            //new user created on user table
-            $user = $user->create( $newTeacher );
-    
-            // those data for teacher table
-            $newTeacherData['curriculum']     = $data['curriculum'];
-            $newTeacherData['institute']      = $data['institute'];
-            $newTeacherData['teaching_level'] = $data['teachingLevel'];
-            $newTeacherData['username']   = $data['username'];
-            $newTeacherData['user_id']        = $user->id;
-    
-            TeacherInfo::create( $newTeacherData );
-    
-            $user->assignRole( 'Teacher' );
-            $this->defaultSetting( $user->id );
-    
-            $this->regSubscription( $this->planName, $this->planPrice, $user );
-        });
+        //new user created on user table
+        $user = $user->create( $newTeacher );
+
+        // those data for teacher table
+        $newTeacherData['curriculum']     = $data['curriculum'];
+        $newTeacherData['institute']      = $data['institute'];
+        $newTeacherData['teaching_level'] = $data['teachingLevel'];
+        $newTeacherData['username']       = $data['username'];
+        $newTeacherData['user_id']        = $user->id;
+
+        TeacherInfo::create( $newTeacherData );
+
+        $user->assignRole( 'Teacher' );
+        $this->defaultSetting( $user->id );
+
+        $this->regSubscription( $this->planName, $this->planPrice, $user );
 
         Auth::login( $user );
 
