@@ -13,7 +13,6 @@ use App\Http\Controllers\SubscriberController;
 use App\Http\Controllers\UddoktaPayController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\AdministratorController;
-use App\Http\Livewire\Register\SubscriberRegister;
 use App\Http\Controllers\SslCommerzPaymentController;
 
 /*
@@ -88,12 +87,24 @@ Route::middleware( ['auth:sanctum'] )->group( function () {
 } );
 
 // SSLCOMMERZ
+Route::view('/example', 'exampleHosted');
 Route::post( '/pay', [SslCommerzPaymentController::class, 'index'] );
+
 Route::post( '/pay-via-ajax', [SslCommerzPaymentController::class, 'payViaAjax'] );
 
 Route::post( '/success', [SslCommerzPaymentController::class, 'success'] );
+Route::post( '/subscription/success', [SslCommerzPaymentController::class, 'subscription_success'] );
+
 Route::post( '/fail', [SslCommerzPaymentController::class, 'fail'] );
+Route::post( '/subscription/failed', [SslCommerzPaymentController::class, 'subscription_fail'] );
+
 Route::post( '/cancel', [SslCommerzPaymentController::class, 'cancel'] );
+Route::post( '/subscription/cancel', [SslCommerzPaymentController::class, 'subscription_cancel'] );
+
+// SMS Payment
+Route::post( '/sms/success', [SslCommerzPaymentController::class, 'sms_success'] );
+Route::post( '/sms/failed', [SslCommerzPaymentController::class, 'sms_fail'] );
+Route::post( '/sms/cancel', [SslCommerzPaymentController::class, 'sms_cancel'] );  
 
 Route::post( '/ipn', [SslCommerzPaymentController::class, 'ipn'] );
 
@@ -109,27 +120,27 @@ Route::get( 'amarpay-payment', [AmarpayController::class, 'index'] );
 Route::post( "aamarpay-success", [AmarpayController::class, 'success'] )->name( 'aamarpay.success' );
 Route::post( "aamarpay-fail", [AmarpayController::class, 'fail'] )->name( 'aamarpay.fail' );
 
-// Route::get('nibir-api',function(){
+//
 
-//     $url = "http://cecms.test/api/recharge/sms";
+Route::middleware( ['auth:sanctum'] )->group( function () {
 
-//     $data = Http::acceptJson()->withToken("1|PkQcQeRkrwths6VgBGbVTGQBS8qrroMXIla6ZZ7Y")->post($url,[
+    // Route::resource( 'role', UserRoleController::class );
+    // Route::resource( 'subscription', SubscriptionController::class );
+    // Route::resource( 'subscriber', SubscriberController::class );
+    // Route::get( 'permission', [UserRoleController::class, 'rolePermission'] )->name( 'role.permission' );
 
-//         'amount' => 400
+    Route::group(['middleware' => ['role:Super Admin']], function () {
+        Route::resource( 'role', UserRoleController::class );
+        Route::resource( 'subscription', SubscriptionController::class );
+        Route::resource( 'subscriber', SubscriberController::class );
+        Route::get( 'permission', [UserRoleController::class, 'rolePermission'] )->name( 'role.permission' );
+    });
 
-//     ]);
+    Route::get( 'subscriber-transaction', [SubscriberController::class, 'subscriberTransaction'] )->name( 'subscriber.transaction' );
+    Route::get( 'subscriber-renew', [SubscriberController::class, 'subscriberSubscriptionRenew'] )->name( 'subscriber.subscription.renew' );
 
-//     if($data->ok()){
-
-//         dd($data->json()['status']);
-
-//     }else{
-
-//         dd("not okay");
-
-//     }
-
-// });
+    
+} );
 
 // Route::get('sms', function(){
 
@@ -154,7 +165,15 @@ Route::get( 'clear', function () {
     return "<h4> Everything cache clear </h4>";
 } );
 
-Route::get( 'teacher-register', [SystemController::class, 'teacherRegister'] );
-// Route::get( 'teacher-register', SubscriberRegister::class );
 
+Route::view('test-sms', 'ms.sms.test');
 //
+
+
+Route::get( 'teacher-register', [SystemController::class, 'teacherRegister'] );
+
+<<<<<<< HEAD
+//
+=======
+
+>>>>>>> bugfix_ssl

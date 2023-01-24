@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder {
             OptionSeeder::class,
             // RoleSeeder::class,
             AdminPermissionSeeder::class,
+            PlanSeeder::class,
         ]);
     }
 }

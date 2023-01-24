@@ -18,5 +18,11 @@ class VerifyCsrfToken extends Middleware {
         '/ipn',
         '/aamarpay-success',
         '/aamarpay-fail',
+        '/subscription/success',
+        '/subscription/failed',
+        '/subscription/cancel',
+        '/sms/success',
+        '/sms/failed',
+        '/sms/cancel',
     ];
 }

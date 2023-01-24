@@ -5,8 +5,8 @@ namespace App\Http\Livewire\Register;
 use Carbon\Carbon;
 use App\Models\User;
 use Livewire\Component;
-use App\Models\SubAccount;
 use App\Models\TeacherInfo;
+use App\Models\AdminAccount;
 use App\Models\Subscription;
 use App\Models\SubscriptionUser;
 use App\Providers\RouteServiceProvider;
@@ -14,65 +14,22 @@ use App\Traits\DefaultSettingTraits;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
+use App\Http\Controllers\SslCommerzPaymentController;
 
 class SubscriberRegister extends Component {
 
     use DefaultSettingTraits;
-
-    /**
-     * @var mixed
-     */
     public $planName;
-
-    /**
-     * @var mixed
-     */
     public $planList;
-
-    /**
-     * @var mixed
-     */
     public $planFeature;
-
-    /**
-     * @var mixed
-     */
     public $planPrice;
-
-    /**
-     * @var mixed
-     */
+    public $customPlanData = false;
     public $billChecked;
-
-    /**
-     * @var mixed
-     */
-    public $freeTrail;
-
-    /**
-     * @var mixed
-     */
+    public $month;
     public $register;
-
-    /**
-     * @var mixed
-     */
     public $nextStep;
-    //
-
-    /**
-     * @var mixed
-     */
     public $fName;
-
-    /**
-     * @var mixed
-     */
     public $lName;
-
-    /**
-     * @var mixed
-     */
     public $phoneNumber;
 
     /**
@@ -84,103 +41,72 @@ class SubscriberRegister extends Component {
      * @var mixed
      */
     public $emailAddress;
-
-    /**
-     * @var mixed
-     */
     public $dob;
-
-    /**
-     * @var mixed
-     */
     public $gender;
-
-    /**
-     * @var mixed
-     */
     public $curriculum;
-
-    /**
-     * @var mixed
-     */
     public $teachingLevel;
-
-    /**
-     * @var mixed
-     */
     public $address;
-
-    /**
-     * @var mixed
-     */
     public $institute;
-
-    /**
-     * @var mixed
-     */
     public $password;
-
-    /**
-     * @var mixed
-     */
     public $password_confirmation;
 
     public function mount() {
-
-        // $this->planList = ;
-        // $this->startDate = Carbon::now()->format( 'Y-m-d' );
-        $freeTrail = Subscription::where( 'name', 'Trail Plan' )->first();
+        $freeTrail = Subscription::where( 'name', 'Free Trial' )->first();
 
         $this->planList = Subscription::all();
 
         $this->planName    = $freeTrail->id;
         $this->planFeature = explode( ',', Subscription::find( $freeTrail->id )->selected_feature );
 
-        $this->freeTrail = true;
-        $this->register  = false;
-
-        //    dd( Subscription::where('name', 'Trail Plan')->first());
-
+        $this->register = false;
+        $this->month    = 1;
     }
 
-    // public function updatedBillChecked() {
-
-    // }
-
-    public function updated() {
-        // dump( $this->billChecked );
-
+    public function updatedPlanName() {
         $plan = Subscription::find( $this->planName );
 
         $featureList = explode( ',', $plan->selected_feature );
 
-        //  dd($featureList);
-
-        //   dd($this->planFeature = $featureList);
         $this->planFeature = $featureList;
         $this->planPrice   = $plan->price;
+    }
 
-        $this->freeTrail = false;
+    public function updatedBillChecked() {
 
         if ( $this->billChecked ) {
-            $this->changeMonthsBill( 1 );
-        } elseif ( $this->billChecked ) {
-            $this->changeMonthsBill( 12 );
+            $this->month = 12;
+            $this->changeMonthsBill();
+        } else {
+            $this->month = 1;
+            $this->changeMonthsBill();
         }
 
     }
 
-    /**
-     * @param $monthly
-     */
-    public function changeMonthsBill( $is_yearly ) {
+    public function updatedCustomPlanData() {
+
+        if ( $this->customPlanData ) {
+            $this->month = 12;
+            $this->changeMonthsBill();
+        } else {
+            $this->month = 1;
+            $this->changeMonthsBill();
+            $this->billChecked = false;
+        }
+
+    }
+
+    public function updatedMonth() {
+        $this->changeMonthsBill();
+    }
+
+    public function changeMonthsBill() {
         $plan = Subscription::find( $this->planName );
 
-        if ( $is_yearly ) {
-            $this->planPrice = $plan->price * 10;
-        } else {
-            $this->planPrice = $plan->price;
-        }
+        $discountMonth    = floor( $this->month / 12 ) * 2; // 12 mash hole 10 mash gunbe
+        $monthToCalculate = $this->month - $discountMonth;
+        $this->planPrice  = $plan->price * $monthToCalculate;
+
     }
 
     public function nextStep() {
@@ -188,9 +114,6 @@ class SubscriberRegister extends Component {
         $this->nextStep = true;
     }
 
-    /**
-     * @var array
-     */
     protected function rules() {
         return [
             'fName'                 => ['required'],
@@ -228,15 +151,11 @@ class SubscriberRegister extends Component {
     ];
 
     public function submit() {
-
         $data = $this->validate();
-     
-        // dd($this->planName);
-        // dd($this->planPrice);
 
         $user = User::query();
 
-        $newTeacher['name']      = $data['fName'] . $data['lName'];
+        $newTeacher['name']      = $data['fName'] . " " . $data['lName'];
         $newTeacher['email']     = $data['emailAddress'];
         $newTeacher['phone_no']  = $data['phoneNumber'];
         $newTeacher['dob']       = $data['dob'];
@@ -266,105 +185,59 @@ class SubscriberRegister extends Component {
 
         $domainToRedirect = getToBeSubdomain($newTeacherData['username']);
         return redirect($domainToRedirect. RouteServiceProvider::HOME );
-        // $newTeacher['name'] = $data['fName'];
-
-        // $data['name']     = $newUserdata['name'];
-        // $data['email']    =
-        // $data['phone_no'] =
-        // $data['dob']      =
-        // $data['gender']   =
-        // $data['address']  =
-        // $data['password'] = Hash::make( $request->password );
-
-        // $user = $user->create( $userData );
-
-        // $teacherData['curriculum']     = $request->curriculum;
-        // $teacherData['institute']      = $request->institute;
-        // $teacherData['teaching_level'] = $request->teaching_level;
-        // $teacherData['user_id']        = $user->id;
-
-        // TeacherInfo::create( $teacherData );
 
     }
 
-    // public function regSubscription($planId, $planPrice , $userId)
     /**
      * @param $planId
      * @param $planPrice
-     * @param $userId
+     * @param $user
      */
-    public function regSubscription( $planId, $planPrice, $userId ) {
-        $subscription = Subscription::find( $planId );
+    public function regSubscription( $planId, $planPrice, $user ) {
 
-        //  $month = number_format( $planPrice / number_format($subscription->price)) ;
+        $data['subscription_id'] = $planId;
+        $data['user_id']         = $user->id;
+        $data['expiry_date']     = Carbon::now()->addMonths( $this->month );
+        $data['status']          = 0;
 
-        // dd($planPrice ,number_format($subscription->price));
+        $subUser = SubscriptionUser::create( $data );
 
-        if ( $subscription->price == 0 ) {
+        $subAccountData['subscription_user_id'] = $subUser->id;
+        $subAccountData['total_price']          = $planPrice;
+        $subAccountData['from_date']            = Carbon::now();
+        $subAccountData['status']               = 0;
+        $subAccountData['to_date']              = Carbon::now()->addMonths( $this->month );
 
-            $data['subscription_id'] = $planId;
-            $data['user_id']         = $userId;
-            $data['expiry_date']     = Carbon::now()->addMonths( 1 );
-            $data['status']          = 1;
+        $adminAccount = AdminAccount::create( $subAccountData );
 
-            $subUser = SubscriptionUser::create( $data );
+        if ( $planPrice != 0 ) {
 
-            $subAccountData['subscription_user_id'] = $subUser->id;
-            $subAccountData['total_price']          = $planPrice;
-            $subAccountData['from_date']            = Carbon::now();
-            $subAccountData['to_date']              = Carbon::now()->addMonths( 1 );
-            $subAccountData['status']               = 1;
+            $paymentData['name']             = $user->name;
+            $paymentData['email']            = $user->email;
+            $paymentData['address']          = $user->address;
+            $paymentData['phone_no']         = $user->phone_no;
+            $paymentData['amount']           = $this->planPrice;
+            $paymentData['admin_account_id'] = $adminAccount->id;
+            $paymentData['user_id']          = $user->id;
 
-            SubAccount::create( $subAccountData );
-            return redirect()->route( 'dashboard' );
-
-            // return redirect()->route('subscriber.index');
-        } elseif ( $subscription->price == $planPrice ) {
-            $data['subscription_id'] = $planId;
-            $data['user_id']         = $userId;
-            $data['expiry_date']     = Carbon::now()->addMonths( 1 );
-            $data['status']          = 1;
-
-            $subUser = SubscriptionUser::create( $data );
-
-            $subAccountData['subscription_user_id'] = $subUser->id;
-            $subAccountData['total_price']          = $planPrice;
-            $subAccountData['from_date']            = Carbon::now();
-            $subAccountData['to_date']              = Carbon::now()->addMonths( 1 );
-            $subAccountData['status']               = 1;
-
-            SubAccount::create( $subAccountData );
-
-            // dd( 'for 1 Month' );
-            return redirect()->route( 'dashboard' );
-        } elseif ( $subscription->price * 10 == $planPrice ) {
-            $data['subscription_id'] = $planId;
-            $data['user_id']         = $userId;
-            $data['expiry_date']     = Carbon::now()->addMonths( 12 );
-            $data['status']          = 1;
-
-            $subUser = SubscriptionUser::create( $data );
-
-            $subAccountData['subscription_user_id'] = $subUser->id;
-            $subAccountData['total_price']          = $planPrice;
-            $subAccountData['from_date']            = Carbon::now();
-            $subAccountData['to_date']              = Carbon::now()->addMonths( 12 );
-            $subAccountData['status']               = 1;
-
-            SubAccount::create( $subAccountData );
-
-            // dd( 'for 12 Month' );
-
+            $payOptions  = SslCommerzPaymentController::subscription_payment( $paymentData );
+            $paymentLink = json_decode( $payOptions )->data;
+            return redirect( $paymentLink );
+        } else {
+            $subUser->update( [
+                'status' => 1,
+            ] );
+            $adminAccount->update( [
+                'status' => 1,
+            ] );
+            Auth::login( $user );
             return redirect()->route( 'dashboard' );
         }
-
-        dd( 'hello' );
 
     }
 
     public function render() {
-
         return view( 'livewire.register.subscriber-register' );
-
     }
+
 }

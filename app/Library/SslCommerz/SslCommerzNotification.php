@@ -10,16 +10,18 @@ class SslCommerzNotification extends AbstractSslCommerz
     private $cancelUrl;
     private $failedUrl;
     private $error;
+    private $paymentType;
 
     /**
      * SslCommerzNotification constructor.
      */
-    public function __construct()
+    public function __construct($paymentType = '') // payment type 'general', 'subscription', 'sms'
     {
         $this->config = config('sslcommerz');
 
         $this->setStoreId($this->config['apiCredentials']['store_id']);
         $this->setStorePassword($this->config['apiCredentials']['store_password']);
+        $this->paymentType = $paymentType;
     }
 
     public function orderValidate($post_data, $trx_id = '', $amount = 0, $currency = "BDT")
@@ -232,7 +234,13 @@ class SslCommerzNotification extends AbstractSslCommerz
 
     protected function setSuccessUrl()
     {
-        $this->successUrl = url('/') . $this->config['success_url'];
+        if($this->paymentType === 'subscription'){
+            $this->successUrl = url('/') . '/subscription/success';
+        }elseif($this->paymentType === 'sms'){
+            $this->successUrl = url('/') . '/sms/success';
+        }else{
+            $this->successUrl = url('/') . $this->config['success_url'];
+        }
     }
 
     protected function getSuccessUrl()
@@ -242,7 +250,13 @@ class SslCommerzNotification extends AbstractSslCommerz
 
     protected function setFailedUrl()
     {
-        $this->failedUrl = url('/') . $this->config['failed_url'];
+        if($this->paymentType === 'subscription'){
+            $this->failedUrl = url('/') . '/subscription/failed';
+        }elseif($this->paymentType === 'sms'){
+            $this->failedUrl = url('/') . '/sms/failed';
+        }else{
+            $this->failedUrl = url('/') . $this->config['failed_url'];
+        }
     }
 
     protected function getFailedUrl()
@@ -252,7 +266,13 @@ class SslCommerzNotification extends AbstractSslCommerz
 
     protected function setCancelUrl()
     {
-        $this->cancelUrl = url('/') . $this->config['cancel_url'];
+        if($this->paymentType === 'subscription'){
+            $this->cancelUrl = url('/') . '/subscription/cancel';
+        }elseif($this->paymentType === 'sms'){
+            $this->cancelUrl = url('/') . '/sms/cancel';
+        }else{
+            $this->cancelUrl = url('/') . $this->config['cancel_url'];
+        }
     }
 
     protected function getCancelUrl()

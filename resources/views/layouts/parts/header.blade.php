@@ -166,14 +166,14 @@
                 <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
             </div>
         </li> --}}
-        @if (auth()->user()->hasRole(['Teacher','Super Admin']))
+        @if (auth()->user()->hasRole(['Teacher']))
             {{-- <li class="mt-1 mr-3"><a href="{{ route("account.all-batch-accounts") }}" class="btn btn-outline-primary btn-sm mt-3">Update Payments</a></li> --}}
             @livewire("attendance.take-attendance")
 
             <li class="mt-1"><a href="{{ route('account.all-batch-accounts') }}"
                     class="btn btn-outline-primary btn-sm mt-3">Update Payments</a></li>
             <div class="topbar-divider d-none d-sm-block"></div>
-        @else
+        @elseif(auth()->user()->hasRole(['Student']))
             <li class="mt-1">
                 <h5 class="mt-3">Student ID: {{ Auth::user()->id }}</h5>
             </li>

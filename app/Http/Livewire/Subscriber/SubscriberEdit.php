@@ -5,7 +5,7 @@ namespace App\Http\Livewire\Subscriber;
 use Carbon\Carbon;
 use App\Models\User;
 use Livewire\Component;
-use App\Models\SubAccount;
+use App\Models\AdminAccount;
 use App\Models\Subscription;
 use App\Models\SubscriptionUser;
 
@@ -102,7 +102,7 @@ class SubscriberEdit extends Component {
         $subAccountData['to_date']              = Carbon::parse( $this->expiryDate )->addMonths( $data['monthCount'] )->format( 'Y-m-d' );
         $subAccountData['status']               = 1;
 
-        SubAccount::create( $subAccountData );
+        AdminAccount::create( $subAccountData );
 
         return redirect()->route( 'subscriber.index' );
 

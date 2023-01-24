@@ -60,8 +60,7 @@
                             {{ $subscription->created_at->format('d-M-Y') }}
                         </td>
                         <td>
-                            <a class="btn btn-primary" href="{{ route('subscription.edit', $subscription->id) }}"
-                                target="_blank">
+                            <a class="btn btn-primary" href="{{ route('subscription.edit', $subscription->id) }}" >
                                 Edit
                             </a>
                         </td>

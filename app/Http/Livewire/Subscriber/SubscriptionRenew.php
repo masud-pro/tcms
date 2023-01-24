@@ -4,16 +4,34 @@ namespace App\Http\Livewire\Subscriber;
 
 use Carbon\Carbon;
 use Livewire\Component;
-use App\Models\SubAccount;
+use App\Models\AdminAccount;
 use App\Models\Subscription;
 use App\Models\SubscriptionUser;
 
 class SubscriptionRenew extends Component {
+    /**
+     * @var mixed
+     */
     public $planPrice;
+    /**
+     * @var mixed
+     */
     public $planList;
+    /**
+     * @var mixed
+     */
     public $month;
+    /**
+     * @var mixed
+     */
     public $planName;
+    /**
+     * @var mixed
+     */
     public $price;
+    /**
+     * @var mixed
+     */
     public $featureList;
 
     /**
@@ -26,7 +44,7 @@ class SubscriptionRenew extends Component {
     ];
 
     public function mount() {
-        $this->planList    = Subscription::WhereNotIn( 'name', ['Trail Plan'] )->get();
+        $this->planList    = Subscription::WhereNotIn( 'name', ['Free Trial'] )->get();
         $this->planName    = SubscriptionUser::where( 'user_id', auth()->user()->id )->first()['subscription_id'];
         $this->planPrice   = $this->month * Subscription::where( 'id', $this->planName )->first()['price'];
         $this->featureList = explode( ',', Subscription::where( 'id', $this->planName )->first()['selected_feature'] );
@@ -44,20 +62,20 @@ class SubscriptionRenew extends Component {
         $data = $this->validate();
 
         $sub = SubscriptionUser::where( 'user_id', auth()->user()->id )->first();
-        
+
         $subscription['subscription_id'] = $data['planName'];
         $subscription['expiry_date']     = Carbon::parse( $sub->expiry_date )->addMonths( $data['month'] );
         $subscription['status']          = 1;
 
         $sub->update( $subscription );
-        
+
         $subAccount['subscription_user_id'] = $sub->id;
         $subAccount['total_price']          = $data['planPrice'];
         $subAccount['to_date']              = now();
         $subAccount['from_date']            = Carbon::parse( $sub->expiry_date )->addMonths( $data['month'] );
         $subAccount['status']               = 1;
 
-        SubAccount::create( $subAccount );
+        AdminAccount::create( $subAccount );
     }
 
     public function render() {

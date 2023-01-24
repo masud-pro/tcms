@@ -5,11 +5,14 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
+use App\Traits\DefaultSettingTraits;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\PermissionRegistrar;
 
 class AdminPermissionSeeder extends Seeder {
+
+    use DefaultSettingTraits;
     /**
      * Run the database seeds.
      *
@@ -172,6 +175,7 @@ class AdminPermissionSeeder extends Seeder {
         );
 
         $admin->assignRole( 'Super Admin' );
+        $this->defaultSetting( $admin->id );
 
         $teacher = User::create(
             [
@@ -185,6 +189,7 @@ class AdminPermissionSeeder extends Seeder {
         );
 
         $teacher->assignRole( 'Teacher' );
+        $this->defaultSetting( $teacher->id );
 
         $teacher = User::create(
             [
@@ -198,5 +203,6 @@ class AdminPermissionSeeder extends Seeder {
         );
 
         $teacher->assignRole( 'Teacher' );
+        $this->defaultSetting( $teacher->id );
     }
 }

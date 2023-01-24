@@ -242,7 +242,9 @@ class CourseController extends Controller {
 
             $data['image'] = $image;
         }
-
+        
+        $data['teacher_id'] = Auth::user()->id;
+        
         Course::create( $data );
 
         return redirect()->route( "course.index" )->with( "success", "Course created successfully" );

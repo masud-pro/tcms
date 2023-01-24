@@ -41,7 +41,7 @@
                 </tr>
             </tfoot>
             <tbody>
-
+                {{-- {{ dd($subscriptionUsers   ) }} --}}
                 @forelse  ($subscriptionUsers as $userData)
                     <tr>
                         <td>
@@ -50,17 +50,8 @@
 
                         <td><b>{{ $userData->user->name ?? 'Not Found' }}</b></td>
                         <td>{{ $userData->subscription->name ?? 'Not Found' }}</td>
-
-
-                        <td>
-                            {{ Carbon\Carbon::parse($userData->expiry_date)->format('d M Y') }}
-
-
-                        </td>
-                        <td>
-                            {{ $userData->created_at->format('d-M-Y') }}
-                        </td>
-
+                        <td>{{ Carbon\Carbon::parse($userData->expiry_date)->format('d M Y') }}</td>
+                        <td>{{ $userData->created_at?->format('d M Y') }}</td>
                         <td>
                             <div class="form-check form-switch ml-3">
                                 <input wire:change="change_status({{ $userData->id }},{{ $userData->status }})"
@@ -72,9 +63,8 @@
                                 </label>
                             </div>
                         </td>
-                         <td>
-                            <a class="btn btn-primary" href="{{ route('subscriber.edit', $userData->id) }}"
-                                target="_blank">
+                        <td>
+                            <a class="btn btn-primary" href="{{ route('subscriber.edit', $userData->id) }}">
                                 Renew
                             </a>
                         </td>
@@ -99,6 +89,6 @@
 
 
 @push('styles-before')
-@livewireStyles()
+    @livewireStyles()
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 @endpush
