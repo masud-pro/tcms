@@ -20,7 +20,8 @@
                 <h6 class="m-0 font-weight-bold text-primary">Send SMS</h6>
             </div>
             <div class="card-body">
-                <form action="{{ route("batch.sms.send") }}" method="POST">
+                {{-- <form action="{{ route("batch.sms.send") }}" method="POST"> --}}
+                <form action="" method="POST">
 
                     @csrf
 

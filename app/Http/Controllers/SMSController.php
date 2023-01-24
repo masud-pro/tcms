@@ -62,7 +62,7 @@ class SMSController extends Controller {
 
         $smsCount = $assessment->responses()->count() * $numberOfSmsPerMessage; // Count the number of sms
 
-        $smsrow        =  getSettingValue( 'remaining_sms' ); // Remaining SMS row
+        $smsrow        = getSettingValue( 'remaining_sms' ); // Remaining SMS row
         $remaining_sms = (int) $smsrow->value;
 
 // Remaining SMS
@@ -124,24 +124,30 @@ class SMSController extends Controller {
         $numberOfSmsPerMessage = (int) ceil( $characters / 160 );
 
         $courseUsers = Course::findOrFail( $data['course_id'] )->user;
+        // $courseUsers = Auth::user()->addedCourses()->latest()->get();
+        // $courseUsers2 = Auth::user()->addedCourses()->where('id', $data['course_id'] )->get();
 
-        dd($courseUsers);
+        // dd($courseUsers);
+
+        // $numbers = $courseUsers->count();
         
-        $numbers     = [];
-        $send_to     = $data['send_to'];
+        // dd($numbers);
+        $send_to = $data['send_to'];
 // Father or mother
+        // foreach ( $courseUsers as $user ) {
 
-        foreach ( $courseUsers as $user ) {
+        //     if ( $user->$send_to ) {
+        //         $numbers[] = $user->$send_to; // Father or mother
+        //     }
 
-            if ( $user->$send_to ) {
-                $numbers[] = $user->$send_to; // Father or mother
-            }
+        // }
 
-        }
+    // dd($send_to);
 
-        $smsCount = count( $numbers ) * $numberOfSmsPerMessage;
+        $smsCount = count($courseUsers)  * $numberOfSmsPerMessage;
 
-        $smsrow        = Option::where( "slug", "remaining_sms" )->first(); // Remaining SMS row
+        // $smsrow        = Option::where( "slug", "remaining_sms" )->first(); // Remaining SMS row
+        $smsrow        = getSettingValue( 'remaining_sms' ); // Remaining SMS row
         $remaining_sms = (int) $smsrow->value;
 
 // Remaining SMS
@@ -152,29 +158,43 @@ class SMSController extends Controller {
 
         if ( $smsCount > 0 ) {
 
-            $numbers = implode( ",", $numbers );
-            $message = $data['message'];
+            foreach ( $courseUsers as $user ) {
 
-            $status = SMSController::send_sms( $numbers, $message );
+                logger($user->$send_to);
 
-            if ( $status ) {
-
-                $remaining_sms = $remaining_sms - $smsCount;
-
-                SMS::create( [
-                    'for'     => $data['for'],
-                    'count'   => $smsCount,
-                    'message' => $message,
-                ] );
-
-                $smsrow->update( [
-                    'value' => $remaining_sms,
-                ] );
-
-                return redirect()->route( "sms.index" )->with( "success", "All guardian reported successfully" );
-            } else {
-                return redirect()->route( "sms.index" )->with( "failed", "Report failed for unknown reasons, Check all students phone no is correct or not!" );
+                $sms['number']  = $user->$send_to;
+                $sms['message'] = $data['message'];
+                ProcessSMS::dispatch( $sms );
             }
+
+            // $numbers = implode( ",", $numbers );
+            // $message = $data['message'];
+
+            // // dd( $numbers, $message );
+            // dd( 'Not Reached' );
+
+            // $status = SMSController::send_sms( $numbers, $message );
+
+            // // dd( $status );
+
+            // if ( $status ) {
+
+            $remaining_sms = $remaining_sms - $smsCount;
+
+            SMS::create( [
+                'for'     => $data['for'],
+                'count'   => $smsCount,
+                'message' => $data['message'],
+            ] );
+
+            $smsrow->update( [
+                'value' => $remaining_sms,
+            ] );
+
+            return redirect()->route( "sms.index" )->with( "success", "SMS Send Successfully" );
+            // } else {
+            //     return redirect()->route( "sms.index" )->with( "failed", "Report failed for unknown reasons, Check all students phone no is correct or not!" );
+            // }
 
         } else {
             return redirect()->route( "sms.index" )->with( "failed", "Numbers not found, everyone may be present" );
