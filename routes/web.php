@@ -172,8 +172,3 @@ Route::view('test-sms', 'ms.sms.test');
 
 Route::get( 'teacher-register', [SystemController::class, 'teacherRegister'] );
 
-<<<<<<< HEAD
-//
-=======
-
->>>>>>> bugfix_ssl
