@@ -9,29 +9,11 @@ use App\Models\Subscription;
 use App\Models\SubscriptionUser;
 
 class SubscriptionRenew extends Component {
-    /**
-     * @var mixed
-     */
     public $planPrice;
-    /**
-     * @var mixed
-     */
     public $planList;
-    /**
-     * @var mixed
-     */
     public $month;
-    /**
-     * @var mixed
-     */
     public $planName;
-    /**
-     * @var mixed
-     */
     public $price;
-    /**
-     * @var mixed
-     */
     public $featureList;
 
     /**
@@ -44,7 +26,7 @@ class SubscriptionRenew extends Component {
     ];
 
     public function mount() {
-        $this->planList    = Subscription::WhereNotIn( 'name', ['Free Trial'] )->get();
+        $this->planList    = Subscription::WhereNotIn( 'id', [1] )->get();
         $this->planName    = SubscriptionUser::where( 'user_id', auth()->user()->id )->first()['subscription_id'];
         $this->planPrice   = $this->month * Subscription::where( 'id', $this->planName )->first()['price'];
         $this->featureList = explode( ',', Subscription::where( 'id', $this->planName )->first()['selected_feature'] );

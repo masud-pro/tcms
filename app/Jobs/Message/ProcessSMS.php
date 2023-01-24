@@ -31,7 +31,6 @@ class ProcessSMS implements ShouldQueue
      * @return void
      */
     public function handle() {
-        logger($this->sms['number']);
         SMSController::send_sms( $this->sms['number'], $this->sms['message'] );
     }
 }

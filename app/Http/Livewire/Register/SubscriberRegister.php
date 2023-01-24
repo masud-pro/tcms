@@ -42,7 +42,7 @@ class SubscriberRegister extends Component {
     public $password_confirmation;
 
     public function mount() {
-        $freeTrail = Subscription::where( 'name', 'Free Trial' )->first();
+        $freeTrail = Subscription::where( 'id', 1 )->first();
 
         $this->planList = Subscription::all();
 
