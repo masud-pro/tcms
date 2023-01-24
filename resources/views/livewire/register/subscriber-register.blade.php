@@ -181,14 +181,9 @@
                                                 <div class="form-group row">
                                                     <div class="col-sm-6">
                                                         <input type="date"
-<<<<<<< HEAD
-                                                            class="form-control form-control-user  @error('dob') is-invalid @enderror"
-                                                            id="sub-calander" placeholder="Date of Birth" wire:model="dob" placeholder="Date of Birth">
-=======
                                                             class="form-control form-control-user sub-calander @error('dob') is-invalid @enderror"
                                                             id="dob" placeholder="Date of Birth"
                                                             wire:model.defer="dob">
->>>>>>> bugfix_ssl
                                                         @error('dob')
                                                             <p class="text-start text-danger small mt-1">
                                                                 {{ $message }}</p>
