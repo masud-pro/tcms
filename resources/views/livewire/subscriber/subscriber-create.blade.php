@@ -123,6 +123,16 @@
                                 @error('monthCount')
                                     <p class="text-danger small mt-1">{{ $message }}</p>
                                 @enderror
+                            </div>   
+                            
+                            <div class="col-md-4">
+                                <label for="specialPrice">Affordable Price</label>
+                                <input class="form-control @error('specialPrice') is-invalid @enderror" {{ $specialPriceField == true ? 'disabled' : ''}}  min="0"
+                                    id="specialPrice" type="number" placeholder="Enter Special Price"
+                                    value="{{ old('specialPrice') }}" wire:model="specialPrice">
+                                @error('specialPrice')
+                                    <p class="text-danger small mt-1">{{ $message }}</p>
+                                @enderror
                             </div>
 
                             {{-- <div class="col-md-4">

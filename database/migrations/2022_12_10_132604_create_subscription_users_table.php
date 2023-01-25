@@ -17,7 +17,7 @@ class CreateSubscriptionUsersTable extends Migration {
             $table->foreignId( 'user_id' )->constrained()->onDelete( 'cascade' )->index()->nullable();
             $table->foreignId( 'subscription_id' )->nullable()->onDelete( 'cascade' )->index();
             $table->date( 'expiry_date' );
-            $table->float( 'price' );
+            $table->float( 'special_price' )->nullable();
             $table->boolean( 'status' )->default( false );
 
             $table->timestamps();

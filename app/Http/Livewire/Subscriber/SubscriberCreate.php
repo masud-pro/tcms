@@ -30,6 +30,14 @@ class SubscriberCreate extends Component {
     /**
      * @var mixed
      */
+    public $specialPrice;
+    /**
+     * @var mixed
+     */
+    public $specialPriceField;
+    /**
+     * @var mixed
+     */
     public $monthCount = 1;
 
     /**
@@ -41,12 +49,15 @@ class SubscriberCreate extends Component {
         'price'             => ['required'],
         'startDate'         => ['required'],
         'monthCount'        => ['required'],
+        'specialPrice'      => ['required'],
     ];
 
     public function mount() {
 
         $this->calculatePrice();
         $this->startDate = Carbon::now()->format( 'Y-m-d' );
+        // $this->specialPrice = (int) 0;
+        $this->specialPriceField = true;
 
     }
 
@@ -62,6 +73,8 @@ class SubscriberCreate extends Component {
             $totalPrice = $subscriberPackage->price * $this->monthCount;
 
             $this->price = $totalPrice;
+            // $this->specialPrice = (int) 0;
+            $this->specialPriceField = false;
         }
     }
 
@@ -81,13 +94,14 @@ class SubscriberCreate extends Component {
         $subscriberUser['subscription_id'] = $data['subscriberPackage'];
         $subscriberUser['expiry_date']     = Carbon::now()->addMonths( $data['monthCount'] );
         $subscriberUser['price']           = $data['price'];
+        $subscriberUser['special_price']   = $data['specialPrice'];
 
         $subUser = SubscriptionUser::create( $subscriberUser );
 
         // dd($subUser->id);
 
         $subAccountData['subscription_user_id'] = $subUser->id;
-        $subAccountData['total_price']          = $data['price'];
+        $subAccountData['total_price']          = (int) $data['specialPrice'] == null ? $data['price'] : $data['specialPrice'];
         $subAccountData['from_date']            = $data['startDate'];
         $subAccountData['to_date']              = Carbon::now()->addMonths( $data['monthCount'] );
         $subAccountData['status']               = 1;
@@ -105,7 +119,7 @@ class SubscriberCreate extends Component {
     public function render() {
 
         $subscriberList   = User::role( 'Teacher' )->get();
-        $subscriptionList = Subscription::all();
+        $subscriptionList = Subscription::WhereNotIn( 'id', [1] )->get();
 
         return view( 'livewire.subscriber.subscriber-create', compact( 'subscriberList', 'subscriptionList' ) );
     }
