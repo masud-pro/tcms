@@ -76,8 +76,20 @@
                     <span>Subscription</span></a>
             </li>
 
+            <li class="nav-item {{ request()->routeIs('subscriber.index') ? 'active' : '' }} ">
+                <a class="nav-link" href="{{ route('subscriber.index') }}">
+                    <i class="fab fa-firefox-browser"></i>
+                    <span>Subscriber List</span></a>
+            </li>
 
-            <li class="nav-item">
+            <li class="nav-item {{ request()->routeIs('subscriber.transaction') ? 'active' : '' }} ">
+                <a class="nav-link" href="{{ route('subscriber.transaction') }}">
+                    <i class="fa-solid fa-robot"></i>
+                    <span>Admin Transactions</span></a>
+            </li>
+
+
+            {{-- <li class="nav-item">
 
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#subscriberManagement"
                     aria-expanded="true" aria-controls="subscriberManagement">
@@ -94,7 +106,7 @@
                     </div>
                 </div>
 
-            </li>
+            </li> --}}
             <hr class="sidebar-divider dropdown-divider">
         @endrole
 
