@@ -12,7 +12,7 @@ class Account extends Model {
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
+        'user_id', // student
         'course_id',
         'paid_amount',
         'status',
@@ -26,7 +26,7 @@ class Account extends Model {
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user(): BelongsTo {
+    public function user(): BelongsTo { // student
         return $this->belongsTo( User::class );
     }
 

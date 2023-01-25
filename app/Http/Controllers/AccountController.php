@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Account;
 use App\Models\Course;
-use App\Models\Account;
 use App\Models\Option;
 use App\Models\Order;
 use App\Models\SMS;
@@ -412,51 +411,12 @@ class AccountController extends Controller {
         foreach ( $courses as $course ) {
             $accounts = Account::whereMonth( "month", Carbon::today() )->where( "course_id", $course->id )->pluck( "id" );
 
-            $this->generate_payments( $course, $accounts );
+            if($accounts->count() === 0){
+                generate_payments( $course );
+            }
         }
 
         return redirect()->back()->with( "success", "Payments For This Month Generated Successfully" );
-    }
-
-    /**
-     * @param $course
-     * @param $accounts
-     */
-    public function generate_payments( $course, $accounts ) {
-
-        if( $course->should_generate_payments === 0 ){
-            return false;
-        }
-
-        if ( $accounts->count() <= 0 ) {
-            $students   = $course->user;
-            $newAccount = [];
-
-            foreach ( $students as $student ) {
-
-                if ( $student->is_active == 1 ) {
-
-                    $newAccount[] = [
-                        'user_id'     => $student->id,
-                        'course_id'   => $course->id,
-                        'paid_amount' => $student->waiver ? $course->fee - $student->waiver : $course->fee,
-                        'status'      => "Unpaid",
-                        'month'       => Carbon::today(),
-                        'created_at'  => Carbon::now(),
-                        'updated_at'  => Carbon::now(),
-                    ];
-
-                }
-
-            }
-
-            Account::insert( $newAccount );
-
-            return true;
-        } else {
-            return false;
-        }
-
     }
 
     public function all_batch_accounts() {
@@ -473,7 +433,9 @@ class AccountController extends Controller {
             
             $accounts = Account::whereMonth( "month", Carbon::today() )->where( "course_id", $course->id )->get();
 
-            $generated = $this->generate_payments( $course, $accounts );
+            if($accounts->count() === 0){
+                $generated = generate_payments( $course );
+            }
 
             if ( $generated ) { // If generated then show them the page
 
@@ -492,7 +454,9 @@ class AccountController extends Controller {
 
             $accounts = Account::where( "course_id", $course->id )->get();
 
-            $generated = $this->generate_payments( $course, $accounts );
+            if( $accounts->count() === 0 ){
+                $generated = generate_payments( $course );
+            }
 
             if ( $generated ) { // If generated then show them a page
 

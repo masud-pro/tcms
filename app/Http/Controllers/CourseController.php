@@ -75,8 +75,10 @@ class CourseController extends Controller {
                     ->where( "course_id", $course->id )
                     ->pluck( "id" );
 
-                $accountController = new AccountController();
-                $accountController->generate_payments( $course, $accounts );
+                if( $accounts->count() == 0 ){
+                    generate_payments( $course );
+                }
+
             }
 
             // Enrol the student

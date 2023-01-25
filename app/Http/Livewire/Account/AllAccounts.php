@@ -57,12 +57,13 @@ class AllAccounts extends Component {
             $thisMonthAccount = Account::whereMonth( "month", Carbon::today() )->where( "course_id", $this->batch )->count();
 
             if ( $thisMonthAccount == 0 ) {
-                $accountController = new AccountController();
 
                 $course      = Course::findOrFail( $this->batch );
                 $allaccounts = Account::whereMonth( "month", Carbon::today() )->where( "course_id", $this->batch )->pluck( "id" );
 
-                $accountController->generate_payments( $course, $allaccounts );
+                if( $allaccounts->count() == 0 ){
+                    generate_payments( $course );
+                }
             }
 
             $everything = Account::select( ["accounts.*", "accounts.id as account_id", "users.id as user_id", "users.name as user_name", "users.email as user_email"] )

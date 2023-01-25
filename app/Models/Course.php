@@ -18,6 +18,7 @@ class Course extends Model {
      * @var array
      */
     protected $fillable = [
+        "teacher_id",
         "name",
         "description",
         "class_link",
@@ -30,7 +31,6 @@ class Course extends Model {
         "room",
         "address",
         "image",
-        "teacher_id",
         "should_generate_payments",
     ];
 

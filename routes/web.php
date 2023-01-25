@@ -34,11 +34,12 @@ Route::get( '/', function () {
 
     if($user){
         $frontPageImage = getTeacherSetting('front_page_image', $user)->value;
+        $fontColor      = getTeacherSetting('front_page_font_color', $user)->value;
     }else{
+        $fontColor      = 'dark';
         $frontPageImage = 0;
     };
     
-    $fontColor      = getTeacherSetting('front_page_font_color')->value;
 
     return view( 'welcome', [
         "frontPageImage" => $frontPageImage,

@@ -64,8 +64,7 @@ class OptionController extends Controller {
     }
 
 
-    public function change_course_generate_payments(Request $request)
-    {
+    public function change_course_generate_payments(Request $request) { // change if course should generate payments
         $validatedData = $request->validate([
             'course_id' => 'required',
             'should_generate_payments' => 'required',

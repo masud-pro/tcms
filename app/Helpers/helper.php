@@ -1,7 +1,9 @@
 <?php
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Option;
+use App\Models\Account;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Auth;
 
@@ -178,5 +180,40 @@ function getSubdomain(){
     $subdomain = explode('.', $_SERVER['HTTP_HOST'])[0];
     return $subdomain;
 }
+
+
+function generate_payments( $course ) {
+
+    if( $course->should_generate_payments === 0 ){
+        return false;
+    }
+
+    $students   = $course->user;
+    $newAccount = [];
+
+    foreach ( $students as $student ) {
+
+        if ( $student->is_active == 1 ) {
+
+            $newAccount[] = [
+                'user_id'     => $student->id,
+                'course_id'   => $course->id,
+                'paid_amount' => $student->waiver ? $course->fee - $student->waiver : $course->fee,
+                'status'      => "Unpaid",
+                'month'       => Carbon::today(),
+                'created_at'  => Carbon::now(),
+                'updated_at'  => Carbon::now(),
+            ];
+
+        }
+
+    }
+
+    Account::insert( $newAccount );
+
+    return true;
+
+}
+
 
 // End of Helper Functions

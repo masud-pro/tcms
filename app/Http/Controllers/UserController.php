@@ -140,8 +140,10 @@ class UserController extends Controller {
                     ->where( "course_id", $course->id )
                     ->pluck( "id" );
 
-                $accountController = new AccountController();
-                $accountController->generate_payments( $course, $allaccounts );
+                if($allaccounts->count() == 0){
+                    generate_payments( $course );
+                }
+
                 continue; // Generate paments and iterate to the next execution
             }
 
@@ -275,8 +277,9 @@ class UserController extends Controller {
                     ->where( "course_id", $course->id )
                     ->pluck( "id" );
 
-                $accountController = new AccountController();
-                $accountController->generate_payments( $course, $allaccounts );
+                if($allaccounts == 0){
+                    generate_payments( $course );
+                }
                 continue; // Generate paments and iterate to the next execution
             }
 
