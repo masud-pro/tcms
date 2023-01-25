@@ -340,10 +340,34 @@
 
             <li class="nav-item {{ request()->routeIs('account.student.individual') ? 'active' : '' }}">
 
-                <a class="nav-link" href="{{ route('account.student.individual') }}">
-                    <i class="fas fa-money-check-alt"></i>
-                    <span>Payments</span>
-                </a>
+        <li class="nav-item {{ request()->routeIs('settings*') ? 'active' : '' }}">
+
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#settingsCollapse"
+                aria-expanded="true" aria-controls="settingsCollapse">
+                <i class="fas fa-sliders-h"></i>
+                <span>Settings</span>
+            </a>
+    
+            <div id="settingsCollapse" class="collapse {{ request()->routeIs('settings*') ? 'show' : '' }}" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item {{ request()->routeIs('settings') ? 'active' : '' }}" href="{{ route("settings") }}">Settings</a>
+                    <a class="collapse-item {{ request()->routeIs('settings.generate-course-payments') ? 'active' : '' }}" href="{{ route("settings.generate-course-payments") }}">Payment Settings</a>
+                </div>
+            </div>
+    
+        </li>
+        
+
+        {{-- <li class="nav-item {{ request()->routeIs('settings') ? 'active' : '' }}">
+    
+            <a class="nav-link" href="{{ route('settings') }}">
+                <i class="fas fa-sliders-h"></i>
+                <span>Settings</span>
+            </a>
+    
+    
+        </li> --}}
+    
 
             </li>
 

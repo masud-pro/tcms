@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Course;
 use App\Models\Option;
 use App\Models\Setting;
 use Illuminate\Http\Request;
@@ -62,6 +63,21 @@ class OptionController extends Controller {
         return redirect()->back()->with( "success", "Images reset successfully" );
     }
 
+
+    public function change_course_generate_payments(Request $request)
+    {
+        $validatedData = $request->validate([
+            'course_id' => 'required',
+            'should_generate_payments' => 'required',
+        ]);
+
+        Course::find($validatedData['course_id'])->update([
+            'should_generate_payments' => !$validatedData['should_generate_payments']
+        ]);
+
+        return redirect()->back()->with('success','Course payment generation status changed successfully');
+    }
+
     /**
      * Display the specified resource.
      *
@@ -70,6 +86,13 @@ class OptionController extends Controller {
      */
     public function show( Option $option ) {
         //
+    }
+
+    public function course_payment_generate_options()
+    {
+        return view('ms.option.payment-generate',[
+            'courses' => Course::all('id','name','should_generate_payments')
+        ]);
     }
 
     /**

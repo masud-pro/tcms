@@ -70,6 +70,8 @@ Route::patch( 'assessmnet/{assessment}/unpublish/all', [AssignmentResponseContro
 
 // Settings
 Route::get( "settings", [OptionController::class, 'index'] )->name( 'settings' );
+Route::get( "settings/course-payment-generate-options", [OptionController::class, 'course_payment_generate_options'] )->name( 'settings.generate-course-payments' );
+Route::post( "settings/course-payment-generate-options", [OptionController::class, 'change_course_generate_payments'] )->name( 'settings.change-course-generate-payments' );
 Route::patch( "settings", [OptionController::class, 'update'] )->name( 'settings.update' );
 
 //SMS

@@ -52,6 +52,6 @@ class CourseSearch extends Component {
     }
 
     public function render() {
-        return view( 'livewire.dashboard.course-search' );
+        return view('livewire.dashboard.course-search');
     }
 }

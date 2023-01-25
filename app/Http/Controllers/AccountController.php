@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
-use App\Models\SMS;
-use App\Models\User;
-use App\Models\Order;
+use App\Models\Account;
 use App\Models\Course;
 use App\Models\Account;
+use App\Models\Option;
+use App\Models\Order;
+use App\Models\SMS;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -352,9 +354,6 @@ class AccountController extends Controller {
 
     }
 
-    /**
-     * @param $send_to
-     */
     public function all_students_account_sms( $send_to ) {
         $students = User::where( 'role', 'Student' )->whereHas( 'payment', function ( $query ) {
             $query->where( 'status', 'Unpaid' );
@@ -377,19 +376,18 @@ class AccountController extends Controller {
             return redirect()->back()->with( "failed", "Not Enough SMS" );
         }
 
-        // dd( $remaining_sms );
         foreach ( $students as $student ) {
             $message  = "সম্মানিত অভিভাবক, আপনার সন্তানের ";
             $payments = $student->payment;
+
             foreach ( $payments as $payment ) {
                 $message .= Carbon::parse( $payment->month )->format( "M-Y" ) . ", ";
             }
+
             $message .= " মাসের পেমেন্ট বাকি আছে - " . env( "APP_NAME" );
 
-            // dd($message );
             $number = $student->$send_to;
             SMSController::send_sms( $number, $message );
-
         }
 
         $remaining_sms = $remaining_sms - $numberCount;
@@ -425,6 +423,10 @@ class AccountController extends Controller {
      * @param $accounts
      */
     public function generate_payments( $course, $accounts ) {
+
+        if( $course->should_generate_payments === 0 ){
+            return false;
+        }
 
         if ( $accounts->count() <= 0 ) {
             $students   = $course->user;
@@ -467,9 +469,8 @@ class AccountController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create( Course $course ) {
-
         if ( $course->type == "Monthly" ) {
-
+            
             $accounts = Account::whereMonth( "month", Carbon::today() )->where( "course_id", $course->id )->get();
 
             $generated = $this->generate_payments( $course, $accounts );
@@ -477,27 +478,14 @@ class AccountController extends Controller {
             if ( $generated ) { // If generated then show them the page
 
                 return view( "ms.account.account-index", [
-                    "accounts" => Account::select( ["accounts.*", "accounts.id as account_id", "users.name as user_name", "users.email as user_email"] )
-                        ->with( "user" )
-                        ->leftJoin( "users", "accounts.user_id", "=", "users.id" )
-                        ->orderBy( "users.name", "asc" )
-                        ->whereMonth( "month", Carbon::today() )
-                        ->where( "course_id", $course->id )
-                        ->get(),
+                    "accounts" => $this->get_account_index_data($course),
                 ] );
 
             } else { // or show the previous
 
                 return view( "ms.account.account-index", [
-                    "accounts" => Account::select( ["accounts.*", "accounts.id as account_id", "users.name as user_name", "users.email as user_email"] )
-                        ->with( "user" )
-                        ->leftJoin( "users", "accounts.user_id", "=", "users.id" )
-                        ->orderBy( "users.name", "asc" )
-                        ->whereMonth( "month", Carbon::today() )
-                        ->where( "course_id", $course->id )
-                        ->get(),
+                    "accounts" => $this->get_account_index_data($course),
                 ] );
-
             }
 
         } else {
@@ -522,6 +510,16 @@ class AccountController extends Controller {
 
         }
 
+    }
+
+    public function get_account_index_data( $course ) {
+        return Account::select( ["accounts.*", "accounts.id as account_id", "users.name as user_name", "users.email as user_email"] )
+            ->with( "user" )
+            ->leftJoin( "users", "accounts.user_id", "=", "users.id" )
+            ->orderBy( "users.name", "asc" )
+            ->whereMonth( "month", Carbon::today() )
+            ->where( "course_id", $course->id )
+            ->get();
     }
 
     public function student_individual_account() {

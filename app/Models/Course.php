@@ -31,6 +31,7 @@ class Course extends Model {
         "address",
         "image",
         "teacher_id",
+        "should_generate_payments",
     ];
 
     /**

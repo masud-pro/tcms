@@ -67,11 +67,14 @@
                         Take Attendance
                     </a>
 
-                    <a 
-                        class="btn btn-primary mb-4" 
-                        href="{{ route("course.accounts.create",[ "course" => $course->id ]) }}">
-                        Payments
-                    </a>
+                    @if ( $course->should_generate_payments === 1 )
+                        <a 
+                            class="btn btn-primary mb-4" 
+                            href="{{ route("course.accounts.create",[ "course" => $course->id ]) }}">
+                            Payments
+                        </a>   
+                    @endif
+
 
                     <a 
                         class="btn btn-primary mb-4" 
