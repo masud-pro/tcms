@@ -13,12 +13,15 @@ class AllBatchAccounts extends Component {
 
     use WithPagination;
 
-    public $q;
+    public $student;
+
+    public $status;
 
     protected $paginationTheme = 'bootstrap';
 
     protected $queryString = [
-        "q"     => ["except" => ""],
+        "student"     => ["except" => ""],
+        "status"     => ["except" => ""],
     ];
 
     public function change_status( Account $account, $status ) {
@@ -39,7 +42,7 @@ class AllBatchAccounts extends Component {
 
     public function downloadPDF()
     {
-        return Excel::download(new AllBatchAccountsExport($this->q), 'Accounts - ' . Carbon::now()->format( 'M-Y' ) . '.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
+        return Excel::download(new AllBatchAccountsExport($this->student), 'Accounts - ' . Carbon::now()->format( 'M-Y' ) . '.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
     }
 
     public function render() {
@@ -48,8 +51,12 @@ class AllBatchAccounts extends Component {
             ->with( "user" )
             ->whereMonth("accounts.created_at", Carbon::today())
             ->whereHas( "user", function ( $query ) {
-                $query->where( 'name', 'like', '%' . $this->q . '%' )
-                    ->orWhere( 'id', 'like', '%' . $this->q . '%' );
+                $query->when($this->student, function($query){
+                    $query->where( 'name', 'like', '%' . $this->student . '%' )
+                    ->orWhere( 'id', 'like',  $this->student );
+                })->when($this->status, function($query){
+                    $query->where( 'status', $this->status );
+                });
             } )
             ->leftJoin( "users", "accounts.user_id", "=", "users.id" )
             ->orderBy( "users.name", "asc" )

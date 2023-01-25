@@ -19,7 +19,7 @@ use App\Http\Controllers\SslCommerzPaymentController;
 class SubscriberRegister extends Component {
 
     use DefaultSettingTraits;
-    public $planName;
+    public $planId;
     public $planList;
     public $planFeature;
     public $planPrice;
@@ -51,19 +51,20 @@ class SubscriberRegister extends Component {
     public $password_confirmation;
 
     public function mount() {
-        $freeTrail = Subscription::where( 'name', 'Free Trial' )->first();
+        $freeTrail = Subscription::find(1);
 
         $this->planList = Subscription::all();
 
-        $this->planName    = $freeTrail->id;
+        $this->planId    = $freeTrail->id;
+        $this->planPrice    = $freeTrail->price;
         $this->planFeature = explode( ',', Subscription::find( $freeTrail->id )->selected_feature );
 
         $this->register = false;
         $this->month    = 1;
     }
 
-    public function updatedPlanName() {
-        $plan = Subscription::find( $this->planName );
+    public function updatedplanId() {
+        $plan = Subscription::find( $this->planId );
 
         $featureList = explode( ',', $plan->selected_feature );
 
@@ -101,7 +102,7 @@ class SubscriberRegister extends Component {
     }
 
     public function changeMonthsBill() {
-        $plan = Subscription::find( $this->planName );
+        $plan = Subscription::find( $this->planId );
 
         $discountMonth    = floor( $this->month / 12 ) * 2; // 12 mash hole 10 mash gunbe
         $monthToCalculate = $this->month - $discountMonth;
@@ -179,7 +180,7 @@ class SubscriberRegister extends Component {
         $user->assignRole( 'Teacher' );
         $this->defaultSetting( $user->id );
 
-        $this->regSubscription( $this->planName, $this->planPrice, $user );
+        $this->regSubscription( $this->planId, $this->planPrice, $user );
 
         Auth::login( $user );
 
@@ -194,8 +195,9 @@ class SubscriberRegister extends Component {
      * @param $user
      */
     public function regSubscription( $planId, $planPrice, $user ) {
-
-        $data['subscription_id'] = $planId;
+        $subscription = Subscription::find($planId);
+        $data['subscription_id'] = $subscription->id;
+        $data['price'] = $subscription->price;
         $data['user_id']         = $user->id;
         $data['expiry_date']     = Carbon::now()->addMonths( $this->month );
         $data['status']          = 0;

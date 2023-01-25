@@ -15,7 +15,7 @@ class IndividualStudent extends Component {
 
     public $due;
 
-    public $onlinePayment;
+    // public $onlinePayment;
 
     public $manualPayment;
 
@@ -27,9 +27,8 @@ class IndividualStudent extends Component {
 
     public function mount() {
         $this->user = Auth::user()->id;
-        $this->onlinePayment = Option::where( "slug", "online_payment" )->first()->value;
-        $this->manualPayment = Option::where( "slug", "manual_payment" )->first()->value;
-
+        // $this->onlinePayment = Option::where( "slug", "online_payment" )->first()->value;
+        $this->manualPayment = getTeacherSetting("manual_payment")->value;
         $this->due = Account::where("user_id",auth()->user()->id)->where("status","Unpaid")->count();
     }
 

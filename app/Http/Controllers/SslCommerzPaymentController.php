@@ -557,7 +557,7 @@ class SslCommerzPaymentController extends Controller {
         $user = User::find( $adminAccount->subscriptionUser->user_id  );
         Auth::login( $user );
 
-        $setting = getSettingValue( 'remaining_sms' );
+        $setting = getTeacherSetting( 'remaining_sms' );
         $afterBuyNowSms['value'] = $setting->value + $smsAmount;
         $setting->update( $afterBuyNowSms );
         session()->flash( 'success', 'You Purchased ' . $smsAmount . ' SMS Successfully.' );

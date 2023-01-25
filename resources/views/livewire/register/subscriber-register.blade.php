@@ -47,12 +47,12 @@
                                             <div class="col-sm-{{ $nextStep == false ? '8' : '12' }} mb-3 mb-sm-0">
 
 
-                                                <select class="form-control form-control-select " wire:model.defer="planName"
-                                                    id="planName">
+                                                <select class="form-control form-control-select " wire:model.defer="planId"
+                                                    id="planId">
                                                     <option disabled selected>Please Select Plan</option>
                                                     @foreach ($planList as $data)
                                                         <option value="{{ $data->id }}"
-                                                            {{ $planName == $data->id ? 'selected' : '' }}>
+                                                            {{ $planId == $data->id ? 'selected' : '' }}>
                                                             {{ $data->name }}</option>
                                                     @endforeach
 
@@ -348,9 +348,9 @@
 
 
 
-        $('#planName').change(function() {
-            var planName = $('#planName').val();
-            @this.set('planName', this.value);
+        $('#planId').change(function() {
+            var planId = $('#planId').val();
+            @this.set('planId', this.value);
         });
     </script>
 @endpush

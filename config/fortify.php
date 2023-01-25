@@ -68,6 +68,7 @@ return [
             $domainToRedirect = getToBeSubdomain($user->teacherInfo->username);
             return $domainToRedirect . RouteServiceProvider::HOME;
         }elseif( $user->teacher_id ){
+            // dd($user->teacher);
             $domainToRedirect = getToBeSubdomain($user->teacher->teacherInfo->username);
             return $domainToRedirect . RouteServiceProvider::HOME;
         }else{

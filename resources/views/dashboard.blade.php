@@ -315,7 +315,7 @@
         @else
             <!-- Page Heading -->
             <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                <h1 class="h5 mb-0 text-gray-800">Overview St</h1>
+                <h1 class="h5 mb-0 text-gray-800">Overview</h1>
             </div>
             <!-- Cards -->
             <div class="row">
@@ -461,7 +461,7 @@
                             <div class="card-body">
                                 {{-- <a href="#" class="card-link float-left">Enroll</a> --}}
                                 <a href="{{ route('course.feeds.index', ['course' => $course->id]) }}"
-                                    class="card-link btn btn-success font-weight-bold btn-block">Go To Feed</a>
+                                    class="card-link btn btn-success font-weight-bold btn-block">Feed</a>
                             </div>
                         </div>
                     </div>

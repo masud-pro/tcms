@@ -53,21 +53,12 @@ class OptionController extends Controller {
 
     public function reset_frontpage_image() {
 
-        $optionId = Option::where( 'slug', 'front_page_image' )->pluck( 'id' )->toArray();
+        $frontPageImage = getTeacherSetting('front_page_image')->value;
 
-        Storage::delete( Setting::where( 'user_id', Auth::user()->id )->where( 'option_id', $optionId )->first()->value );
+        Storage::delete( $frontPageImage );
 
-        // Storage::delete( Option::where( "slug", "front_page_image" )->first()->value );
-
-        // Option::where( "slug", "front_page_image" )->update( [
-        //     "value" => 0,
-        // ] );
-
-        Setting::where( 'user_id', Auth::user()->id )->where( 'option_id', $optionId )->update( [
-            'value' => 0,
-
-        ] );
-
+        setTeacherSetting('front_page_image', auth()->user()->id);
+        
         return redirect()->back()->with( "success", "Images reset successfully" );
     }
 
@@ -99,17 +90,17 @@ class OptionController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update( Request $request ) {
-// return $request->options['manual_payment' ];
+        // dd($request->all());
 
         foreach ( $request->options as $slug => $option ) {
 
             $optionId = Option::where( "slug", $slug )->pluck( 'id' )->toArray();
 
             if ( $slug == "front_page_image" ) {
-
                 Storage::delete( Setting::where( 'user_id', Auth::user()->id )->where( 'option_id', $optionId )->first()->value );
 
-                $option['value'] = $option['value']->store( 'public/images/front-page' );
+                $option['value'] = $option['value']->store( Auth::user()->teacherInfo->username.'/images/front-page' );
+                // dd($option['value']);
             }
 
             Setting::where( 'user_id', Auth::user()->id )->where( 'option_id', $optionId )->update( [

@@ -191,7 +191,7 @@ class AttendanceController extends Controller {
 
         $numberCount = count( $numbers );
 
-        $smsrow        = Option::where( "slug", "remaining_sms" )->first();
+        $smsrow        = getTeacherSetting('remaining_sms');
         $remaining_sms = (int) $smsrow->value;
 
         if ( $remaining_sms < $numberCount ) {

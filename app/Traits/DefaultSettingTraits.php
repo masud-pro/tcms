@@ -29,12 +29,12 @@ trait DefaultSettingTraits {
                 'value'     => 1, //  it can be  [ 1 ( Active ) | 0 ( Not Active ) ]
 
             ],
-            [
-                'user_id'   => 1,
-                'option_id' => 2, //  Online Payment
-                'value'     => 1, //  it can be  [ 1 ( Active ) | 0 ( Not Active ) ]
+            // [
+            //     'user_id'   => 1,
+            //     'option_id' => 2, //  Online Payment
+            //     'value'     => 1, //  it can be  [ 1 ( Active ) | 0 ( Not Active ) ]
 
-            ],
+            // ],
             [
                 'user_id'   => 1,
                 'option_id' => 3, //  Bkash Number (Only For Manual Payment)

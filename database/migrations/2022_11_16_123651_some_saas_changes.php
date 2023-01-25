@@ -28,6 +28,10 @@ class SomeSAASChanges extends Migration
             $table->dropColumn( "category" );
             
         } );
+
+        Schema::table( 'orders', function ( Blueprint $table ) {
+            $table->foreignId( 'teacher_id' )->index();
+        } );
     }
 
     /**
@@ -35,8 +39,7 @@ class SomeSAASChanges extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('teacher_id')->nullable();
         });
@@ -46,11 +49,13 @@ class SomeSAASChanges extends Migration
         } );
 
         Schema::table( 'options', function ( Blueprint $table ) {
-
             $table->foreignId( "user_id" )->nullable()->index();
             $table->string( "value" )->nullable();
             $table->string( "category" )->nullable();
+        } );
 
+        Schema::table( 'orders', function ( Blueprint $table ) {
+            $table->dropColumn( 'teacher_id' )->index();
         } );
     }
 }

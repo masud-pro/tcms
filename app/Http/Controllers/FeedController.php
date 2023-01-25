@@ -109,7 +109,7 @@ class FeedController extends Controller {
             "course"               => $course,
             "feeds"                => $course->feeds()->latest()->get(),
             "is_active"            => auth()->user()->course()->where( "course_id", $course->id )->pluck( "is_active" )->first(),
-            "canSeeFriends"        => Option::where( "slug", "can_student_see_friends" )->first()->value,
+            "canSeeFriends"        => getTeacherSetting('can_student_see_friends')->value ?? 0,
             "attendancePercentage" => sprintf( "%.1f", $attendancePercentage ),
             "totalStudents"        => $totalStudents,
             "paid"                 => $paid,

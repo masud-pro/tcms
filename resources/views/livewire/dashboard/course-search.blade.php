@@ -41,7 +41,7 @@
                         <div class="card-body d-flex justify-content-between">
 
                             <a href="{{ route('course.feeds.index', ['course' => $course->id]) }}"
-                                class="btn btn-outline-primary font-weight-bold fs-12">Go To Feed</a>
+                                class="btn btn-outline-primary font-weight-bold fs-12">Feed</a>
                             <a href="{{ route('course.attendance.create', ['course' => $course->id]) }}"
                                 class="btn btn-outline-secondary font-weight-bold fs-12">Attendance</a>
                             <a href="{{ route('course.accounts.create', ['course' => $course->id]) }}"

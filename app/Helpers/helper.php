@@ -1,6 +1,8 @@
 <?php
 
+use App\Models\User;
 use App\Models\Option;
+use App\Models\Setting;
 use Illuminate\Support\Facades\Auth;
 
 // Start Functions
@@ -121,12 +123,32 @@ function hasSettingAccess() {
 /**
  * @param $data
  */
-function getSettingValue( $data ) {
-    // dd( $data );
+function getTeacherSetting( $settingSlug, $user = null ) {
 
-    $optionId = Option::where( "slug", $data )->first()['id'];
+    $optionId = Option::where( "slug", $settingSlug )->first()->id;
 
-    return Auth::user()->load( 'settings.option' )->settings->where( "option_id", $optionId )->first();
+    if(!$user){
+        if( auth()->user()->hasRole( ['Teacher'] ) ){
+            $user = auth()->user();
+        }elseif( auth()->user()->hasRole( ['Student'] ) ){
+            $user = auth()->user()->teacher;
+        }else{
+            $user = auth()->user();
+        }
+    }
+
+    return $user->load( 'settings.option' )->settings->where( "option_id", $optionId )->first();
+}
+
+function setTeacherSetting($settingSlug, $teacherId){
+    $optionId = Option::where( "slug", $settingSlug )->first()->id;
+
+    $user = User::find($teacherId);
+
+    return Setting::where( 'user_id', $user->id )->where( 'option_id', $optionId )->update( [
+        'value' => 0,
+    ] );
+
 }
 
 
@@ -149,6 +171,12 @@ function techno_bulk_sms($ap_key,$sender_id,$mobile_no,$message,$user_email){
     $output = curl_exec($curl);
     curl_close($curl);
     return $output; 
+}
+
+
+function getSubdomain(){
+    $subdomain = explode('.', $_SERVER['HTTP_HOST'])[0];
+    return $subdomain;
 }
 
 // End of Helper Functions

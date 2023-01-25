@@ -223,9 +223,9 @@ class AccountController extends Controller {
     public function student_pay_offline( Account $account ) {
         $this->authorize( "view", $account );
 
-        $bkashNumber  = getSettingValue( 'bkash_number' )->value;
-        $rocketNumber = getSettingValue( 'rocket_number' )->value;
-        $nagadNumber  = getSettingValue( 'nagad_number' )->value;
+        $bkashNumber  = getTeacherSetting( 'bkash_number' )->value;
+        $rocketNumber = getTeacherSetting( 'rocket_number' )->value;
+        $nagadNumber  = getTeacherSetting( 'nagad_number' )->value;
 
         return view( "ms.account.pay-offline", [
             'account'      => $account,
@@ -251,6 +251,7 @@ class AccountController extends Controller {
         ] );
 
         $data['user_id'] = Auth::user()->id;
+        $data['teacher_id'] = Auth::user()->teacher_id;
         $data['status']  = "Pending";
         $data['amount']  = Account::findOrFail( $data['account_id'] )->paid_amount;
 
@@ -265,7 +266,7 @@ class AccountController extends Controller {
 
     public function transactions() {
         return view( "ms.transactions.all-transactions", [
-            "transactions" => Order::latest()->simplePaginate( 20 ),
+            "transactions" => Order::where('teacher_id', auth()->user()->id)->latest()->simplePaginate( 20 ),
         ] );
 
     }
@@ -310,7 +311,7 @@ class AccountController extends Controller {
 
         $numberCount = count( $numbers );
 
-        $smsrow        = getSettingValue( 'remaining_sms' );
+        $smsrow        = getTeacherSetting( 'remaining_sms' );
         $remaining_sms = (int) $smsrow->value;
 
         if ( $remaining_sms < $numberCount ) {
@@ -366,7 +367,7 @@ class AccountController extends Controller {
 
         //$smsrow = Auth::user()->load( 'settings.option' )->settings->where( "option_id",  $smsId )->first();
 
-        $smsrow = getSettingValue( 'remaining_sms' );
+        $smsrow = getTeacherSetting( 'remaining_sms' );
 
         // dd( $smsrow );
 

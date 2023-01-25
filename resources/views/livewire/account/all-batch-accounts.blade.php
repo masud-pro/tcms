@@ -1,7 +1,18 @@
 <div>
     <div class="row">
-        <div class="offset-lg-6 col-lg-6">
-            <input type="text" wire:model.debounce.500ms="q" class="form-control mb-3" placeholder="Search Student Name or ID">
+        <div class="col-lg-3">
+            {{-- Filter By Status --}}
+            <label><b>Filter By Status</b></label>
+            <select wire:model.debounce.500ms="status" class="form-control mb-3">
+                <option value="">All</option>
+                <option value="Paid">Paid</option>
+                <option value="Unpaid">Unpaid</option>
+                <option value="Pending">Pending</option>
+            </select>
+        </div>
+        <div class="col-lg-3 offset-lg-6">
+            <label><b>Search Student</b></label>
+            <input type="text" wire:model.debounce.500ms="student" class="form-control mb-3" placeholder="Search Student Name or ID">
         </div>
     </div>
 

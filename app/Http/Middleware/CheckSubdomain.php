@@ -25,6 +25,7 @@ class CheckSubdomain
                 return redirect('/login');
             }
         }elseif( $user->teacher_id ){
+            // dd($user->teacher);
             $domainToBe = getToBeSubdomain($user->teacher->teacherInfo->username);
             if( request()->root() !== $domainToBe ){
                 auth('web')->logout();

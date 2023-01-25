@@ -149,7 +149,7 @@ class User extends Authenticatable {
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function teacher(): BelongsTo {
-        return $this->belongsTo( User::class, 'id', 'teacher_id' );
+        return $this->belongsTo( User::class, 'teacher_id', 'id' );
     }
 
     /**
@@ -177,5 +177,7 @@ class User extends Authenticatable {
     public function teacherInfo(): HasOne{
         return $this->hasOne(TeacherInfo::class);
     }
+
+    
 
 }

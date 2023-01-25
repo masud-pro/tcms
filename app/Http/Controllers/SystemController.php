@@ -35,7 +35,7 @@ class SystemController extends Controller {
             $allAttendanceCount = $allAttendances->count();
             $present            = $allAttendances->where( "attendance", 1 )->count();
             // $absent             = $allAttendanceCount - $present;
-            $emoji = Option::where( "slug", "emoji_visibility" )->first()->value;
+            $emoji = getTeacherSetting('emoji_visibility')->value;
 
             if ( $allAttendanceCount > 0 ) {
                 $attendancePercentage = ( $present / $allAttendanceCount ) * 100;
@@ -53,9 +53,8 @@ class SystemController extends Controller {
             $total            = $netIncome + $reveivedPayments;
             $revenue          = $total - $expense;
             $courses          = Course::with( "user" )->get();
-
-            $optionId   = Option::where( "slug", "dashboard_course_view" )->pluck( 'id' );
-            $courseView = Setting::where( 'user_id', Auth::user()->id )->where( 'option_id', $optionId )->first()['value'] ?? Option::where( "slug", "dashboard_course_view" )->first()['value'];
+            
+            $courseView = getTeacherSetting('dashboard_course_view')->value;;
 
             return view( 'dashboard', [
                 "courses"              => $courses,
@@ -79,7 +78,7 @@ class SystemController extends Controller {
             $allAttendanceCount = $allAttendances->count();
             $present            = $allAttendances->where( "attendance", 1 )->count();
             $absent             = $allAttendanceCount - $present;
-            $emoji              = Option::where( "slug", "emoji_visibility" )->first()->value;
+            $emoji              = getTeacherSetting('emoji_visibility')->value;
 
             if ( $allAttendanceCount > 0 ) {
                 $attendancePercentage = ( $present / $allAttendanceCount ) * 100;

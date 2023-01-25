@@ -22,12 +22,12 @@ class OptionSeeder extends Seeder {
                 'slug'       => "manual_payment",
                 'created_at' => now(),
             ],
-            [
-                'id'         => 2,
-                'name'       => "Online Payment",
-                'slug'       => "online_payment",
-                'created_at' => now(),
-            ],
+            // [
+            //     'id'         => 2,
+            //     'name'       => "Online Payment",
+            //     'slug'       => "online_payment",
+            //     'created_at' => now(),
+            // ],
             [
                 'id'         => 3,
                 'name'       => "Bkash Number (Only For Manual Payment)",

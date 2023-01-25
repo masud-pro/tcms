@@ -23,34 +23,34 @@ Route::middleware( 'auth:sanctum' )->get( '/user', function ( Request $request )
 
 Route::post( "uddokta-webhook", [UddoktaPayController::class, "webhook"] );
 
-Route::post( 'recharge/sms', function ( Request $request ) {
+// Route::post( 'recharge/sms', function ( Request $request ) {
 
-    $validator = Validator::make( $request->all(), [
-        'amount' => 'required',
-    ] );
+//     $validator = Validator::make( $request->all(), [
+//         'amount' => 'required',
+//     ] );
 
-    if ( $validator->fails() ) {
+//     if ( $validator->fails() ) {
 
-        return response()->json( [
-            'status' => "Failed Validation",
-        ], 400 );
+//         return response()->json( [
+//             'status' => "Failed Validation",
+//         ], 400 );
 
-    } else {
+//     } else {
 
-        $data = $validator->validated();
+//         $data = $validator->validated();
 
-        $option = Option::where( 'slug', 'remaining_sms' );
+//         $option = Option::where( 'slug', 'remaining_sms' );
 
-        $previous = $option->first()->value;
-        $now      = $previous + $data['amount'];
+//         $previous = $option->first()->value;
+//         $now      = $previous + $data['amount'];
 
-        $result = $option->update( [
-            'value' => $now,
-        ] );
+//         $result = $option->update( [
+//             'value' => $now,
+//         ] );
 
-        return response()->json( [
-            'status' => $result,
-        ] );
-    }
+//         return response()->json( [
+//             'status' => $result,
+//         ] );
+//     }
 
-} )->middleware( 'auth:sanctum' );
+// } )->middleware( 'auth:sanctum' );

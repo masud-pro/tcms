@@ -21,7 +21,7 @@ class CanSeeStudents {
             return $next( $request );
         }
 
-        if( Option::where("slug","can_student_see_friends")->first()->value ){
+        if( getTeacherSetting('can_student_see_friends') ){
             return $next( $request );
         }
 

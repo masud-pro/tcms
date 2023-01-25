@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use App\Models\Course;
 use App\Models\Option;
 use Spatie\Permission\Models\Role;
@@ -27,8 +28,17 @@ use App\Http\Controllers\SslCommerzPaymentController;
  */
 
 Route::get( '/', function () {
-    $frontPageImage = Option::where( "slug", "front_page_image" )->first()->value;
-    $fontColor      = Option::where( "slug", "front_page_font_color" )->first()->value;
+    $user = User::whereHas('teacherInfo', function($query){
+        $query->where('username', getSubdomain());
+    })->first();
+
+    if($user){
+        $frontPageImage = getTeacherSetting('front_page_image', $user)->value;
+    }else{
+        $frontPageImage = 0;
+    };
+    
+    $fontColor      = getTeacherSetting('front_page_font_color')->value;
 
     return view( 'welcome', [
         "frontPageImage" => $frontPageImage,

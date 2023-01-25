@@ -27,11 +27,10 @@ class SMSController extends Controller {
     // }
 
     public function index() {
-        $optionId = Option::where( "slug", "remaining_sms" )->pluck( 'id' );
 
         return view( "ms.sms.all-sms", [
             "smss"         => SMS::latest()->paginate( 15 ),
-            "remainingSMS" => Setting::where( 'user_id', Auth::user()->id )->where( 'option_id', $optionId )->first(),
+            "remainingSMS" => getTeacherSetting( 'remaining_sms' )->value,
         ] );
     }
 
@@ -62,7 +61,7 @@ class SMSController extends Controller {
 
         $smsCount = $assessment->responses()->count() * $numberOfSmsPerMessage; // Count the number of sms
 
-        $smsrow        = getSettingValue( 'remaining_sms' ); // Remaining SMS row
+        $smsrow        = getTeacherSetting( 'remaining_sms' ); // Remaining SMS row
         $remaining_sms = (int) $smsrow->value;
 
 // Remaining SMS
@@ -147,7 +146,7 @@ class SMSController extends Controller {
         $smsCount = count($courseUsers)  * $numberOfSmsPerMessage;
 
         // $smsrow        = Option::where( "slug", "remaining_sms" )->first(); // Remaining SMS row
-        $smsrow        = getSettingValue( 'remaining_sms' ); // Remaining SMS row
+        $smsrow        = getTeacherSetting( 'remaining_sms' ); // Remaining SMS row
         $remaining_sms = (int) $smsrow->value;
 
 // Remaining SMS

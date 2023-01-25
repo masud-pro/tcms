@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\TeacherInfo;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -37,6 +38,11 @@ class AdministratorSeeder extends Seeder {
                 'created_at'        => now(),
             ]
         );
+
+        TeacherInfo::create([
+            'user_id'           => $user->id,
+            'username'          => 'testteacher',
+        ]);
 
         $user->assignRole( 'Teacher ' );
 

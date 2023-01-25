@@ -24,12 +24,12 @@ class SettingSeeder extends Seeder {
                 'created_at' => now(),
             ],
             //     option_id => 2  => Online Payment => value => 1 | 0 [ Active | Not Active ]
-            [
-                'user_id'    => $userId ?? 2,
-                'option_id'  => 2,
-                'value'      => 0,
-                'created_at' => now(),
-            ],
+            // [
+            //     'user_id'    => $userId ?? 2,
+            //     'option_id'  => 2,
+            //     'value'      => 0,
+            //     'created_at' => now(),
+            // ],
             //     'option_id' => 3 => Null [ Can be Empty ]  = Bkash Number (Only For Manual Payment)
             [
                 'user_id'    => $userId ?? 2,

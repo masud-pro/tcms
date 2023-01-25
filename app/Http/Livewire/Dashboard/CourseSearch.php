@@ -21,12 +21,12 @@ class CourseSearch extends Component {
     public $filteredCourses;
 
     public function mount() {
-        $this->courses = cache()->remember( 'course', 60 * 60, function () {
-            return Auth::user()->addedCourses()->with( "user" )->latest()->get();
-        } );
+        // $this->courses = cache()->remember( 'course', 60 * 60, function () {
+        //     return Auth::user()->addedCourses()->with( "user" )->latest()->get();
+        // } );
 
         // $this->courses = Course::with( "user" )->get();
-        // $this->courses = Auth::user()->addedCourses()->with( "user" )->latest()->get();
+        $this->courses = Auth::user()->addedCourses()->with( "user" )->latest()->get();
 
         $this->filteredCourses = $this->courses;
 
