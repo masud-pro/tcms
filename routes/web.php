@@ -179,5 +179,5 @@ Route::get( 'clear', function () {
 // Route::view('test-sms', 'ms.sms.test');
 //
 
-Route::get( 'teacher-register', [SystemController::class, 'teacherRegister'] )->name('teacher.register');
+Route::get( 'teacher-register', [SystemController::class, 'teacherRegister'] )->name('teacher.register')->middleware('guest');
 
