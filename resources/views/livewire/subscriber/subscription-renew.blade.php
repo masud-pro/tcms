@@ -16,18 +16,20 @@
                                     <div class="user">
                                         <div class="form-group row">
                                             <div class="col-sm-6 mb-3 mb-sm-0">
-                                                
+
                                                 <label for="name">Plan List</label>
                                                 <div wire:ignore>
                                                     <select wire:model="planName" id="planName"
                                                         class="form-control form-control-user @error('planName') is-invalid @enderror js-example-disabled-results">
-                                                        <option value="">Select Your Plan</option>
+                                                        <option disabled>Select Your Plan</option>
                                                         @foreach ($planList as $data)
-                                                            <option value="{{ $data->id }}" {{ $planName == $data->id ? 'selected' : '' }} >{{ $data->name }}</option>
+                                                            <option value="{{ $data->id }}"
+                                                                {{ $planName == $data->id ? 'selected' : '' }}>
+                                                                {{ $data->name }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
-                
+
                                                 @error('planName')
                                                     <p class="text-danger small mt-1">{{ $message }}</p>
                                                 @enderror
@@ -101,13 +103,13 @@
 
 
 
-                                     
+
                                         <button type="submit" class="btn btn-primary btn-user btn-block">
                                             Renew Subscription
                                         </button>
 
                                     </div>
-                                  
+
                                 </div>
                             </div>
                         </div>
@@ -146,8 +148,20 @@
                             <div class="form-group row">
                                 <div class="col-sm-12 mb-3">
 
-                                    <h2 class="text-end fs-2 price-container fw-bold price-digit"> {{ $price }} <span
-                                            class="fs-6 ml-xx-8 price-currency">tk</span></h2>
+                                    <h2 class="text-center fs-2 price-container fw-bold price-digit">
+                                        {{ $subscriptionName }} </h2>
+
+                                </div>
+
+                                <div class="col-sm-12 mb-3">
+
+                                    <h2 class="text-end fs-1 price-container fw-bold price-digit"> {{ $price }}
+                                        <span class="fs-5 ml-xx-8 price-currency">tk</span>
+                                        @if ($showSubscriptionPreviousPrice == true)
+                                            <span class="fs-6 previous-price">{{ $subscriptionPreviousPrice }}.tk</span>
+                                        @endif
+
+                                    </h2>
 
                                 </div>
 
@@ -158,11 +172,10 @@
                                 <div class="col-sm-12 mb-3 mb-sm-0">
 
                                     @foreach ($featureList ?? [] as $feature)
-                                                <h6> <span class="pr-1">-</span>
-                                                    {{ Str::of(Str::of(Str::replace('.', ' ', $feature))->camel())->headline() }}
-                                                </h6>
-                                               
-                                            @endforeach
+                                        <h6> <span class="pr-1">-</span>
+                                            {{ Str::of(Str::of(Str::replace('.', ' ', $feature))->camel())->headline() }}
+                                        </h6>
+                                    @endforeach
 
                                     {{-- <h6> <span class="pr-1">-</span> hello World</h6>
                                     <h6> <span class="pr-1">-</span> hello World</h6>
@@ -239,17 +252,24 @@
 
     <style>
         .mt-xx-10 {
-            margin-top: -9%;
+            margin-top: -8%;
         }
 
         .ml-xx-8 {
             margin-left: -8px;
         }
-        .price-digit{
+
+        .price-digit {
             color: #0d6efd;
         }
-        .price-currency{
+
+        .price-currency {
             color: #000;
+        }
+
+        .previous-price {
+            color: #6d6d6d;
+            text-decoration: line-through;
         }
     </style>
 @endpush

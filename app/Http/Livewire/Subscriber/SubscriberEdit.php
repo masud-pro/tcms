@@ -3,7 +3,6 @@
 namespace App\Http\Livewire\Subscriber;
 
 use Carbon\Carbon;
-use App\Models\User;
 use Livewire\Component;
 use App\Models\AdminAccount;
 use App\Models\Subscription;
@@ -34,17 +33,11 @@ class SubscriberEdit extends Component {
     /**
      * @var mixed
      */
-    // public $subscriberList;
-    /**
-     * @var mixed
-     */
     public $subscriptionList;
-
     /**
      * @var mixed
      */
     public $expiryDate;
-
     /**
      * @var mixed
      */
@@ -53,6 +46,7 @@ class SubscriberEdit extends Component {
      * @var mixed
      */
     public $specialPriceField;
+
     /**
      * @var array
      */
@@ -62,7 +56,7 @@ class SubscriberEdit extends Component {
         'price'             => ['required'],
         'expiryDate'        => ['required'],
         'monthCount'        => ['required'],
-        'specialPrice'        => ['required'],
+        'specialPrice'      => ['nullable'],
     ];
 
     public function mount() {
@@ -72,22 +66,58 @@ class SubscriberEdit extends Component {
         $this->subscriptionList  = Subscription::WhereNotIn( 'id', [1] )->get();
         $this->expiryDate        = Carbon::parse( $this->subscriptionUser->expiry_date )->format( 'Y-m-d' );
         $this->subscriberPackage = $this->subscriptionUser->subscription->id;
+        $this->specialPrice      = $this->subscriptionUser->special_price;
+        $this->monthCount        = 1;
         // dd( $this->subscriptionUser->subscription );
 
         // dd( $this->expiryDate );
     }
 
-    public function updated() {
+    public function updatedsubscriberPackage() {
+        //   dd($this->subscriberPackage);
+        // $this->subscriberPackage;
+        $newPackage = $this->subscriptionUser->subscription_id != $this->subscriberPackage;
+        if ( $newPackage ) {
+            $this->specialPrice = null;
+        } else {
+            $this->specialPrice = $this->subscriptionUser->special_price;
+            $this->calculatePrice();
+        }
+    }
+
+    public function updatedmonthCount() {
         $this->calculatePrice();
     }
+
+    public function updatedspecialPrice() {
+        $this->calculatePrice();
+    }
+
+    // public function updated() {
+    //     $this->calculatePrice();
+    //     // dd( $this->subscriptionUser->special_price == $this->specialPrice );
+    // }
 
     public function calculatePrice() {
         $subscriberPackage = Subscription::find( $this->subscriberPackage );
 
         if ( $this->monthCount && $this->subscriberPackage ) {
-            $totalPrice = $subscriberPackage->price * $this->monthCount;
 
-            $this->price = $totalPrice;
+            switch ( $this->specialPrice ) {
+                case "0":
+                    $subscriptionPrice = $subscriberPackage->price;
+                    break;
+                case null:
+                    $subscriptionPrice = $subscriberPackage->price;
+                    break;
+                default:
+                    $subscriptionPrice = $this->specialPrice ?? $subscriberPackage->price;
+            }
+
+            $totalPrice = (int) $subscriptionPrice * $this->monthCount;
+
+            $this->price             = $totalPrice;
+            $this->specialPriceField = false;
         }
     }
 
@@ -99,7 +129,7 @@ class SubscriberEdit extends Component {
         $subscriberUser['user_id']         = $this->subscriptionUser->user_id;
         $subscriberUser['subscription_id'] = $data['subscriberPackage'];
         $subscriberUser['expiry_date']     = Carbon::parse( $this->expiryDate )->addMonths( $data['monthCount'] )->format( 'Y-m-d' );
-
+        $subscriberUser['special_price']   = $data['specialPrice'] == null ? null : $data['specialPrice'];
         //    dd($subscriberUser['expiry_date']);
         //    dd($this->subscriptionUser);
         //  //return 0;
@@ -107,7 +137,7 @@ class SubscriberEdit extends Component {
         $this->subscriptionUser->update( $subscriberUser );
 
         $subAccountData['subscription_user_id'] = $this->subscriptionUser->id;
-        $subAccountData['total_price']          = (int) $data['specialPrice'] == null ? $data['price'] : $data['specialPrice'];
+        $subAccountData['total_price']          = (int) $data['price'];
         $subAccountData['from_date']            = $data['expiryDate'];
         $subAccountData['to_date']              = Carbon::parse( $this->expiryDate )->addMonths( $data['monthCount'] )->format( 'Y-m-d' );
         $subAccountData['status']               = 1;

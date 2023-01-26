@@ -9,12 +9,49 @@ use App\Models\Subscription;
 use App\Models\SubscriptionUser;
 
 class SubscriptionRenew extends Component {
+    /**
+     * @var mixed
+     */
     public $planPrice;
+    /**
+     * @var mixed
+     */
     public $planList;
+    /**
+     * @var mixed
+     */
     public $month;
+    /**
+     * @var mixed
+     */
     public $planName;
+    /**
+     * @var mixed
+     */
+    public $subscriptionName;
+    /**
+     * @var mixed
+     */
     public $price;
+    /**
+     * @var mixed
+     */
     public $featureList;
+    /**
+     * @var mixed
+     */
+    public $subscriptionPreviousPrice;
+    /**
+     * @var mixed
+     */
+    public $showSubscriptionPreviousPrice;
+    /**
+     * @var mixed
+     */
+    public $subscribedUser;
+    /**
+     * @var mixed
+     */
 
     /**
      * @var array
@@ -26,18 +63,53 @@ class SubscriptionRenew extends Component {
     ];
 
     public function mount() {
-        $this->planList    = Subscription::WhereNotIn( 'id', [1] )->get();
-        $this->planName    = SubscriptionUser::where( 'user_id', auth()->user()->id )->first()['subscription_id'];
-        $this->planPrice   = $this->month * Subscription::where( 'id', $this->planName )->first()['price'];
-        $this->featureList = explode( ',', Subscription::where( 'id', $this->planName )->first()['selected_feature'] );
-        $this->price       = Subscription::where( 'id', $this->planName )->first()['price'];
+
+        $this->subscribedUser = SubscriptionUser::where( 'user_id', auth()->user()->id )->first();
+        $subscription         = Subscription::where( 'id', $this->planName )->first();
+
+        $this->planList = Subscription::WhereNotIn( 'id', [1] )->get();
+        $this->planName = $this->subscribedUser->subscription_id;
+        $subscription   = Subscription::where( 'id', $this->planName )->first();
+
+        $this->featureList      = explode( ',', $this->subscribedUser->subscription->selected_feature );
+        $this->price            = $this->subscribedUser->special_price ?? $this->subscribedUser->subscription->price;
+        $this->subscriptionName = $this->subscribedUser->subscription->name;
+
+        if ( $this->planName ) {
+            $this->subscriptionPreviousPrice     = $subscription->price;
+            $this->showSubscriptionPreviousPrice = true;
+        }
     }
 
-    public function updated() {
-        $price             = Subscription::where( 'id', $this->planName )->first()['price'];
-        $this->planPrice   = (int) $this->month * $price;
-        $this->featureList = explode( ',', Subscription::where( 'id', $this->planName )->first()['selected_feature'] );
-        $this->price       = Subscription::where( 'id', $this->planName )->first()['price'];
+    public function updatedplanName() {
+
+        $this->calculatePrice();
+
+    }
+
+    public function updatedmonth() {
+        $this->calculatePrice();
+    }
+
+    public function calculatePrice() {
+        $subscription = Subscription::where( 'id', $this->planName )->first();
+
+        $selectedPlan = $this->subscribedUser->subscription_id == $subscription->id;
+
+        if ( $selectedPlan ) {
+            $selectedPlanPrice                   = $this->subscribedUser->special_price ?? $subscription->price;
+            $this->subscriptionPreviousPrice     = $subscription->price;
+            $this->showSubscriptionPreviousPrice = true;
+
+        } else {
+            $selectedPlanPrice                   = $subscription->price;
+            $this->showSubscriptionPreviousPrice = false;
+        }
+        $this->planPrice        = (int) $this->month * $selectedPlanPrice;
+        $this->featureList      = explode( ',', $subscription->selected_feature );
+        $this->price            = $selectedPlanPrice;
+        $this->subscriptionName = $subscription->name;
+
     }
 
     public function submit() {
@@ -61,6 +133,7 @@ class SubscriptionRenew extends Component {
     }
 
     public function render() {
+
         return view( 'livewire.subscriber.subscription-renew' );
     }
 }
