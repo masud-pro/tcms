@@ -28,9 +28,7 @@ use App\Http\Controllers\SslCommerzPaymentController;
  */
 
 Route::get( '/', function () {
-    $user = User::whereHas('teacherInfo', function($query){
-        $query->where('username', getSubdomain());
-    })->first();
+    $user = getSubdomainUser();
 
     if($user){
         $frontPageImage = getTeacherSetting('front_page_image', $user)->value;
@@ -44,6 +42,7 @@ Route::get( '/', function () {
     return view( 'welcome', [
         "frontPageImage" => $frontPageImage,
         "fontColor"      => $fontColor,
+        "teacher" => $user
     ] );
 } );
 
@@ -51,9 +50,10 @@ Route::get( "/admin-reg", function () {
     return view( "auth.admin-reg" );
 } )->middleware( "guest" );
 
+Route::post( "admin-reg", [UserController::class, "store_admin"] )->name( "store.admin" );
+
 Route::middleware( ['auth:sanctum', 'verified', 'check_subdomain'] )->get( '/dashboard', [SystemController::class, 'dashboard'] )->name( 'dashboard' );
 
-Route::post( "admin-reg", [UserController::class, "store_admin"] )->name( "store.admin" );
 
 Route::middleware( ['auth:sanctum', 'verified', 'check_subdomain'] )->group( function () {
 
@@ -176,10 +176,8 @@ Route::get( 'clear', function () {
     return "<h4> Everything cache clear </h4>";
 } );
 
-
-Route::view('test-sms', 'ms.sms.test');
+// Route::view('test-sms', 'ms.sms.test');
 //
 
-
-Route::get( 'teacher-register', [SystemController::class, 'teacherRegister'] );
+Route::get( 'teacher-register', [SystemController::class, 'teacherRegister'] )->name('teacher.register');
 

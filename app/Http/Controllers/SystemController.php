@@ -78,6 +78,7 @@ class SystemController extends Controller {
             $allAttendanceCount = $allAttendances->count();
             $present            = $allAttendances->where( "attendance", 1 )->count();
             $absent             = $allAttendanceCount - $present;
+            dd(getTeacherSetting('emoji_visibility'));
             $emoji              = getTeacherSetting('emoji_visibility')->value;
 
             if ( $allAttendanceCount > 0 ) {

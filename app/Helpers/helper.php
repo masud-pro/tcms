@@ -215,5 +215,10 @@ function generate_payments( $course ) {
 
 }
 
+function getSubdomainUser(){
+    return User::whereHas('teacherInfo', function($query){
+        $query->where('username', getSubdomain());
+    })->first();
+}
 
 // End of Helper Functions

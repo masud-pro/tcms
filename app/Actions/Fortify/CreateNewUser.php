@@ -3,12 +3,12 @@
 namespace App\Actions\Fortify;
 
 use App\Models\User;
-use Laravel\Jetstream\Jetstream;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Notification;
-use Laravel\Fortify\Contracts\CreatesNewUsers;
 use App\Notifications\NewUserAdminNotification;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Validator;
+use Laravel\Fortify\Contracts\CreatesNewUsers;
+use Laravel\Jetstream\Jetstream;
 
 class CreateNewUser implements CreatesNewUsers {
     use PasswordValidationRules;
@@ -34,7 +34,7 @@ class CreateNewUser implements CreatesNewUsers {
             'address'          => ['required'],
             'password'         => $this->passwordRules(),
             'terms'            => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['required', 'accepted'] : '',
-            // 'role'             => ['required'],
+            'teacher_id'       => ['nullable'],
         ] )->validate();
 
         $user = [
@@ -50,15 +50,14 @@ class CreateNewUser implements CreatesNewUsers {
             'mothers_phone_no' => $input['mothers_phone_no'],
             'address'          => $input['address'],
             'password'         => Hash::make( $input['password'] ),
-            // 'role'             => $input['role'],
+            'teacher_id'       => $input['teacher_id'],
         ];
 
-        $user['role'] = 'Student';
         $user = User::create( $user );
 
-        $admins = User::where( "role", "Admin" )->get();
+        $user->assignRole( 'Student' );
 
-        Notification::send( $admins, new NewUserAdminNotification() );
+        Notification::send( $user->teacher, new NewUserAdminNotification() );
 
         return $user;
     }

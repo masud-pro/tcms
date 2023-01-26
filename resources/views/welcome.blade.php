@@ -58,8 +58,14 @@
                 <a href="{{ url('/dashboard') }}" class="btn btn-lg fw-bold text-light">Dashboard</a>
             @else
                 <a href="{{ route('login') }}" class="btn btn-lg fw-bold text-light">Login</a>
-                @if (Route::has('register'))
+                {{-- @if (Route::has('register'))
                     <a href="{{ route('register') }}" class="btn btn-lg fw-bold text-light ms-3">Register</a>
+                @endif --}}
+
+                @if ($teacher)
+                    <a href="{{ route('register') }}" class="btn btn-lg fw-bold text-light ms-3">Register</a>  
+                @else
+                    <a href="{{ route('teacher.register') }}" class="btn btn-lg fw-bold text-light ms-3">Register as Teacher</a>  
                 @endif
             @endif
         @endif

@@ -117,6 +117,15 @@
 
                     <x-jet-input class="form-control" type="password" name="password_confirmation" required autocomplete="new-password" />
                 </div>
+                @php
+                    $teacher = null;
+                    if( getSubdomainUser() ){
+                        $teacher = getSubdomainUser();
+                    }
+                @endphp
+                @if( $teacher )
+                    <input type="hidden" name="teacher_id" value="{{ $teacher->id }}">
+                @endif
 
                 @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
                     <div class="mb-3">
