@@ -221,4 +221,13 @@ function getSubdomainUser(){
     })->first();
 }
 
+function getUserFileManagerFolder(){
+    $user = getSubdomainUser();
+    if( $user->hasRole('Teacher') ){
+        return storage_path( 'app/public/' .$user->teacherInfo->username);
+    }else{
+        return storage_path( 'app/public/');
+    }
+}   
+
 // End of Helper Functions
