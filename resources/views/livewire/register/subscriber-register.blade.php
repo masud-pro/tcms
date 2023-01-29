@@ -21,23 +21,30 @@
                                                         class="fs-6">Tk</span>
                                                 </h3>
                                                 @if (!$customPlanData)
-
                                                     <div class="form-check form-switch form-switch-lg mt-2">
-                                                        <label class="form-check-label pd-18" for="flexSwitchCheckChecked">Bill Monthly</label>
-                                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" style="opacity: 1;" wire:click="$toggle('billChecked')">
-                                                        <label class="form-check-label pd-4 " style="opacity: 1; color: #222" for="flexSwitchCheckChecked">Bill Annually</label>
+                                                        <label class="form-check-label pd-18"
+                                                            for="flexSwitchCheckChecked">Bill Monthly</label>
+                                                        <input class="form-check-input" type="checkbox"
+                                                            id="flexSwitchCheckChecked" style="opacity: 1;"
+                                                            wire:click="$toggle('billChecked')">
+                                                        <label class="form-check-label pd-4 "
+                                                            style="opacity: 1; color: #222"
+                                                            for="flexSwitchCheckChecked">Bill Annually</label>
                                                     </div>
 
 
-                                                    <a class="small text-dark" wire:click="$toggle('customPlanData')" href="#">Custom</a>
+                                                    <a class="small text-dark" wire:click="$toggle('customPlanData')"
+                                                        href="#">Custom</a>
                                                 @else
                                                     <label>Select Month</label>
-                                                    <input wire:model="month" type="number" class="form-control" min="2">
+                                                    <input wire:model="month" type="number" class="form-control"
+                                                        min="2">
 
-                                                    <a class="small text-dark" wire:click="$toggle('customPlanData')" href="#">Back</a>
+                                                    <a class="small text-dark" wire:click="$toggle('customPlanData')"
+                                                        href="#">Back</a>
                                                 @endif
 
-                                                
+
                                             @endif
 
                                         </div>
@@ -64,7 +71,8 @@
                                                 <div class="text-center mt-1">
 
                                                     @if ($nextStep == false)
-                                                        <button wire:click="nextStep()" type="button" class="btn btn-primary ">Next Step</button>
+                                                        <button wire:click="nextStep()" type="button"
+                                                            class="btn btn-primary ">Next Step</button>
                                                     @endif
 
 
@@ -111,8 +119,9 @@
                                                 <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
                                             </div>
                                             <div class="user">
-                                                <div class="form-group row">
+                                                <div class="form-group row text-left">
                                                     <div class="col-sm-6 mb-3 mb-sm-0">
+                                                        <label for="fName" class="label-text">First Name</label>
                                                         <input type="text"
                                                             class="form-control form-control-user @error('fName') is-invalid @enderror"
                                                             id="fName" placeholder="First Name"
@@ -124,9 +133,11 @@
                                                         @enderror
                                                     </div>
                                                     <div class="col-sm-6">
+                                                        <label for="fName" class="label-text">Last Name</label>
                                                         <input type="text"
                                                             class="form-control form-control-user @error('lName') is-invalid @enderror"
-                                                            id="lName" placeholder="Last Name" wire:model.defer="lName">
+                                                            id="lName" placeholder="Last Name"
+                                                            wire:model.defer="lName">
                                                         @error('lName')
                                                             <p class="text-start text-danger small mt-1">{{ $message }}
                                                             </p>
@@ -137,8 +148,9 @@
 
 
 
-                                                <div class="form-group row">
+                                                <div class="form-group row text-left">
                                                     <div class="col-sm-6 mb-3 mb-sm-0">
+                                                        <label for="fName" class="label-text">Phone Number</label>
                                                         <input type="text"
                                                             class="form-control form-control-user @error('phoneNumber') is-invalid @enderror"
                                                             id="phoneNumber" placeholder="Phone Number"
@@ -151,6 +163,7 @@
                                                     </div>
 
                                                     <div class="col-sm-6">
+                                                        <label for="fName" class="label-text">User Name</label>
                                                         <input type="text"
                                                             class="form-control form-control-user @error('username') is-invalid @enderror"
                                                             id="username" placeholder="User Name"
@@ -164,7 +177,8 @@
 
                                                 </div>
 
-                                                <div class="form-group">
+                                                <div class="form-group text-left">
+                                                    <label for="fName" class="label-text">Email Address</label>
                                                     <input type="email"
                                                         class="form-control form-control-user  @error('emailAddress') is-invalid @enderror"
                                                         id="emailAddress" placeholder="Email Address"
@@ -178,8 +192,9 @@
 
 
 
-                                                <div class="form-group row">
+                                                <div class="form-group row text-left">
                                                     <div class="col-sm-6">
+                                                        <label for="dob" class="label-text">Date Of Birth</label>
                                                         <input type="date"
                                                             class="form-control form-control-user sub-calander @error('dob') is-invalid @enderror"
                                                             id="dob" placeholder="Date of Birth"
@@ -192,6 +207,7 @@
 
                                                     {{-- select Gender --}}
                                                     <div class="col-sm-6 mb-3 mb-sm-0">
+                                                        <label for="gender" class="label-text">Gender</label>
                                                         <select
                                                             class="form-control form-control-select @error('gender') is-invalid @enderror"
                                                             id="gender" wire:model.defer="gender">
@@ -209,11 +225,12 @@
                                                 </div>
 
 
-                                                <div class="form-group row">
+                                                <div class="form-group row text-left">
 
 
                                                     {{-- Select Curriculum --}}
                                                     <div class="col-sm-6">
+                                                        <label for="curriculum" class="label-text">Curriculum</label>
                                                         <select
                                                             class="form-control form-control-select select1 @error('curriculum') is-invalid @enderror"
                                                             id="curriculum" wire:model.defer="curriculum">
@@ -230,6 +247,7 @@
                                                     </div>
 
                                                     <div class="col-sm-6 mb-3 mb-sm-0">
+                                                        <label for="teachingLevel" class="label-text">Teaching Level</label>
                                                         <input type="text"
                                                             class="form-control form-control-user @error('teachingLevel') is-invalid @enderror"
                                                             id="teachingLevel" placeholder="Teaching Level"
@@ -244,7 +262,8 @@
                                                 </div>
 
 
-                                                <div class="form-group">
+                                                <div class="form-group text-left">
+                                                    <label for="institute" class="label-text">Institute</label>
                                                     <input type="text"
                                                         class="form-control form-control-user @error('institute') is-invalid @enderror"
                                                         id="institute" placeholder="Institute Name"
@@ -256,7 +275,8 @@
                                                     @enderror
                                                 </div>
 
-                                                <div class="form-group">
+                                                <div class="form-group text-left">
+                                                    <label for="address" class="label-text">Address</label>
                                                     <textarea class="form-control form-control-user @error('address') is-invalid @enderror" id="address"
                                                         placeholder="Address" wire:model.defer="address"></textarea>
 
@@ -266,8 +286,9 @@
                                                     @enderror
                                                 </div>
 
-                                                <div class="form-group row">
+                                                <div class="form-group row text-left">
                                                     <div class="col-sm-6 mb-3 mb-sm-0">
+                                                        <label for="password" class="label-text">Password</label>
                                                         <input type="password"
                                                             class="form-control form-control-user @error('password') is-invalid @enderror"
                                                             id="password" placeholder="Password"
@@ -279,6 +300,8 @@
                                                         @enderror
                                                     </div>
                                                     <div class="col-sm-6">
+                                                        <label for="password_confirmation" class="label-text">Password
+                                                            Confirmation</label>
                                                         <input type="password"
                                                             class="form-control form-control-user @error('password_confirmation') is-invalid @enderror"
                                                             id="password_confirmation"

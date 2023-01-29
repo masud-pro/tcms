@@ -129,7 +129,7 @@ class SMSController extends Controller {
         // dd($courseUsers);
 
         // $numbers = $courseUsers->count();
-        
+
         // dd($numbers);
         $send_to = $data['send_to'];
 // Father or mother
@@ -141,9 +141,9 @@ class SMSController extends Controller {
 
         // }
 
-    // dd($send_to);
+        // dd($send_to);
 
-        $smsCount = count($courseUsers)  * $numberOfSmsPerMessage;
+        $smsCount = count( $courseUsers ) * $numberOfSmsPerMessage;
 
         // $smsrow        = Option::where( "slug", "remaining_sms" )->first(); // Remaining SMS row
         $smsrow        = getTeacherSetting( 'remaining_sms' ); // Remaining SMS row
@@ -158,9 +158,6 @@ class SMSController extends Controller {
         if ( $smsCount > 0 ) {
 
             foreach ( $courseUsers as $user ) {
-
-                logger($user->$send_to);
-
                 $sms['number']  = $user->$send_to;
                 $sms['message'] = $data['message'];
                 ProcessSMS::dispatch( $sms );
@@ -181,9 +178,10 @@ class SMSController extends Controller {
             $remaining_sms = $remaining_sms - $smsCount;
 
             SMS::create( [
-                'for'     => $data['for'],
-                'count'   => $smsCount,
-                'message' => $data['message'],
+                'course_id' => $data['course_id'],
+                'for'       => $data['for'],
+                'count'     => $smsCount,
+                'message'   => $data['message'],
             ] );
 
             $smsrow->update( [
@@ -209,7 +207,7 @@ class SMSController extends Controller {
 
         $output = SMSController::sent_sdk( $numbers, $message );
 
-        if ( json_decode($output)->message == "Successfull" ) {
+        if ( json_decode( $output )->message == "Successfull" ) {
             return true;
         } else {
             return false;
@@ -224,10 +222,10 @@ class SMSController extends Controller {
      */
     public static function sent_sdk( $mobile_no, $message ) {
 
-        $ap_key='175589388382444820230124030139pmShsZYiQC'; 
-        $sender_id='361';
-        $user_email='thenibirahmed@gmail.com';
-        $response = techno_bulk_sms($ap_key,$sender_id,$mobile_no,$message,$user_email);
+        $ap_key     = '175589388382444820230124030139pmShsZYiQC';
+        $sender_id  = '361';
+        $user_email = 'thenibirahmed@gmail.com';
+        $response   = techno_bulk_sms( $ap_key, $sender_id, $mobile_no, $message, $user_email );
 
         return $response;
     }

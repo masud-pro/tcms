@@ -11,10 +11,10 @@ class VerifyCsrfToken extends Middleware {
      * @var array
      */
     protected $except = [
-        '/pay-via-ajax', 
-        '/success', 
-        '/cancel', 
-        '/fail', 
+        '/pay-via-ajax',
+        '/success',
+        '/cancel',
+        '/fail',
         '/ipn',
         '/aamarpay-success',
         '/aamarpay-fail',
@@ -24,5 +24,8 @@ class VerifyCsrfToken extends Middleware {
         '/sms/success',
         '/sms/failed',
         '/sms/cancel',
+        '/renew/success',
+        '/renew/failed',
+        '/renew/cancel',
     ];
 }

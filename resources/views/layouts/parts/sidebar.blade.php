@@ -76,8 +76,20 @@
                     <span>Subscription</span></a>
             </li>
 
+            <li class="nav-item {{ request()->routeIs('subscriber.index') ? 'active' : '' }} ">
+                <a class="nav-link" href="{{ route('subscriber.index') }}">
+                    <i class="fab fa-firefox-browser"></i>
+                    <span>Subscriber List</span></a>
+            </li>
 
-            <li class="nav-item">
+            <li class="nav-item {{ request()->routeIs('subscriber.transaction') ? 'active' : '' }} ">
+                <a class="nav-link" href="{{ route('subscriber.transaction') }}">
+                    <i class="fa-solid fa-robot"></i>
+                    <span>Admin Transactions</span></a>
+            </li>
+
+
+            {{-- <li class="nav-item">
 
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#subscriberManagement"
                     aria-expanded="true" aria-controls="subscriberManagement">
@@ -94,7 +106,7 @@
                     </div>
                 </div>
 
-            </li>
+            </li> --}}
             <hr class="sidebar-divider dropdown-divider">
         @endrole
 
@@ -234,14 +246,66 @@
 
 
             @if (hasTransactionsAccess())
-                <li class="nav-item {{ request()->routeIs('transactions') ? 'active' : '' }}">
+                {{-- <li class="nav-item {{ request()->routeIs('transactions') ? 'active' : '' }}">
 
                     <a class="nav-link" href="{{ route('transactions') }}">
                         <i class="fas fa-money-check-alt"></i>
                         <span>Transactions</span>
                     </a>
 
+                </li> --}}
+
+                {{--  --}}
+
+                <li class="nav-item {{ request()->is('*transactions') ? 'active' : '' }}">
+
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse"
+                        data-target="#transactionCollapse" aria-expanded="true" aria-controls="transactionCollapse">
+                        <i class="fas fa-money-check-alt"></i>
+                        <span>Transactions</span>
+                    </a>
+
+                    <div id="transactionCollapse"
+                        class="collapse {{ request()->routeIs('*transactions') ? 'show' : '' }}"
+                        aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Transactions Operations:</h6>
+                            <a class="collapse-item {{ request()->routeIs('student.transactions') ? 'active' : '' }}"
+                                href="{{ route('student.transactions') }}">Student Transactions</a>
+                            <a class="collapse-item {{ request()->routeIs('my.transactions') ? 'active' : '' }}"
+                                href="{{ route('my.transactions') }}">My Transactions</a>
+                        </div>
+                    </div>
+
                 </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                {{--  --}}
             @endif
 
             @if (hasMassageAccess())

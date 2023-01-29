@@ -68,6 +68,13 @@
             padding-bottom: 12px;
             margin-left: 26px;
         }
+
+        .label-text {
+            font-size: 12px !important;
+            font-weight: 600 !important;
+            color: #555 !important;
+            margin-bottom: 0;
+        }
     </style>
 </head>
 

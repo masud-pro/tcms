@@ -18,10 +18,9 @@
         <table class="table table-hover table-bordered" width="100%" cellspacing="0">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Subscriber Name</th>
+                    <th>Transaction ID</th>
                     <th>Purpose Of Payment</th>
-                    <th>Package Name</th>
+                    {{-- <th>Package Name</th> --}}
                     <th>Last Payment Date</th>
                     <th>Extended Date</th>
                     <th>Amount</th>
@@ -32,10 +31,9 @@
             </thead>
             <tfoot>
                 <tr>
-                    <th>ID</th>
-                    <th>Subscriber Name</th>
+                    <th>Transaction ID</th>
                     <th>Purpose Of Payment</th>
-                    <th>Package Name</th>
+                    {{-- <th>Package Name</th> --}}
                     <th>Last Payment Date</th>
                     <th>Extended Date</th>
                     <th>Amount</th>
@@ -46,31 +44,32 @@
             </tfoot>
             <tbody>
 
-                @forelse  ($subscriberUsers as $subscriber)
+                @forelse  ($ownTransaction as $transaction)
                     <tr>
                         <td>
-                            {{ $subscriber->id }}
+                            {{ $transaction->id }}
                         </td>
 
-                        <td><b>{{ $subscriber->subscriptionUser->user->name ?? 'Not Found' }}</b></td>
-                        <td><b>{{ $subscriber->purpose ?? 'Regular Transaction' }}</b></td>
-                        <td><b>{{ $subscriber->subscriptionUser->subscription->name ?? 'Not Found' }}</b></td>
+                        {{-- <td><b>{{ $transaction->subscriptionUser->user->name ?? 'Not Found' }}</b></td> --}}
+                        <td><b>{{ $transaction->purpose ?? 'Not Found' }}</b></td>
+                        {{-- <td><b>{{ $transaction->subscriptionUser->subscription->name ?? 'Not Found' }}</b></td> --}}
                         <td>
-                            {{ Carbon\Carbon::parse($subscriber->to_date)->format('d M Y') }}
+                            {{ Carbon\Carbon::parse($transaction->to_date)->format('d M Y') }}
                         </td>
-                        
-                        
+
+
                         <td>
-                            {{ Carbon\Carbon::parse($subscriber->from_date)->format('d M Y') }}
+                            {{ Carbon\Carbon::parse($transaction->from_date)->format('d M Y') }}
                         </td>
                         <td>
-                            {{ $subscriber->total_price}}
+                            {{ $transaction->total_price }}
                         </td>
 
                         <td>
-                            {{ $subscriber->status == 1 ? 'Paid' : 'Unpaid' }}
+                            {{ $transaction->status == 1 ? 'Paid' : 'Unpaid' }}
                         </td>
-                    </tr> 
+
+                    </tr>
                 @empty
                     <tr>
                         <td class="text-center" colspan="9"> No matching records found </td>
@@ -78,7 +77,7 @@
                 @endforelse
             </tbody>
         </table>
-        {{ $subscriberUsers->links() }}
+        {{ $ownTransaction->links() }}
     </div>
 </div>
 
@@ -91,6 +90,6 @@
 
 
 @push('styles-before')
-@livewireStyles()
+    @livewireStyles()
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 @endpush

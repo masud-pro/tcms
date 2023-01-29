@@ -238,6 +238,8 @@ class SslCommerzNotification extends AbstractSslCommerz
             $this->successUrl = url('/') . '/subscription/success';
         }elseif($this->paymentType === 'sms'){
             $this->successUrl = url('/') . '/sms/success';
+        }elseif($this->paymentType === 'renew'){
+            $this->successUrl = url('/') . '/renew/success';
         }else{
             $this->successUrl = url('/') . $this->config['success_url'];
         }
@@ -254,6 +256,8 @@ class SslCommerzNotification extends AbstractSslCommerz
             $this->failedUrl = url('/') . '/subscription/failed';
         }elseif($this->paymentType === 'sms'){
             $this->failedUrl = url('/') . '/sms/failed';
+        }elseif($this->paymentType === 'renew'){
+            $this->failedUrl = url('/') . '/renew/failed';
         }else{
             $this->failedUrl = url('/') . $this->config['failed_url'];
         }
@@ -270,6 +274,8 @@ class SslCommerzNotification extends AbstractSslCommerz
             $this->cancelUrl = url('/') . '/subscription/cancel';
         }elseif($this->paymentType === 'sms'){
             $this->cancelUrl = url('/') . '/sms/cancel';
+        }elseif($this->paymentType === 'renew'){
+            $this->cancelUrl = url('/') . '/renew/cancel';
         }else{
             $this->cancelUrl = url('/') . $this->config['cancel_url'];
         }

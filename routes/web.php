@@ -98,7 +98,7 @@ Route::middleware( ['auth:sanctum'] )->group( function () {
 } );
 
 // SSLCOMMERZ
-Route::view('/example', 'exampleHosted');
+Route::view( '/example', 'exampleHosted' );
 Route::post( '/pay', [SslCommerzPaymentController::class, 'index'] );
 
 Route::post( '/pay-via-ajax', [SslCommerzPaymentController::class, 'payViaAjax'] );
@@ -115,7 +115,12 @@ Route::post( '/subscription/cancel', [SslCommerzPaymentController::class, 'subsc
 // SMS Payment
 Route::post( '/sms/success', [SslCommerzPaymentController::class, 'sms_success'] );
 Route::post( '/sms/failed', [SslCommerzPaymentController::class, 'sms_fail'] );
-Route::post( '/sms/cancel', [SslCommerzPaymentController::class, 'sms_cancel'] );  
+Route::post( '/sms/cancel', [SslCommerzPaymentController::class, 'sms_cancel'] );
+
+// Subscription Renew Payment
+Route::post( '/renew/success', [SslCommerzPaymentController::class, 'renew_success'] );
+Route::post( '/renew/failed', [SslCommerzPaymentController::class, 'renew_fail'] );
+Route::post( '/renew/cancel', [SslCommerzPaymentController::class, 'renew_cancel'] );
 
 Route::post( '/ipn', [SslCommerzPaymentController::class, 'ipn'] );
 
@@ -140,17 +145,16 @@ Route::middleware( ['auth:sanctum'] )->group( function () {
     // Route::resource( 'subscriber', SubscriberController::class );
     // Route::get( 'permission', [UserRoleController::class, 'rolePermission'] )->name( 'role.permission' );
 
-    Route::group(['middleware' => ['role:Super Admin']], function () {
+    Route::group( ['middleware' => ['role:Super Admin']], function () {
         Route::resource( 'role', UserRoleController::class );
         Route::resource( 'subscription', SubscriptionController::class );
         Route::resource( 'subscriber', SubscriberController::class );
         Route::get( 'permission', [UserRoleController::class, 'rolePermission'] )->name( 'role.permission' );
-    });
+    } );
 
     Route::get( 'subscriber-transaction', [SubscriberController::class, 'subscriberTransaction'] )->name( 'subscriber.transaction' );
     Route::get( 'subscriber-renew', [SubscriberController::class, 'subscriberSubscriptionRenew'] )->name( 'subscriber.subscription.renew' );
 
-    
 } );
 
 // Route::get('sms', function(){

@@ -32,6 +32,7 @@ class AdministratorSeeder extends Seeder {
             [
                 'name'              => 'Test Teacher',
                 'email'             => 'test@teacher.com',
+                'phone_no'          => '01743203343',
                 'email_verified_at' => now(),
                 'role'              => 'Admin',
                 'password'          => Hash::make( 'password' ),

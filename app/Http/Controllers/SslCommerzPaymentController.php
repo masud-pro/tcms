@@ -434,7 +434,7 @@ class SslCommerzPaymentController extends Controller {
     public function subscription_success(Request $request){
 
         $admin_account_id  = $request->input( 'value_a' );
-        $user_id  = $request->input( 'value_b' );
+        $user_id        = $request->input( 'value_b' );
         $tran_id        = $request->input( 'tran_id' );
         $amount         = $request->input( 'amount' );
         $currency       = $request->input( 'currency' );
@@ -575,4 +575,159 @@ class SslCommerzPaymentController extends Controller {
         return view( "ms.payment-gateway.cancel" );
     }
 
+
+    /**
+     * subscription Renew of subscriber endpoint
+     * 
+     * 
+     */
+
+    public static function renew_subscription_payment( $request){
+        $data = $request;
+        # Here you have to receive all the order data to initiate the payment.
+
+        # Let's say, your oder transaction information's are saving in a table called "orders"
+        # In "orders" table, order unique identity is "transaction_id". "status" field contain status of the transaction, "amount" is the order amount to be paid and "currency" is for storing Site Currency which will be checked with paid currency.
+
+        $post_data                 = array();
+        $post_data['total_amount'] = $data['amount']; # You cant not pay less than 10
+        $post_data['currency']     = "BDT";
+        $post_data['tran_id']      = md5( uniqid() );
+
+        // tran_id must be unique
+
+        # CUSTOMER INFORMATION
+        $post_data['cus_name']     = $data['name'];
+        $post_data['cus_email']    = $data['email'];
+        $post_data['cus_add1']     = $data['address'];
+        $post_data['cus_add2']     = "";
+        $post_data['cus_city']     = "";
+        $post_data['cus_state']    = "";
+        $post_data['cus_postcode'] = "";
+        $post_data['cus_country']  = "Bangladesh";
+        $post_data['cus_phone']    = $data['phone_no'];
+        $post_data['cus_fax']      = "";
+
+        # SHIPMENT INFORMATION
+        $post_data['ship_name']     = "No Shipping";
+        $post_data['ship_add1']     = "Dhaka";
+        $post_data['ship_add2']     = "Dhaka";
+        $post_data['ship_city']     = "Dhaka";
+        $post_data['ship_state']    = "Dhaka";
+        $post_data['ship_postcode'] = "1000";
+        $post_data['ship_phone']    = "";
+        $post_data['ship_country']  = "Bangladesh";
+
+        $post_data['shipping_method']  = "NO";
+        $post_data['product_name']     = "Teacher Subscription Renew";
+        $post_data['product_category'] = "Subscription Renew";
+        $post_data['product_profile']  = "virtual-goods";
+
+        # OPTIONAL PARAMETERS
+        $post_data['value_a'] = $data['admin_account_id'];
+        $post_data['value_b'] = $data['user_id'];
+        $post_data['value_c'] = "ref003";
+        $post_data['value_d'] = "ref004";
+
+        # Before  going to initiate the payment order status need to insert or update as Pending.
+        // dd($post_data);
+
+    
+        $sslc = new SslCommerzNotification('renew');
+        # initiate(Transaction Data , false: Redirect to SSLCOMMERZ gateway/ true: Show all the Payment gateway here )
+        $payment_options = $sslc->makePayment( $post_data );
+
+        return $payment_options;
+
+        if ( ! is_array( $payment_options ) ) {
+            print_r( $payment_options );
+            $payment_options = array();
+        }
+    
+   }
+
+    public function renew_success(Request $request){
+
+        $admin_account_id  = $request->input( 'value_a' );
+        $user_id           = $request->input( 'value_b' );
+        $tran_id           = $request->input( 'tran_id' );
+        $amount            = $request->input( 'amount' );
+        $currency          = $request->input( 'currency' );
+        $cardType          = $request->input( 'card_type' );
+        $storeAmount       = $request->input( 'store_amount' );
+        $currencyAmount    = $request->input( 'currency_amount' );
+
+        $sslc = new SslCommerzNotification();
+
+        $validation = $sslc->orderValidate( $request->all(), $tran_id, $amount, $currency );
+
+        // dd( $validation );
+
+        if ( $validation == TRUE ) {
+            $adminAccount = AdminAccount::find( $admin_account_id );
+            $adminAccount->update( ['status' => 1] );
+
+            $user = User::find( $user_id  );
+            Auth::login( $user );
+
+            // $setting = getSettingValue( 'remaining_sms' );
+            // $afterBuyNowSms['value'] = $setting->value + $smsAmount;
+            // $setting->update( $afterBuyNowSms );
+            // session()->flash( 'success', 'You Purchased ' . $smsAmount . ' SMS Successfully.' );
+            return redirect()->route( 'my.transactions' );
+        }else{
+            return view( "ms.payment-gateway.failed" );
+        }
+    }
+
+    public function renew_fail() {        
+        return view( "ms.payment-gateway.failed" );
+    }
+
+    public function renew_cancel() {
+        return view( "ms.payment-gateway.cancel" );
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
 }

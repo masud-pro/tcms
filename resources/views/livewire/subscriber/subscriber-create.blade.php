@@ -84,7 +84,7 @@
 
                             <div class="col-md-4">
                                 <label for="price">Subscription Price</label>
-                                <input class="form-control @error('price') is-invalid @enderror" id="price" readonly
+                                <input class="form-control @error('price') is-invalid @enderror" id="price"
                                     wire:model.lazy="price" value="{{ old('price') }}" type="number">
                                 @error('price')
                                     <p class="text-danger small mt-1">{{ $message }}</p>
@@ -121,6 +121,16 @@
                                     id="monthCount" type="number" placeholder="Enter Month Amount"
                                     value="{{ old('monthCount') }}" wire:model="monthCount">
                                 @error('monthCount')
+                                    <p class="text-danger small mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>   
+                            
+                            <div class="col-md-4">
+                                <label for="specialPrice">Special Price</label>
+                                <input class="form-control @error('specialPrice') is-invalid @enderror" {{ $specialPriceField == true ? 'disabled' : ''}}  min="0"
+                                    id="specialPrice" type="number" placeholder="Enter Special Price"
+                                    value="{{ old('specialPrice') }}" wire:model="specialPrice">
+                                @error('specialPrice')
                                     <p class="text-danger small mt-1">{{ $message }}</p>
                                 @enderror
                             </div>

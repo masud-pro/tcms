@@ -1,21 +1,17 @@
-<?php 
+<?php
 
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SMSController;
+use App\Http\Controllers\FeedController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\CourseController;
+use App\Http\Controllers\OptionController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AssessmentController;
 use App\Http\Controllers\AssignmentController;
-use App\Http\Controllers\AssignmentFileController;
-use App\Http\Controllers\AssignmentResponseController;
 use App\Http\Controllers\AttendanceController;
-use App\Http\Controllers\CourseController;
-use App\Http\Controllers\FeedController;
-use App\Http\Controllers\OptionController;
-use App\Http\Controllers\SMSController;
-use App\Http\Controllers\SslCommerzPaymentController;
-use App\Http\Controllers\SystemController;
-use App\Http\Controllers\UserController;
-use App\Models\Account;
-use App\Models\Option;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SubscriberController;
+use App\Http\Controllers\AssignmentResponseController;
 
 // Courses
 Route::get( "archived-courses", [CourseController::class, "archived"] )->name( "archived.course" );
@@ -49,7 +45,7 @@ Route::patch( 'account/change', [AccountController::class, "change"] )->name( "a
 Route::get( 'accounts', [AccountController::class, "index"] )->name( "accounts.index" );
 Route::get( 'account/add-manually', [AccountController::class, 'create_manually'] )->name( "account.manual.create" );
 Route::get( 'account/individual-student', [AccountController::class, "individual_account"] )->name( "account.student-account" );
-Route::get( 'account/transactions', [AccountController::class, "transactions"] )->name( "transactions" );
+Route::get( 'account/transactions', [AccountController::class, "transactions"] )->name( "student.transactions" );
 Route::post( 'account/{course}/regenerate', [AccountController::class, "regenerate"] )->name( "account.regenerate" );
 Route::post( 'account/{course}/generate-new', [AccountController::class, "regenerate_new"] )->name( "account.regenerate.new" );
 Route::post( 'account/sms-due-report/{parent}', [AccountController::class, "send_sms_due_report"] )->name( "account.sms-report" );
@@ -80,9 +76,12 @@ Route::get( 'all-sms', [SMSController::class, 'index'] )->name( 'sms.index' );
 Route::get( 'batch-sms', [SMSController::class, 'create_batch_sms'] )->name( 'sms.batch' );
 Route::post( 'batch-sms', [SMSController::class, 'send_batch_sms'] )->name( 'batch.sms.send' );
 Route::post( 'send/results', [SMSController::class, 'send_exam_results'] )->name( 'exam.result.sms' );
-Route::post('send-all-absent-sms,{send_to}', [AccountController::class,'all_students_account_sms'])->name('send.all.student.account.sms');
+Route::post( 'send-all-absent-sms,{send_to}', [AccountController::class, 'all_students_account_sms'] )->name( 'send.all.student.account.sms' );
 
 // Filemanager
 Route::get( 'filemanager', function () {
     return view( "ms.filemanager.filemanager" );
-} )->name( "filemanager" )->middleware('check_access:file_manager.individual_teacher');
+} )->name( "filemanager" )->middleware( 'check_access:file_manager.individual_teacher' );
+
+// Own Account Transaction
+Route::get( 'my-transactions', [SubscriberController::class, 'subscriberOwnTransaction'] )->name( 'my.transactions' );
