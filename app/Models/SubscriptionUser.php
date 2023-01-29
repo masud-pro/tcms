@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -17,10 +18,9 @@ class SubscriptionUser extends Model {
         'subscription_id',
         'expiry_date',
         'status',
-        'special_price'
+        'special_price',
     ];
 
-    
     /**
      * @param $query
      * @param $search
@@ -32,7 +32,6 @@ class SubscriptionUser extends Model {
         } );
     }
 
-
     /**
      * Get the assignment that owns the Assessment
      *
@@ -42,7 +41,6 @@ class SubscriptionUser extends Model {
         return $this->belongsTo( User::class );
     }
 
-    
     /**
      * Get the assignment that owns the Assessment
      *
@@ -52,5 +50,13 @@ class SubscriptionUser extends Model {
         return $this->belongsTo( Subscription::class );
     }
 
-    
+    /**
+     * Get the assignment that owns the Assessment
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function transactions(): HasMany {
+        return $this->hasMany( AdminAccount::class );
+    }
+
 }

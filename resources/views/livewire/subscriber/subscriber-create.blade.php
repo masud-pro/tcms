@@ -84,7 +84,7 @@
 
                             <div class="col-md-4">
                                 <label for="price">Subscription Price</label>
-                                <input class="form-control @error('price') is-invalid @enderror" id="price" readonly
+                                <input class="form-control @error('price') is-invalid @enderror" id="price"
                                     wire:model.lazy="price" value="{{ old('price') }}" type="number">
                                 @error('price')
                                     <p class="text-danger small mt-1">{{ $message }}</p>

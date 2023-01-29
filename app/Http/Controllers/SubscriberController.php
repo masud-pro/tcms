@@ -69,17 +69,19 @@ class SubscriberController extends Controller {
         //
     }
 
-
     /**
      * this method is for subscriber transaction list ..
-     * 
+     *
      */
     public function subscriberTransaction() {
         return view( 'ms.subscriber.subscriberTransaction' );
     }
 
-    public function subscriberSubscriptionRenew()
-    {
-        return view('ms.subscriber.subscriberSubscriptionRenew');
+    public function subscriberSubscriptionRenew() {
+        return view( 'ms.subscriber.subscriberSubscriptionRenew' );
+    }
+
+    public function subscriberOwnTransaction() {
+        return view('ms.subscriber.subscriberOwnTransaction' );
     }
 }

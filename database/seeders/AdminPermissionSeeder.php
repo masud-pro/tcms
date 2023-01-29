@@ -183,6 +183,7 @@ class AdminPermissionSeeder extends Seeder {
                 'email'             => 'test@teacher.com',
                 'email_verified_at' => now(),
                 'role'              => 'Admin',
+                'phone_no'          => '01743203343',
                 'password'          => Hash::make( 'password' ),
                 'created_at'        => now(),
             ]
@@ -195,6 +196,7 @@ class AdminPermissionSeeder extends Seeder {
             [
                 'name'              => 'Test Teacher Two',
                 'email'             => 'test@teacher2.com',
+                'phone_no'          => '01818313458',
                 'email_verified_at' => now(),
                 'role'              => 'Admin',
                 'password'          => Hash::make( 'password' ),
