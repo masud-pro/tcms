@@ -46,6 +46,28 @@
 
             </li>
 
+            {{-- <hr class="sidebar-divider dropdown-divider"> --}}
+
+            <!-- Nav Item - Dashboard -->
+
+            <li class="nav-item {{ request()->routeIs('subscriber.index') ? 'active' : '' }} ">
+                <a class="nav-link" href="{{ route('subscriber.index') }}">
+                    <i class="fab fa-firefox-browser"></i>
+                    <span>Subscriber List</span></a>
+            </li>
+
+            <li class="nav-item {{ request()->routeIs('subscriber.transaction') ? 'active' : '' }} ">
+                <a class="nav-link" href="{{ route('subscriber.transaction') }}">
+                    <i class="fa-solid fa-robot"></i>
+                    <span>Admin Transactions</span></a>
+            </li>
+
+            <li class="nav-item {{ request()->routeIs('subscription.*') ? 'active' : '' }} ">
+                <a class="nav-link" href="{{ route('subscription.index') }}">
+                    <i class="fas fa-sack-dollar"></i>
+                    <span>Subscription Plans</span></a>
+            </li>
+
             <li class="nav-item {{ request()->is('role') ? 'active' : '' }}">
 
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#roleManagement"
@@ -65,27 +87,6 @@
                     </div>
                 </div>
 
-            </li>
-
-            {{-- <hr class="sidebar-divider dropdown-divider"> --}}
-
-            <!-- Nav Item - Dashboard -->
-            <li class="nav-item {{ request()->routeIs('subscription.*') ? 'active' : '' }} ">
-                <a class="nav-link" href="{{ route('subscription.index') }}">
-                    <i class="fas fa-sack-dollar"></i>
-                    <span>Subscription</span></a>
-            </li>
-
-            <li class="nav-item {{ request()->routeIs('subscriber.index') ? 'active' : '' }} ">
-                <a class="nav-link" href="{{ route('subscriber.index') }}">
-                    <i class="fab fa-firefox-browser"></i>
-                    <span>Subscriber List</span></a>
-            </li>
-
-            <li class="nav-item {{ request()->routeIs('subscriber.transaction') ? 'active' : '' }} ">
-                <a class="nav-link" href="{{ route('subscriber.transaction') }}">
-                    <i class="fa-solid fa-robot"></i>
-                    <span>Admin Transactions</span></a>
             </li>
 
 
@@ -306,15 +307,13 @@
 
             @if (hasFileManagerAccess())
                 <li class="nav-item {{ request()->routeIs('filemanager') ? 'active' : '' }}">
-
                     <a class="nav-link" href="{{ route('filemanager') }}">
                         <i class="fas fa-folder-open"></i>
                         <span>File Manager</span>
                     </a>
-
-
                 </li>
             @endif
+
 
             @if (hasSettingAccess())
                 <li class="nav-item {{ request()->routeIs('settings*') ? 'active' : '' }}">

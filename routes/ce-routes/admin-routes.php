@@ -80,8 +80,15 @@ Route::post( 'send-all-absent-sms,{send_to}', [AccountController::class, 'all_st
 
 // Filemanager
 Route::get( 'filemanager', function () {
+    if(!isSuperAdmin()){
+        return view( "ms.filemanager.user-filemanager" );
+    }
     return view( "ms.filemanager.filemanager" );
-} )->name( "filemanager" )->middleware( 'check_access:file_manager.individual_teacher' );
+} )->name( "filemanager" )->middleware('check_access:file_manager.individual_teacher');
 
 // Own Account Transaction
 Route::get( 'my-transactions', [SubscriberController::class, 'subscriberOwnTransaction'] )->name( 'my.transactions' );
+
+Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
+    \UniSharp\LaravelFilemanager\Lfm::routes();
+});

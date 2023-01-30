@@ -111,6 +111,10 @@ function hasFileManagerAccess() {
     return Auth::user()->can( ['file_manager.individual_teacher'] );
 }
 
+function isSuperAdmin(){
+    return Auth::user()->hasRole( ['Super Admin'] );
+}
+
 /**
  * only teacher can access those options with renew from sidebar.
  */
@@ -220,11 +224,11 @@ function getSubdomainUser(){
 }
 
 function getUserFileManagerFolder(){
-    $user = getSubdomainUser();
+    $user = auth()->user();
     if( $user->hasRole('Teacher') ){
-        return storage_path( 'app/public/' .$user->teacherInfo->username);
+        return $user->teacherInfo->username;
     }else{
-        return storage_path( 'app/public/');
+        return $user->id;
     }
 }   
 
