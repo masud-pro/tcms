@@ -108,9 +108,7 @@ function hasMassageAccess() {
  * only teacher can access those options from sidebar.
  */
 function hasFileManagerAccess() {
-    return Auth::user()->can( [
-        'file_manager.individual_teacher',
-    ] ) && ( Auth::user()->hasRole( ['Teacher'] ) );
+    return Auth::user()->can( ['file_manager.individual_teacher'] );
 }
 
 /**
