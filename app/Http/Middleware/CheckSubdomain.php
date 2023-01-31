@@ -20,7 +20,6 @@ class CheckSubdomain
         $user = auth()->user();
         if($user->hasRole('Teacher')){
             $domainToBe = getToBeSubdomain($user->teacherInfo->username);
-            dd($domainToBe, request()->root() , $user->teacherInfo->username);
             if( request()->root() !== $domainToBe ){
                 auth('web')->logout();
                 return redirect('/login');
