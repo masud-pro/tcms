@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Account;
-use App\Models\Course;
-use App\Models\Option;
-use App\Models\Order;
+use Carbon\Carbon;
 use App\Models\SMS;
 use App\Models\User;
-use Carbon\Carbon;
+use App\Models\Order;
+use App\Models\Course;
+use App\Models\Account;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -251,10 +250,10 @@ class AccountController extends Controller {
             'account_id'     => "required",
         ] );
 
-        $data['user_id'] = Auth::user()->id;
+        $data['user_id']    = Auth::user()->id;
         $data['teacher_id'] = Auth::user()->teacher_id;
-        $data['status']  = "Pending";
-        $data['amount']  = Account::findOrFail( $data['account_id'] )->paid_amount;
+        $data['status']     = "Pending";
+        $data['amount']     = Account::findOrFail( $data['account_id'] )->paid_amount;
 
         Order::create( $data );
 
@@ -267,7 +266,7 @@ class AccountController extends Controller {
 
     public function transactions() {
         return view( "ms.transactions.all-transactions", [
-            "transactions" => Order::where('teacher_id', auth()->user()->id)->latest()->simplePaginate( 20 ),
+            "transactions" => Order::where( 'teacher_id', auth()->user()->id )->latest()->simplePaginate( 20 ),
         ] );
 
     }
@@ -353,6 +352,9 @@ class AccountController extends Controller {
 
     }
 
+    /**
+     * @param $send_to
+     */
     public function all_students_account_sms( $send_to ) {
         $students = User::where( 'role', 'Student' )->whereHas( 'payment', function ( $query ) {
             $query->where( 'status', 'Unpaid' );
@@ -411,7 +413,7 @@ class AccountController extends Controller {
         foreach ( $courses as $course ) {
             $accounts = Account::whereMonth( "month", Carbon::today() )->where( "course_id", $course->id )->pluck( "id" );
 
-            if($accounts->count() === 0){
+            if ( $accounts->count() === 0 ) {
                 generate_payments( $course );
             }
         }
@@ -430,23 +432,23 @@ class AccountController extends Controller {
      */
     public function create( Course $course ) {
         if ( $course->type == "Monthly" ) {
-            
+
             $accounts = Account::whereMonth( "month", Carbon::today() )->where( "course_id", $course->id )->get();
 
-            if($accounts->count() === 0){
+            if ( $accounts->count() === 0 ) {
                 $generated = generate_payments( $course );
             }
 
-            if ( $generated ) { // If generated then show them the page
+            if ( isset( $generated ) ) { // If generated then show them the page
 
                 return view( "ms.account.account-index", [
-                    "accounts" => $this->get_account_index_data($course),
+                    "accounts" => $this->get_account_index_data( $course ),
                 ] );
 
             } else { // or show the previous
 
                 return view( "ms.account.account-index", [
-                    "accounts" => $this->get_account_index_data($course),
+                    "accounts" => $this->get_account_index_data( $course ),
                 ] );
             }
 
@@ -454,11 +456,11 @@ class AccountController extends Controller {
 
             $accounts = Account::where( "course_id", $course->id )->get();
 
-            if( $accounts->count() === 0 ){
+            if ( $accounts->count() === 0 ) {
                 $generated = generate_payments( $course );
             }
 
-            if ( $generated ) { // If generated then show them a page
+            if ( isset( $generated ) ) { // If generated then show them a page
 
                 return view( "ms.account.account-index", [
                     "accounts" => Account::where( "course_id", $course->id )->get(),
@@ -476,6 +478,9 @@ class AccountController extends Controller {
 
     }
 
+    /**
+     * @param $course
+     */
     public function get_account_index_data( $course ) {
         return Account::select( ["accounts.*", "accounts.id as account_id", "users.name as user_name", "users.email as user_email"] )
             ->with( "user" )
