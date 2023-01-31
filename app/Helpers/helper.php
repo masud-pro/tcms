@@ -25,9 +25,11 @@ function hasCourseAccess() {
     // auth()->user()->can('edit articles');
 }
 
-
-function getToBeSubdomain($username){
-    return str_replace( '://', '://'. $username . '.', config('app.url') );
+/**
+ * @param $username
+ */
+function getToBeSubdomain( $username ) {
+    return str_replace( '://', '://' . $username . '.', config( 'app.url' ) );
 }
 
 // 'courses.index',
@@ -111,7 +113,7 @@ function hasFileManagerAccess() {
     return Auth::user()->can( ['file_manager.individual_teacher'] );
 }
 
-function isSuperAdmin(){
+function isSuperAdmin() {
     return Auth::user()->hasRole( ['Super Admin'] );
 }
 
@@ -131,12 +133,12 @@ function getTeacherSetting( $settingSlug, $user = null ) {
 
     $optionId = Option::where( "slug", $settingSlug )->first()->id;
 
-    if(!$user){
-        if( auth()->user()->hasRole( ['Teacher'] ) ){
+    if ( !$user ) {
+        if ( auth()->user()->hasRole( ['Teacher'] ) ) {
             $user = auth()->user();
-        }elseif( auth()->user()->hasRole( ['Student'] ) ){
+        } elseif ( auth()->user()->hasRole( ['Student'] ) ) {
             $user = auth()->user()->teacher;
-        }else{
+        } else {
             $user = auth()->user();
         }
     }
@@ -144,10 +146,14 @@ function getTeacherSetting( $settingSlug, $user = null ) {
     return $user->load( 'settings.option' )->settings->where( "option_id", $optionId )->first();
 }
 
-function setTeacherSetting($settingSlug, $teacherId){
+/**
+ * @param $settingSlug
+ * @param $teacherId
+ */
+function setTeacherSetting( $settingSlug, $teacherId ) {
     $optionId = Option::where( "slug", $settingSlug )->first()->id;
 
-    $user = User::find($teacherId);
+    $user = User::find( $teacherId );
 
     return Setting::where( 'user_id', $user->id )->where( 'option_id', $optionId )->update( [
         'value' => 0,
@@ -155,38 +161,49 @@ function setTeacherSetting($settingSlug, $teacherId){
 
 }
 
-
-function techno_bulk_sms($ap_key,$sender_id,$mobile_no,$message,$user_email){
-    $url = 'https://24bulksms.com/24bulksms/api/api-sms-send';
-    $data = array('api_key' => $ap_key,
-     'sender_id' => $sender_id,
-     'message' => $message,
-     'mobile_no' =>$mobile_no,
-     'user_email'=> $user_email		
-     );
+/**
+ * @param  $ap_key
+ * @param  $sender_id
+ * @param  $mobile_no
+ * @param  $message
+ * @param  $user_email
+ * @return mixed
+ */
+function techno_bulk_sms( $ap_key, $sender_id, $mobile_no, $message, $user_email ) {
+    $url  = 'https://24bulksms.com/24bulksms/api/api-sms-send';
+    $data = ['api_key' => $ap_key,
+        'sender_id'        => $sender_id,
+        'message'          => $message,
+        'mobile_no'        => $mobile_no,
+        'user_email'       => $user_email,
+    ];
 
     // use key 'http' even if you send the request to https://...
-     $curl = curl_init($url);
-    curl_setopt($curl, CURLOPT_POST, true);
-    curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
-    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);     
-    $output = curl_exec($curl);
-    curl_close($curl);
-    return $output; 
+    $curl = curl_init( $url );
+    curl_setopt( $curl, CURLOPT_POST, true );
+    curl_setopt( $curl, CURLOPT_POSTFIELDS, $data );
+    curl_setopt( $curl, CURLOPT_RETURNTRANSFER, TRUE );
+    curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, false );
+    curl_setopt( $curl, CURLOPT_SSL_VERIFYHOST, false );
+    $output = curl_exec( $curl );
+    curl_close( $curl );
+    return $output;
 }
 
-
-function getSubdomain(){
-    $subdomain = explode('.', $_SERVER['HTTP_HOST'])[0];
+/**
+ * @return mixed
+ */
+function getSubdomain() {
+    $subdomain = explode( '.', $_SERVER['HTTP_HOST'] )[0];
     return $subdomain;
 }
 
-
+/**
+ * @param $course
+ */
 function generate_payments( $course ) {
 
-    if( $course->should_generate_payments === 0 ){
+    if ( $course->should_generate_payments === 0 ) {
         return false;
     }
 
@@ -217,19 +234,22 @@ function generate_payments( $course ) {
 
 }
 
-function getSubdomainUser(){
-    return User::whereHas('teacherInfo', function($query){
-        $query->where('username', getSubdomain());
-    })->first();
+function getSubdomainUser() {
+    return User::whereHas( 'teacherInfo', function ( $query ) {
+        $query->where( 'username', getSubdomain() );
+    } )->first();
 }
 
-function getUserFileManagerFolder(){
+/**
+ * @return mixed
+ */
+function getUserFileManagerFolder() {
     $user = auth()->user();
-    if( $user->hasRole('Teacher') ){
+    if ( $user->hasRole( 'Teacher' ) ) {
         return $user->teacherInfo->username;
-    }else{
+    } else {
         return $user->id;
     }
-}   
+}
 
 // End of Helper Functions

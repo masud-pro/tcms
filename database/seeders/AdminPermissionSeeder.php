@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\TeacherInfo;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use App\Traits\DefaultSettingTraits;
@@ -13,12 +14,14 @@ use Spatie\Permission\PermissionRegistrar;
 class AdminPermissionSeeder extends Seeder {
 
     use DefaultSettingTraits;
+
     /**
      * Run the database seeds.
      *
      * @return void
      */
     public function run() {
+        $faker = \Faker\Factory::create();
         // Reset cached roles and permissions
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
@@ -189,6 +192,19 @@ class AdminPermissionSeeder extends Seeder {
             ]
         );
 
+        $teacherInfo = [
+            'user_id'         => $teacher->id,
+            'bank_account_no' => $faker->bankAccountNumber,
+            'nid'             => $faker->numberBetween( $min = 1000, $max = 9000 ),
+            'nid_img'         => $faker->imageUrl( $width = 640, $height = 480 ),
+            'institute'       => 'the daily academy',
+            'curriculum'      => $faker->shuffle( 'bangla, english, other' ),
+            'teaching_level'  => '12',
+            'username'        => 'teacher1',
+        ];
+
+        TeacherInfo::create( $teacherInfo );
+
         $teacher->assignRole( 'Teacher' );
         $this->defaultSetting( $teacher->id );
 
@@ -203,6 +219,19 @@ class AdminPermissionSeeder extends Seeder {
                 'created_at'        => now(),
             ]
         );
+
+        $teacherInfo = [
+            'user_id'         => $teacher->id,
+            'bank_account_no' => $faker->bankAccountNumber,
+            'nid'             => $faker->numberBetween( $min = 1000, $max = 9000 ),
+            'nid_img'         => $faker->imageUrl( $width = 640, $height = 480 ),
+            'institute'       => 'the daily academy',
+            'curriculum'      => $faker->shuffle( 'bangla, english, other' ),
+            'teaching_level'  => '12',
+            'username'        => 'teacher2',
+        ];
+
+        TeacherInfo::create( $teacherInfo );
 
         $teacher->assignRole( 'Teacher' );
         $this->defaultSetting( $teacher->id );
