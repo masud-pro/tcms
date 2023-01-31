@@ -171,7 +171,7 @@ Route::get( 'clear', function () {
     Artisan::call( 'cache:clear' );
     Artisan::call( 'config:clear' );
     // session()->forget();
-    session()->flush();
+    // session()->flush();
     return "<h4> Everything cache clear </h4>";
 } );
 
