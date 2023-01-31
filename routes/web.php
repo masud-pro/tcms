@@ -1,9 +1,5 @@
 <?php
 
-use App\Models\User;
-use App\Models\Course;
-use App\Models\Option;
-use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\UserController;
@@ -30,19 +26,18 @@ use App\Http\Controllers\SslCommerzPaymentController;
 Route::get( '/', function () {
     $user = getSubdomainUser();
 
-    if($user){
-        $frontPageImage = getTeacherSetting('front_page_image', $user)->value;
-        $fontColor      = getTeacherSetting('front_page_font_color', $user)->value;
-    }else{
+    if ( $user ) {
+        $frontPageImage = getTeacherSetting( 'front_page_image', $user )->value;
+        $fontColor      = getTeacherSetting( 'front_page_font_color', $user )->value;
+    } else {
         $fontColor      = 'dark';
         $frontPageImage = 0;
     };
-    
 
     return view( 'welcome', [
         "frontPageImage" => $frontPageImage,
         "fontColor"      => $fontColor,
-        "teacher" => $user
+        "teacher"        => $user,
     ] );
 } );
 
@@ -53,7 +48,6 @@ Route::get( "/admin-reg", function () {
 Route::post( "admin-reg", [UserController::class, "store_admin"] )->name( "store.admin" );
 
 Route::middleware( ['auth:sanctum', 'verified', 'check_subdomain'] )->get( '/dashboard', [SystemController::class, 'dashboard'] )->name( 'dashboard' );
-
 
 Route::middleware( ['auth:sanctum', 'verified', 'check_subdomain'] )->group( function () {
 
@@ -79,8 +73,8 @@ Route::middleware( ['auth:sanctum', 'verified', 'check_subdomain'] )->group( fun
     Route::resource( 'subscription', SubscriptionController::class );
     Route::resource( 'subscriber', SubscriberController::class );
 
-    Route::get('subscriber-transaction',[SubscriberController::class, 'subscriberTransaction'])->name('subscriber.transaction');
-    Route::get('subscriber-renew',[SubscriberController::class, 'subscriberSubscriptionRenew'])->name('subscriber.subscription.renew');
+    Route::get( 'subscriber-transaction', [SubscriberController::class, 'subscriberTransaction'] )->name( 'subscriber.transaction' );
+    Route::get( 'subscriber-renew', [SubscriberController::class, 'subscriberSubscriptionRenew'] )->name( 'subscriber.subscription.renew' );
 
     Route::get( 'permission', [UserRoleController::class, 'rolePermission'] )->name( 'role.permission' );
 
@@ -166,7 +160,6 @@ Route::middleware( ['auth:sanctum'] )->group( function () {
 //     dd( Course::with( ['students'] )->toArray() );
 // } );
 
-
 // Route::get( 'nibir', function () {
 //     return Role::findByName( 'Teacher' )->permissions;
 // } )->middleware( 'check_access:create.courses' );
@@ -183,5 +176,4 @@ Route::get( 'clear', function () {
 // Route::view('test-sms', 'ms.sms.test');
 //
 
-Route::get( 'teacher-register', [SystemController::class, 'teacherRegister'] )->name('teacher.register')->middleware('guest');
-
+Route::get( 'teacher-register', [SystemController::class, 'teacherRegister'] )->name( 'teacher.register' )->middleware( 'guest' );
