@@ -35,10 +35,13 @@ class CoursePolicy {
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function view( User $user, Course $course ) {
-        return in_array( 
-            $user->id, 
-            $course->user->pluck( "id" )->toArray() 
-        );
+        if ( $user->role == "Teacher" ) {
+            return in_array( $course->id, $user->addedCourses->pluck( "id" )->toArray());
+        } elseif( $user->role == "Student") {
+            return in_array( $course->id, $user->course->pluck( "id" )->toArray());
+        }else{
+            return in_array( $course->id, $user->addedCourses->pluck( "id" )->toArray());
+        }
     }
 
     /**

@@ -35,7 +35,8 @@ class AccountPolicy {
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function view( User $user, Account $account ) {
-        return $user->id == $account->user_id;
+        return true;
+        // return $user->id == $account->user_id;
     }
 
     /**

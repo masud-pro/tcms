@@ -13,15 +13,15 @@ use Illuminate\Support\Facades\Auth;
  * @param Type $var
  */
 function hasCourseAccess() {
-    return Auth::user()->can(
-        ['courses.index',
+    return Auth::user()->can([
+            'courses.index',
             'courses.create',
             'courses.edit',
             'courses.destroy',
             'courses.archived',
             'courses.authorization_panel',
             'courses.authorize_users',
-        ] ) && ( Auth::user()->hasRole( ['Teacher'] ) );
+        ] );
     // auth()->user()->can('edit articles');
 }
 

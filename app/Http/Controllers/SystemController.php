@@ -89,7 +89,7 @@ class SystemController extends Controller {
 
             return view( 'dashboard', [
                 "courses"              => Auth::user()->course,
-                "pendingPayments"      => Auth::user()->payment()->select( 'status' )->whereMonth( "created_at", Carbon::today() )->where( "status", "Unpaid" )->count(),
+                "pendingPayments"      => Auth::user()->payment()->select( 'status' )->where( "status", "Unpaid" )->count(),
                 "missedAttendance"     => $absent,
                 "attendancePercentage" => sprintf( "%.1f", $attendancePercentage ),
                 "emoji"                => $emoji,
