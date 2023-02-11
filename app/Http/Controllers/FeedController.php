@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Feed;
 use App\Models\Course;
-use App\Models\Option;
 use App\Models\Account;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +18,7 @@ class FeedController extends Controller {
         $this->middleware( 'check_access:feed.edit', ['only' => ['edit', 'update']] );
         $this->middleware( 'check_access:feed.destroy', ['only' => ['destroy']] );
         $this->middleware( 'check_access:feed.create_link', ['only' => ['create_link', 'store_link']] );
-        $this->middleware( 'check_access:feed.edit_link', ['only' => ['edit_link' ,'update_link']] );
+        $this->middleware( 'check_access:feed.edit_link', ['only' => ['edit_link', 'update_link']] );
 
         // $this->middleware( 'check_access:feed.destroy_link', ['only' => ['destroy']] );
 
@@ -109,7 +108,7 @@ class FeedController extends Controller {
             "course"               => $course,
             "feeds"                => $course->feeds()->latest()->get(),
             "is_active"            => auth()->user()->course()->where( "course_id", $course->id )->pluck( "is_active" )->first(),
-            "canSeeFriends"        => getTeacherSetting('can_student_see_friends')->value ?? 0,
+            "canSeeFriends"        => getTeacherSetting( 'can_student_see_friends' )->value ?? 0,
             "attendancePercentage" => sprintf( "%.1f", $attendancePercentage ),
             "totalStudents"        => $totalStudents,
             "paid"                 => $paid,

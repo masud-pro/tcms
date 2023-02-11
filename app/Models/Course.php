@@ -8,6 +8,7 @@ use App\Models\Attendance;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -43,6 +44,16 @@ class Course extends Model {
         return $this->belongsToMany( User::class )->withPivot( "is_active" );
     }
 
+    /**
+     * Get the teacher that owns the Course
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function teacher(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'teacher_id', 'id');
+    }
+    
     /**
      * The user that belong to the Course
      *
