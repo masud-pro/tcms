@@ -27,7 +27,7 @@
                             </div>
 
 
-                            @if ( auth()->user()->role == "Admin" )
+                            @if ( auth()->user()->can('feed.edit') )
                                 <div class="dropdown no-arrow">
                                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
