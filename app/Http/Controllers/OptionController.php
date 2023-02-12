@@ -121,7 +121,7 @@ class OptionController extends Controller {
             if ( $slug == "front_page_image" ) {
                 Storage::delete( Setting::where( 'user_id', Auth::user()->id )->where( 'option_id', $optionId )->first()->value );
 
-                $option['value'] = $option['value']->store( Auth::user()->teacherInfo->username.'/images/front-page' );
+                $option['value'] = $option['value']->store( config('lfm.folder_categories.file.folder_name') . '/' .getUsername().'/images/front-page' );
                 // dd($option['value']);
             }
 

@@ -19,14 +19,14 @@ class CheckSubdomain
     {
         $user = auth()->user();
         if($user->hasRole('Teacher')){
-            $domainToBe = getToBeSubdomain($user->teacherInfo->username);
+            $domainToBe = getToBeSubdomain(getUsername());
             if( request()->root() !== $domainToBe ){
                 auth('web')->logout();
                 return redirect('/login');
             }
         }elseif( $user->teacher_id ){
             // dd($user->teacher);
-            $domainToBe = getToBeSubdomain($user->teacher->teacherInfo->username);
+            $domainToBe = getToBeSubdomain(getUsername());
             if( request()->root() !== $domainToBe ){
                 auth('web')->logout();
                 return redirect('/login');

@@ -240,7 +240,10 @@ class CourseController extends Controller {
         ] );
 
         if ( isset( $data['image'] ) ) {
-            $image = $data['image']->store( 'images/batch-images' );
+
+            $url = config('lfm.folder_categories.file.folder_name') . '/' .getUsername().  '/images/batch-images';
+
+            $image = $data['image']->store( $url );
 
             $data['image'] = $image;
         }
@@ -305,7 +308,9 @@ class CourseController extends Controller {
                 Storage::delete( $course->image );
             }
 
-            $image = $data['image']->store( 'images/batch-images' );
+            $url = config('lfm.folder_categories.file.folder_name') . '/' .getUsername().  '/images/batch-images';
+
+            $image = $data['image']->store( $url );
 
             $data['image'] = $image;
         }

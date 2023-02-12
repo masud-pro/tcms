@@ -252,4 +252,16 @@ function getUserFileManagerFolder() {
     }
 }
 
+/**
+ * Get username of the teacher the user is associated with
+ */
+function getUsername() {
+    $user = auth()->user();
+    if ( $user->hasRole( 'Teacher' ) ) {
+        return $user->teacherInfo->username;
+    } else {
+        return $user->teacher->teacherInfo->username;
+    }
+}
+
 // End of Helper Functions

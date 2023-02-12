@@ -72,7 +72,7 @@ class AssignmentResponseController extends Controller {
             if ( in_array( $file->extension(), $this->allowed_file_types() ) ) {
                 $filename = uniqid() . "_" . $file->getClientOriginalName();
 
-                $url = auth()->user()->teacher->teacherInfo->username . "assignments/" .
+                $url = config('lfm.folder_categories.file.folder_name') . '/' .getUsername() . "assignments/" .
                 "assessment_" .
                 $data['assessment_id'] .
                 "/" .

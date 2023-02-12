@@ -65,11 +65,11 @@ return [
     'home' => function(){
         $user = auth()->user();
         if($user->hasRole('Teacher')){
-            $domainToRedirect = getToBeSubdomain($user->teacherInfo->username);
+            $domainToRedirect = getToBeSubdomain(getUsername());
             return $domainToRedirect . RouteServiceProvider::HOME;
         }elseif( $user->teacher_id ){
             // dd($user->teacher);
-            $domainToRedirect = getToBeSubdomain($user->teacher->teacherInfo->username);
+            $domainToRedirect = getToBeSubdomain(getUsername());
             return $domainToRedirect . RouteServiceProvider::HOME;
         }else{
             return RouteServiceProvider::HOME;
