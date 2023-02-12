@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Account;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Facades\Auth;
 
 class AccountPolicy {
     use HandlesAuthorization;
@@ -35,8 +36,10 @@ class AccountPolicy {
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function view( User $user, Account $account ) {
+        if( Auth::user()->hasRole('Student') ){
+            return $user->id == $account->user_id;
+        }
         return true;
-        // return $user->id == $account->user_id;
     }
 
     /**

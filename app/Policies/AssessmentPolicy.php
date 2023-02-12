@@ -36,13 +36,15 @@ class AssessmentPolicy {
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function view( User $user, Assessment $assessment ) {
+        if( Auth::user()->hasRole('Student') ){
+            return in_array( $user->id, $assessment
+                    ->user()
+                    ->with( 'assessment' )
+                    ->get()
+                    ->pluck( 'id' )
+                    ->toArray() );
+        }
         return true;
-        // return in_array( $user->id, $assessment
-        //         ->user()
-        //         ->with( 'assessment' )
-        //         ->get()
-        //         ->pluck( 'id' )
-        //         ->toArray() );
     }
 
     /**
