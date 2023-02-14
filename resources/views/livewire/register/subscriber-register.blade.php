@@ -54,8 +54,8 @@
                                             <div class="col-sm-{{ $nextStep == false ? '8' : '12' }} mb-3 mb-sm-0">
 
 
-                                                <select class="form-control form-control-select " wire:model.defer="planId"
-                                                    id="planId">
+                                                <select class="form-control form-control-select "
+                                                    wire:model.defer="planId" id="planId">
                                                     <option disabled selected>Please Select Plan</option>
                                                     @foreach ($planList as $data)
                                                         <option value="{{ $data->id }}"
@@ -122,6 +122,7 @@
                                                 <div class="form-group row text-left">
                                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                                         <label for="fName" class="label-text">First Name</label>
+                                                        <span class="required"></span>
                                                         <input type="text"
                                                             class="form-control form-control-user @error('fName') is-invalid @enderror"
                                                             id="fName" placeholder="First Name"
@@ -134,6 +135,7 @@
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <label for="fName" class="label-text">Last Name</label>
+                                                        <span class="required"></span>
                                                         <input type="text"
                                                             class="form-control form-control-user @error('lName') is-invalid @enderror"
                                                             id="lName" placeholder="Last Name"
@@ -151,6 +153,7 @@
                                                 <div class="form-group row text-left">
                                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                                         <label for="fName" class="label-text">Phone Number</label>
+                                                        <span class="required"></span>
                                                         <input type="text"
                                                             class="form-control form-control-user @error('phoneNumber') is-invalid @enderror"
                                                             id="phoneNumber" placeholder="Phone Number"
@@ -164,6 +167,7 @@
 
                                                     <div class="col-sm-6">
                                                         <label for="fName" class="label-text">User Name</label>
+                                                        <span class="required"></span>
                                                         <input type="text"
                                                             class="form-control form-control-user @error('username') is-invalid @enderror"
                                                             id="username" placeholder="User Name"
@@ -179,6 +183,7 @@
 
                                                 <div class="form-group text-left">
                                                     <label for="fName" class="label-text">Email Address</label>
+                                                    <span class="required"></span>
                                                     <input type="email"
                                                         class="form-control form-control-user  @error('emailAddress') is-invalid @enderror"
                                                         id="emailAddress" placeholder="Email Address"
@@ -195,10 +200,24 @@
                                                 <div class="form-group row text-left">
                                                     <div class="col-sm-6">
                                                         <label for="dob" class="label-text">Date Of Birth</label>
-                                                        <input type="date"
-                                                            class="form-control form-control-user sub-calander @error('dob') is-invalid @enderror"
+                                                        <span class="required"></span>
+                                                        {{-- <input 
+                                                            class="form-control form-control-user datepicker sub-calander @error('dob') is-invalid @enderror"
                                                             id="dob" placeholder="Date of Birth"
-                                                            wire:model.defer="dob">
+                                                            wire:model.defer="dob" x-ref="dateInput"
+                                                            type="text">  --}}
+
+                                                        <input
+                                                            class="form-control form-control-user datepicker sub-calander @error('dob') is-invalid @enderror"
+                                                            id="dob" placeholder="Date of Birth"
+                                                            wire:model="dob" type="date" id="dob">
+
+
+
+                                                        {{-- @if (!empty($dob))
+                                                            Selected Date :
+                                                            {{ Carbon\Carbon::parse($dob)->format('l jS \\of F Y') }}
+                                                        @endif --}}
                                                         @error('dob')
                                                             <p class="text-start text-danger small mt-1">
                                                                 {{ $message }}</p>
@@ -208,6 +227,7 @@
                                                     {{-- select Gender --}}
                                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                                         <label for="gender" class="label-text">Gender</label>
+                                                        <span class="required"></span>
                                                         <select
                                                             class="form-control form-control-select @error('gender') is-invalid @enderror"
                                                             id="gender" wire:model.defer="gender">
@@ -231,6 +251,7 @@
                                                     {{-- Select Curriculum --}}
                                                     <div class="col-sm-6">
                                                         <label for="curriculum" class="label-text">Curriculum</label>
+                                                        <span class="required"></span>
                                                         <select
                                                             class="form-control form-control-select select1 @error('curriculum') is-invalid @enderror"
                                                             id="curriculum" wire:model.defer="curriculum">
@@ -247,7 +268,9 @@
                                                     </div>
 
                                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                                        <label for="teachingLevel" class="label-text">Teaching Level</label>
+                                                        <label for="teachingLevel" class="label-text">Teaching
+                                                            Level</label>
+                                                        <span class="required"></span>
                                                         <input type="text"
                                                             class="form-control form-control-user @error('teachingLevel') is-invalid @enderror"
                                                             id="teachingLevel" placeholder="Teaching Level"
@@ -264,6 +287,7 @@
 
                                                 <div class="form-group text-left">
                                                     <label for="institute" class="label-text">Institute</label>
+
                                                     <input type="text"
                                                         class="form-control form-control-user @error('institute') is-invalid @enderror"
                                                         id="institute" placeholder="Institute Name"
@@ -277,6 +301,7 @@
 
                                                 <div class="form-group text-left">
                                                     <label for="address" class="label-text">Address</label>
+                                                    <span class="required"></span>
                                                     <textarea class="form-control form-control-user @error('address') is-invalid @enderror" id="address"
                                                         placeholder="Address" wire:model.defer="address"></textarea>
 
@@ -289,10 +314,12 @@
                                                 <div class="form-group row text-left">
                                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                                         <label for="password" class="label-text">Password</label>
+                                                        <span class="required"></span>
                                                         <input type="password"
                                                             class="form-control form-control-user @error('password') is-invalid @enderror"
                                                             id="password" placeholder="Password"
                                                             wire:model.defer="password">
+                                                        <div id="pass_available" class="mt-1"></div>
 
                                                         @error('password')
                                                             <p class="text-start text-danger small mt-1">
@@ -302,11 +329,24 @@
                                                     <div class="col-sm-6">
                                                         <label for="password_confirmation" class="label-text">Password
                                                             Confirmation</label>
+                                                        <span class="required"></span>
                                                         <input type="password"
                                                             class="form-control form-control-user @error('password_confirmation') is-invalid @enderror"
-                                                            id="password_confirmation"
-                                                            wire:model.defer="password_confirmation"
+                                                            id="repassword" wire:model.defer="password_confirmation"
                                                             placeholder="Repeat Password">
+
+                                                    </div>
+
+                                                    <div class="col-sm-12">
+                                                        <div class=" form-control-user" id="message">
+                                                            <p id="letter" class="invalid">A <b>lowercase</b>
+                                                                letter</p>
+                                                            <p id="capital" class="invalid">A <b>capital
+                                                                    (uppercase)</b> letter</p>
+                                                            <p id="number" class="invalid">A <b>number</b></p>
+                                                            <p id="length" class="invalid">Minimum <b>8
+                                                                    characters</b></p>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <button type="submit" class="btn btn-primary btn-user btn-block">
@@ -316,10 +356,11 @@
                                             </div>
                                             <hr>
                                             <div class="text-center">
-                                                <a class="small" href="#">Forgot Password?</a>
+                                                {{-- <a class="small" href="#">Forgot Password?</a> --}}
                                             </div>
                                             <div class="text-center">
-                                                <a class="small" href="#">Already have an account? Login!</a>
+                                                <a class="small" href="{{ route('login') }}">Already have an
+                                                    account? Login!</a>
                                             </div>
                                         </div>
                                     </div>
@@ -341,14 +382,38 @@
 @push('scripts')
     @livewireScripts()
     <script src="{{ asset('assets') }}/js/datepicker/bootstrap-datepicker.min.js"></script>
+
+
+    {{--  --}}
+    {{-- <script src="https://unpkg.com/moment"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script> --}}
     <script>
-        $('.sub-calander').datepicker({
+        $('#dob').datepicker({
             format: "yyyy-mm-dd",
             startView: "months",
-            // minViewMode: "months",
-            // autoclose: true,
+            // // minViewMode: "months",
+            // // autoclose: true,
             todayHighlight: true,
         });
+
+        // $("input").on("change", function() {
+        //     this.setAttribute(
+        //         "data-date",
+        //         moment(this.value, "YYYY-MM-DD")
+        //         .format(this.getAttribute("data-date-format"))
+        //     )
+        // }).trigger("change")
+
+        // $('.datepicker').datepicker({
+        //     format: 'mm/dd/yyyy',
+        //     startDate: '-3d'
+        // });
+
+        // $.fn.datepicker.defaults.format = "dd/mm/yyyy";
+        // $('.datepicker').datepicker({
+        //     startDate: '-3d'
+        // });
+
 
         // alert("Doesn't Work");
 
@@ -383,4 +448,5 @@
     {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"> --}}
     <link href="{{ asset('assets') }}/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link href="{{ asset('assets') }}/css/datepicker/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css">
+    {{-- <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/pikaday/css/pikaday.css"> --}}
 @endpush

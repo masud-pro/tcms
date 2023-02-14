@@ -21,6 +21,7 @@
                     <th>ID</th>
                     <th>Image</th>
                     <th>Name</th>
+                    <th>User Name</th>
                     <th>Email</th>
                     <th>Phone No</th>
                     <th>Status</th>
@@ -35,6 +36,7 @@
                     <th>ID</th>
                     <th>Image</th>
                     <th>Name</th>
+                    <th>User Name</th>
                     <th>Email</th>
                     <th>Phone No</th>
                     <th>Status</th>
@@ -58,6 +60,7 @@
                             </a>
                         </td>
                         <td><b>{{ $user->name ?? 'Not Found' }}</b></td>
+                        <td><b>{{ $user->teacherInfo->username ?? 'Not Found' }}</b></td>
                         <td>{{ $user->email ?? 'Not Found' }}</td>
 
                         <td>{{ $user->phone_no ?? 'Not Found' }}</td>

@@ -168,10 +168,30 @@
         </li> --}}
         @if (auth()->user()->hasRole(['Teacher']))
             {{-- <li class="mt-1 mr-3"><a href="{{ route("account.all-batch-accounts") }}" class="btn btn-outline-primary btn-sm mt-3">Update Payments</a></li> --}}
-            @livewire("attendance.take-attendance")
+            {{-- {{            Auth::user()->course }} --}}
+            {{-- @if (Auth::user()->course == [])
+                @livewire('attendance.take-attendance')
 
-            <li class="mt-1"><a href="{{ route('account.all-batch-accounts') }}"
-                    class="btn btn-outline-primary btn-sm mt-3">Update Payments</a></li>
+                <li class="mt-1"><a href="{{ route('account.all-batch-accounts') }}"
+                        class="btn btn-outline-primary btn-sm mt-3">Update Payments</a></li>
+            @endif --}}
+
+
+
+
+
+            @if (Auth::user()->addedCourses->count() == 0)
+                <li class="mt-1"><a href="{{ route('course.create') }}"
+                        class="btn btn-outline-primary btn-sm mt-3">Create Course</a></li>
+            @else
+                @livewire('attendance.take-attendance')
+
+                <li class="mt-1"><a href="{{ route('account.all-batch-accounts') }}"
+                        class="btn btn-outline-primary btn-sm mt-3">Update Payments</a></li>
+            @endif
+
+
+
             <div class="topbar-divider d-none d-sm-block"></div>
         @elseif(auth()->user()->hasRole(['Student']))
             <li class="mt-1">
@@ -194,23 +214,28 @@
                     Profile
                 </a>
 
-                @if (auth()->user()->hasRole(['Teacher','Super Admin']))
-                    <a class="dropdown-item" href="{{ route('payments.generate') }}"
-                        onclick="return confirm('Generate Payments Now?')">
-                        <i class="fas fa-dollar-sign fa-sm fa-fw mr-2 text-gray-400"></i>
-                        Generate Payments
-                    </a>
-                    <a class="dropdown-item" href="{{ route('payments.regenerate-all') }}"
-                        onclick="return confirm('Re-generate all payments Now?')">
-                        <i class="fas fa-redo-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                        Re-generate all payments
-                    </a>
-                    <a class="dropdown-item" href="{{ route('reauthorize.all') }}"
-                        onclick="return confirm('Reauthorize all users Now?')">
-                        <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                        Reauthorize All Users
-                    </a>
+                @if (Auth::user()->addedCourses->count() == 0)
+                @else
+                    @if (auth()->user()->hasRole(['Teacher', 'Super Admin']))
+                        <a class="dropdown-item" href="{{ route('payments.generate') }}"
+                            onclick="return confirm('Generate Payments Now?')">
+                            <i class="fas fa-dollar-sign fa-sm fa-fw mr-2 text-gray-400"></i>
+                            Generate Payments
+                        </a>
+                        <a class="dropdown-item" href="{{ route('payments.regenerate-all') }}"
+                            onclick="return confirm('Re-generate all payments Now?')">
+                            <i class="fas fa-redo-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                            Re-generate all payments
+                        </a>
+                        <a class="dropdown-item" href="{{ route('reauthorize.all') }}"
+                            onclick="return confirm('Reauthorize all users Now?')">
+                            <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                            Reauthorize All Users
+                        </a>
+                    @endif
                 @endif
+
+
 
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="{{ route('logout') }}"

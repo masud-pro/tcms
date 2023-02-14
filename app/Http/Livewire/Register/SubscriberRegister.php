@@ -61,6 +61,7 @@ class SubscriberRegister extends Component {
 
         $this->register = false;
         $this->month    = 1;
+        // $this->dob    = Carbon::today()->format("m-Y");
     }
 
     public function updatedplanId() {
@@ -125,7 +126,7 @@ class SubscriberRegister extends Component {
             'dob'                   => ['required'],
             'gender'                => ['required'],
             'curriculum'            => ['required'],
-            'institute'             => ['required'],
+            'institute'             => ['nullable'],
             'teachingLevel'         => ['required'],
             'address'               => ['required'],
             'password'              => ['required', 'confirmed', Password::min( 8 )->mixedCase()->letters()->numbers()->symbols()->uncompromised()],
