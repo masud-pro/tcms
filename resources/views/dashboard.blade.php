@@ -11,7 +11,7 @@
     {{-- @if (Auth::user()->role == 'Admin' || (Auth::user()->role == 'Student' && Auth::user()->is_active == 1)) --}}
 
     @if (auth()->user()->hasRole(['Teacher', 'Super Admin']) ||
-    (Auth::user()->role == 'Student' && Auth::user()->is_active == 1))
+            (Auth::user()->role == 'Student' && Auth::user()->is_active == 1))
 
         <h1 class="h3 mb-4 text-primary">
             Welcome to {{ env('APP_NAME') }} @if ($emoji)
@@ -253,64 +253,66 @@
 
             </div>
 
-
-            @if ($courseView == 'grid')
-                @livewire('dashboard.course-search')
-            @elseif($courseView == 'table')
-                <div class="row">
-                    <div class="col-12">
-                        <h5 class="mb-4 mt-3">All Courses</h5>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-hover table-bordered" id="dataTable" width="100%" cellspacing="0">
-                            <thead>
-                                <tr>
-                                    <th>Image</th>
-                                    <th>Name</th>
-                                    <th>Fee</th>
-                                    <th>Type</th>
-                                    <th>Time</th>
-                                    <th>Subject</th>
-                                    <th>Capacity</th>
-                                    <th>Students</th>
-                                    <th>Feed</th>
-                                </tr>
-                            </thead>
-                            <tfoot>
-                                <tr>
-                                    <th>Image</th>
-                                    <th>Name</th>
-                                    <th>Fee</th>
-                                    <th>Type</th>
-                                    <th>Time</th>
-                                    <th>Subject</th>
-                                    <th>Capacity</th>
-                                    <th>Students</th>
-                                    <th>Feed</th>
-                                </tr>
-                            </tfoot>
-                            <tbody>
-                                @foreach ($courses as $course)
+            @if (auth()->user()->hasRole(['Teacher']))
+                @if ($courseView == 'grid')
+                    @livewire('dashboard.course-search')
+                @elseif($courseView == 'table')
+                    <div class="row">
+                        <div class="col-12">
+                            <h5 class="mb-4 mt-3">All Courses</h5>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered" id="dataTable" width="100%"
+                                cellspacing="0">
+                                <thead>
                                     <tr>
-                                        <td>{!! $course->image
-                                            ? "<a href='" . Storage::url($course->image) . "'><img width='100' src='" . Storage::url($course->image) . "' />"
-                                            : '' !!}</td>
-                                        <td>{{ $course->name ?? '' }}</td>
-                                        <td>{{ $course->fee ?? '' }}</td>
-                                        <td>{{ $course->type ?? '' }}</td>
-                                        <td>{{ $course->time ?? '' }}</td>
-                                        <td>{{ $course->subject ?? '' }}</td>
-                                        <td>{{ $course->capacity ?? '' }}</td>
-                                        <td>{{ $course->user ? $course->user->count() : 0 }}</td>
-                                        <td><a class="btn btn-primary"
-                                                href="{{ route('course.feeds.index', ['course' => $course->id]) }}">Feed</a>
-                                        </td>
+                                        <th>Image</th>
+                                        <th>Name</th>
+                                        <th>Fee</th>
+                                        <th>Type</th>
+                                        <th>Time</th>
+                                        <th>Subject</th>
+                                        <th>Capacity</th>
+                                        <th>Students</th>
+                                        <th>Feed</th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th>Image</th>
+                                        <th>Name</th>
+                                        <th>Fee</th>
+                                        <th>Type</th>
+                                        <th>Time</th>
+                                        <th>Subject</th>
+                                        <th>Capacity</th>
+                                        <th>Students</th>
+                                        <th>Feed</th>
+                                    </tr>
+                                </tfoot>
+                                <tbody>
+                                    @foreach ($courses as $course)
+                                        <tr>
+                                            <td>{!! $course->image
+                                                ? "<a href='" . Storage::url($course->image) . "'><img width='100' src='" . Storage::url($course->image) . "' />"
+                                                : '' !!}</td>
+                                            <td>{{ $course->name ?? '' }}</td>
+                                            <td>{{ $course->fee ?? '' }}</td>
+                                            <td>{{ $course->type ?? '' }}</td>
+                                            <td>{{ $course->time ?? '' }}</td>
+                                            <td>{{ $course->subject ?? '' }}</td>
+                                            <td>{{ $course->capacity ?? '' }}</td>
+                                            <td>{{ $course->user ? $course->user->count() : 0 }}</td>
+                                            <td><a class="btn btn-primary"
+                                                    href="{{ route('course.feeds.index', ['course' => $course->id]) }}">Feed</a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
+                @endif
             @endif
         @else
             <!-- Page Heading -->
