@@ -37,7 +37,7 @@
                 </div>
                 <div class="col-md">
                     <label><b>Date</b></label>
-                    <input type="text" id="date" class="form-control" wire:model.debounce.500ms="date" placeholder="Enter Date">
+                    <input type="text" id="date" class="form-control" wire:model.debounce.500ms="date" name="date" value="{{ old('date') }}" placeholder="Enter Date">
                 </div>
             </div>
             <div class="table-responsive">

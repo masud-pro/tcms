@@ -12,7 +12,7 @@
         </div>
         <div class="col-lg-3 offset-lg-6">
             <label><b>Search Student</b></label>
-            <input type="text" wire:model.debounce.500ms="student" class="form-control mb-3" placeholder="Search Student Name or ID">
+            <input type="text" wire:model.debounce.500ms="student" class="form-control mb-3" name="student" value="{{ old('student') }}" placeholder="Search Student Name or ID">
         </div>
     </div>
 

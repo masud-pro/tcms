@@ -55,12 +55,12 @@
                 </div>
                 <div class="col-md">
                     <label><b>Month</b></label>
-                    <input type="text" id="month" class="form-control" wire:model.debounce.500ms="month"
+                    <input type="text" id="month" class="form-control" wire:model.debounce.500ms="month" name="month" value="{{ old('month') }}"
                         placeholder="Enter Month">
                 </div>
                 <div class="col-md">
                     <label><b>Search</b></label>
-                    <input type="text" class="form-control" wire:model.debounce.1000ms="q"
+                    <input type="text" class="form-control" wire:model.debounce.1000ms="q" name="q" value="{{ old('q') }}"
                         placeholder="Search Name or ID">
                 </div>
             </div>
