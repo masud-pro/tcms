@@ -54,7 +54,7 @@ class SystemController extends Controller {
             $revenue          = $total - $expense;
             $courses          = Course::with( "user" )->get();
             
-            $courseView = getTeacherSetting('dashboard_course_view')->value;;
+            $courseView = getTeacherSetting('dashboard_course_view')->value;
 
             return view( 'dashboard', [
                 "courses"              => $courses,
