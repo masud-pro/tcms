@@ -225,7 +225,9 @@
                                                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                                                     Class Link
                                                                 </div>
-                                                                <div class="p mb-0 text-gray-800">{!! $course->class_link !!}</div>
+                                                                {{-- <div class="p mb-0 text-gray-800">{!! $course->class_link !!}</div> --}}
+                                                                <div class="p mb-0 text-gray-800"></div>
+                                                                <a href="{{ $course->class_link }}" class="" target="_blank" rel="course link">{!! $course->class_link !!}</a>
                                                             </div>
                                                             <div class="col-auto">
                                                                 <i class="fas fa-info fa-2x text-gray-300"></i>

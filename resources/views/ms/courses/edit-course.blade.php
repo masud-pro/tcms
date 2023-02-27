@@ -47,7 +47,9 @@
                     @enderror
 
                     <label for="class_link" class="mt-3">Course Link</label>
-                    <textarea name="class_link" id="class_link" rows="2" class="form-control">{!! old("class_link")?? $course->class_link !!}</textarea>
+                    {{-- <textarea name="class_link" id="class_link" rows="2" class="form-control">{!! old("class_link")?? $course->class_link !!}</textarea> --}}
+                    <input name="class_link" id="class_link" rows="2" class="form-control"
+                    value="{!! old("class_link")?? $course->class_link !!}">
                     @error('class_link')
                         <p class="text-danger small mt-1">{{ $message }}</p>
                     @enderror
