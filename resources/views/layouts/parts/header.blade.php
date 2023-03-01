@@ -214,6 +214,16 @@
                     Profile
                 </a>
 
+
+                {{-- only admin --}}
+                @if (auth()->user()->hasRole(['Super Admin']))
+                    <a class="dropdown-item" href="{{ route('generate.payments') }}"
+                        onclick="return confirm('Generate Payments Now?')">
+                        <i class="fas fa-dollar-sign fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Generate Payments
+                    </a>
+                @endif
+
                 @if (Auth::user()->addedCourses->count() == 0)
                 @else
                     @if (auth()->user()->hasRole(['Teacher', 'Super Admin']))

@@ -145,6 +145,8 @@ Route::middleware( ['auth:sanctum'] )->group( function () {
         Route::resource( 'subscription', SubscriptionController::class );
         Route::resource( 'subscriber', SubscriberController::class );
         Route::get( 'permission', [UserRoleController::class, 'rolePermission'] )->name( 'role.permission' );
+        Route::get( 'generate-payments', [AdministratorController::class, 'generatePayments'] )->name( 'generate.payments' );
+        
     } );
 
     Route::get( 'subscriber-transaction', [SubscriberController::class, 'subscriberTransaction'] )->name( 'subscriber.transaction' );

@@ -587,30 +587,6 @@ class AccountController extends Controller {
 
     }
 
-    /*
-    public function change_and_reauthorize( Request $request ) {
-
-    $data = $request->validate( [
-    "ids"    => "required|array",
-    "status" => "nullable|array",
-    "course" => "nullable|integer",
-    ] );
-
-    if ( isset( $data['status'] ) ) {
-    $paid   = $data['status'];
-    $unpaid = array_diff( $data['ids'], $data['status'] );
-
-    Account::whereIn( "id", $paid )->update( ["status" => "Paid"] );
-    Account::whereIn( "id", $unpaid )->update( ["status" => "Unpaid"] );
-
-    } else {
-    Account::whereIn( "id", $data["ids"] )->update( ["status" => "Unpaid"] );
-    }
-
-    // return redirect()->back()->with( "success", "Account updated successfully" );
-
-    }
-     */
 
     public function individual_account() {
         return view( "ms.account.student-account" );

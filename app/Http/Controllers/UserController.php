@@ -22,25 +22,6 @@ class UserController extends Controller {
         $this->middleware( 'check_access:student.edit', ['only' => ['edit', 'update']] );
         $this->middleware( 'check_access:student.destroy', ['only' => ['destroy']] );
 
-        // 'exam_question.index',
-        // 'exam_question.create',
-        // 'exam_question.edit',
-        // 'exam_question.destroy',
-        // 'exam_question.assigned_course',
-
-        // 'attendance.course_students',
-        // 'attendance.individual_students',
-
-        // 'accounts.update',
-        // 'accounts.course_update',
-        // 'accounts.overall_user_account',
-        // 'accounts.individual_student',
-
-        // 'transactions.user_online_transactions',
-
-        // 'file_manager.individual_teacher',
-
-        // 'settings.individual_teacher',
     }
 
     /**

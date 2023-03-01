@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Course;
+use App\Models\Account;
 use App\Models\TeacherInfo;
-use App\Jobs\DefaultSetting;
-use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use App\Traits\DefaultSettingTraits;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\AdministratorStoreRequest;
 
-class AdministratorController extends Controller {
+class AdministratorController extends Controller
+{
 
     use DefaultSettingTraits;
 
@@ -20,29 +22,28 @@ class AdministratorController extends Controller {
      *
      * @return Response
      */
-    public function index() {
-
-        return view('ms.administrator.index' );
+    public function index()
+    {
+        return view('ms.administrator.index');
     }
 
     /**
      * @param  \Illuminate\Http\Request    $request
      * @return \Illuminate\Http\Response
      */
-    public function create() {
-
+    public function create()
+    {
         $roles = $this->roleName();
 
-        return view( 'ms.administrator.create', compact( 'roles' ) );
+        return view('ms.administrator.create', compact('roles'));
     }
 
     /**
      * @param  \App\Http\Requests\AdministratorStoreRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store( AdministratorStoreRequest $request ) {
-
-        // return $request->all();
+    public function store(AdministratorStoreRequest $request)
+    {
 
         $user = User::query();
 
@@ -52,26 +53,22 @@ class AdministratorController extends Controller {
         $userData['dob']      = $request->dob;
         $userData['gender']   = $request->gender;
         $userData['address']  = $request->address;
-        $userData['password'] = Hash::make( $request->password );
+        $userData['password'] = Hash::make($request->password);
 
-        $user = $user->create( $userData );
+        $user = $user->create($userData);
 
         $teacherData['curriculum']     = $request->curriculum;
         $teacherData['institute']      = $request->institute;
         $teacherData['teaching_level'] = $request->teaching_level;
         $teacherData['user_id']        = $user->id;
 
-        TeacherInfo::create( $teacherData );
+        TeacherInfo::create($teacherData);
 
-        $user->assignRole( $request->user_role );
+        $user->assignRole($request->user_role);
 
-        // dd($user->id);
-        // This job for create a new default setting;
-        // dispatch( new DefaultSetting( $user->id ) );
+        $this->defaultSetting($user->id);
 
-        $this->defaultSetting( $user->id );
-
-        return redirect()->route( 'administrator.index' );
+        return redirect()->route('administrator.index');
     }
 
     /**
@@ -80,24 +77,39 @@ class AdministratorController extends Controller {
      * @param  \App\Models\User            $user
      * @return \Illuminate\Http\Response
      */
-    public function edit( User $administrator ) {
+    public function edit(User $administrator)
+    {
 
         $roles = $this->roleName();
 
-        if ( $administrator->hasRole( 'Super Admin' ) ) {
+        if ($administrator->hasRole('Super Admin')) {
 
-            return view( 'ms.administrator.super-admin-edit', compact( 'administrator', 'roles' ) );
+            return view('ms.administrator.super-admin-edit', compact('administrator', 'roles'));
         }
 
-        $teacherInfo = TeacherInfo::where( 'user_id', $administrator->id )->get();
+        $teacherInfo = TeacherInfo::where('user_id', $administrator->id)->get();
 
-        // dd( $teacherInfo );
-
-        return view( 'ms.administrator.edit', compact( 'administrator', 'teacherInfo', 'roles' ) );
+        return view('ms.administrator.edit', compact('administrator', 'teacherInfo', 'roles'));
     }
 
-    public function roleName() {
-        return Role::WhereNotIn( 'name', ['Student'] )->get();
+    public function roleName()
+    {
+        return Role::WhereNotIn('name', ['Student'])->get();
     }
 
+
+    public function generatePayments()
+    {
+        $courses = Course::all(["id", "fee"]);
+
+        foreach ($courses as $course) {
+            $accountsCount = Account::whereMonth("month", Carbon::today())->where("course_id", $course->id)->count();
+
+            if ($accountsCount === 0) {
+                generate_payments($course);
+            }
+        }
+
+        return redirect()->back()->with("success", "Generated All User Payments Successfully");
+    }
 }
