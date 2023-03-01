@@ -19,6 +19,7 @@ class CreateSettingsTable extends Migration
             $table->foreignId("user_id")->index();
             $table->foreignId("option_id")->index();
             $table->string("value")->nullable();
+            $table->string("slug")->nullable();
             
             $table->timestamps();
         });

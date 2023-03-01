@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Option;
 use Illuminate\Http\Request;
 
 class TestController extends Controller
@@ -13,7 +14,20 @@ class TestController extends Controller
      */
     public function index()
     {
-        //
+        // $dd = Option::WhereNotIn('role', ['Super Admin'])->get();
+
+
+        // // foreach ($dd as $option) {
+        // //     return $option->id;
+        // //     // Setting::create([
+        // //     //     // 'user_id'    => $option['user_id'], // User
+        // //     //     'user_id'    => $userId, // User
+        // //     //     'option_id' => $option->id,
+        // //     //     'value'      => $option['value'],
+        // //     //     'created_at' => now(),
+        // //     // ]);
+        // // }
+        // return $dd;
     }
 
     /**

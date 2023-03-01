@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
+use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SystemController;
 use App\Http\Controllers\AmarpayController;
@@ -177,5 +178,7 @@ Route::get( 'clear', function () {
 
 // Route::view('test-sms', 'ms.sms.test');
 //
+
+// Route::get('test-traits', [TestController::class, 'index']);
 
 Route::get( 'teacher-register', [SystemController::class, 'teacherRegister'] )->name( 'teacher.register' )->middleware( 'guest' );

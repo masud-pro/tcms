@@ -23,6 +23,8 @@ class CreateOptionsTable extends Migration {
             $table->string("slug");
             $table->string("value")->nullable();
             $table->string("category")->nullable();
+            $table->string("default_value")->nullable();
+            $table->string("role")->nullable();
 
             $table->timestamps();
         } );
