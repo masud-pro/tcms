@@ -14,28 +14,6 @@ class AssignmentController extends Controller {
         $this->middleware( 'check_access:exam_question.create', ['only' => ['create', 'store']] );
         $this->middleware( 'check_access:exam_question.edit', ['only' => ['edit', 'update']] );
         $this->middleware( 'check_access:exam_question.destroy', ['only' => ['destroy']] );
-
-        // $this->middleware( 'check_access:exam_question.assigned_course', ['only' => ['edit', 'update']] );
-
-        // '',
-        // '',
-        // '',
-        // '',
-        // '',
-
-        // 'attendance.course_students',
-        // 'attendance.individual_students',
-
-        // 'accounts.update',
-        // 'accounts.course_update',
-        // 'accounts.overall_user_account',
-        // 'accounts.individual_student',
-
-        // 'transactions.user_online_transactions',
-
-        // 'file_manager.individual_teacher',
-
-        // 'settings.individual_teacher',
     }
 
     /**
@@ -77,16 +55,6 @@ class AssignmentController extends Controller {
 
         return redirect()->route( "assignments.index" )->with( "success", "Assignment Created Successfully" );
 
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Assignment      $assignment
-     * @return \Illuminate\Http\Response
-     */
-    public function show( Assignment $assignment ) {
-        //
     }
 
     /**

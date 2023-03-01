@@ -9,9 +9,6 @@
 @endpush
 
 @section('content')
-{{-- <span class="invalid-feedback" role="alert">
-    <strong>The password confirmation does not match.</strong>
-</span> --}}
 
 <div class="row">
     <div class="col-md-12">

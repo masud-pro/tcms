@@ -20,26 +20,20 @@
                 <tr>
                     <th>Transaction ID</th>
                     <th>Purpose Of Payment</th>
-                    {{-- <th>Package Name</th> --}}
                     <th>Last Payment Date</th>
                     <th>Extended Date</th>
                     <th>Amount</th>
                     <th>Status</th>
-                    {{-- <th>Actions</th> --}}
-
                 </tr>
             </thead>
             <tfoot>
                 <tr>
                     <th>Transaction ID</th>
                     <th>Purpose Of Payment</th>
-                    {{-- <th>Package Name</th> --}}
                     <th>Last Payment Date</th>
                     <th>Extended Date</th>
                     <th>Amount</th>
                     <th>Status</th>
-                    {{-- <th>Actions</th> --}}
-
                 </tr>
             </tfoot>
             <tbody>
@@ -49,22 +43,16 @@
                         <td>
                             {{ $transaction->id }}
                         </td>
-
-                        {{-- <td><b>{{ $transaction->subscriptionUser->user->name ?? 'Not Found' }}</b></td> --}}
                         <td><b>{{ $transaction->purpose ?? 'Not Found' }}</b></td>
-                        {{-- <td><b>{{ $transaction->subscriptionUser->subscription->name ?? 'Not Found' }}</b></td> --}}
                         <td>
                             {{ Carbon\Carbon::parse($transaction->to_date)->format('d M Y') }}
                         </td>
-
-
                         <td>
                             {{ Carbon\Carbon::parse($transaction->from_date)->format('d M Y') }}
                         </td>
                         <td>
                             {{ $transaction->total_price }}
                         </td>
-
                         <td>
                             {{ $transaction->status == 1 ? 'Paid' : 'Unpaid' }}
                         </td>

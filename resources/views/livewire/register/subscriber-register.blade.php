@@ -114,7 +114,6 @@
                         <div class="card o-hidden border-0 shadow-lg my-5">
                             <div class="card-body p-0">
                                 <div class="row">
-                                    {{-- <div class="col-lg-5 d-none d-lg-block bg-register-image"></div> --}}
                                     <div class="col-lg-12">
                                         <div class="p-5">
                                             <div class="text-center">
@@ -208,24 +207,12 @@
                                                     <div class="col-sm-6">
                                                         <label for="dob" class="label-text">Date Of Birth</label>
                                                         <span class="required"></span>
-                                                        {{-- <input 
-                                                            class="form-control form-control-user datepicker sub-calander @error('dob') is-invalid @enderror"
-                                                            id="dob" placeholder="Date of Birth"
-                                                            wire:model.defer="dob" x-ref="dateInput"
-                                                            type="text">  --}}
-
                                                         <input format="dd/mm/yyyy" name="dob"
                                                             value="{{ old('dob') }}"
                                                             class="form-control form-control-user datepicker sub-calander @error('dob') is-invalid @enderror"
                                                             id="dob" placeholder="Date of Birth"
                                                             wire:model="dob" type="date" id="dob">
 
-
-
-                                                        {{-- @if (!empty($dob))
-                                                            Selected Date :
-                                                            {{ Carbon\Carbon::parse($dob)->format('l jS \\of F Y') }}
-                                                        @endif --}}
                                                         @error('dob')
                                                             <p class="text-start text-danger small mt-1">
                                                                 {{ $message }}</p>
@@ -365,7 +352,6 @@
                                             </div>
                                             <hr>
                                             <div class="text-center">
-                                                {{-- <a class="small" href="#">Forgot Password?</a> --}}
                                             </div>
                                             <div class="text-center">
                                                 <a class="small" href="{{ route('login') }}">Already have an
@@ -392,57 +378,18 @@
     @livewireScripts()
     <script src="{{ asset('assets') }}/js/datepicker/bootstrap-datepicker.min.js"></script>
 
-
-    {{--  --}}
-    {{-- <script src="https://unpkg.com/moment"></script>
-    <script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script> --}}
     <script>
         $('#dob').datepicker({
             format: "yyyy-mm-dd",
             startView: "months",
-            // // minViewMode: "months",
-            // // autoclose: true,
+
             todayHighlight: true,
         });
-
-        // $("input").on("change", function() {
-        //     this.setAttribute(
-        //         "data-date",
-        //         moment(this.value, "YYYY-MM-DD")
-        //         .format(this.getAttribute("data-date-format"))
-        //     )
-        // }).trigger("change")
-
-        // $('.datepicker').datepicker({
-        //     format: 'mm/dd/yyyy',
-        //     startDate: '-3d'
-        // });
-
-        // $.fn.datepicker.defaults.format = "dd/mm/yyyy";
-        // $('.datepicker').datepicker({
-        //     startDate: '-3d'
-        // });
-
-
-        // alert("Doesn't Work");
-
-        // window.addEventListener('reInitJquery', event => {
-        //     var $disabledResults = $(".js-example-disabled-results");
-        //     $disabledResults.select2();
-        // })
 
         $('#dob').on('change', function(e) {
             @this.set('dob', e.target.value);
 
         });
-
-        // $('#monthCount').on('change', function(e) {
-        //     @this.set('monthCount', e.target.value);
-
-        // });
-
-        // $("#checkbox").prop("checked", true);
-
 
 
         $('#planId').change(function() {
@@ -454,8 +401,6 @@
 
 @push('styles')
     @livewireStyles()
-    {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"> --}}
     <link href="{{ asset('assets') }}/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link href="{{ asset('assets') }}/css/datepicker/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css">
-    {{-- <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/pikaday/css/pikaday.css"> --}}
 @endpush

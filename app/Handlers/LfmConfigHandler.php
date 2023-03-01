@@ -4,7 +4,8 @@ namespace App\Handlers;
 
 class LfmConfigHandler extends \UniSharp\LaravelFilemanager\Handlers\ConfigHandler
 {
-    public function userField() {
+    public function userField()
+    {
         return getUserFileManagerFolder();
     }
 }

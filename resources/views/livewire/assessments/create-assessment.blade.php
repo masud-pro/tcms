@@ -68,12 +68,6 @@
             <p class="text-danger small mt-1">{{ $message }}</p>
         @enderror
 
-{{-- 
-        <label for="submit_count" class="mt-3">Submit Count</label>
-        <input onscroll="return false" value="{{ old("submit_count") }}" wire:model="form.submit_count" class="form-control" id="submit_count" type="number">
-        @error('submit_count')
-            <p class="text-danger small mt-1">{{ $message }}</p>
-        @enderror --}}
 
         @if ($errors->any())
             <div class="alert alert-danger mt-4">

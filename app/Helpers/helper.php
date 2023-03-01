@@ -23,7 +23,6 @@ function hasCourseAccess()
         'courses.authorization_panel',
         'courses.authorize_users',
     ]) && (Auth::user()->hasRole(['Teacher']));
-    // auth()->user()->can('edit articles');
 }
 
 /**
@@ -34,18 +33,7 @@ function getToBeSubdomain($username)
     return str_replace('://', '://' . $username . '.', config('app.url'));
 }
 
-// 'courses.index',
-// 'courses.archived',
-// 'courses.authorization_panel',
-// 'courses.authorize_users',
-// 'courses.reauthorize_users',
-// 'courses.create',
-// 'courses.edit',
-// 'courses.update',
-// 'courses.destroy',
-/**
- * only teacher can access those options from sidebar.
- */
+
 function hasStudentAccess()
 {
     return Auth::user()->can([

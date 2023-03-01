@@ -122,22 +122,6 @@
             $disabledResults.select2();
         })
 
-        // $('#expiryDate').on('change', function(e) {
-        //     @this.set('expiryDate', e.target.value);
-
-        // });
-
-        // $('#monthCount').on('change', function(e) {
-        //     @this.set('monthCount', e.target.value);
-
-        // });
-
-
-        // $('#subscriberName').change(function() {
-        //     var subscriberName = $('#subscriberName').val();
-        //     @this.set('subscriberName', this.value);
-        // });
-
 
         $('#subscriberPackage').change(function() {
             var subscriberPackage = $('#subscriberPackage').val();

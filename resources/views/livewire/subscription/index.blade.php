@@ -1,6 +1,3 @@
-
-
-
 <div>
     @if (session('status'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -60,7 +57,7 @@
                             {{ $subscription->created_at->format('d-M-Y') }}
                         </td>
                         <td>
-                            <a class="btn btn-primary" href="{{ route('subscription.edit', $subscription->id) }}" >
+                            <a class="btn btn-primary" href="{{ route('subscription.edit', $subscription->id) }}">
                                 Edit
                             </a>
                         </td>
@@ -85,7 +82,3 @@
 @push('styles')
     @livewireStyles()
 @endpush
-
-{{-- @push('styles-before')
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-@endpush --}}

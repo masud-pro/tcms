@@ -134,18 +134,13 @@ Route::post( "aamarpay-fail", [AmarpayController::class, 'fail'] )->name( 'aamar
 //
 
 Route::middleware( ['auth:sanctum'] )->group( function () {
-
-    // Route::resource( 'role', UserRoleController::class );
-    // Route::resource( 'subscription', SubscriptionController::class );
-    // Route::resource( 'subscriber', SubscriberController::class );
-    // Route::get( 'permission', [UserRoleController::class, 'rolePermission'] )->name( 'role.permission' );
-
+    
     Route::group( ['middleware' => ['role:Super Admin']], function () {
         Route::resource( 'role', UserRoleController::class );
         Route::resource( 'subscription', SubscriptionController::class );
         Route::resource( 'subscriber', SubscriberController::class );
         Route::get( 'permission', [UserRoleController::class, 'rolePermission'] )->name( 'role.permission' );
-        Route::get( 'generate-payments', [AdministratorController::class, 'generatePayments'] )->name( 'generate.payments' );
+        Route::get( 'all-generate-payments', [AdministratorController::class, 'generatePayments'] )->name( 'generate.payments' );
         
     } );
 
@@ -154,18 +149,6 @@ Route::middleware( ['auth:sanctum'] )->group( function () {
 
 } );
 
-// Route::get('sms', function(){
-
-//     return view("ms.sms.test");
-// });
-
-// Route::get( 'nibs', function () {
-//     dd( Course::with( ['students'] )->toArray() );
-// } );
-
-// Route::get( 'nibir', function () {
-//     return Role::findByName( 'Teacher' )->permissions;
-// } )->middleware( 'check_access:create.courses' );
 
 Route::get( 'clear', function () {
     Artisan::call( 'view:clear' );
@@ -178,9 +161,6 @@ Route::get( 'clear', function () {
     return "<h4> Everything cache clear </h4>";
 } );
 
-// Route::view('test-sms', 'ms.sms.test');
-//
 
-// Route::get('test-traits', [TestController::class, 'index']);
 
 Route::get( 'teacher-register', [SystemController::class, 'teacherRegister'] )->name( 'teacher.register' )->middleware( 'guest' );

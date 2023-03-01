@@ -13,26 +13,6 @@ class AssessmentController extends Controller {
 
     public function __construct() {
         $this->middleware( 'check_access:exam_question.assigned_course', ['only' => ['index', 'create', 'responses','show','edit' ,'destroy']] );
-
-        // '',
-        // '',
-        // '',
-        // '',
-        // '',
-
-        // 'attendance.course_students',
-        // 'attendance.individual_students',
-        // 'accounts.update',
-        // 'accounts.course_update',
-        // 'accounts.overall_user_account',
-        // 'accounts.individual_student',
-
-        // 'transactions.user_online_transactions',
-
-        // 'file_manager.individual_teacher',
-
-
-        // 'settings.individual_teacher',
     }
 
     

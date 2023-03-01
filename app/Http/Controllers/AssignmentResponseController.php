@@ -17,24 +17,6 @@ class AssignmentResponseController extends Controller {
         $this->middleware("isAdmin")->only(["show"]);
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index() {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create() {
-        //
-    }
-
     public function allowed_file_types() {
         return [
             'pdf',
@@ -281,14 +263,5 @@ class AssignmentResponseController extends Controller {
         return redirect()->back()->with( "success", "All marks has been unpublished" );
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\AssignmentResponse  $assignmentResponse
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy( AssignmentResponse $assignmentResponse ) {
-        //
-    }
 
 }

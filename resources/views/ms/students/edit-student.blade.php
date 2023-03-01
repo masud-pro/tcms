@@ -184,8 +184,10 @@
                                             </button>
                                         </div>
                                         <div class="modal-body">
-                                            <p class="text-center text-danger font-weight-bold">Are you sure want to delete?</p>
-                                            <p class="text-center">If You Delete This Student Account.<br>Course, Payment, Exam Result & Attendance <br> Releted All Information Will Be Delated.</p>
+                                            <p class="text-center text-danger font-weight-bold">Are you sure want to
+                                                delete?</p>
+                                            <p class="text-center">If You Delete This Student Account.<br>Course, Payment,
+                                                Exam Result & Attendance <br> Releted All Information Will Be Delated.</p>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="submit" class="btn btn-secondary close-btn"

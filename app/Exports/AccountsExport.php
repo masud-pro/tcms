@@ -41,7 +41,6 @@ class AccountsExport implements FromCollection, WithMapping, WithHeadings, WithC
             $account->status,
             $account->paid_amount,
             Carbon::parse( $account->month )->format( 'M-Y' ),
-            // $account->created_at->format('d M,Y g:i A'),
         ];
     }
 

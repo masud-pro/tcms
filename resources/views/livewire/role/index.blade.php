@@ -37,25 +37,7 @@
                 @forelse  ($roles as $role)
                     <tr>
                         <td>{{ $role->id }}</td>
-                        <td>{{ $role->name }}</td>
-                        
-                        {{-- <td>{{ $user->email ?? 'Not Found' }}</td>
-
-                        <td>{{ $user->phone_no ?? 'Not Found' }}</td> --}}
-
-
-                        {{-- <td>
-                            <div class="form-check form-switch ml-3">
-                                <input wire:change="change_status({{ $user->id }},{{ $user->is_active }})"
-                                    class="form-check-input" type="checkbox"
-                                    @if ($user->is_active == 1) checked @endif
-                                    id="flexSwitchCheckDefault{{ $user->id }}">
-                                <label class="form-check-label" for="flexSwitchCheckDefault{{ $user->id }}">
-                                    Is Active
-                                </label>
-                            </div>
-                        </td> --}}
-                        
+                        <td>{{ $role->name }}</td>        
                         <td>
                             {{ $role->created_at->format('d-M-Y') }}
                         </td>
@@ -74,7 +56,6 @@
                 @endforelse
             </tbody>
         </table>
-        {{-- {{ $administrators->links() }} --}}
     </div>
 </div>
 

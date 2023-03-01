@@ -48,35 +48,6 @@
                                         </div>
 
 
-
-
-                                        {{-- <div class="form-group row">
-                                            <div class="col-sm-6 mb-3 mb-sm-0">
-                                                <input type="text"
-                                                    class="form-control form-control-user @error('phoneNumber') is-invalid @enderror"
-                                                    id="phoneNumber" placeholder="Phone Number"
-                                                    wire:model="phoneNumber">
-
-                                                @error('phoneNumber')
-                                                    <p class="text-start text-danger small mt-1">
-                                                        {{ $message }}</p>
-                                                @enderror
-                                            </div>
-
-                                            <div class="col-sm-6">
-                                                <input type="text"
-                                                    class="form-control form-control-user @error('username') is-invalid @enderror"
-                                                    id="username" placeholder="User Name"
-                                                    wire:model="username">
-
-                                                @error('username')
-                                                    <p class="text-start text-danger small mt-1">
-                                                        {{ $message }}</p>
-                                                @enderror
-                                            </div>
-
-                                        </div> --}}
-
                                         <div class="form-group">
                                             <input type="number" min="0"
                                                 class="form-control form-control-user @error('month') is-invalid @enderror"
@@ -88,21 +59,6 @@
                                                 </p>
                                             @enderror
                                         </div>
-
-                                        {{-- <div class="form-group">
-                                            <textarea class="form-control form-control-user @error('address') is-invalid @enderror" id="address"
-                                                placeholder="Address" wire:model="address"></textarea>
-
-                                            @error('address')
-                                                <p class="text-start text-danger small mt-1">{{ $message }}
-                                                </p>
-                                            @enderror
-                                        </div> --}}
-
-
-
-
-
 
                                         <button type="submit" class="btn btn-primary btn-user btn-block">
                                             Renew Subscription
@@ -120,29 +76,8 @@
 
 
             <div class="col-md-7">
-                {{-- <div class="card" style="">
-
-                    <div class="card-body">
-                        <h5 class="card-title">Feature list</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
-                            the card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div> --}}
-
-
-
-
-
-
-
-
                 <div class="card o-hidden shadow-lg">
                     <div class="card-body p-0">
-
-
-
-                        {{-- <div class="col-lg-5 d-none d-lg-block bg-register-image"></div> --}}
 
                         <div class="p-5">
                             <div class="form-group row">
@@ -177,11 +112,6 @@
                                         </h6>
                                     @endforeach
 
-                                    {{-- <h6> <span class="pr-1">-</span> hello World</h6>
-                                    <h6> <span class="pr-1">-</span> hello World</h6>
-                                    <h6> <span class="pr-1">-</span> hello World</h6>
-                                    <h6> <span class="pr-1">-</span> hello World</h6> --}}
-
                                 </div>
                             </div>
 
@@ -190,12 +120,6 @@
                     </div>
 
                 </div>
-
-
-
-
-
-
             </div>
         </div>
 
@@ -225,10 +149,6 @@
 
         });
 
-        // $('#monthCount').on('change', function(e) {
-        //     @this.set('monthCount', e.target.value);
-
-        // });
 
 
         $('#subscriberName').change(function() {

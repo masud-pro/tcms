@@ -10,16 +10,6 @@
                     <form wire:submit.prevent="submit">
 
                         <div class="row">
-                            {{-- <div class="col-md-4">
-                                <label for="name">Subscriber Name</label>
-                                <input class="form-control @error('name') is-invalid @enderror" id="name"
-                                    wire:model="name" value="{{ old('name') }}" type="text">
-                                @error('name')
-                                    <p class="text-danger small mt-1">{{ $message }}</p>
-                                @enderror
-                            </div> --}}
-
-
                             <div class="col-md-4">
                                 <label for="name">Subscriber Name</label>
                                 <div class="" wire:ignore>
@@ -35,33 +25,6 @@
                                     <p class="text-danger small mt-1">{{ $message }}</p>
                                 @enderror
                             </div>
-
-                            {{--                             
-                                <div class="col-md-4" wire:ignore>
-                                    <label>Batch / Course</label>
-                                    <select wire:model="batch" id="batch"
-                                        class="form-control js-example-disabled-results">
-                                        <option value="">Select Batch / Course</option>
-                                        <option value="">Select Batch / Course</option>
-                                        <option value="">Select Batch / Course</option>
-                                        <option value="">Select Batch / Course</option>
-                                        <option value="">Select Batch / Course</option>z
-                                        @foreach ($batches as $sbatch)
-                                            <option value="{{ $sbatch->id }}">{{ $sbatch->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div> --}}
-
-
-
-                            {{-- <div class="col-md-4">
-                                <label class="" for="price">Subscription Package</label>
-                                <input class="form-control @error('price') is-invalid @enderror" id="price"
-                                    min="1" wire:model="price" value="{{ old('price') }}" type="number">
-                                @error('price')
-                                    <p class="text-danger small mt-1">{{ $message }}</p>
-                                @enderror
-                            </div> --}}
 
                             <div class="col-md-4">
                                 <label for="name">Subscription Package</label>
@@ -93,16 +56,6 @@
                         </div>
 
                         <div class="row mt-4">
-                            {{-- <div class="col-md-4">
-                                <label for="name">Subscription Package</label>
-                                <select wire:model="subscriberPackage" id="subscriberPackage"
-                                    class="form-control js-example-disabled-results">
-                                    <option value="">Select Subscription Package</option>
-                                    @foreach ($subscriptionList as $data)
-                                        <option value="{{ $data->id }}">{{ $data->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div> --}}
 
                             <div class="col-md-4">
                                 <label for="startDate">Subscription Start Date</label>
@@ -123,26 +76,19 @@
                                 @error('monthCount')
                                     <p class="text-danger small mt-1">{{ $message }}</p>
                                 @enderror
-                            </div>   
-                            
+                            </div>
+
                             <div class="col-md-4">
                                 <label for="specialPrice">Special Price</label>
-                                <input class="form-control @error('specialPrice') is-invalid @enderror" {{ $specialPriceField == true ? 'disabled' : ''}}  min="0"
-                                    id="specialPrice" type="number" placeholder="Enter Special Price"
-                                    value="{{ old('specialPrice') }}" wire:model="specialPrice">
+                                <input class="form-control @error('specialPrice') is-invalid @enderror"
+                                    {{ $specialPriceField == true ? 'disabled' : '' }} min="0" id="specialPrice"
+                                    type="number" placeholder="Enter Special Price" value="{{ old('specialPrice') }}"
+                                    wire:model="specialPrice">
                                 @error('specialPrice')
                                     <p class="text-danger small mt-1">{{ $message }}</p>
                                 @enderror
                             </div>
 
-                            {{-- <div class="col-md-4">
-                                <label for="price">Subscription Discount</label>
-                                <input class="form-control @error('price') is-invalid @enderror" id="price"
-                                    min="1" wire:model="price" value="{{ old('price') }}" type="number">
-                                @error('price')
-                                    <p class="text-danger small mt-1">{{ $message }}</p>
-                                @enderror
-                            </div> --}}
                         </div>
 
                         {{-- Feature --}}

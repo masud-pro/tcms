@@ -4,9 +4,11 @@
     </div>
 
     <ul>
-        <li><b>Manual payment is done via Bkash, Rocket, Nagad and you have to make the payment manually from the app or USSD.</b></li>
-        @if ( env("STORE_ID") != null && env("STORE_PASSWORD") != null )
-            <li><b>Online payment is a automatic system of payment which includes Visa/Master Cards, Banks, Bkash, Rocket, Nagad, Other internet banking options etc.</b></li>
+        <li><b>Manual payment is done via Bkash, Rocket, Nagad and you have to make the payment manually from the app or
+                USSD.</b></li>
+        @if (env('STORE_ID') != null && env('STORE_PASSWORD') != null)
+            <li><b>Online payment is a automatic system of payment which includes Visa/Master Cards, Banks, Bkash,
+                    Rocket, Nagad, Other internet banking options etc.</b></li>
         @endif
     </ul>
     <div class="card shadow mb-4">
@@ -28,7 +30,7 @@
                 <option value="Unpaid">Unpaid</option>
             </select>
             <div class="table-responsive">
-                @if ( isset($user) )
+                @if (isset($user))
                     <table class="table table-hover table-bordered" width="100%" cellspacing="0">
                         <thead>
                             <tr>
@@ -54,31 +56,28 @@
                             @foreach ($accounts as $account)
                                 <tr>
                                     <td>
-                                        @if ($account->status == "Paid")
+                                        @if ($account->status == 'Paid')
                                             <span class="text-success">✓</span>
                                         @else
                                             @if ($manualPayment == 1)
-                                                <a href="{{ route("student.pay.offline",[ "account" => $account->id ]) }}" class="btn btn-primary mt-1">Pay Manually</a>
+                                                <a href="{{ route('student.pay.offline', ['account' => $account->id]) }}"
+                                                    class="btn btn-primary mt-1">Pay Manually</a>
                                             @endif
-                                            {{-- @if ($onlinePayment == 1)
-                                                <a href="{{ route("student.pay",[ "account" => $account->id ]) }}" class="btn btn-primary mt-1">Online Payment</a>
-                                            @endif --}}
                                         @endif
                                     </td>
                                     <td>
-                                        <span class='badge badge-{{ $account->status == "Paid" ? "success" : "danger" }}'>
-                                            {{ $account->status == "Paid" ? "Paid" : "Unpaid" }}
+                                        <span
+                                            class='badge badge-{{ $account->status == 'Paid' ? 'success' : 'danger' }}'>
+                                            {{ $account->status == 'Paid' ? 'Paid' : 'Unpaid' }}
                                         </span>
-                                        {{-- <input type="hidden" name="ids[]" value="{{ $account->id }}">
-                                        <div class="custom-control custom-checkbox">
-                                            <input onclick="return false" {{ $account->status == "Paid" ? "checked" : "" }}  name="status[]" value="{{ $account->id }}" type="checkbox" class="custom-control-input" id="customCheck{{ $account->id }}">
-                                            <label class="custom-control-label" for="customCheck{{ $account->id }}">Paid</label>
-                                        </div> --}}
+
                                     </td>
-                                    <td>{{ $account->paid_amount ?? "Not Found" }}</td>
-                                    <td>{{ $account->month ? \Carbon\Carbon::parse($account->month)->format("M-Y") : "Not Found" }}</td>
-                                    <td>{{ $account->course ? $account->course->name : "Not Found" }}</td>
-                                    <td>{{ $account->updated_at ? \Carbon\Carbon::parse()->format("d-M-Y g:i a") : "Not Found" }}</td>
+                                    <td>{{ $account->paid_amount ?? 'Not Found' }}</td>
+                                    <td>{{ $account->month ? \Carbon\Carbon::parse($account->month)->format('M-Y') : 'Not Found' }}
+                                    </td>
+                                    <td>{{ $account->course ? $account->course->name : 'Not Found' }}</td>
+                                    <td>{{ $account->updated_at ? \Carbon\Carbon::parse()->format('d-M-Y g:i a') : 'Not Found' }}
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -86,7 +85,7 @@
                 @endif
                 {{ $accounts->links() }}
                 <div class="text-right">
-                    <a href="{{ route("dashboard") }}">Go Back</a>
+                    <a href="{{ route('dashboard') }}">Go Back</a>
                 </div>
             </div>
         </div>

@@ -58,19 +58,19 @@
                         <td>
                             {{ Carbon\Carbon::parse($subscriber->to_date)->format('d M Y') }}
                         </td>
-                        
-                        
+
+
                         <td>
                             {{ Carbon\Carbon::parse($subscriber->from_date)->format('d M Y') }}
                         </td>
                         <td>
-                            {{ $subscriber->total_price}}
+                            {{ $subscriber->total_price }}
                         </td>
 
                         <td>
                             {{ $subscriber->status == 1 ? 'Paid' : 'Unpaid' }}
                         </td>
-                    </tr> 
+                    </tr>
                 @empty
                     <tr>
                         <td class="text-center" colspan="9"> No matching records found </td>
@@ -91,6 +91,6 @@
 
 
 @push('styles-before')
-@livewireStyles()
+    @livewireStyles()
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 @endpush

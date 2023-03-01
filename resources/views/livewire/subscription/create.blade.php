@@ -134,8 +134,8 @@
                                     <div class="card-body">
                                         <h5 class="card-title"><u>Feed</u> </h5>
 
-                                          {{-- feed.index --}}
-                                          <div class="form-check">
+                                        {{-- feed.index --}}
+                                        <div class="form-check">
                                             <input class="form-check-input" type="checkbox" value="feed.index"
                                                 wire:model="selectedFeature" id="feedIndex">
                                             <label class="form-check-label" for="feedIndex">Feed List</label>
@@ -473,5 +473,4 @@
 
 @push('styles')
     @livewireStyles()
-    
 @endpush

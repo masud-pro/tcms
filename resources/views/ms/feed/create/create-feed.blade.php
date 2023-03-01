@@ -32,22 +32,6 @@
                         <p class="text-danger small mt-1">{{ $message }}</p>
                     @enderror
 
-                    {{-- <label class="mt-3" for="user_id">Post to</label>
-                    <select 
-                        class="form-control" 
-                        name="user_id[]" 
-                        multiple="multiple" 
-                        id="user_id"
-                    >
-                        @foreach ($students as $student)
-                            <option value="{{ $student->id }}">{{ $student->name }}</option>
-                        @endforeach
-                    </select>
-                    <a class="small" href="#" id="select_all">Select All</a>
-                    @error('user_id')
-                        <p class="text-danger small mt-1">{{ $message }}</p>
-                    @enderror --}}
-
                     <input type="hidden" name="type" value="post">
 
                     <div class="row">
