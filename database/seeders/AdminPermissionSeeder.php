@@ -163,7 +163,7 @@ class AdminPermissionSeeder extends Seeder {
         ] );
 
         Role::create( ['name' => 'Student'] );
-        Role::create( ['name' => 'Moderator'] );
+        // Role::create( ['name' => 'Moderator'] );
 
         $admin = User::create(
             [

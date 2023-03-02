@@ -68,14 +68,10 @@ class SubscriberEdit extends Component {
         $this->subscriberPackage = $this->subscriptionUser->subscription->id;
         $this->specialPrice      = $this->subscriptionUser->special_price;
         $this->monthCount        = 1;
-        // dd( $this->subscriptionUser->subscription );
-
-        // dd( $this->expiryDate );
     }
 
     public function updatedsubscriberPackage() {
-        //   dd($this->subscriberPackage);
-        // $this->subscriberPackage;
+
         $newPackage = $this->subscriptionUser->subscription_id != $this->subscriberPackage;
         if ( $newPackage ) {
             $this->specialPrice = null;
@@ -92,11 +88,6 @@ class SubscriberEdit extends Component {
     public function updatedspecialPrice() {
         $this->calculatePrice();
     }
-
-    // public function updated() {
-    //     $this->calculatePrice();
-    //     // dd( $this->subscriptionUser->special_price == $this->specialPrice );
-    // }
 
     public function calculatePrice() {
         $subscriberPackage = Subscription::find( $this->subscriberPackage );
@@ -124,15 +115,10 @@ class SubscriberEdit extends Component {
     public function submit() {
         $data = $this->validate();
 
-        // dd($data);
-
         $subscriberUser['user_id']         = $this->subscriptionUser->user_id;
         $subscriberUser['subscription_id'] = $data['subscriberPackage'];
         $subscriberUser['expiry_date']     = Carbon::parse( $this->expiryDate )->addMonths( $data['monthCount'] )->format( 'Y-m-d' );
         $subscriberUser['special_price']   = $data['specialPrice'] == null ? null : $data['specialPrice'];
-        //    dd($subscriberUser['expiry_date']);
-        //    dd($this->subscriptionUser);
-        //  //return 0;
 
         $this->subscriptionUser->update( $subscriberUser );
 

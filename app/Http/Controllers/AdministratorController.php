@@ -33,9 +33,7 @@ class AdministratorController extends Controller
      */
     public function create()
     {
-        $roles = $this->roleName();
-
-        return view('ms.administrator.create', compact('roles'));
+        return view('ms.administrator.create');
     }
 
     /**
@@ -84,7 +82,7 @@ class AdministratorController extends Controller
 
         if ($administrator->hasRole('Super Admin')) {
 
-            return view('ms.administrator.super-admin-edit', compact('administrator', 'roles'));
+            return view('ms.administrator.super-admin-edit', compact('administrator'));
         }
 
         $teacherInfo = TeacherInfo::where('user_id', $administrator->id)->get();

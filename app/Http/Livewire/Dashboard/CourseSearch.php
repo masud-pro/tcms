@@ -21,11 +21,7 @@ class CourseSearch extends Component {
     public $filteredCourses;
 
     public function mount() {
-        // $this->courses = cache()->remember( 'course', 60 * 60, function () {
-        //     return Auth::user()->addedCourses()->with( "user" )->latest()->get();
-        // } );
 
-        // $this->courses = Course::with( "user" )->get();
         $this->courses = Auth::user()->addedCourses()->with( "user" )->latest()->get();
 
         $this->filteredCourses = $this->courses;
@@ -48,10 +44,9 @@ class CourseSearch extends Component {
         } else {
             $this->filteredCourses = $this->courses;
         }
-        // dd( $this->filteredCourses );
     }
 
     public function render() {
-        return view('livewire.dashboard.course-search');
+        return view( 'livewire.dashboard.course-search' );
     }
 }

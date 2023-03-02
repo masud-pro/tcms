@@ -28,24 +28,13 @@ class TeacherDashboard extends Component
         $emoji,
         $courseView;
 
-
-
-
-
-
-
     public function mount()
     {
         $this->authUser = Auth::user()->hasRole(['Teacher']);
 
-
-
-
         $allAttendances     = Attendance::select('attendance')->whereMonth("created_at", Carbon::now())->get();
         $allAttendanceCount = $allAttendances->count();
         $present            = $allAttendances->where("attendance", 1)->count();
-        // $absent             = $allAttendanceCount - $present;
-        // $emoji = getTeacherSetting('emoji_visibility')->value;
 
         if ($allAttendanceCount > 0) {
             $attendancePercentage = ($present / $allAttendanceCount) * 100;
@@ -54,20 +43,10 @@ class TeacherDashboard extends Component
         }
 
         $allAccounts      = Account::whereMonth("created_at", Carbon::now())->get();
-        // $reveivedPayments = $allAccounts->where("status", "Paid")->sum("paid_amount");
         $duePayments      = $allAccounts->where("status", "Unpaid")->sum("paid_amount");
         $pending          = $allAccounts->where("status", "Pending")->sum("paid_amount");
-        // $due              = $duePayments + $pending;
-
         $netIncome        = $allAccounts->where('status', 'Revenue')->sum("paid_amount");
-        // $expense          = $allAccounts->where('status', 'Expense')->sum("paid_amount");
-
-        //  $total            = $netIncome + $reveivedPayments;
-        // $revenue          = $total - $expense;
         $courses          = Course::with("user")->get();
-
-        // $courseView = getTeacherSetting('dashboard_course_view')->value;
-
 
 
         $this->courses              = Course::with("user")->get();
@@ -84,34 +63,6 @@ class TeacherDashboard extends Component
         $this->emoji                = getTeacherSetting('emoji_visibility')->value;
         $this->courseView           = getTeacherSetting('dashboard_course_view')->value;;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     public function render()

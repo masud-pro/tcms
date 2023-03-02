@@ -12,18 +12,6 @@ class SubscriberOwnTransaction extends Component {
     public $search;
 
     public function render() {
-        // dd(auth()->user()->id);
-        // $subscriberUsers = AdminAccount::whereHas('user_id', auth()->user()->id)->first()->transactions();
-        // $subscriberUsers = SubscriptionUser::where( 'user_id', auth()->user()->id )->first()->transactions;
-        // $subscriberUsers = auth()->user()->subscriptionUser->transactions;
-
-        // dd( $ownTransaction );
-
-        // $ownTransaction = SubscriptionUser::where( 'user_id', auth()->user()->id )
-        // ->first()->transactions()
-        // ->where( 'purpose', 'like', "%" . $this->search . "%" )
-        // ->where( 'id', 'like', "%" . $this->search . "%" )
-        // ->latest()->paginate( 15 );
 
         $ownTransaction = SubscriptionUser::where( 'user_id', auth()->user()->id )
             ->first()->transactions()
