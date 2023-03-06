@@ -22,7 +22,7 @@ class StudentDashboard extends Component
         $present            = $allAttendances->where("attendance", 1)->count();
         $absent             = $allAttendanceCount - $present;
         // dd(getTeacherSetting('emoji_visibility'));
-        $emoji              = getTeacherSetting('emoji_visibility')->value;
+        // $emoji              = getTeacherSetting('emoji_visibility')->value;
 
         if ($allAttendanceCount > 0) {
             $attendancePercentage = ($present / $allAttendanceCount) * 100;
@@ -35,7 +35,7 @@ class StudentDashboard extends Component
         $this->pendingPayments      = Auth::user()->payment()->select('status')->where("status", "Unpaid")->count();
         $this->missedAttendance     = $allAttendanceCount - $present;
         $this->attendancePercentage = sprintf("%.1f", $attendancePercentage);
-        $this->emoji                = getTeacherSetting('emoji_visibility')->value;
+        // $this->emoji                = getTeacherSetting('emoji_visibility')->value;
     }
 
 

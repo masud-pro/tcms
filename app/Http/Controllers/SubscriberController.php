@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\SubscriptionUser;
-use App\Http\Requests\StoreSubscriptionUserRequest;
-use App\Http\Requests\UpdateSubscriptionUserRequest;
 
 class SubscriberController extends Controller {
     /**
@@ -24,49 +22,12 @@ class SubscriberController extends Controller {
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param \App\Http\Requests\StoreSubscriptionUserRequest $request
-     */
-    public function store( StoreSubscriptionUserRequest $request ) {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param \App\Models\SubscriptionUser $subscriptionUser
-     */
-    public function show( SubscriptionUser $subscriptionUser ) {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param \App\Models\SubscriptionUser $subscriptionUser
      */
     public function edit( $subscriptionUser ) {
         return view( 'ms.subscriber.subscriberEdit', compact( 'subscriptionUser' ) );
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \App\Http\Requests\UpdateSubscriptionUserRequest $request
-     * @param \App\Models\SubscriptionUser                     $subscriptionUser
-     */
-    public function update( UpdateSubscriptionUserRequest $request, SubscriptionUser $subscriptionUser ) {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param \App\Models\SubscriptionUser $subscriptionUser
-     */
-    public function destroy( SubscriptionUser $subscriptionUser ) {
-        //
     }
 
     /**
@@ -82,6 +43,6 @@ class SubscriberController extends Controller {
     }
 
     public function subscriberOwnTransaction() {
-        return view('ms.subscriber.subscriberOwnTransaction' );
+        return view( 'ms.subscriber.subscriberOwnTransaction' );
     }
 }

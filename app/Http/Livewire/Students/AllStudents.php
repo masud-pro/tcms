@@ -11,14 +11,24 @@ use App\Notifications\User\UserStatusUpdateNotification;
 class AllStudents extends Component {
 
     use WithPagination;
-    
+
+    /**
+     * @var array
+     */
     protected $queryString = [
         "q"    => ['except' => ''],
         'page' => ['except' => 1],
     ];
 
+    /**
+     * @var mixed
+     */
     public $q;
 
+    /**
+     * @param User $user
+     * @param $user_status
+     */
     public function change_status( User $user, $user_status ) {
         if ( $user_status == 1 ) {
             $user->update( [
@@ -40,8 +50,8 @@ class AllStudents extends Component {
     public function render() {
 
         $users = Auth::user()->students()->whereHas( 'roles', function ( $query ) {
-                                    $query->where( 'name', 'Student' );
-                                } )
+            $query->where( 'name', 'Student' );
+        } )
                              ->with( 'course' )
                              ->filter( $this->q )
                              ->latest()

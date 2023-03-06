@@ -121,7 +121,7 @@ class UserController extends Controller {
                     ->where( "course_id", $course->id )
                     ->pluck( "id" );
 
-                if($allaccounts->count() == 0){
+                if ( $allaccounts->count() == 0 ) {
                     generate_payments( $course );
                 }
 
@@ -246,19 +246,21 @@ class UserController extends Controller {
 
         foreach ( $courses as $course ) { // Creating account based on chosen courses
             $course = Course::findOrFail( $course, ["id", "fee"] );
+            // dd($course);
 
             $accountsCount = Account::whereMonth( "month", Carbon::today() )
-                ->where( "course_id", $course->id )
-                ->count();
+                ->where( "course_id", $course->id )->count();
 
             // Generate the payments for the course first
             if ( $accountsCount == 0 ) {
 
                 $allaccounts = Account::whereMonth( "month", Carbon::today() )
                     ->where( "course_id", $course->id )
-                    ->pluck( "id" );
+                ->pluck( "id" );
 
-                if($allaccounts == 0){
+                // dd( $allaccounts );
+
+                if ( $allaccounts === 0 ) {
                     generate_payments( $course );
                 }
                 continue; // Generate paments and iterate to the next execution

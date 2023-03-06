@@ -19,51 +19,7 @@ class FeedController extends Controller {
         $this->middleware( 'check_access:feed.destroy', ['only' => ['destroy']] );
         $this->middleware( 'check_access:feed.create_link', ['only' => ['create_link', 'store_link']] );
         $this->middleware( 'check_access:feed.edit_link', ['only' => ['edit_link', 'update_link']] );
-
-        // $this->middleware( 'check_access:feed.destroy_link', ['only' => ['destroy']] );
-
-        // 'feed.index',
-        // 'feed.create',
-        // 'feed.edit',
-        // 'feed.destroy',
-        // 'feed.create_link',
-        // 'feed.edit_link',
-
-        // 'exam_question.index',
-        // 'exam_question.create',
-        // 'exam_question.edit',
-        // 'exam_question.destroy',
-        // 'exam_question.assigned_course',
-
-        // 'attendance.course_students',
-        // 'attendance.individual_students',
-
-        // 'accounts.update',
-        // 'accounts.course_update',
-        // 'accounts.overall_user_account',
-        // 'accounts.individual_student',
-
-        // 'transactions.user_online_transactions',
-
-        // 'file_manager.individual_teacher',
-
-        // 'settings.individual_teacher',
     }
-
-    // public function __construct() {
-    //     $this->middleware( "isAdmin" )
-    //          ->only( [
-    //              "feed.edit",
-    //              "feed.destroy",
-    //              "feed.create",
-    //              "feed.create_link",
-    //              "feed.store",
-    //              "feed.store_link",
-    //              "feed.edit_link",
-    //              "feed.update",
-    //              "feed.update_link",
-    //          ] );
-    // }
 
     /**
      * Display a listing of the resource.
@@ -74,7 +30,6 @@ class FeedController extends Controller {
     public function index( $course ) {
 
         $this->authorize( 'view', Course::findOrFail( $course ) );
-
         $course = Course::with( "user" )->withTrashed()->findOrFail( $course );
 
         if ( Auth::user()->role == "Admin" ) {
@@ -125,7 +80,6 @@ class FeedController extends Controller {
     public function create( Course $course ) {
         return view( 'ms.feed.create.create-feed', [
             'course' => $course,
-            // 'students' => $course->user,
         ] );
     }
 
@@ -200,16 +154,6 @@ class FeedController extends Controller {
         return redirect()
             ->route( "course.feeds.index", ["course" => $course->id] )
             ->with( "success", "Link added Successfully" );
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Feed            $feed
-     * @return \Illuminate\Http\Response
-     */
-    public function show( Feed $feed ) {
-
     }
 
     /**

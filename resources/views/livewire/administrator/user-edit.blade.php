@@ -3,7 +3,7 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h6 class="m-0 font-weight-bold text-primary">Create New User</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Edit User</h6>
                 </div>
                 <div class="card-body">
                     <form wire:submit.prevent="submit">

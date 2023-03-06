@@ -42,6 +42,23 @@
 
             </li>
 
+            <li class="nav-item {{ request()->is('role') ? 'active' : '' }}">
+
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#roleManagement" aria-expanded="true" aria-controls="roleManagement">
+                    <i class="fas fa-users-cog"></i>
+                    <span>Role Management</span>
+                </a>
+
+                <div id="roleManagement" class="collapse {{ request()->routeIs('role.*') ? 'show' : '' }}" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Role Management:</h6>
+                        <a class="collapse-item {{ request()->is('role') ? 'active' : '' }}" href="{{ route('role.index') }}">User Roles</a>
+                        <a class="collapse-item {{ request()->is('role.permission') ? 'active' : '' }}" href="{{ route('role.permission') }}">Role Permission</a>
+                    </div>
+                </div>
+
+            </li>
+
             {{-- <hr class="sidebar-divider dropdown-divider"> --}}
 
             <!-- Nav Item - Dashboard -->
@@ -62,23 +79,6 @@
                 <a class="nav-link" href="{{ route('subscriber.transaction') }}">
                     <i class="fa-solid fa-robot"></i>
                     <span>Admin Transactions</span></a>
-            </li>
-
-            <li class="nav-item {{ request()->is('role') ? 'active' : '' }}">
-
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#roleManagement" aria-expanded="true" aria-controls="roleManagement">
-                    <i class="fas fa-users-cog"></i>
-                    <span>Role Management</span>
-                </a>
-
-                <div id="roleManagement" class="collapse {{ request()->routeIs('role.*') ? 'show' : '' }}" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Role Management:</h6>
-                        <a class="collapse-item {{ request()->is('role') ? 'active' : '' }}" href="{{ route('role.index') }}">User Roles</a>
-                        <a class="collapse-item {{ request()->is('role.permission') ? 'active' : '' }}" href="{{ route('role.permission') }}">Role Permission</a>
-                    </div>
-                </div>
-
             </li>
 
             <hr class="sidebar-divider dropdown-divider">

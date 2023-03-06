@@ -30,14 +30,14 @@ class UserEdit extends Component {
         $this->dob      = $this->administrator->dob;
         $this->address  = $this->administrator->address;
         $this->gender   = $this->administrator->gender;
-        $this->userRole = $this->administrator->roles->first()->id;
-        $this->password = Hash::check( 'password', $this->administrator->password );
+        $this->userRole = $this->administrator->roles->first()->id ?? '';
+        // $this->password = Hash::check( 'password', $this->administrator->password );
 
         // teacher information
-        $this->user_name      = $this->administrator->teacherInfo->username;
-        $this->curriculum     = $this->administrator->teacherInfo->curriculum;
-        $this->institute      = $this->administrator->teacherInfo->institute;
-        $this->teaching_level = $this->administrator->teacherInfo->teaching_level;
+        $this->user_name      = $this->administrator->teacherInfo->username ?? '';
+        $this->curriculum     = $this->administrator->teacherInfo->curriculum ?? '';
+        $this->institute      = $this->administrator->teacherInfo->institute ?? '';
+        $this->teaching_level = $this->administrator->teacherInfo->teaching_level ?? '';
 
         if ( $this->administrator->hasRole( 'Teacher' ) == 2 ) {
             $this->isTeacher = true;
@@ -62,7 +62,7 @@ class UserEdit extends Component {
                 'institute'      => ['required'],
                 'teaching_level' => ['required'],
                 'address'        => ['required'],
-                'password'       => ['required', 'confirmed', Password::min( 8 )],
+                'password'       => ['nullable', 'confirmed', Password::min( 8 )],
             ] );
 
             $userData['name']              = $data['name'];
@@ -78,7 +78,6 @@ class UserEdit extends Component {
 
             // user data stored in database
             $this->administrator->update( $userData );
-            $this->administrator->assignRole( $this->userRole );
 
             // teacher info data stored in database
 
@@ -89,6 +88,7 @@ class UserEdit extends Component {
             $teacherData['teaching_level'] = $data['teaching_level'];
 
             $this->administrator->teacherInfo->update( $teacherData );
+            $this->administrator->syncRoles( $this->userRole );
 
         } else {
 
@@ -99,8 +99,8 @@ class UserEdit extends Component {
                 'dob'                   => ['required'],
                 'gender'                => ['required'],
                 'address'               => ['required'],
-                'password'              => ['required', 'confirmed', Password::min( 8 )],
-                'password_confirmation' => ['required'],
+                'password'              => ['nullable', 'confirmed', Password::min( 8 )],
+                'password_confirmation' => ['nullable'],
             ] );
 
             $userData['name']     = $data['name'];
@@ -109,14 +109,15 @@ class UserEdit extends Component {
             $userData['dob']      = $data['dob'];
             $userData['gender']   = $data['gender'];
             $userData['address']  = $data['address'];
-            // $userData['password']          = Hash::make( $data['password'] );
+            $userData['password']          = Hash::make( $data['password'] );
             $userData['role']              = 'Admin';
             $userData['is_active']         = 1;
             $userData['email_verified_at'] = now();
 
             // user data stored in database
             $this->administrator->update( $userData );
-            $this->administrator->assignRole( $this->userRole );
+            $this->administrator->syncRoles( $this->userRole );
+           
         }
 
         return redirect()->route( 'administrator.index' );
