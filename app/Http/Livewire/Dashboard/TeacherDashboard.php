@@ -36,7 +36,11 @@ class TeacherDashboard extends Component {
             $attendancePercentage = 0;
         }
 
-        $allAccounts = $user->payment()->whereMonth( "created_at", Carbon::now() )->get();
+        // $allAccounts = $user->payment()->whereMonth( "created_at", Carbon::now() )->get();
+        $allAccounts = $user->students()->whereHas( 'payment', function ( $query ) {
+            $query->whereMonth( "created_at", Carbon::now() );
+        } )->get();
+
         $duePayments = $allAccounts->where( "status", "Unpaid" )->sum( "paid_amount" );
         $pending     = $allAccounts->where( "status", "Pending" )->sum( "paid_amount" );
         $netIncome   = $allAccounts->where( 'status', 'Revenue' )->sum( "paid_amount" );
