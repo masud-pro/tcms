@@ -1,4 +1,13 @@
 <div>
+
+
+    @if (Auth::user()->hasRole('Student') && $pendingPayments > 0)
+        <div class="text-center">
+            <h2 class="text-danger mb-3">You Have {{ $pendingPayments }} Due Payment(s) </h2>
+            <a href="{{ route('account.student.individual', ['status' => 'Unpaid']) }}" class="btn btn-primary">Pay
+                Now</a>
+        </div>
+    @endif
     {{-- To attain knowledge, add things every day; To attain wisdom, subtract things every day. --}}
       <!-- Page Heading -->
       <div class="d-sm-flex align-items-center justify-content-between mb-4">

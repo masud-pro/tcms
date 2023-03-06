@@ -35,13 +35,6 @@
             </div>
         @endif
 
-        @if (Auth::user()->hasRole('Student') && $pendingPayments > 0)
-            <div class="text-center">
-                <h2 class="text-danger mb-3">You Have {{ $pendingPayments }} Due Payment(s) </h2>
-                <a href="{{ route('account.student.individual', ['status' => 'Unpaid']) }}" class="btn btn-primary">Pay
-                    Now</a>
-            </div>
-        @endif
 
         @if (auth()->user()->hasRole(['Super Admin']))
             @livewire('dashboard.admin-dashboard')
