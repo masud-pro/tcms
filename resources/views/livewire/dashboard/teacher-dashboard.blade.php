@@ -93,15 +93,13 @@
                                 {{ number_format($duePayments, 2, '.', ',') }} Tk</div>
                         </div>
                         <div class="col-auto">
-
+                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                            {{-- 
                             @if ($isHaveDuePayment == true)
                                 <i class="fas fa-dollar-sign fa-2x blink"></i>
                             @else
                                 <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                            @endif
-
-
-
+                            @endif --}}
                         </div>
                     </div>
                 </div>
