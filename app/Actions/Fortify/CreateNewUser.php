@@ -3,12 +3,12 @@
 namespace App\Actions\Fortify;
 
 use App\Models\User;
-use App\Notifications\NewUserAdminNotification;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Notification;
-use Illuminate\Support\Facades\Validator;
-use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Laravel\Jetstream\Jetstream;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Notification;
+use Laravel\Fortify\Contracts\CreatesNewUsers;
+use App\Notifications\NewUserAdminNotification;
 
 class CreateNewUser implements CreatesNewUsers {
     use PasswordValidationRules;
@@ -51,6 +51,7 @@ class CreateNewUser implements CreatesNewUsers {
             'address'          => $input['address'],
             'password'         => Hash::make( $input['password'] ),
             'teacher_id'       => $input['teacher_id'],
+            'role'             => 'Student',
         ];
 
         $user = User::create( $user );

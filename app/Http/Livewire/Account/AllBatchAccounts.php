@@ -3,6 +3,8 @@
 namespace App\Http\Livewire\Account;
 
 use Carbon\Carbon;
+use App\Models\User;
+use App\Models\Course;
 use App\Models\Account;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -42,8 +44,7 @@ class AllBatchAccounts extends Component {
      */
     public function change_status( Account $account, $status ) {
 
-        // dd($status);
-        // dd($account);
+        $course = Course::findOrFail( $account->course_id );
 
         if ( $status == "Unpaid" ) {
 
@@ -51,15 +52,26 @@ class AllBatchAccounts extends Component {
                 'status' => "Paid",
             ] );
 
+            $course->user()->updateExistingPivot( $account->user_id, [
+                'is_active' => 1,
+            ] );
         } elseif ( $status == "Paid" ) {
 
             $account->update( [
                 'status' => "Unpaid",
             ] );
+
+            $course->user()->updateExistingPivot( $account->user_id, [
+                'is_active' => 0,
+            ] );
         } elseif ( $status == "Pending" ) {
 
             $account->update( [
                 'status' => "Paid",
+            ] );
+
+            $course->user()->updateExistingPivot( $account->user_id, [
+                'is_active' => 1,
             ] );
         }
     }

@@ -93,7 +93,15 @@
                                 {{ number_format($duePayments, 2, '.', ',') }} Tk</div>
                         </div>
                         <div class="col-auto">
-                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+
+                            @if ($isHaveDuePayment == true)
+                                <i class="fas fa-dollar-sign fa-2x blink"></i>
+                            @else
+                                <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                            @endif
+
+
+
                         </div>
                     </div>
                 </div>
@@ -172,9 +180,7 @@
                                 </div>
                                 <div class="col">
                                     <div class="progress progress-sm mr-2">
-                                        <div class="progress-bar bg-info" role="progressbar"
-                                            style="width: {{ $attendancePercentage }}%" aria-valuenow="50"
-                                            aria-valuemin="0" aria-valuemax="100"></div>
+                                        <div class="progress-bar bg-info" role="progressbar" style="width: {{ $attendancePercentage }}%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
                                 </div>
                             </div>
@@ -189,20 +195,51 @@
 
 
         <div class="col-xl col-md-6 mb-4">
-            <div class="card border-left-warning shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                In Active Users</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $inActiveUsers }}</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="far fa-clock fa-2x text-gray-300"></i>
+            <a class=" text-none" href="{{ route('course.index') }}" target="_blank" rel="In Active User">
+                <div class="card border-left-warning shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                    In Active Users</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $inActiveUsers }}</div>
+                            </div>
+                            <div class="col-auto">
+                                @if ($isHaveInActiveUsers == true)
+                                    <i class="far fa-clock fa-2x blink-warning"></i>
+                                @else
+                                    <i class="far fa-clock fa-2x text-gray-300"></i>
+                                @endif
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </a>
+        </div>
+
+
+        <div class="col-xl col-md-6 mb-4">
+            <a class=" text-none" href="{{ $paddingUrl }}" target="_blank" rel="padding report">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    Pending Payment</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $paddingPayments }}</div>
+                            </div>
+                            <div class="col-auto">
+                                @if ($isHavePaddingPayment == true)
+                                    <i class="fa-sharp fa-solid fa-circle-dollar-to-slot fa-2x blink"></i>
+                                @else
+                                    <i class="fa-sharp fa-solid fa-circle-dollar-to-slot fa-2x text-gray-300"></i>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
         </div>
 
     </div>
@@ -246,9 +283,7 @@
                         <tbody>
                             @foreach ($courses as $course)
                                 <tr>
-                                    <td>{!! $course->image
-                                        ? "<a href='" . Storage::url($course->image) . "'><img width='100' src='" . Storage::url($course->image) . "' />"
-                                        : '' !!}</td>
+                                    <td>{!! $course->image ? "<a href='" . Storage::url($course->image) . "'><img width='100' src='" . Storage::url($course->image) . "' />" : '' !!}</td>
                                     <td>{{ $course->name ?? '' }}</td>
                                     <td>{{ $course->fee ?? '' }}</td>
                                     <td>{{ $course->type ?? '' }}</td>
@@ -256,8 +291,7 @@
                                     <td>{{ $course->subject ?? '' }}</td>
                                     <td>{{ $course->capacity ?? '' }}</td>
                                     <td>{{ $course->user ? $course->user->count() : 0 }}</td>
-                                    <td><a class="btn btn-primary"
-                                            href="{{ route('course.feeds.index', ['course' => $course->id]) }}">Feed</a>
+                                    <td><a class="btn btn-primary" href="{{ route('course.feeds.index', ['course' => $course->id]) }}">Feed</a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -268,3 +302,51 @@
         @endif
     @endif
 </div>
+
+
+@push('styles')
+    @livewireStyles()
+    <style>
+        @-webkit-keyframes blinker {
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
+            }
+        }
+
+        .blink {
+            text-decoration: blink;
+            -webkit-animation-name: blinker;
+            -webkit-animation-duration: 0.6s;
+            -webkit-animation-iteration-count: infinite;
+            -webkit-animation-timing-function: ease-in-out;
+            -webkit-animation-direction: alternate;
+            color: #ff0000;
+        }
+
+        .blink-warning {
+            text-decoration: blink;
+            -webkit-animation-name: blinker;
+            -webkit-animation-duration: 0.6s;
+            -webkit-animation-iteration-count: infinite;
+            -webkit-animation-timing-function: ease-in-out;
+            -webkit-animation-direction: alternate;
+            color: #f6c23e;
+        }
+
+        .text-none {
+            text-decoration: none;
+        }
+
+        .text-none:hover {
+
+            text-decoration: none;
+        }
+    </style>
+@endpush
+@push('scripts')
+    @livewireScripts()
+@endpush
