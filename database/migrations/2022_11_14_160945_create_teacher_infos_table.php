@@ -25,6 +25,7 @@ class CreateTeacherInfosTable extends Migration
             $table->string('institute')->nullable();
             $table->string('curriculum')->nullable();
             $table->string('teaching_level')->nullable();
+            $table->string('business_institute_name')->nullable();
             $table->timestamps();
         });
     }

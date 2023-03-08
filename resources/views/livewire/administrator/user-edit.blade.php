@@ -126,6 +126,15 @@
                                         <p class="text-danger small mt-1">{{ $message }}</p>
                                     @enderror
                                 </div>
+                                {{--  --}}
+                                <div class="col-md-4">
+                                    <label class="mt-3" for="business_institute_name">Teacher Business Institute Name</label>
+                                    <input wire:model.defer="business_institute_name" value="{{ old('business_institute_name') }}" name="business_institute_name"
+                                        class="form-control @error('business_institute_name') is-invalid @enderror" id="business_institute_name" type="text">
+                                    @error('business_institute_name')
+                                        <p class="text-danger small mt-1">{{ $message }}</p>
+                                    @enderror
+                                </div>
                             @endif
 
                             <div class="col-md-4">

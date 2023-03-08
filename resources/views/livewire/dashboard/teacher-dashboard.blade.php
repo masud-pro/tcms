@@ -193,7 +193,7 @@
 
 
         <div class="col-xl col-md-6 mb-4">
-            <a class=" text-none" href="{{ route('course.index') }}" target="_blank" rel="In Active User">
+            <a class=" text-none" href="{{ route('user.index') }}" target="_blank" rel="In Active User">
                 <div class="card border-left-warning shadow h-100 py-2">
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
@@ -217,17 +217,17 @@
 
 
         <div class="col-xl col-md-6 mb-4">
-            <a class=" text-none" href="{{ $paddingUrl }}" target="_blank" rel="padding report">
+            <a class=" text-none" href="{{ $pendingUrl }}" target="_blank" rel="Pending report">
                 <div class="card border-left-primary shadow h-100 py-2">
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                     Pending Payment</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $paddingPayments }}</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $PendingPayments }}</div>
                             </div>
                             <div class="col-auto">
-                                @if ($isHavePaddingPayment == true)
+                                @if ($isHavePendingPayment == true)
                                     <i class="fa-sharp fa-solid fa-circle-dollar-to-slot fa-2x blink"></i>
                                 @else
                                     <i class="fa-sharp fa-solid fa-circle-dollar-to-slot fa-2x text-gray-300"></i>

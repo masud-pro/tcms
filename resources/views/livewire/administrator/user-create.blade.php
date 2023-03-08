@@ -68,7 +68,7 @@
 
                             </div>
 
-                            <div class="col-md-4">
+                            <div class="col-md-4" wire:ignore>
                                 <label class="mt-3" for="gender">Gender</label>
                                 <select wire:model.defer="gender" value="{{ old('gender') }}" class="form-control @error('gender') is-invalid @enderror" name="gender" id="gender">
                                     <option disabled selected>Select Gender</option>
@@ -123,6 +123,16 @@
                                     <input wire:model.defer="teaching_level" value="{{ old('teaching_level') }}" name="teaching_level" class="form-control @error('teaching_level') is-invalid @enderror"
                                         id="teaching_level" type="text">
                                     @error('teaching_level')
+                                        <p class="text-danger small mt-1">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
+
+                                <div class="col-md-4">
+                                    <label class="mt-3" for="business_institute_name">Teacher Business Institute Name</label>
+                                    <input wire:model.defer="business_institute_name" value="{{ old('business_institute_name') }}" name="business_institute_name" class="form-control @error('business_institute_name') is-invalid @enderror"
+                                        id="business_institute_name" type="text">
+                                    @error('business_institute_name')
                                         <p class="text-danger small mt-1">{{ $message }}</p>
                                     @enderror
                                 </div>

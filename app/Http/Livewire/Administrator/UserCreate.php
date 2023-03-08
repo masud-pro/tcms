@@ -20,7 +20,7 @@ class UserCreate extends Component {
     /**
      * @var mixed
      */
-    public $name, $email, $phone_no, $userRole, $user_name, $dob, $gender, $curriculum, $institute, $teaching_level, $password, $password_confirmation, $address;
+    public $name, $email, $phone_no, $userRole, $user_name, $business_institute_name, $dob, $gender, $curriculum, $institute, $teaching_level, $password, $password_confirmation, $address;
 
 //
     public function mount() {
@@ -34,19 +34,20 @@ class UserCreate extends Component {
 
         if ( $this->userRole == 2 ) {
             $data = $this->validate( [
-                'name'                  => ['required'],
-                'email'                 => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
-                'phone_no'              => ['required'],
-                'userRole'              => ['required'],
-                'user_name'             => ['required', 'alpha', 'max:255', 'unique:teacher_infos,username'],
-                'dob'                   => ['required'],
-                'gender'                => ['required'],
-                'curriculum'            => ['required'],
-                'institute'             => ['required'],
-                'teaching_level'        => ['required'],
-                'password'              => ['required', 'confirmed', Password::min( 8 )->mixedCase()->letters()->numbers()->symbols()->uncompromised()],
-                'password_confirmation' => ['required'],
-                'address'               => ['required'],
+                'name'                    => ['required'],
+                'email'                   => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
+                'phone_no'                => ['required'],
+                'userRole'                => ['required'],
+                'user_name'               => ['required', 'alpha', 'max:255', 'unique:teacher_infos,username'],
+                'dob'                     => ['required'],
+                'gender'                  => ['required'],
+                'curriculum'              => ['required'],
+                'institute'               => ['required'],
+                'teaching_level'          => ['required'],
+                'business_institute_name' => ['nullable'],
+                'password'                => ['required', 'confirmed', Password::min( 8 )->mixedCase()->letters()->numbers()->symbols()->uncompromised()],
+                'password_confirmation'   => ['required'],
+                'address'                 => ['required'],
             ] );
 
             $userData['name']              = $data['name'];
@@ -66,11 +67,12 @@ class UserCreate extends Component {
 
             // teacher info data stored in database
 
-            $teacherData['user_id']        = $user->id;
-            $teacherData['username']       = $data['user_name'];
-            $teacherData['curriculum']     = $data['curriculum'];
-            $teacherData['institute']      = $data['institute'];
-            $teacherData['teaching_level'] = $data['teaching_level'];
+            $teacherData['user_id']                 = $user->id;
+            $teacherData['username']                = $data['user_name'];
+            $teacherData['curriculum']              = $data['curriculum'];
+            $teacherData['institute']               = $data['institute'];
+            $teacherData['business_institute_name'] = $data['business_institute_name'];
+            $teacherData['teaching_level']          = $data['teaching_level'];
 
             TeacherInfo::create( $teacherData );
 

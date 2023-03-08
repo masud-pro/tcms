@@ -12,8 +12,7 @@
         </div>
         <div class="col-lg-3 offset-lg-6">
             <label><b>Search Student</b></label>
-            <input type="text" wire:model.debounce.500ms="student" class="form-control mb-3" name="student"
-                value="{{ old('student') }}" placeholder="Search Student Name or ID">
+            <input type="text" wire:model.debounce.500ms="student" class="form-control mb-3" name="student" value="{{ old('student') }}" placeholder="Search Student Name or ID">
         </div>
     </div>
 
@@ -50,10 +49,7 @@
                                 <td>{{ $account->user ? $account->user->name : 'Not Found' }}</td>
                                 <td>
                                     <div class="form-check form-switch ml-3">
-                                        <input
-                                            wire:change="change_status( {{ $account->id }},'{{ $account->status }}' )"
-                                            class="form-check-input" type="checkbox"
-                                            @if ($account->status == 'Paid') checked @endif
+                                        <input wire:change="change_status( {{ $account->id }},'{{ $account->status }}' )" class="form-check-input" type="checkbox" @if ($account->status == 'Paid') checked @endif
                                             id="flexSwitchCheckDefault{{ $account->id }}">
                                         <label class="form-check-label" for="flexSwitchCheckDefault{{ $account->id }}">
                                             Paid
@@ -68,8 +64,7 @@
                                     @elseif ($account->status == 'Pending')
                                         <span class="badge badge-secondary">Pending</span>
 
-                                        <a href="{{ route('account.mark-unpaid', ['account' => $account->id]) }}"
-                                            class="btn btn-warning btn-sm"
+                                        <a href="{{ route('account.mark-unpaid', ['account' => $account->id]) }}" class="btn btn-warning btn-sm"
                                             onclick="return confirm('Are you sure you want to mark this payment as unpaid?')">
                                             Mark Unpaid
                                         </a>
@@ -77,7 +72,23 @@
                                 </td>
                                 <td>{{ $account->course ? $account->course->name : 'Not Found' }}</td>
                                 <td>{{ $account->user ? $account->user->email : 'Not Found' }}</td>
-                                <td>{{ $account->paid_amount ?? 'Not Found' }}</td>
+                                @if ($showInput == true)
+                                    <td>
+                                        <input class="form-control form-control-user" style="width: 80px;" type="number" min="0" wire:model="newPaidAmount">
+                                        <a class="float-right tick-positions green" href="#" wire:click="customAmount({{ $account->id }}) rel="custom input">
+                                            <i class="far fa-check-circle fa-lg"></i>
+                                        </a>
+                                    </td>
+                                @else
+                                    <td>{{ $account->paid_amount ?? 'Not Found' }}
+                                        <a class="float-right" href="#" wire:click="customAmount({{ $account->id }})" rel="custom input">
+                                            <i class="far fa-edit fa-lg"></i>
+                                        </a>
+                                    </td>
+                                @endif
+
+
+
                             </tr>
                         @endforeach
                     </tbody>
@@ -92,15 +103,13 @@
             <a class="small" id="pdf" hidden wire:click.prevent="downloadPDF">Download as PDF</a>
         </div>
         <div class="col-lg mt-4 text-right">
-            <a href="{{ route('reauthorize.all') }}" class="btn btn-primary"
-                onclick="return confirm('Are you sure you want to reauthorize the users now?')">Re-authorize Users</a>
+            <a href="{{ route('reauthorize.all') }}" class="btn btn-primary" onclick="return confirm('Are you sure you want to reauthorize the users now?')">Re-authorize Users</a>
         </div>
     </div>
 
 
     <!-- Update Modal -->
-    <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -164,6 +173,20 @@
         .form-check-input,
         .form-check-label {
             cursor: pointer;
+        }
+
+        .tick-positions {
+            display: flex;
+            position: relative;
+            margin-top: -18px;
+        }
+
+        .green {
+            color: #1cc88a
+        }
+
+        .green:hover {
+            color: #0da86f
         }
     </style>
 @endpush

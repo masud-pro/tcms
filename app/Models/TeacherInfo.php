@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class TeacherInfo extends Model
-{
+class TeacherInfo extends Model {
     use HasFactory;
 
+    /**
+     * @var array
+     */
     protected $fillable = [
         'user_id',
         'bank_account_no',
@@ -17,6 +19,7 @@ class TeacherInfo extends Model
         'institute',
         'curriculum',
         'teaching_level',
+        'business_institute_name',
         'username',
     ];
 

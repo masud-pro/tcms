@@ -17,33 +17,23 @@
                                                 </h3>
                                             @else
                                                 <h3 class="text-center fs-1 price-container fw-bold">
-                                                    {{ $planPrice == 0 ? '' : number_format($planPrice) }}<span
-                                                        class="fs-6">Tk</span>
+                                                    {{ $planPrice == 0 ? '' : number_format($planPrice) }}<span class="fs-6">Tk</span>
                                                 </h3>
                                                 @if (!$customPlanData)
                                                     <div class="form-check form-switch form-switch-lg mt-2">
-                                                        <label class="form-check-label pd-18"
-                                                            for="flexSwitchCheckChecked">Bill Monthly</label>
-                                                        <input class="form-check-input" type="checkbox"
-                                                            name="flexSwitchCheckChecked"
-                                                            value="{{ old('flexSwitchCheckChecked') }}"
-                                                            id="flexSwitchCheckChecked" style="opacity: 1;"
-                                                            wire:click="$toggle('billChecked')">
-                                                        <label class="form-check-label pd-4 "
-                                                            style="opacity: 1; color: #222"
-                                                            for="flexSwitchCheckChecked">Bill Annually</label>
+                                                        <label class="form-check-label pd-18" for="flexSwitchCheckChecked">Bill Monthly</label>
+                                                        <input class="form-check-input" type="checkbox" name="flexSwitchCheckChecked" value="{{ old('flexSwitchCheckChecked') }}" id="flexSwitchCheckChecked"
+                                                            style="opacity: 1;" wire:click="$toggle('billChecked')">
+                                                        <label class="form-check-label pd-4 " style="opacity: 1; color: #222" for="flexSwitchCheckChecked">Bill Annually</label>
                                                     </div>
 
 
-                                                    <a class="small text-dark" wire:click="$toggle('customPlanData')"
-                                                        href="#">Custom</a>
+                                                    <a class="small text-dark" wire:click="$toggle('customPlanData')" href="#">Custom</a>
                                                 @else
                                                     <label>Select Month</label>
-                                                    <input wire:model="month" type="number" name="month"
-                                                        value="{{ old('month') }}" class="form-control" min="2">
+                                                    <input wire:model="month" type="number" name="month" value="{{ old('month') }}" class="form-control" min="2">
 
-                                                    <a class="small text-dark" wire:click="$toggle('customPlanData')"
-                                                        href="#">Back</a>
+                                                    <a class="small text-dark" wire:click="$toggle('customPlanData')" href="#">Back</a>
                                                 @endif
 
 
@@ -56,12 +46,10 @@
                                             <div class="col-sm-{{ $nextStep == false ? '8' : '12' }} mb-3 mb-sm-0">
 
 
-                                                <select class="form-control form-control-select "
-                                                    wire:model.defer="planId" id="planId">
+                                                <select class="form-control form-control-select " wire:model.defer="planId" id="planId">
                                                     <option disabled selected>Please Select Plan</option>
                                                     @foreach ($planList as $data)
-                                                        <option value="{{ $data->id }}"
-                                                            {{ $planId == $data->id ? 'selected' : '' }}>
+                                                        <option value="{{ $data->id }}" {{ $planId == $data->id ? 'selected' : '' }}>
                                                             {{ $data->name }}</option>
                                                     @endforeach
 
@@ -73,8 +61,7 @@
                                                 <div class="text-center mt-1">
 
                                                     @if ($nextStep == false)
-                                                        <button wire:click="nextStep()" type="button"
-                                                            class="btn btn-primary ">Next Step</button>
+                                                        <button wire:click="nextStep()" type="button" class="btn btn-primary ">Next Step</button>
                                                     @endif
 
 
@@ -124,10 +111,8 @@
                                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                                         <label for="fName" class="label-text">First Name</label>
                                                         <span class="required"></span>
-                                                        <input type="text" name="fName" value="{{ old('fName') }}"
-                                                            class="form-control form-control-user @error('fName') is-invalid @enderror"
-                                                            id="fName" placeholder="First Name"
-                                                            value="{{ old('fName') }}" wire:model.defer="fName">
+                                                        <input type="text" name="fName" value="{{ old('fName') }}" class="form-control form-control-user @error('fName') is-invalid @enderror" id="fName"
+                                                            placeholder="First Name" value="{{ old('fName') }}" wire:model.defer="fName">
 
                                                         @error('fName')
                                                             <p class="text-start text-danger small mt-1">
@@ -138,11 +123,8 @@
                                                     <div class="col-sm-6">
                                                         <label for="fName" class="label-text">Last Name</label>
                                                         <span class="required"></span>
-                                                        <input type="text" name="lName"
-                                                            value="{{ old('lName') }}"
-                                                            class="form-control form-control-user @error('lName') is-invalid @enderror"
-                                                            id="lName" placeholder="Last Name"
-                                                            wire:model.defer="lName">
+                                                        <input type="text" name="lName" value="{{ old('lName') }}" class="form-control form-control-user @error('lName') is-invalid @enderror" id="lName"
+                                                            placeholder="Last Name" wire:model.defer="lName">
                                                         @error('lName')
                                                             <p class="text-start text-danger small mt-1">
                                                                 {{ $message }}
@@ -158,11 +140,8 @@
                                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                                         <label for="fName" class="label-text">Phone Number</label>
                                                         <span class="required"></span>
-                                                        <input type="text" name="phoneNumber"
-                                                            value="{{ old('phoneNumber') }}"
-                                                            class="form-control form-control-user @error('phoneNumber') is-invalid @enderror"
-                                                            id="phoneNumber" placeholder="Phone Number"
-                                                            wire:model.defer="phoneNumber">
+                                                        <input type="text" name="phoneNumber" value="{{ old('phoneNumber') }}" class="form-control form-control-user @error('phoneNumber') is-invalid @enderror"
+                                                            id="phoneNumber" placeholder="Phone Number" wire:model.defer="phoneNumber">
 
                                                         @error('phoneNumber')
                                                             <p class="text-start text-danger small mt-1">
@@ -173,11 +152,8 @@
                                                     <div class="col-sm-6">
                                                         <label for="fName" class="label-text">User Name</label>
                                                         <span class="required"></span>
-                                                        <input type="text" name="username"
-                                                            value="{{ old('username') }}"
-                                                            class="form-control form-control-user @error('username') is-invalid @enderror"
-                                                            id="username" placeholder="User Name"
-                                                            wire:model="username">
+                                                        <input type="text" name="username" value="{{ old('username') }}" class="form-control form-control-user @error('username') is-invalid @enderror"
+                                                            id="username" placeholder="User Name" wire:model="username">
 
                                                         @error('username')
                                                             <p class="text-start text-danger small mt-1">
@@ -190,10 +166,8 @@
                                                 <div class="form-group text-left">
                                                     <label for="fName" class="label-text">Email Address</label>
                                                     <span class="required"></span>
-                                                    <input type="email" name="email" value="{{ old('email') }}"
-                                                        class="form-control form-control-user  @error('emailAddress') is-invalid @enderror"
-                                                        id="emailAddress" placeholder="Email Address"
-                                                        wire:model.defer="emailAddress">
+                                                    <input type="email" name="email" value="{{ old('email') }}" class="form-control form-control-user  @error('emailAddress') is-invalid @enderror"
+                                                        id="emailAddress" placeholder="Email Address" wire:model.defer="emailAddress">
 
                                                     @error('emailAddress')
                                                         <p class="text-start text-danger small mt-1">
@@ -207,10 +181,8 @@
                                                     <div class="col-sm-6">
                                                         <label for="dob" class="label-text">Date Of Birth</label>
                                                         <span class="required"></span>
-                                                        <input format="dd/mm/yyyy" name="dob"
-                                                            value="{{ old('dob') }}"
-                                                            class="form-control form-control-user datepicker sub-calander @error('dob') is-invalid @enderror"
-                                                            id="dob" placeholder="Date of Birth"
+                                                        <input format="dd/mm/yyyy" name="dob" value="{{ old('dob') }}"
+                                                            class="form-control form-control-user datepicker sub-calander @error('dob') is-invalid @enderror" id="dob" placeholder="Date of Birth"
                                                             wire:model="dob" type="date" id="dob">
 
                                                         @error('dob')
@@ -223,9 +195,7 @@
                                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                                         <label for="gender" class="label-text">Gender</label>
                                                         <span class="required"></span>
-                                                        <select value="{{ old('gender') }}"
-                                                            class="form-control form-control-select @error('gender') is-invalid @enderror"
-                                                            id="gender" wire:model.defer="gender">
+                                                        <select value="{{ old('gender') }}" class="form-control form-control-select @error('gender') is-invalid @enderror" id="gender" wire:model.defer="gender">
                                                             <option readonly selected>Select Gender</option>
                                                             <option value="male">Male</option>
                                                             <option value="female">Female</option>
@@ -242,14 +212,25 @@
 
                                                 <div class="form-group row text-left">
 
+                                                    <div class="col-sm-12 mb-3">
+                                                        <label for="business_institute_name" class="label-text">Teacher
+                                                            Business Institute Name</label>
+                                                        <input type="text" value="{{ old('business_institute_name') }}" class="form-control form-control-user @error('business_institute_name') is-invalid @enderror"
+                                                            id="business_institute_name" placeholder="Teacher's Business Institute Name" wire:model.defer="business_institute_name">
+
+                                                        @error('business_institute_name')
+                                                            <p class="text-start text-danger small mt-1">
+                                                                {{ $message }}</p>
+                                                        @enderror
+                                                    </div>
+
 
                                                     {{-- Select Curriculum --}}
                                                     <div class="col-sm-6">
                                                         <label for="curriculum" class="label-text">Curriculum</label>
                                                         <span class="required"></span>
-                                                        <select value="{{ old('curriculum') }}"
-                                                            class="form-control form-control-select select1 @error('curriculum') is-invalid @enderror"
-                                                            id="curriculum" wire:model.defer="curriculum">
+                                                        <select value="{{ old('curriculum') }}" class="form-control form-control-select select1 @error('curriculum') is-invalid @enderror" id="curriculum"
+                                                            wire:model.defer="curriculum">
                                                             <option readonly selected>Select Curriculum</option>
                                                             <option value="bangla">Bangla Medium</option>
                                                             <option value="english">English Medium</option>
@@ -266,11 +247,8 @@
                                                         <label for="teachingLevel" class="label-text">Teaching
                                                             Level</label>
                                                         <span class="required"></span>
-                                                        <input type="text" value="{{ old('teachingLevel') }}"
-                                                            class="form-control form-control-user @error('teachingLevel') is-invalid @enderror"
-                                                            id="teachingLevel"
-                                                            placeholder="Teacher's Desired Tuition Level"
-                                                            wire:model.defer="teachingLevel">
+                                                        <input type="text" value="{{ old('teachingLevel') }}" class="form-control form-control-user @error('teachingLevel') is-invalid @enderror" id="teachingLevel"
+                                                            placeholder="Teacher's Desired Tuition Level" wire:model.defer="teachingLevel">
 
                                                         @error('teachingLevel')
                                                             <p class="text-start text-danger small mt-1">
@@ -278,15 +256,15 @@
                                                         @enderror
                                                     </div>
 
+
+
                                                 </div>
 
 
                                                 <div class="form-group text-left">
                                                     <label for="institute" class="label-text">Institute</label>
 
-                                                    <input type="text"
-                                                        class="form-control form-control-user @error('institute') is-invalid @enderror"
-                                                        id="institute" placeholder="Institute Name"
+                                                    <input type="text" class="form-control form-control-user @error('institute') is-invalid @enderror" id="institute" placeholder="Institute Name"
                                                         wire:model.defer="institute" autocomplete="off">
 
                                                     @error('institute')
@@ -298,8 +276,7 @@
                                                 <div class="form-group text-left">
                                                     <label for="address" class="label-text">Address</label>
                                                     <span class="required"></span>
-                                                    <textarea class="form-control form-control-user @error('address') is-invalid @enderror" id="address"
-                                                        placeholder="Address" wire:model.defer="address"></textarea>
+                                                    <textarea class="form-control form-control-user @error('address') is-invalid @enderror" id="address" placeholder="Address" wire:model.defer="address"></textarea>
 
                                                     @error('address')
                                                         <p class="text-start text-danger small mt-1">{{ $message }}
@@ -311,9 +288,7 @@
                                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                                         <label for="password" class="label-text">Password</label>
                                                         <span class="required"></span>
-                                                        <input type="password"
-                                                            class="form-control form-control-user @error('password') is-invalid @enderror"
-                                                            id="password" placeholder="Password"
+                                                        <input type="password" class="form-control form-control-user @error('password') is-invalid @enderror" id="password" placeholder="Password"
                                                             wire:model.defer="password">
                                                         <div id="pass_available" class="mt-1"></div>
 
@@ -326,10 +301,8 @@
                                                         <label for="password_confirmation" class="label-text">Password
                                                             Confirmation</label>
                                                         <span class="required"></span>
-                                                        <input type="password"
-                                                            class="form-control form-control-user @error('password_confirmation') is-invalid @enderror"
-                                                            id="repassword" wire:model.defer="password_confirmation"
-                                                            placeholder="Repeat Password">
+                                                        <input type="password" class="form-control form-control-user @error('password_confirmation') is-invalid @enderror" id="repassword"
+                                                            wire:model.defer="password_confirmation" placeholder="Repeat Password">
 
                                                     </div>
 

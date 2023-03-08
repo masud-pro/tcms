@@ -14,17 +14,17 @@ class TeacherDashboard extends Component {
      * @var mixed
      */
 
-    public $isHavePaddingPayment, $paddingUrl, $isHaveInActiveUsers, $isHaveDuePayment;
+    public $isHavePendingPayment, $pendingUrl, $isHaveInActiveUsers, $isHaveDuePayment;
     /**
      * @var mixed
      */
-    public $authUser, $courses, $total, $reveivedPayments, $revenue, $duePayments, $expense, $totalCourses, $totalStudents, $studentWithBatch, $inActiveUsers, $attendancePercentage, $emoji, $courseView, $paddingPayments;
+    public $authUser, $courses, $total, $reveivedPayments, $revenue, $duePayments, $expense, $totalCourses, $totalStudents, $studentWithBatch, $inActiveUsers, $attendancePercentage, $emoji, $courseView, $PendingPayments;
 
     public function mount() {
 
         $user = Auth::user();
 
-        $countPaddingPayment = $user->students()->whereHas( 'payment', function ( $query ) {
+        $countPendingPayment = $user->students()->whereHas( 'payment', function ( $query ) {
             $query->where( 'status', 'Pending' );
         } )->get();
 
@@ -74,15 +74,15 @@ class TeacherDashboard extends Component {
         $this->inActiveUsers        = $user->students()->where( "is_active", 0 )->count();
         $this->attendancePercentage = sprintf( "%.1f", $attendancePercentage );
         $this->courseView           = getTeacherSetting( 'dashboard_course_view' )->value;
-        $this->paddingPayments      = $countPaddingPayment->count();
-        $this->paddingUrl           = "/all-batch-accounts?status=Pending";
+        $this->PendingPayments      = $countPendingPayment->count();
+        $this->pendingUrl           = "/all-batch-accounts?status=Pending";
         
-        $this->isHavePaddingPayment = $this->paddingPayments > 0 ? true : false;
+        $this->isHavePendingPayment = $this->PendingPayments > 0 ? true : false;
 
-        // if ( $this->paddingPayments > 0 ) {
-        //     $this->isHavePaddingPayment = true;
+        // if ( $this->PendingPayments > 0 ) {
+        //     $this->isHavePendingPayment = true;
         // } else {
-        //     $this->isHavePaddingPayment = false;
+        //     $this->isHavePendingPayment = false;
         // }
 
         // dd( $duePayments );

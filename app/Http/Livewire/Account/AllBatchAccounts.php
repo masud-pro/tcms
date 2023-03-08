@@ -18,7 +18,7 @@ class AllBatchAccounts extends Component {
     /**
      * @var mixed
      */
-    public $student;
+    public $student, $showInput = false, $newPaidAmount;
 
     /**
      * @var mixed
@@ -37,6 +37,21 @@ class AllBatchAccounts extends Component {
         "student" => ["except" => ""],
         "status"  => ["except" => ""],
     ];
+
+    /**
+     * @param Account $account
+     */
+    public function customAmount( Account $account ) {
+
+        if ( $this->showInput == true ) {
+            $account->update( ['paid_amount' => $this->newPaidAmount] );
+            $this->showInput = false;
+        } else {
+            $this->showInput = true;
+
+            $this->newPaidAmount = $account->paid_amount;
+        }
+    }
 
     /**
      * @param Account   $account
@@ -96,6 +111,7 @@ class AllBatchAccounts extends Component {
                    ->leftJoin( "users", "accounts.user_id", "=", "users.id" )
                    ->orderBy( "users.name", "asc" )
                    ->simplePaginate( 50 ),
+
         ] );
     }
 }

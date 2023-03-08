@@ -14,7 +14,7 @@ class CourseController extends Controller {
     public function __construct() {
 
         $this->middleware( 'check_access:courses.index', ['only' => ['index']] );
-        $this->middleware( 'check_access:courses.create', ['only' => ['create','store']] );
+        $this->middleware( 'check_access:courses.create', ['only' => ['create', 'store']] );
         $this->middleware( 'check_access:courses.edit', ['only' => ['edit', 'update']] );
         $this->middleware( 'check_access:courses.destroy', ['only' => ['destroy']] );
         $this->middleware( 'check_access:courses.archived', ['only' => ['archived', 'restore']] );
@@ -41,11 +41,16 @@ class CourseController extends Controller {
     }
 
     public function display() {
-        return view( "ms.courses.display-courses", [
-            'courses' => Course::whereDoesntHave( 'user', function ( $q ) {
-                $q->where( 'user_id', Auth::user()->id );
-            } )->get(),
-        ] );
+        // return view( "ms.courses.display-courses", [
+        //     'courses' => Course::whereDoesntHave( 'user', function ( $q ) {
+        //         $q->where( 'user_id', Auth::user()->id );
+        //     } )->get(),
+        // ] );
+
+        $teacherId = Auth::user()->teacher_id;
+        $courses = Course::where( 'teacher_id', $teacherId )->get();
+        
+        return view( "ms.courses.display-courses", compact( 'courses' ) );
     }
 
     public function my_courses() {
@@ -75,7 +80,7 @@ class CourseController extends Controller {
                     ->where( "course_id", $course->id )
                     ->pluck( "id" );
 
-                if( $accounts->count() == 0 ){
+                if ( $accounts->count() == 0 ) {
                     generate_payments( $course );
                 }
 
@@ -241,15 +246,15 @@ class CourseController extends Controller {
 
         if ( isset( $data['image'] ) ) {
 
-            $url = config('lfm.folder_categories.file.folder_name') . '/' .getUsername().  '/images/batch-images';
+            $url = config( 'lfm.folder_categories.file.folder_name' ) . '/' . getUsername() . '/images/batch-images';
 
             $image = $data['image']->store( $url );
 
             $data['image'] = $image;
         }
-        
+
         $data['teacher_id'] = Auth::user()->id;
-        
+
         Course::create( $data );
 
         return redirect()->route( "course.index" )->with( "success", "Course created successfully" );
@@ -308,7 +313,7 @@ class CourseController extends Controller {
                 Storage::delete( $course->image );
             }
 
-            $url = config('lfm.folder_categories.file.folder_name') . '/' .getUsername().  '/images/batch-images';
+            $url = config( 'lfm.folder_categories.file.folder_name' ) . '/' . getUsername() . '/images/batch-images';
 
             $image = $data['image']->store( $url );
 

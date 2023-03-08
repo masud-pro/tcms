@@ -162,7 +162,15 @@ class AdminPermissionSeeder extends Seeder {
             'settings.individual_teacher',
         ] );
 
-        Role::create( ['name' => 'Student'] );
+        $student = Role::create( ['name' => 'Student'] );
+
+        $student->givePermissionTo( [
+            'feed.index',
+            'feed.create_link',
+            'feed.edit_link',
+            'exam_question.assigned_course',
+        ] );
+
         Role::create( ['name' => 'Moderator'] );
 
         $admin = User::create(
