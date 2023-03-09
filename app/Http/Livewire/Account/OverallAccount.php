@@ -3,22 +3,22 @@
 namespace App\Http\Livewire\Account;
 
 use Carbon\Carbon;
-use App\Models\Course;
 use App\Models\Account;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\OverAllAccountExport;
 
-class OverallAccount extends Component { 
+class OverallAccount extends Component {
 
-    public $month;
-    public $q;
-    public $deleteId;
-    public $updateId;
+    /**
+     * @var mixed
+     */
+    public $month, $q, $deleteId, $updateId, $account;
 
-    public $account;
-
+    /**
+     * @var array
+     */
     protected $rules = [
         'account.name'        => 'required|string',
         'account.description' => 'nullable|string|max:500',
@@ -27,15 +27,18 @@ class OverallAccount extends Component {
         'account.month'       => 'required|string',
     ];
 
+    /**
+     * @var array
+     */
     protected $queryString = [
         "month" => ["except" => ""],
         "q"     => ["except" => ""],
     ];
 
     public function mount() {
-        $this->batches = Auth::user()->addedCourses()->get();
+        $this->batches           = Auth::user()->addedCourses()->get();
         $this->account['status'] = "Revenue";
-        $this->month = Carbon::now()->format( "m-Y" );
+        $this->month             = Carbon::now()->format( "m-Y" );
     }
 
     public function flushCreate() {
@@ -43,10 +46,16 @@ class OverallAccount extends Component {
         $this->account['status'] = "Revenue";
     }
 
+    /**
+     * @param $id
+     */
     public function deleteId( $id ) {
         $this->deleteId = $id;
     }
 
+    /**
+     * @param $id
+     */
     public function updateId( $id ) {
         $this->updateId         = $id;
         $this->account          = Account::find( $id )->toArray();
@@ -86,19 +95,15 @@ class OverallAccount extends Component {
         session()->flash( "success", "Account added successfully" );
     }
 
-    
     public function downloadPDF() {
-        return Excel::download(new OverAllAccountExport($this->q, $this->month), 'Accounts - '. $this->month . '.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
-
-        // return Excel::download(new AccountsExport($this->q, $this->batch, $this->month), 
-        // 'Accounts - ' . $this->month . '.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
+        return Excel::download( new OverAllAccountExport( $this->q, $this->month ), 'Accounts - ' . $this->month . '.pdf', \Maatwebsite\Excel\Excel::DOMPDF );
     }
 
     public function render() {
 
         if ( isset( $this->month ) ) {
 
-            $everything = Account::select( ["accounts.*", "accounts.id as account_id","users.id as user_id", "users.name as user_name", "users.email as user_email"] )
+            $everything = Account::select( ["accounts.*", "accounts.id as account_id", "users.id as user_id", "users.name as user_name", "users.email as user_email"] )
                 ->with( ["user", "course"] )
                 ->leftJoin( "users", "accounts.user_id", "=", "users.id" )
                 ->orderBy( "users.name", "asc" )
@@ -106,10 +111,10 @@ class OverallAccount extends Component {
                 ->when( $this->q, function ( $query, $q ) {
                     $query->where( 'users.name', 'like', '%' . $q . '%' );
                 } )
-            // ->where( 'users.name', 'like', '%' . $this->q . '%' )
-                ->when( $this->month, function ( $query, $month ) {
-                    $query->whereMonth( "month", $month );
-                } );
+                         // ->where( 'users.name', 'like', '%' . $this->q . '%' )
+                         ->when( $this->month, function ( $query, $month ) {
+                             $query->whereMonth( "month", $month );
+                         } );
 
             $accounts  = $everything->get();
             $totalPaid = $accounts->where( 'status', 'Paid' )->sum( "paid_amount" );
@@ -117,8 +122,8 @@ class OverallAccount extends Component {
 
             $expense = $accounts->where( 'status', 'Expense' )->sum( "paid_amount" );
 
-            $unpaid = $accounts->where( 'status', 'Unpaid' )->sum( "paid_amount" );
-            $pending = $accounts->where( 'status', 'Pending' )->sum( "paid_amount" );
+            $unpaid      = $accounts->where( 'status', 'Unpaid' )->sum( "paid_amount" );
+            $pending     = $accounts->where( 'status', 'Pending' )->sum( "paid_amount" );
             $totalUnpaid = $unpaid + $pending;
             $total       = $netIncome + $totalPaid;
             $revenue     = $total - $expense;

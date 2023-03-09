@@ -18,12 +18,7 @@ class AllBatchAccounts extends Component {
     /**
      * @var mixed
      */
-    public $student, $showInput = false, $newPaidAmount;
-
-    /**
-     * @var mixed
-     */
-    public $status;
+    public $student, $showInput = false, $newPaidAmount, $status;
 
     /**
      * @var string

@@ -37,13 +37,10 @@ class SubscriberIndex extends Component {
                 'status' => 0,
             ] );
 
-          //  $userData->notify( new UserStatusUpdateNotification( 0 ) );
         } else {
             $userData->update( [
                 'status' => 1,
             ] );
-
-          //  $user->notify( new UserStatusUpdateNotification( 1 ) );
         }
 
         session()->flash( 'status', 'Status Changed Successfully' );

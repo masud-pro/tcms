@@ -10,8 +10,6 @@ class SystemController extends Controller {
     public function dashboard() {
         $authUser = Auth::user();
 
-        $teacherBusinessInstituteName = TeacherInfo::where( 'user_id', $authUser->teacher_id )->first()->business_institute_name;
-
         if ( $authUser->hasRole( ['Super Admin'] ) ) {
 
             $emoji = getTeacherSetting( 'emoji_visibility' )->value;
@@ -23,7 +21,8 @@ class SystemController extends Controller {
             return view( 'dashboard', ["emoji" => $emoji] );
 
         } else {
-            $emoji = getTeacherSetting( 'emoji_visibility' )->value;
+            $teacherBusinessInstituteName = TeacherInfo::where( 'user_id', $authUser->teacher_id )->first()->business_institute_name;
+            $emoji                        = getTeacherSetting( 'emoji_visibility' )->value;
             return view( 'dashboard', ["emoji" => $emoji, 'teacherBusinessInstituteName' => $teacherBusinessInstituteName] );
         }
 

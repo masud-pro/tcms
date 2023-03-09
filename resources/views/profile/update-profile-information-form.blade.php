@@ -15,12 +15,10 @@
 
         <!-- Profile Photo -->
         @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
-            <div class="mb-3" x-data="{photoName: null, photoPreview: null}">
+            <div class="mb-3" x-data="{ photoName: null, photoPreview: null }">
                 <!-- Profile Photo File Input -->
-                <input type="file" hidden
-                       wire:model="photo"
-                       x-ref="photo"
-                       x-on:change="
+                <input type="file" hidden wire:model="photo" x-ref="photo"
+                    x-on:change="
                                     photoName = $refs.photo.files[0].name;
                                     const reader = new FileReader();
                                     reader.onload = (e) => {
@@ -43,9 +41,9 @@
 
                 <x-jet-secondary-button class="mt-2 me-2" type="button" x-on:click.prevent="$refs.photo.click()">
                     {{ __('Select A New Photo') }}
-				</x-jet-secondary-button>
-				
-				@if ($this->user->profile_photo_path)
+                </x-jet-secondary-button>
+
+                @if ($this->user->profile_photo_path)
                     <x-jet-secondary-button type="button" class="mt-2" wire:click="deleteProfilePhoto">
                         <div wire:loading wire:target="deleteProfilePhoto" class="spinner-border spinner-border-sm" role="status">
                             <span class="visually-hidden">Loading...</span>
@@ -80,22 +78,28 @@
                 <x-jet-input-error for="phone_no" />
             </div>
 
-            @if (auth()->user()->role == "Student")
-                <div class="mb-3">
-                    <x-jet-label for="dob" value="{{ __('Date Of Birth') }}" />
-                    <x-jet-input id="dob" type="date" class="{{ $errors->has('dob') ? 'is-invalid' : '' }}" wire:model.defer="state.dob" />
-                    <x-jet-input-error for="dob" />
-                </div>
-                
-                <div class="mb-3">
-                    <x-jet-label for="gender" value="{{ __('Gender') }}" />
-                    <select wire:model.defer="state.gender" class="form-control" name="gender" id="">
-                        <option selected value="male">Male</option>
-                        <option selected value="female">Female</option>
-                    </select>
-                    <x-jet-input-error for="gender" />
-                </div>
+            <div class="mb-3">
+                <x-jet-label for="gender" value="{{ __('Gender') }}" />
+                <select wire:model.defer="state.gender" class="form-control" name="gender" id="">
+                    <option selected value="male">Male</option>
+                    <option selected value="female">Female</option>
+                </select>
+                <x-jet-input-error for="gender" />
+            </div>
 
+            <div class="mb-3">
+                <x-jet-label for="dob" value="{{ __('Date Of Birth') }}" />
+                <x-jet-input id="dob" type="date" class="{{ $errors->has('dob') ? 'is-invalid' : '' }}" wire:model.defer="state.dob" />
+                <x-jet-input-error for="dob" />
+            </div>
+
+            <div class="mb-3">
+                <x-jet-label for="address" value="{!! __('Address') !!}" />
+                <textarea class="form-control" id="address" type="text" class="{{ $errors->has('address') ? 'is-invalid' : '' }}" wire:model.defer="state.address" /></textarea>
+                <x-jet-input-error for="address" />
+            </div>
+
+            @if (auth()->user()->role == 'Student')
                 <div class="mb-3">
                     <x-jet-label for="class" value="{{ __('Class') }}" />
                     <x-jet-input id="class" type="text" class="{{ $errors->has('class') ? 'is-invalid' : '' }}" wire:model.defer="state.class" />
@@ -143,25 +147,19 @@
                     <input disabled value="{{ auth()->user()->mothers_phone_no }}" id="mothers_phone_no" type="text" class="form-control {{ $errors->has('mothers_phone_no') ? 'is-invalid' : '' }}" />
                     <x-jet-input-error for="mothers_phone_no" />
                 </div>
-
-                <div class="mb-3">
-                    <x-jet-label for="address" value="{!! __('Address') !!}" />
-                    <textarea class="form-control" id="address" type="text" class="{{ $errors->has('address') ? 'is-invalid' : '' }}" wire:model.defer="state.address" /></textarea>
-                    <x-jet-input-error for="address" />
-                </div>
             @endif
         </div>
     </x-slot>
 
     <x-slot name="actions">
-		<div class="d-flex align-items-baseline">
-			<x-jet-button>
+        <div class="d-flex align-items-baseline">
+            <x-jet-button>
                 <div wire:loading class="spinner-border spinner-border-sm" role="status">
                     <span class="visually-hidden">Loading...</span>
                 </div>
 
-				{{ __('Save') }}
-			</x-jet-button>
-		</div>
+                {{ __('Save') }}
+            </x-jet-button>
+        </div>
     </x-slot>
 </x-jet-form-section>

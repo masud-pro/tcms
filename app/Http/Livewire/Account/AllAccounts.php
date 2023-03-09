@@ -9,23 +9,25 @@ use Livewire\Component;
 use App\Exports\AccountsExport;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Http\Controllers\AccountController;
 
 /**
  * This class is of mailnly batch accounts with paid unpaid but no expense
  */
 class AllAccounts extends Component {
 
+    /**
+     * @var string
+     */
     public $deleteId = '';
 
-    public $batch;
+    /**
+     * @var mixed
+     */
+    public $batch, $month, $batches, $q;
 
-    public $month;
-
-    public $batches;
-
-    public $q;
-
+    /**
+     * @var array
+     */
     protected $queryString = [
         "batch" => ["except" => ""],
         "month" => ["except" => ""],
@@ -34,9 +36,12 @@ class AllAccounts extends Component {
 
     public function mount() {
         $this->batches = Auth::user()->addedCourses()->get();
-        $this->month = Carbon::today()->format("m-Y");
+        $this->month   = Carbon::today()->format( "m-Y" );
     }
 
+    /**
+     * @param $id
+     */
     public function deleteId( $id ) {
         $this->deleteId = $id;
     }
@@ -46,8 +51,8 @@ class AllAccounts extends Component {
     }
 
     public function downloadPDF() {
-        return Excel::download(new AccountsExport($this->q, $this->batch, $this->month), 
-        'Accounts - ' . $this->month . '.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
+        return Excel::download( new AccountsExport( $this->q, $this->batch, $this->month ),
+            'Accounts - ' . $this->month . '.pdf', \Maatwebsite\Excel\Excel::DOMPDF );
     }
 
     public function render() {
@@ -61,7 +66,7 @@ class AllAccounts extends Component {
                 $course      = Course::findOrFail( $this->batch );
                 $allaccounts = Account::whereMonth( "month", Carbon::today() )->where( "course_id", $this->batch )->pluck( "id" );
 
-                if( $allaccounts->count() == 0 ){
+                if ( $allaccounts->count() == 0 ) {
                     generate_payments( $course );
                 }
             }
@@ -70,21 +75,21 @@ class AllAccounts extends Component {
                 ->with( "user" )
                 ->whereHas( "user", function ( $query ) {
                     $query->where( 'name', 'like', '%' . $this->q . '%' )
-                        ->orWhere( 'id', 'like', '%' . $this->q . '%' );
+                          ->orWhere( 'id', 'like', '%' . $this->q . '%' );
                 } )
                 ->leftJoin( "users", "accounts.user_id", "=", "users.id" )
                 ->orderBy( "users.name", "asc" )
                 ->when( $this->batch, function ( $query, $batch ) {
                     $query->where( "course_id", $batch );
                 } )
-                ->when( $this->month, function ( $query, $month ) {
-                    $query->whereMonth( "month", $month );
-                } )
-                ->where( function ( $query ) {
-                    $query->where( "status", "Paid" );
-                    $query->orWhere( "status", "Unpaid" );
-                    $query->orWhere( "status", "Pending" );
-                } );
+                         ->when( $this->month, function ( $query, $month ) {
+                             $query->whereMonth( "month", $month );
+                         } )
+                                     ->where( function ( $query ) {
+                                         $query->where( "status", "Paid" );
+                                         $query->orWhere( "status", "Unpaid" );
+                                         $query->orWhere( "status", "Pending" );
+                                     } );
 
             $accounts    = $everything->get();
             $total       = $accounts->where( 'status', 'Paid' )->sum( "paid_amount" );

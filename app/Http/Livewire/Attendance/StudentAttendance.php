@@ -15,27 +15,7 @@ class StudentAttendance extends Component {
     /**
      * @var mixed
      */
-    public $batch;
-
-    /**
-     * @var mixed
-     */
-    public $month;
-
-    /**
-     * @var mixed
-     */
-    public $student;
-
-    /**
-     * @var mixed
-     */
-    public $batches;
-
-    /**
-     * @var mixed
-     */
-    public $students;
+    public $batch, $month, $student, $batches, $students;
 
     /**
      * @var array

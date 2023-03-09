@@ -13,39 +13,7 @@ class SubscriberEdit extends Component {
     /**
      * @var mixed
      */
-    public $subscriptionUser;
-    /**
-     * @var mixed
-     */
-    public $subscriberName;
-    /**
-     * @var mixed
-     */
-    public $subscriberPackage;
-    /**
-     * @var mixed
-     */
-    public $price;
-    /**
-     * @var mixed
-     */
-    public $monthCount;
-    /**
-     * @var mixed
-     */
-    public $subscriptionList;
-    /**
-     * @var mixed
-     */
-    public $expiryDate;
-    /**
-     * @var mixed
-     */
-    public $specialPrice;
-    /**
-     * @var mixed
-     */
-    public $specialPriceField;
+    public $subscriptionUser, $subscriberName, $subscriberPackage, $price, $monthCount, $subscriptionList, $expiryDate, $specialPrice, $specialPriceField;
 
     /**
      * @var array

@@ -11,13 +11,10 @@ use App\Models\SubscriptionUser;
 
 class SubscriberCreate extends Component {
 
-    public $subscriberName;
-    public $subscriberPackage;
-    public $price;
-    public $startDate;
-    public $specialPrice;
-    public $specialPriceField;
-    public $monthCount = 1;
+    /**
+     * @var mixed
+     */
+    public $subscriberName, $subscriberPackage, $price, $startDate, $specialPrice, $specialPriceField, $monthCount = 1;
 
     /**
      * @var array
@@ -88,11 +85,6 @@ class SubscriberCreate extends Component {
         return redirect()->route( 'subscriber.index' );
 
     }
-
-    // public function updated() {
-    //     $this->dispatchBrowserEvent( 'reInitJquery' );
-
-    // }
 
     public function render() {
 

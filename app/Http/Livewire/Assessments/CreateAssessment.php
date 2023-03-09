@@ -2,22 +2,24 @@
 
 namespace App\Http\Livewire\Assessments;
 
+use Carbon\Carbon;
+use App\Models\User;
+use Livewire\Component;
 use App\Models\Assessment;
 use App\Models\Assignment;
-use App\Models\User;
-use App\Notifications\Assessment\CreateAssessment as AssessmentCreateAssessment;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Notification;
-use Livewire\Component;
+use App\Notifications\Assessment\CreateAssessment as AssessmentCreateAssessment;
 
 class CreateAssessment extends Component {
 
-    public $course;
-    public $assessments;
-    public $students;
-    public $form;
-    public $user_id;
+    /**
+     * @var mixed
+     */
+    public $course, $assessments, $students, $form, $user_id;
 
+    /**
+     * @var array
+     */
     protected $rules = [
         'form.name'                    => 'required',
         'form.description'             => 'nullable',

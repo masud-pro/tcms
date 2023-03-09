@@ -14,46 +14,7 @@ class SubscriptionRenew extends Component {
     /**
      * @var mixed
      */
-    public $planPrice;
-    /**
-     * @var mixed
-     */
-    public $planList;
-    /**
-     * @var mixed
-     */
-    public $month;
-    /**
-     * @var mixed
-     */
-    public $planName;
-    /**
-     * @var mixed
-     */
-    public $subscriptionName;
-    /**
-     * @var mixed
-     */
-    public $price;
-    /**
-     * @var mixed
-     */
-    public $featureList;
-    /**
-     * @var mixed
-     */
-    public $subscriptionPreviousPrice;
-    /**
-     * @var mixed
-     */
-    public $showSubscriptionPreviousPrice;
-    /**
-     * @var mixed
-     */
-    public $subscribedUser;
-    /**
-     * @var mixed
-     */
+    public $planPrice, $planList, $month, $planName, $subscriptionName, $price, $featureList, $subscriptionPreviousPrice, $showSubscriptionPreviousPrice, $subscribedUser;
 
     /**
      * @var array
@@ -65,7 +26,6 @@ class SubscriptionRenew extends Component {
     ];
 
     public function mount() {
-
         $this->subscribedUser = SubscriptionUser::where( 'user_id', auth()->user()->id )->first();
         $subscription         = Subscription::where( 'id', $this->planName )->first();
 
@@ -84,9 +44,7 @@ class SubscriptionRenew extends Component {
     }
 
     public function updatedplanName() {
-
         $this->calculatePrice();
-
     }
 
     public function updatedmonth() {
@@ -117,8 +75,6 @@ class SubscriptionRenew extends Component {
     public function submit() {
         $data = $this->validate();
 
-        // dd($data);
-
         $sub = SubscriptionUser::where( 'user_id', auth()->user()->id )->first();
 
         $subscription['subscription_id'] = $data['planName'];
@@ -131,10 +87,8 @@ class SubscriptionRenew extends Component {
         $subAccount['total_price']          = $data['planPrice'];
         $subAccount['to_date']              = now();
         $subAccount['from_date']            = Carbon::parse( $sub->expiry_date )->addMonths( $data['month'] );
-        $subAccount['purpose']              = 'Renew Subscription : '.$sub->subscription->name. ' Package';
+        $subAccount['purpose']              = 'Renew Subscription : ' . $sub->subscription->name . ' Package';
         $subAccount['status']               = 0;
-
-        // dd($subAccount);
 
         $adminAccount = AdminAccount::create( $subAccount );
 
@@ -150,7 +104,7 @@ class SubscriptionRenew extends Component {
      * @param $planPrice
      */
     public function renewPayment( $adminAccount, $user, $planPrice ) {
-        
+
         if ( $planPrice != 0 ) {
 
             $paymentData['name']             = $user->name;

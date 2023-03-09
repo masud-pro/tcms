@@ -11,23 +11,7 @@ class Create extends Component {
     /**
      * @var mixed
      */
-    public $name;
-    /**
-     * @var mixed
-     */
-    public $price;
-    /**
-     * @var mixed
-     */
-    public $selectedFeature;
-    /**
-     * @var mixed
-     */
-    public $checkedAll;
-    /**
-     * @var mixed
-     */
-    public $months;
+    public $name, $price, $selectedFeature, $checkedAll, $months;
 
     /**
      * @var array

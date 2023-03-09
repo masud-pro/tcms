@@ -22,97 +22,11 @@ class SubscriberRegister extends Component {
     /**
      * @var mixed
      */
-    public $planId;
+    public $planId, $planList, $planFeature, $planPrice, $customPlanData = false, $billChecked, $month, $register, $nextStep, $fName;
     /**
      * @var mixed
      */
-    public $planList;
-    /**
-     * @var mixed
-     */
-    public $planFeature;
-    /**
-     * @var mixed
-     */
-    public $planPrice;
-    /**
-     * @var mixed
-     */
-    public $customPlanData = false;
-    /**
-     * @var mixed
-     */
-    public $billChecked;
-    /**
-     * @var mixed
-     */
-    public $month;
-    /**
-     * @var mixed
-     */
-    public $register;
-    /**
-     * @var mixed
-     */
-    public $nextStep;
-    /**
-     * @var mixed
-     */
-    public $fName;
-    /**
-     * @var mixed
-     */
-    public $lName;
-    /**
-     * @var mixed
-     */
-    public $phoneNumber;
-
-    /**
-     * @var mixed
-     */
-    public $username;
-
-    /**
-     * @var mixed
-     */
-    public $emailAddress;
-    /**
-     * @var mixed
-     */
-    public $dob;
-    /**
-     * @var mixed
-     */
-    public $gender;
-    /**
-     * @var mixed
-     */
-    public $curriculum;
-    /**
-     * @var mixed
-     */
-    public $teachingLevel;
-    /**
-     * @var mixed
-     */
-    public $address;
-    /**
-     * @var mixed
-     */
-    public $institute;
-    /**
-     * @var mixed
-     */
-    public $password;
-    /**
-     * @var mixed
-     */
-    public $password_confirmation;
-    /**
-     * @var mixed
-     */
-    public $business_institute_name;
+    public $lName, $phoneNumber, $username, $emailAddress, $dob, $gender, $curriculum, $teachingLevel, $address, $institute, $password, $password_confirmation, $business_institute_name;
 
     public function mount() {
         $freeTrail = Subscription::find( 1 );
@@ -227,6 +141,7 @@ class SubscriberRegister extends Component {
         $newTeacher['gender']    = $data['gender'];
         $newTeacher['address']   = $data['address'];
         $newTeacher['password']  = Hash::make( $data['password'] );
+        $newTeacher['role']      = 'Admin';
         $newTeacher['is_active'] = 1;
 
         //new user created on user table

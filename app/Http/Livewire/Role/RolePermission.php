@@ -11,21 +11,7 @@ class RolePermission extends Component {
     /**
      * @var mixed
      */
-    public $checkedAll;
-
-    /**
-     * @var mixed
-     */
-    public $allRoles; // all roles
-    /**
-     * @var mixed
-     */
-    public $selectedRole; // selected role
-
-    /**
-     * @var mixed
-     */
-    public $allPermissions; // all permissions
+    public $checkedAll, $allRoles, $selectedRole, $allPermissions; // all permissions
     /**
      * @var string
      */

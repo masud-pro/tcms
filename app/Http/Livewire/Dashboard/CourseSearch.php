@@ -10,22 +10,13 @@ class CourseSearch extends Component {
     /**
      * @var mixed
      */
-    public $courses;
-    /**
-     * @var mixed
-     */
-    public $search;
-    /**
-     * @var mixed
-     */
-    public $filteredCourses;
+    public $courses, $search, $filteredCourses;
 
     public function mount() {
 
         $this->courses = Auth::user()->addedCourses()->with( "user" )->latest()->get();
 
         $this->filteredCourses = $this->courses;
-
     }
 
     /**

@@ -14,26 +14,13 @@ class BuySms extends Component {
     /**
      * @var mixed
      */
-    public $perSms;
-    /**
-     * @var mixed
-     */
-    public $smsPackage;
-    /**
-     * @var mixed
-     */
-    public $price;
-// public $perSms;
+    public $perSms, $smsPackage, $price;
 
     public function mount() {
         $this->perSms = "0.25";
-//    $this->price = "0.25";
-
-//    dd( $this->price);
     }
 
     public function submit() {
-        // dd( $this->price );
 
         $user = Auth::user();
 
@@ -60,29 +47,17 @@ class BuySms extends Component {
             $paymentLink = json_decode( $payOptions )->data;
 
             return redirect( $paymentLink );
-            
-            // dd( $payOptions );
-
-            // session()->flash( 'success', 'You Buy ' . $this->smsPackage . '  SMS Successfully' );
-            // $this->addError( 'success', 'You Buy ' . $this->smsPackage . '  SMS Successfully' );
-            // sleep(5);
 
         } else {
 
             session()->flash( "error", "Please Select A Package" );
         }
 
-        // $this->addError( 'key', 'asdasdasdasd' );
-
     }
 
     public function updated() {
-//  dd( $this->smsPackage);
 
         $this->price = (int) $this->smsPackage * $this->perSms;
-
-// dd( $this->price);
-
     }
 
     public function render() {

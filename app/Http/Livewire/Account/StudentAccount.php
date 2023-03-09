@@ -14,22 +14,7 @@ class StudentAccount extends Component {
     /**
      * @var mixed
      */
-    public $batch;
-
-    /**
-     * @var mixed
-     */
-    public $batches;
-
-    /**
-     * @var mixed
-     */
-    public $students;
-
-    /**
-     * @var mixed
-     */
-    public $user;
+    public $batch, $batches, $students, $user;
 
     /**
      * @var array

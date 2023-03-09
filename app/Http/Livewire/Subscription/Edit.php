@@ -11,32 +11,7 @@ class Edit extends Component {
     /**
      * @var mixed
      */
-    public $subscription;
-
-    /**
-     * @var mixed
-     */
-    public $name;
-
-    /**
-     * @var mixed
-     */
-    public $price;
-
-    /**
-     * @var mixed
-     */
-    public $selectedFeature;
-
-    /**
-     * @var mixed
-     */
-    public $months;
-
-    /**
-     * @var mixed
-     */
-    public $checkedAll;
+    public $subscription, $name, $price, $selectedFeature, $months, $checkedAll;
 
     /**
      * @var array
