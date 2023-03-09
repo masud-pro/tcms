@@ -6,6 +6,13 @@
 
 @push('styles')
     <link href="{{ asset('assets') }}/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+    <style>
+        .all-checkbox {
+            margin-bottom: 10px;
+            float: right;
+        }
+    </style>
 @endpush
 
 @section('content')
@@ -33,15 +40,13 @@
             <form method="POST" class="d-inline" action="{{ route('attendance.sms-report', ['parent' => 'father']) }}">
                 @csrf
                 <input type="hidden" name="course_id" value="{{ request()->course->id }}">
-                <input type="submit" onclick="return confirm('Are you sure you want to send abesnt report to father')"
-                    class="btn btn-primary mb-4" value="Send Absent Report To Father">
+                <input type="submit" onclick="return confirm('Are you sure you want to send abesnt report to father')" class="btn btn-primary mb-4" value="Send Absent Report To Father">
             </form>
 
             <form method="POST" class="d-inline" action="{{ route('attendance.sms-report', ['parent' => 'mother']) }}">
                 @csrf
                 <input type="hidden" name="course_id" value="{{ request()->course->id }}">
-                <input type="submit" onclick="return confirm('Are you sure you want to send abesnt report to mother')"
-                    class="btn btn-primary mb-4" value="Send Absent Report To Mother">
+                <input type="submit" onclick="return confirm('Are you sure you want to send abesnt report to mother')" class="btn btn-primary mb-4" value="Send Absent Report To Mother">
             </form>
 
             <div class="card shadow mb-4">
@@ -58,6 +63,16 @@
 
                 <div class="card-body">
                     <div class="table-responsive">
+
+                        <div class="custom-control custom-checkbox all-checkbox">
+
+                            <input name="attendance[]" value="" type="checkbox" class="custom-control-input" id="selectAll">
+
+                            <label class="custom-control-label" for="selectAll">
+                                All Present
+                            </label>
+
+                        </div>
 
                         <form action="{{ route('attendance.change') }}" method="POST">
                             @csrf
@@ -96,12 +111,10 @@
                                                 <input type="hidden" name="ids[]" value="{{ $attendance->id }}">
                                                 <div class="custom-control custom-checkbox">
 
-                                                    <input {{ $attendance->attendance == 1 ? 'checked' : '' }}
-                                                        name="attendance[]" value="{{ $attendance->id }}" type="checkbox"
-                                                        class="custom-control-input" id="customCheck{{ $attendance->id }}">
+                                                    <input {{ $attendance->attendance == 1 ? 'checked' : '' }} name="attendance[]" value="{{ $attendance->id }}" type="checkbox" class="custom-control-input"
+                                                        id="customCheck{{ $attendance->id }}">
 
-                                                    <label class="custom-control-label"
-                                                        for="customCheck{{ $attendance->id }}">
+                                                    <label class="custom-control-label" for="customCheck{{ $attendance->id }}">
                                                         Present
                                                     </label>
 
@@ -139,4 +152,11 @@
 
     <!-- Page level custom scripts -->
     <script src="{{ asset('assets') }}/js/demo/datatables-demo.js"></script>
+
+    <script>
+        $("#selectAll").click(function() {
+            $("input[type=checkbox]").prop('checked', $(this).prop('checked'));
+
+        });
+    </script>
 @endpush
