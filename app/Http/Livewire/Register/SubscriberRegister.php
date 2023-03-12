@@ -76,6 +76,7 @@ class SubscriberRegister extends Component {
 
     public function updatedMonth() {
         $this->changeMonthsBill();
+ 
     }
 
     public function changeMonthsBill() {

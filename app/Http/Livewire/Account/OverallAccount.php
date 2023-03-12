@@ -14,7 +14,7 @@ class OverallAccount extends Component {
     /**
      * @var mixed
      */
-    public $month, $q, $deleteId, $updateId, $account;
+    public $month, $q, $deleteId, $updateId, $account, $batches;
 
     /**
      * @var array
@@ -84,9 +84,10 @@ class OverallAccount extends Component {
     public function createAccount() {
         $data = $this->validate()['account'];
 
-        $month         = "01" . "-" . $data['month'];
-        $month         = Carbon::createFromFormat( 'd-m-Y', $month );
-        $data['month'] = $month;
+        $month           = "01" . "-" . $data['month'];
+        $month           = Carbon::createFromFormat( 'd-m-Y', $month );
+        $data['month']   = $month;
+        $data['user_id'] = Auth::user()->id;
 
         Account::create( $data );
 

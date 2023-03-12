@@ -37,7 +37,7 @@ class SubscriptionRenew extends Component {
         $this->price            = $this->subscribedUser->special_price ?? $this->subscribedUser->subscription->price;
         $this->subscriptionName = $this->subscribedUser->subscription->name;
 
-        if ( $this->planName ) {
+        if ( $this->subscribedUser->special_price ) {
             $this->subscriptionPreviousPrice     = $subscription->price;
             $this->showSubscriptionPreviousPrice = true;
         }
@@ -49,6 +49,15 @@ class SubscriptionRenew extends Component {
 
     public function updatedmonth() {
         $this->calculatePrice();
+        $this->changeMonthsBill();
+    }
+
+    public function changeMonthsBill() {
+        $plan = Subscription::find( $this->planName );
+
+        $discountMonth    = floor( $this->month / 12 ) * 2; // 12 mash hole 10 mash gunbe
+        $monthToCalculate = $this->month - $discountMonth;
+        $this->planPrice  = $plan->price * $monthToCalculate;
     }
 
     public function calculatePrice() {

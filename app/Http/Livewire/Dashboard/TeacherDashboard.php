@@ -58,15 +58,19 @@ class TeacherDashboard extends Component {
         // dd( $allAccounts );
         $duePayments = $allAccounts->where( "status", "Unpaid" )->sum( "paid_amount" );
         $pending     = $allAccounts->where( "status", "Pending" )->sum( "paid_amount" );
-        $netIncome   = $allAccounts->where( 'status', 'Revenue' )->sum( "paid_amount" );
+        // $netIncome   = $allAccounts->where( 'status', 'Revenue' )->sum( "paid_amount" );
+        $netIncome   = Account::where( 'user_id', $user->id )->where( 'status', 'Revenue' )->sum( "paid_amount" );
         // dd( $allAccounts );
         // $this->courses = Course::with( "user" )->get();
         // $student =$user->students();
 
+        // $dd = Account::where( 'user_id', $user->id )->where( 'status', 'Expense' )->sum( "paid_amount" );
+        // dd( $dd );
+
         $this->reveivedPayments     = $allAccounts->where( "status", "Paid" )->sum( "paid_amount" );
-        $this->expense              = $allAccounts->where( 'status', 'Expense' )->sum( "paid_amount" );
-        $this->revenue              = $this->total - $this->expense;
+        $this->expense              = Account::where( 'user_id', $user->id )->where( 'status', 'Expense' )->sum( "paid_amount" );
         $this->total                = $netIncome + $this->reveivedPayments;
+        $this->revenue              = $this->total - $this->expense;
         $this->duePayments          = $duePayments + $pending;
         $this->totalCourses         = $user->addedCourses()->count();
         $this->totalStudents        = $user->students()->count();
@@ -76,7 +80,7 @@ class TeacherDashboard extends Component {
         $this->courseView           = getTeacherSetting( 'dashboard_course_view' )->value;
         $this->PendingPayments      = $countPendingPayment->count();
         $this->pendingUrl           = "/all-batch-accounts?status=Pending";
-        
+
         $this->isHavePendingPayment = $this->PendingPayments > 0 ? true : false;
 
         // if ( $this->PendingPayments > 0 ) {
@@ -85,7 +89,8 @@ class TeacherDashboard extends Component {
         //     $this->isHavePendingPayment = false;
         // }
 
-        // dd( $duePayments );
+//        dd( $allAccounts->where( "status", "Paid" )->sum( "paid_amount" ) );
+
         $this->isHaveInActiveUsers = $this->inActiveUsers > 0 ? true : false;
 
         $this->isHaveDuePayment = $this->duePayments === 0 ? false : true;

@@ -36,12 +36,15 @@ class CheckUserAccess {
                 abort( 403, 'No Subscription' );
             }
 
-            // if ( $user->subscription->status === false ) {
-            //     abort( 403, 'You have been blocked, please contact the software author' );
-            // }
+            if ( $user->subscription->status == false ) {
+                abort( 403, 'You have been blocked, please contact the software author' );
+            }
 
             if ( Carbon::parse( $user->subscription->expiry_date )->isPast() ) {
-                abort( 403, 'Subscription Expired' );
+                // abort( 403, 'Subscription Expired' );
+
+                 session()->flash( 'renew', 'Subscription Expired, Please Renew Your Subscription..' );
+                 return redirect()->route( 'subscriber.subscription.renew');
             }
 
             $subscriptionPermission = explode( ',', $user->subscription->subscription->selected_feature );
