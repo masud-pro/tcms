@@ -22,7 +22,7 @@ class UserCreate extends Component {
      */
     public $name, $email, $phone_no, $userRole, $user_name, $business_institute_name, $dob, $gender, $curriculum, $institute, $teaching_level, $password, $password_confirmation, $address;
 
-//
+
     public function mount() {
         $this->roles = $this->roleName();
 

@@ -97,7 +97,6 @@ class AllAccounts extends Component {
             $pending     = $accounts->where( 'status', 'Pending' )->sum( "paid_amount" );
             $totalUnpaid = $unpaid + $pending;
 
-            // dd($accounts);
         } else {
             $accounts    = [];
             $total       = null;

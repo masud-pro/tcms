@@ -40,10 +40,8 @@ class Index extends Component {
 
     public function render() {
         $roles = Role::WhereNotIn( 'name', ['Student'] )->pluck( 'name' )->toArray();
-
         $administrators = User::role( $roles )->filter($this->search)->latest()->paginate( 20 );
-
-        // return $administrators;
+        
         return view('livewire.administrator.index', compact( 'administrators') );
 
     }
