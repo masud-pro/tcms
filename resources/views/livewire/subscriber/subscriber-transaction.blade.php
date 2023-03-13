@@ -48,28 +48,14 @@
 
                 @forelse  ($subscriberUsers as $subscriber)
                     <tr>
-                        <td>
-                            {{ $subscriber->id }}
-                        </td>
-
+                        <td>{{ $subscriber->id }}</td>
                         <td><b>{{ $subscriber->subscriptionUser->user->name ?? 'Not Found' }}</b></td>
-                        <td><b>{{ $subscriber->purpose ?? 'Regular Transaction' }}</b></td>
+                        <td><b>{{ $subscriber->purpose ?? 'Purpose Not Found' }}</b></td>
                         <td><b>{{ $subscriber->subscriptionUser->subscription->name ?? 'Not Found' }}</b></td>
-                        <td>
-                            {{ Carbon\Carbon::parse($subscriber->to_date)->format('d M Y') }}
-                        </td>
-
-
-                        <td>
-                            {{ Carbon\Carbon::parse($subscriber->from_date)->format('d M Y') }}
-                        </td>
-                        <td>
-                            {{ $subscriber->total_price }}
-                        </td>
-
-                        <td>
-                            {{ $subscriber->status == 1 ? 'Paid' : 'Unpaid' }}
-                        </td>
+                        <td>{{ Carbon\Carbon::parse($subscriber->to_date)->format('d M Y') }}</td>
+                        <td>{{ Carbon\Carbon::parse($subscriber->from_date)->format('d M Y') }}</td>
+                        <td>{{ $subscriber->total_price }}</td>
+                        <td>{{ $subscriber->status == 1 ? 'Paid' : 'Unpaid' }}</td>
                     </tr>
                 @empty
                     <tr>

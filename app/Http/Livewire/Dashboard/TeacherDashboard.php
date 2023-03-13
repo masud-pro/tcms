@@ -3,7 +3,6 @@
 namespace App\Http\Livewire\Dashboard;
 
 use Carbon\Carbon;
-use App\Models\User;
 use App\Models\Account;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
@@ -28,8 +27,6 @@ class TeacherDashboard extends Component {
             $query->where( 'status', 'Pending' );
         } )->get();
 
-        // $this->authUser = $user->hasRole( ['Teacher'] );
-
         $allAttendances = $user->students()->whereHas( 'attendance', function ( $query ) {
             $query->whereMonth( "created_at", Carbon::now() );
         } )->get();
@@ -46,26 +43,13 @@ class TeacherDashboard extends Component {
             $attendancePercentage = 0;
         }
 
-        // $allAccounts = $user->payment()->whereMonth( "created_at", Carbon::now() )->get();
-        // $allAccounts = $user->students()->whereHas( 'payment', function ( $query ) {
-        //     $query->whereMonth( "month", Carbon::today() );
-
-        // } )->get();
         $allAccounts = Account::whereHas( 'user', function ( $query ) use ( $user ) {
             $query->where( 'teacher_id', $user->id );
         } )->get();
 
-        // dd( $allAccounts );
         $duePayments = $allAccounts->where( "status", "Unpaid" )->sum( "paid_amount" );
         $pending     = $allAccounts->where( "status", "Pending" )->sum( "paid_amount" );
-        // $netIncome   = $allAccounts->where( 'status', 'Revenue' )->sum( "paid_amount" );
         $netIncome   = Account::where( 'user_id', $user->id )->where( 'status', 'Revenue' )->sum( "paid_amount" );
-        // dd( $allAccounts );
-        // $this->courses = Course::with( "user" )->get();
-        // $student =$user->students();
-
-        // $dd = Account::where( 'user_id', $user->id )->where( 'status', 'Expense' )->sum( "paid_amount" );
-        // dd( $dd );
 
         $this->reveivedPayments     = $allAccounts->where( "status", "Paid" )->sum( "paid_amount" );
         $this->expense              = Account::where( 'user_id', $user->id )->where( 'status', 'Expense' )->sum( "paid_amount" );

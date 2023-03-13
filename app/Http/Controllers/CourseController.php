@@ -47,8 +47,13 @@ class CourseController extends Controller {
         //     } )->get(),
         // ] );
 
-        $teacherId = Auth::user()->teacher_id;
-        $courses = Course::where( 'teacher_id', $teacherId )->get();
+             $courses = Course::whereDoesntHave( 'user', function ( $q ) {
+                $q->where( 'teacher_id', Auth::user()->id );
+            } )->get();
+    
+
+        // $teacherId = Auth::user()->teacher_id;
+        // $courses = Course::where( 'teacher_id', $teacherId )->get();
         
         return view( "ms.courses.display-courses", compact( 'courses' ) );
     }

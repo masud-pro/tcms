@@ -9,8 +9,7 @@
     @endif
     <div class="row">
         <div class="col-lg-3 offset-lg-9 text-right">
-            <input type="text" class="form-control mb-3" placeholder="Search Name or ID"
-                wire:model.debounce.500ms="search">
+            <input type="text" class="form-control mb-3" placeholder="Search Name or ID" wire:model.debounce.500ms="search">
             {{-- <input type="text" class="form-control mb-3" placeholder="Search Name"> --}}
         </div>
     </div>
@@ -40,23 +39,12 @@
 
                 @forelse  ($ownTransaction as $transaction)
                     <tr>
-                        <td>
-                            {{ $transaction->id }}
-                        </td>
+                        <td> {{ $transaction->id }} </td>
                         <td><b>{{ $transaction->purpose ?? 'Not Found' }}</b></td>
-                        <td>
-                            {{ Carbon\Carbon::parse($transaction->to_date)->format('d M Y') }}
-                        </td>
-                        <td>
-                            {{ Carbon\Carbon::parse($transaction->from_date)->format('d M Y') }}
-                        </td>
-                        <td>
-                            {{ $transaction->total_price }}
-                        </td>
-                        <td>
-                            {{ $transaction->status == 1 ? 'Paid' : 'Unpaid' }}
-                        </td>
-
+                        <td>{{ Carbon\Carbon::parse($transaction->to_date)->format('d M Y') }}</td>
+                        <td>{{ Carbon\Carbon::parse($transaction->from_date)->format('d M Y') }}</td>
+                        <td>{{ $transaction->total_price }}</td>
+                        <td>{{ $transaction->status == 1 ? 'Paid' : 'Unpaid' }}</td>
                     </tr>
                 @empty
                     <tr>
