@@ -159,6 +159,10 @@
                                                             <p class="text-start text-danger small mt-1">
                                                                 {{ $message }}</p>
                                                         @enderror
+                                                        @if (session()->has('usernameSuccess'))
+                                                            <p class="text-start text-success small mt-1">
+                                                                {{ session('usernameSuccess') }}</p>
+                                                        @endif
                                                     </div>
 
                                                 </div>

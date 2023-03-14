@@ -76,6 +76,16 @@
                             </div>
                         </div>
 
+                         {{--  --}}
+                         <div class="col-md-12 col-lg-12 col-sm-12">
+                            <div class="mb-3">
+                                <x-jet-label value="{{ __('Institute Name') }}" />
+
+                                <x-jet-input class="{{ $errors->has('institute_name') ? 'is-invalid' : '' }}" type="text" name="institute_name" :value="old('institute_name')" required />
+                                <x-jet-input-error for="class"></x-jet-input-error>
+                            </div>
+                        </div>
+
                         {{--  --}}
 
                         <div class="col-md-6 col-lg-6 col-sm-12">

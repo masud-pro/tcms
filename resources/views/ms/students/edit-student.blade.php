@@ -21,15 +21,13 @@
                         @method('PATCH')
 
                         <label for="name">Student Name</label>
-                        <input value="{{ old('name') ?? $user->name }}" name="name" class="form-control" id="name"
-                            type="text">
+                        <input value="{{ old('name') ?? $user->name }}" name="name" class="form-control" id="name" type="text">
                         @error('name')
                             <p class="text-danger small mt-1">{{ $message }}</p>
                         @enderror
 
                         <label class="mt-3" for="email">Student Email</label>
-                        <input value="{{ old('email') ?? $user->email }}" name="email" class="form-control" id="email"
-                            type="text">
+                        <input value="{{ old('email') ?? $user->email }}" name="email" class="form-control" id="email" type="text">
                         @error('email')
                             <p class="text-danger small mt-1">{{ $message }}</p>
                         @enderror
@@ -47,9 +45,14 @@
                         @enderror
 
                         <label class="mt-3" for="dob">Date of Birth</label>
-                        <input value="{{ old('dob') ?? $user->dob }}" name="dob" class="form-control" id="dob"
-                            type="date">
+                        <input value="{{ old('dob') ?? $user->dob }}" name="dob" class="form-control" id="dob" type="date">
                         @error('dob')
+                            <p class="text-danger small mt-1">{{ $message }}</p>
+                        @enderror
+
+                        <label class="mt-3" for="institute_name">Institute Name</label>
+                        <input value="{{ old('institute_name') ?? $user->institute_name }}" name="institute_name" class="form-control" id="institute_name" type="text">
+                        @error('institute_name')
                             <p class="text-danger small mt-1">{{ $message }}</p>
                         @enderror
 
@@ -72,64 +75,55 @@
                         @enderror
 
                         <label class="mt-3" for="class">Class</label>
-                        <input value="{{ old('class') ?? $user->class }}" name="class" class="form-control"
-                            id="class" type="number">
+                        <input value="{{ old('class') ?? $user->class }}" name="class" class="form-control" id="class" type="number">
                         @error('class')
                             <p class="text-danger small mt-1">{{ $message }}</p>
                         @enderror
 
                         <label class="mt-3" for="roll">Roll No</label>
-                        <input value="{{ old('roll') ?? $user->roll }}" name="roll" class="form-control" id="roll"
-                            type="number">
+                        <input value="{{ old('roll') ?? $user->roll }}" name="roll" class="form-control" id="roll" type="number">
                         @error('roll')
                             <p class="text-danger small mt-1">{{ $message }}</p>
                         @enderror
 
                         <label class="mt-3" for="reg_no">Reg No</label>
-                        <input value="{{ old('reg_no') ?? $user->reg_no }}" name="reg_no" class="form-control"
-                            id="reg_no" type="number">
+                        <input value="{{ old('reg_no') ?? $user->reg_no }}" name="reg_no" class="form-control" id="reg_no" type="number">
                         @error('reg_no')
                             <p class="text-danger small mt-1">{{ $message }}</p>
                         @enderror
 
                         <label class="mt-3" for="waiver">Waiver</label>
-                        <input value="{{ old('waiver') ?? $user->waiver }}" name="waiver" class="form-control"
-                            id="waiver" type="number">
+                        <input value="{{ old('waiver') ?? $user->waiver }}" name="waiver" class="form-control" id="waiver" type="number">
                         @error('waiver')
                             <p class="text-danger small mt-1">{{ $message }}</p>
                         @enderror
 
                         <label class="mt-3" for="phone_no">Phone Number</label>
-                        <input value="{{ old('phone_no') ?? $user->phone_no }}" name="phone_no" class="form-control"
-                            id="phone_no" type="text">
+                        <input value="{{ old('phone_no') ?? $user->phone_no }}" name="phone_no" class="form-control" id="phone_no" type="text">
                         @error('phone_no')
                             <p class="text-danger small mt-1">{{ $message }}</p>
                         @enderror
 
                         <label class="mt-3" for="fathers_name">Father's Name and Occupation</label>
-                        <input value="{{ old('fathers_name') ?? $user->fathers_name }}" name="fathers_name"
-                            class="form-control" id="fathers_name" type="text">
+                        <input value="{{ old('fathers_name') ?? $user->fathers_name }}" name="fathers_name" class="form-control" id="fathers_name" type="text">
                         @error('fathers_name')
                             <p class="text-danger small mt-1">{{ $message }}</p>
                         @enderror
 
                         <label class="mt-3" for="fathers_phone_no">Father's Phone Number</label>
-                        <input value="{{ old('fathers_phone_no') ?? $user->fathers_phone_no }}" name="fathers_phone_no"
-                            class="form-control" id="fathers_phone_no" type="text">
+                        <input value="{{ old('fathers_phone_no') ?? $user->fathers_phone_no }}" name="fathers_phone_no" class="form-control" id="fathers_phone_no" type="text">
                         @error('fathers_phone_no')
                             <p class="text-danger small mt-1">{{ $message }}</p>
                         @enderror
 
                         <label class="mt-3" for="mothers_name">Mother's Name and Occupation</label>
-                        <input value="{{ old('mothers_name') ?? $user->mothers_name }}" name="mothers_name"
-                            class="form-control" id="mothers_name" type="text">
+                        <input value="{{ old('mothers_name') ?? $user->mothers_name }}" name="mothers_name" class="form-control" id="mothers_name" type="text">
                         @error('mothers_name')
                             <p class="text-danger small mt-1">{{ $message }}</p>
                         @enderror
 
                         <label class="mt-3" for="mothers_phone_no">Mother's Phone Number</label>
-                        <input value="{{ old('mothers_phone_no') ?? $user->mothers_phone_no }}" name="mothers_phone_no"
-                            class="form-control" id="mothers_phone_no" type="text">
+                        <input value="{{ old('mothers_phone_no') ?? $user->mothers_phone_no }}" name="mothers_phone_no" class="form-control" id="mothers_phone_no" type="text">
                         @error('mothers_phone_no')
                             <p class="text-danger small mt-1">{{ $message }}</p>
                         @enderror
@@ -163,23 +157,19 @@
 
                     </form>
                     <div class="col text-right">
-                        <form method="POST" id="myFormSubmit"
-                            action="{{ route('user.destroy', ['user' => $user->id]) }}">
+                        <form method="POST" id="myFormSubmit" action="{{ route('user.destroy', ['user' => $user->id]) }}">
                             @csrf
                             @method('DELETE')
-                            <button type="button" class="btn btn-danger mt-4" data-toggle="modal"
-                                data-target="#exampleModal">Delete Account</button>
+                            <button type="button" class="btn btn-danger mt-4" data-toggle="modal" data-target="#exampleModal">Delete Account</button>
 
 
                             <!-- Delete Modal -->
-                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
-                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">Delete Confirm</h5>
-                                            <button type="button" class="close" data-dismiss="modal"
-                                                aria-label="Close">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true close-btn">×</span>
                                             </button>
                                         </div>
@@ -190,10 +180,8 @@
                                                 Exam Result & Attendance <br> Releted All Information Will Be Delated.</p>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="submit" class="btn btn-secondary close-btn"
-                                                data-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-danger close-modal" onclick="click()"
-                                                data-dismiss="modal">Yes, Delete</button>
+                                            <button type="submit" class="btn btn-secondary close-btn" data-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-danger close-modal" onclick="click()" data-dismiss="modal">Yes, Delete</button>
                                         </div>
                                     </div>
                                 </div>

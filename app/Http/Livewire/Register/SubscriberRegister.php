@@ -40,6 +40,7 @@ class SubscriberRegister extends Component {
         $this->register = false;
         $this->month    = 1;
         // $this->dob    = Carbon::today()->format("m-Y");
+
     }
 
     public function updatedplanId() {
@@ -76,7 +77,7 @@ class SubscriberRegister extends Component {
 
     public function updatedMonth() {
         $this->changeMonthsBill();
- 
+
     }
 
     public function changeMonthsBill() {
@@ -175,11 +176,12 @@ class SubscriberRegister extends Component {
      * @param $user
      */
     public function regSubscription( $planId, $planPrice, $user ) {
+
         $subscription            = Subscription::find( $planId );
         $data['subscription_id'] = $subscription->id;
         $data['price']           = $subscription->price;
         $data['user_id']         = $user->id;
-        $data['expiry_date']     = Carbon::now()->addMonths( $this->month );
+        $data['expiry_date']     = $this->addedFreeTrial( $planId );
         $data['status']          = 0;
 
         $subUser = SubscriptionUser::create( $data );
@@ -215,6 +217,37 @@ class SubscriberRegister extends Component {
             Auth::login( $user );
             return redirect()->route( 'dashboard' );
         }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function addedFreeTrial( $planId ) {
+
+        if ( $planId === 1 ) {
+            return Carbon::now()->addMonths( $this->month );
+        } else {
+            $subscription  = Subscription::find( 1 )->months;
+            $withFreeTrail = $subscription + $this->month;
+
+            return Carbon::now()->addMonths( $withFreeTrail );
+        }
+
+    }
+
+    public function updatedUsername() {
+     $data =   $this->validate( [
+            'username' => ['required','min:3', 'alpha', 'max:255', 'unique:teacher_infos,username'],
+        ]
+    );
+
+    if ($data) {
+        session()->flash('usernameSuccess', 'This user name is available');
+    }
+
+      
+
+
     }
 
     public function render() {

@@ -15,6 +15,7 @@ class SomeSAASChanges extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->integer('teacher_id')->nullable()->after('current_team_id');
+            $table->string('institute_name')->nullable()->after('teacher_id');
         });
 
         Schema::table( 'courses', function ( Blueprint $table ) {

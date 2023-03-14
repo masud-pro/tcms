@@ -35,6 +35,7 @@ class CreateNewUser implements CreatesNewUsers {
             'password'         => $this->passwordRules(),
             'terms'            => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['required', 'accepted'] : '',
             'teacher_id'       => ['nullable'],
+            'institute_name'   => ['required', 'min:3'],
         ] )->validate();
 
         $user = [
@@ -51,6 +52,7 @@ class CreateNewUser implements CreatesNewUsers {
             'address'          => $input['address'],
             'password'         => Hash::make( $input['password'] ),
             'teacher_id'       => $input['teacher_id'],
+            'institute_name'   => $input['institute_name'],
             'role'             => 'Student',
         ];
 

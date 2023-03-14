@@ -107,6 +107,12 @@
                 </div>
 
                 <div class="mb-3">
+                    <x-jet-label for="class" value="{{ __('Institute Name') }}" />
+                    <x-jet-input id="class" type="text" class="{{ $errors->has('institute_name') ? 'is-invalid' : '' }}" wire:model.defer="state.institute_name" />
+                    <x-jet-input-error for="class" />
+                </div>
+
+                <div class="mb-3">
                     <x-jet-label for="roll_no" value="{{ __('Roll No') }}" />
                     <input disabled value="{{ auth()->user()->roll }}" id="roll_no" type="text" class="form-control {{ $errors->has('roll_no') ? 'is-invalid' : '' }}" />
                     <x-jet-input-error for="roll_no" />

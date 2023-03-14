@@ -48,6 +48,7 @@ class User extends Authenticatable {
         'address',
         'is_active',
         'teacher_id',
+        'institute_name',
     ];
 
     /**
@@ -174,10 +175,8 @@ class User extends Authenticatable {
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function teacherInfo(): HasOne{
-        return $this->hasOne(TeacherInfo::class);
+    public function teacherInfo(): HasOne {
+        return $this->hasOne( TeacherInfo::class );
     }
-
-    
 
 }

@@ -93,7 +93,7 @@
 
         /* Add a green text color and a checkmark when the requirements are right */
         .valid {
-            color: green;
+            color: green !important;
         }
 
         .valid:before {

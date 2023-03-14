@@ -78,6 +78,7 @@ class UserController extends Controller {
             "gender"           => "required|string",
             "is_active"        => "required",
             "class"            => "nullable|integer",
+            "institute_name"   => "required",
             "roll"             => "nullable|integer",
             "reg_no"           => "nullable|integer",
             "waiver"           => "required|integer",
@@ -213,6 +214,7 @@ class UserController extends Controller {
             "gender"           => "required|string",
             "is_active"        => "required",
             "class"            => "nullable|integer",
+            "institute_name"   => "required",
             "roll"             => "nullable|integer",
             "reg_no"           => "nullable|integer",
             "waiver"           => "required|integer",
@@ -256,7 +258,7 @@ class UserController extends Controller {
 
                 $allaccounts = Account::whereMonth( "month", Carbon::today() )
                     ->where( "course_id", $course->id )
-                ->pluck( "id" );
+                    ->pluck( "id" );
 
                 // dd( $allaccounts );
 

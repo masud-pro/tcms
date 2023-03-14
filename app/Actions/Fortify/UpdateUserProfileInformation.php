@@ -2,10 +2,10 @@
 
 namespace App\Actions\Fortify;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
 
 class UpdateUserProfileInformation implements UpdatesUserProfileInformation {
@@ -20,17 +20,18 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation {
 
         if ( Auth::user()->role == "Student" ) {
             Validator::make( $input, [
-                'name'         => ['required', 'string', 'max:255'],
-                'email'        => ['required', 'email', 'max:255', Rule::unique( 'users' )->ignore( $user->id )],
-                "address"      => ["required"],
-                "role"         => ["required"],
-                "dob"          => ["required"], ["date"],
-                "gender"       => ["required"],
-                "class"        => ["nullable", "integer"],
-                "phone_no"     => ["required", 'min:11', 'max:11',Rule::unique( 'users', 'phone_no' )->ignore( $user->id )],
-                "fathers_name" => ["nullable", "string"],
-                "mothers_name" => ["nullable", "string"],
-                'photo'        => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
+                'name'           => ['required', 'string', 'max:255'],
+                'email'          => ['required', 'email', 'max:255', Rule::unique( 'users' )->ignore( $user->id )],
+                "address"        => ["required"],
+                "role"           => ["required"],
+                "dob"            => ["required"], ["date"],
+                "gender"         => ["required"],
+                "class"          => ["nullable", "integer"],
+                "phone_no"       => ["required", 'min:11', 'max:11', Rule::unique( 'users', 'phone_no' )->ignore( $user->id )],
+                "fathers_name"   => ["nullable", "string"],
+                "mothers_name"   => ["nullable", "string"],
+                'photo'          => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
+                'institute_name' => ['required', 'min:3'],
             ] )->validateWithBag( 'updateProfileInformation' );
         } else {
             Validator::make( $input, [
@@ -50,16 +51,17 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation {
             $this->updateVerifiedUser( $user, $input );
         } else {
             $user->forceFill( [
-                'name'         => $input['name'],
-                'email'        => $input['email'],
-                'address'      => $input['address'],
-                'role'         => $input['role'],
-                'dob'          => $input['dob'],
-                'gender'       => $input['gender'],
-                'class'        => $input['class'],
-                'phone_no'     => $input['phone_no'],
-                'fathers_name' => $input['fathers_name'],
-                'mothers_name' => $input['mothers_name'],
+                'name'           => $input['name'],
+                'email'          => $input['email'],
+                'address'        => $input['address'],
+                'role'           => $input['role'],
+                'dob'            => $input['dob'],
+                'gender'         => $input['gender'],
+                'class'          => $input['class'],
+                'phone_no'       => $input['phone_no'],
+                'fathers_name'   => $input['fathers_name'],
+                'mothers_name'   => $input['mothers_name'],
+                'institute_name' => $input['institute_name'],
             ] )->save();
         }
 
