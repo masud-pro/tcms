@@ -35,7 +35,7 @@
                 </h1>
             @endif
         @elseif (auth()->user()->hasRole(['Student']))
-            @if (!auth()->user()->teacherInfo->business_institute_name)
+            @if (!$teacherBusinessInstituteName)
                 <h1 class="h3 mb-4 text-primary">
                     Welcome to {{ $appName }} @if ($emoji)
                         😀
@@ -43,7 +43,7 @@
                 </h1>
             @else
                 <h1 class="h3 mb-4 text-primary">
-                    Welcome to {{ auth()->user()->teacherInfo->business_institute_name ?? '' }} @if ($emoji)
+                    Welcome to {{ $teacherBusinessInstituteName ?? '' }} @if ($emoji)
                         😀
                     @endif
                 </h1>

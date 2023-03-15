@@ -28,7 +28,6 @@
                                     <img class="card-img-top" height="250px" src="{{ $course->image ? Storage::url($course->image) : asset('images/default-banner.jpg') }}" alt="Card image cap">
 
                                     <div class="card-body">
-
                                         <h5 class="card-title text-dark">{{ $course->name }}</h5>
                                         <p class="card-text">
                                             {{ Illuminate\Support\Str::words($course->description, 10) }}
@@ -48,12 +47,26 @@
                                         <li class="list-group-item">Subject: <span class="text-primary font-weight-bold">{{ $course->subject }}</span></li>
                                         <li class="list-group-item">Fee: <span class="text-primary font-weight-bold">{{ $course->fee }}</span></li>
                                     </ul>
-                                    <div class="card-body">
-                                        <form action="{{ route('course.enroll', ['course' => $course->id]) }}" method="POST">
-                                            @csrf
-                                            <input onclick="return confirm('Are you sure you want to enroll in this course?')" type="submit" value="Enroll" class="card-link btn btn-success font-weight-bold btn-block">
-                                        </form>
-                                    </div>
+                                    {{-- {{ $studentCanEnroll[0]->id }} --}}
+
+                                    @foreach ($studentCanEnroll as $studentCourse)
+                                        @if ($studentCourse->id === $course->id)
+                                            <div class="card-body">
+                                                <form action="{{ route('course.enroll', ['course' => $course->id]) }}" method="POST">
+                                                    @csrf
+                                                    <input onclick="return confirm('Are you sure you want to enroll in this course?')" type="submit" value="Enroll"
+                                                        class="card-link btn btn-success font-weight-bold btn-block">
+                                                </form>
+                                            </div>
+                                        @else
+                                            <div class="card-body">
+                                                {{-- <a href="#" class="card-link float-left">Enroll</a> --}}
+                                                <a href="{{ route('course.feeds.index', ['course' => $course->id]) }}" class="card-link btn btn-success font-weight-bold btn-block">Go To Feed</a>
+                                            </div>
+                                        @endif
+                                    @endforeach
+
+
                                 </div>
                             </div>
                         @empty
