@@ -101,7 +101,7 @@
     @livewireScripts()
     <script src="{{ asset("assets/tinymce/tinymce.min.js") }}" referrerpolicy="origin"></script>
     {{-- <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> --}}
-    <script type="text/javascript" src="http://momentjs.com/downloads/moment-with-locales.min.js"></script> 
+    <script type="text/javascript" src="https://momentjs.com/downloads/moment-with-locales.min.js"></script> 
     <script src="{{ asset("assets/datetimepicker/bootstrap-material-datetimepicker.js") }}"></script> 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     
