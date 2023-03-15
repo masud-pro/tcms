@@ -13,24 +13,41 @@
     @if (auth()->user()->hasRole(['Teacher', 'Super Admin']) ||
             (Auth::user()->role == 'Student' && Auth::user()->is_active == 1))
 
-        @if (auth()->user()->hasRole(['Teacher']))
-            <h1 class="h3 mb-4 text-primary">
-                Welcome to {{ auth()->user()->teacherInfo->business_institute_name }} @if ($emoji)
-                    😀
-                @endif
-            </h1>
-        @elseif (auth()->user()->hasRole(['Super Admin']))
+
+        @if (auth()->user()->hasRole(['Super Admin']))
             <h1 class="h3 mb-4 text-primary">
                 Welcome to {{ env('APP_NAME') }} @if ($emoji)
                     😀
                 @endif
             </h1>
+        @elseif (auth()->user()->hasRole(['Teacher']))
+            @if (!auth()->user()->teacherInfo->business_institute_name)
+                <h1 class="h3 mb-4 text-primary">
+                    Welcome to {{ $appName }} @if ($emoji)
+                        😀
+                    @endif
+                </h1>
+            @else
+                <h1 class="h3 mb-4 text-primary">
+                    Welcome to {{ auth()->user()->teacherInfo->business_institute_name ?? '' }} @if ($emoji)
+                        😀
+                    @endif
+                </h1>
+            @endif
         @elseif (auth()->user()->hasRole(['Student']))
-            <h1 class="h3 mb-4 text-primary">
-                Welcome to {{ $teacherBusinessInstituteName ?? '' }} @if ($emoji)
-                    😀
-                @endif
-            </h1>
+            @if (!auth()->user()->teacherInfo->business_institute_name)
+                <h1 class="h3 mb-4 text-primary">
+                    Welcome to {{ $appName }} @if ($emoji)
+                        😀
+                    @endif
+                </h1>
+            @else
+                <h1 class="h3 mb-4 text-primary">
+                    Welcome to {{ auth()->user()->teacherInfo->business_institute_name ?? '' }} @if ($emoji)
+                        😀
+                    @endif
+                </h1>
+            @endif
         @endif
 
 

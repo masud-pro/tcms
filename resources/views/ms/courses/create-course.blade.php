@@ -5,9 +5,7 @@
 @endsection
 
 @section('content')
-    <div class="row">
-        <div class="col-md-12">
-            {{-- @if ($errors->any())
+    {{-- @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
                     @foreach ($errors->all() as $error)
@@ -16,42 +14,61 @@
                 </ul>
             </div>
         @endif --}}
-            <div class="card">
-                <div class="card-header">
-                    <h6 class="m-0 font-weight-bold text-primary">Create Course</h6>
-                </div>
-                <div class="card-body">
-                    <form action="{{ route('course.store') }}" method="POST" enctype="multipart/form-data">
+    <div class="card">
+        <div class="card-header">
+            <h6 class="m-0 font-weight-bold text-primary">Create Course</h6>
+        </div>
+        <div class="card-body">
+            <form action="{{ route('course.store') }}" method="POST" enctype="multipart/form-data">
 
-                        @csrf
+                @csrf
+
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-12">
 
                         <label for="name">Course Name</label>
-                        <input value="{{ old('name') }}" name="name" class="form-control" id="name"
-                            type="text">
+                        <input value="{{ old('name') }}" name="name" class="form-control" id="name" type="text">
                         @error('name')
                             <p class="text-danger small mt-1">{{ $message }}</p>
                         @enderror
+                    </div>
 
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+
+                        <label for="fee" class="">Fee</label>
+                        <input value="{{ old('fee') }}" name="fee" class="form-control" id="fee" type="number">
+                        @error('fee')
+                            <p class="text-danger small mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="col-lg-6 col-md-6 col-sm-12">
                         <label for="description" class="mt-3">Description</label>
                         <textarea name="description" id="description" rows="2" class="form-control">{!! old('description') !!}</textarea>
                         @error('description')
                             <p class="text-danger small mt-1">{{ $message }}</p>
                         @enderror
+                    </div>
+
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <label for="address" class="mt-3">Address</label>
+                        <textarea name="address" id="address" rows="2" class="form-control">{{ old('address') }}</textarea>
+                        @error('address')
+                            <p class="text-danger small mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="col-lg-6 col-md-6 col-sm-12">
 
                         <label for="class_link" class="mt-3">Course Link</label>
                         {{-- <textarea name="class_link" id="class_link" rows="2" class="form-control">{!! old('class_link') !!}</textarea> --}}
-                        <input name="class_link" id="class_link" rows="2" class="form-control"
-                            value="{{ old('class_link') }}">
+                        <input name="class_link" id="class_link" rows="2" class="form-control" value="{{ old('class_link') }}">
                         @error('class_link')
                             <p class="text-danger small mt-1">{{ $message }}</p>
                         @enderror
+                    </div>
 
-                        <label for="fee" class="mt-3">Fee</label>
-                        <input value="{{ old('fee') }}" name="fee" class="form-control" id="fee"
-                            type="number">
-                        @error('fee')
-                            <p class="text-danger small mt-1">{{ $message }}</p>
-                        @enderror
+                    <div class="col-lg-6 col-md-6 col-sm-12">
 
                         <label for="type" class="mt-3">Type</label>
                         <select value="{{ old('type') }}" name="type" id="type" class="form-control">
@@ -61,68 +78,86 @@
                         @error('type')
                             <p class="text-danger small mt-1">{{ $message }}</p>
                         @enderror
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12">
 
                         <label for="time" class="mt-3">Course Date and Time</label>
-                        <input value="{{ old('time') }}" name="time" class="form-control" id="time"
-                            type="text">
+                        <input value="{{ old('time') }}" name="time" class="form-control" id="time" type="text">
                         @error('time')
                             <p class="text-danger small mt-1">{{ $message }}</p>
                         @enderror
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12">
 
                         <label for="capacity" class="mt-3">Capacity</label>
-                        <input onscroll="return false" value="{{ old('capacity') }}" name="capacity" class="form-control"
-                            id="capacity" type="number">
+                        <input onscroll="return false" value="{{ old('capacity') }}" name="capacity" class="form-control" id="capacity" type="number">
                         @error('capacity')
                             <p class="text-danger small mt-1">{{ $message }}</p>
                         @enderror
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12">
 
 
                         <label for="section" class="mt-3">Section</label>
-                        <input value="{{ old('section') }}" name="section" class="form-control" id="section"
-                            type="text">
+                        <input value="{{ old('section') }}" name="section" class="form-control" id="section" type="text">
                         @error('section')
                             <p class="text-danger small mt-1">{{ $message }}</p>
                         @enderror
-
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12">
                         <label for="subject" class="mt-3">Subject</label>
-                        <input value="{{ old('subject') }}" name="subject" class="form-control" id="subject"
-                            type="text">
+                        <input value="{{ old('subject') }}" name="subject" class="form-control" id="subject" type="text">
                         @error('subject')
                             <p class="text-danger small mt-1">{{ $message }}</p>
                         @enderror
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12">
 
                         <label for="room" class="mt-3">Room no</label>
-                        <input value="{{ old('room') }}" name="room" class="form-control" id="room"
-                            type="text">
+                        <input value="{{ old('room') }}" name="room" class="form-control" id="room" type="text">
                         @error('room')
                             <p class="text-danger small mt-1">{{ $message }}</p>
                         @enderror
-
-                        <label for="address" class="mt-3">Address</label>
-                        <textarea name="address" id="address" rows="1" class="form-control">{{ old('address') }}</textarea>
-                        @error('address')
-                            <p class="text-danger small mt-1">{{ $message }}</p>
-                        @enderror
+                    </div>
 
 
+                    <div class="col-lg-6 col-md-6 col-sm-12">
                         <label for="address" class="mt-3">Image</label>
                         <input onchange="readURL(this);" name="image" type="file" class="form-control-file">
                         <div class="small">A landscape image is preferable</div>
                         <img id="batchImage" class="mt-3" src="" alt=""> <br>
+                    </div>
 
-                        <div class="row">
-                            <div class="col">
-                                <input type="submit" value="Create" class="btn btn-primary mt-4">
-                            </div>
-                            <div class="col text-right mt-5">
-                                <a class="mt-4" href="{{ route('course.index') }}">Go Back</a>
-                            </div>
-                        </div>
-
-
-                    </form>
                 </div>
-            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                <div class="row">
+                    <div class="col">
+                        <input type="submit" value="Create" class="btn btn-primary mt-4">
+                    </div>
+                    <div class="col text-right mt-5">
+                        <a class="mt-4" href="{{ route('course.index') }}">Go Back</a>
+                    </div>
+                </div>
+
+
+            </form>
         </div>
     </div>
 @endsection
