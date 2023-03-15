@@ -108,7 +108,7 @@ class SubscriberRegister extends Component {
             'business_institute_name' => ['nullable'],
             'teachingLevel'           => ['required'],
             'address'                 => ['required'],
-            'password'                => ['required', 'confirmed', Password::min( 8 )->mixedCase()->letters()->numbers()->symbols()->uncompromised()],
+            'password'                => ['required', 'confirmed', Password::min( 8 )->mixedCase()->letters()->numbers()],
             'password_confirmation'   => ['required'],
         ];
     }
