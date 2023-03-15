@@ -466,7 +466,7 @@ class SslCommerzPaymentController extends Controller {
     }
 
     public function subscription_cancel() {
-        return view( "ms.payment-gateway.cancel" );
+        return view( "ms.payment-gateway.cancelled" );
     }
 
 
@@ -572,7 +572,7 @@ class SslCommerzPaymentController extends Controller {
     }
 
     public function sms_cancel() {
-        return view( "ms.payment-gateway.cancel" );
+        return view( "ms.payment-gateway.cancelled" );
     }
 
 
@@ -685,7 +685,7 @@ class SslCommerzPaymentController extends Controller {
     }
 
     public function renew_cancel() {
-        return view( "ms.payment-gateway.cancel" );
+        return view( "ms.payment-gateway.cancelled" );
     }
 
 

@@ -9,7 +9,9 @@ use App\Models\Order;
 use App\Models\Course;
 use App\Models\Account;
 use Illuminate\Http\Request;
+use App\Jobs\Message\ProcessSMS;
 use Illuminate\Support\Facades\Auth;
+use PhpOffice\PhpSpreadsheet\Calculation\DateTimeExcel\Month;
 
 class AccountController extends Controller {
 
@@ -309,6 +311,12 @@ class AccountController extends Controller {
             $numbers = $this->get_phone_numbers( "mothers_phone_no", $request->course_id );
         }
 
+        $allMonth = [];
+        $months   = Account::where( 'course_id', $request->course_id )->get();
+        foreach ( $months as $data ) {
+            array_push( $allMonth, Carbon::parse( $data->month )->format( 'M Y' ) );
+        }
+
         $numberCount = count( $numbers );
 
         $smsrow        = getTeacherSetting( 'remaining_sms' );
@@ -319,33 +327,41 @@ class AccountController extends Controller {
         }
 
         if ( $numberCount > 0 ) {
-            $numbers = implode( ",", $numbers );
 
-            $message = "সম্মানিত অভিভাবক, আপনার সন্তানের" . Carbon::today()->format( "M-Y" ) . " মাসের পেমেন্ট বাকি আছে - " . env( "APP_NAME" );
+            $month = implode( ",", $allMonth );
+            // $numbers = implode( ",", $numbers );
+
+            // dd( $numbers );
+
+            $message = "সম্মানিত অভিভাবক, আপনার সন্তানের " . "- " . $month . " মাসের পেমেন্ট বাকি আছে - " . auth()->user()->teacherInfo->business_institute_name ?? env( "APP_NAME" );
             // $message = "Dear Parent, Your child have a payment due on month: " . Carbon::today()->format( "M-Y" ) . " - " . env( "APP_NAME" );
 
-            $status = SMSController::send_sms( $numbers, $message );
+            foreach ( $numbers as $id => $number ) {
+                // dd( $number );
+                $sms['number']  = $number;
+                $sms['message'] = $message;
 
-            if ( $status ) {
+                // dd($sms);
 
-                $remaining_sms = $remaining_sms - $numberCount;
-
-                SMS::create( [
-                    'for'       => "Account Report",
-                    'course_id' => $request->course_id,
-                    'count'     => $numberCount,
-                    'message'   => $message,
-                ] );
-
-                $smsrow->update( [
-                    'value' => $remaining_sms,
-                ] );
-
-                return redirect()->back()->with( "success", "All guardian reported successfully" );
-            } else {
-                return redirect()->back()->with( "failed", "Report failed for unknown reasosns, Check all studnets phone no is correct or not!" );
+                ProcessSMS::dispatch( $sms );
             }
 
+            // $status = SMSController::send_sms( $numbers, $message );
+
+            $remaining_sms = $remaining_sms - $numberCount;
+
+            SMS::create( [
+                'for'       => "Account Report",
+                'course_id' => $request->course_id,
+                'count'     => $numberCount,
+                'message'   => $message,
+            ] );
+
+            $smsrow->update( [
+                'value' => $remaining_sms,
+            ] );
+
+            return redirect()->back()->with( "success", "All guardian reported successfully" );
         } else {
             return redirect()->back()->with( "failed", "Numbers not found, everyone may be have paid" );
         }
@@ -586,7 +602,6 @@ class AccountController extends Controller {
         return redirect()->back()->with( "success", "Account updated successfully" );
 
     }
-
 
     public function individual_account() {
         return view( "ms.account.student-account" );

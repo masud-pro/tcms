@@ -28,7 +28,7 @@
                         @enderror
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12">
-                        <label class="mt-3" for="email">Student Email</label>
+                        <label class="" for="email">Student Email</label>
                         <input value="{{ old('email') ?? $user->email }}" name="email" class="form-control" id="email" type="text">
                         @error('email')
                             <p class="text-danger small mt-1">{{ $message }}</p>

@@ -90,7 +90,8 @@ class OptionController extends Controller {
     public function course_payment_generate_options()
     {
         return view('ms.option.payment-generate',[
-            'courses' => Course::all('id','name','should_generate_payments')
+            // 'courses' => Course::all('id','name','should_generate_payments')
+            'courses' => Auth::user()->addedCourses()->latest()->get()
         ]);
     }
 

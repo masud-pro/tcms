@@ -75,19 +75,17 @@
                                 @if ($showInput == true)
                                     <td>
                                         <input class="form-control form-control-user" style="width: 80px;" type="number" min="0" wire:model="newPaidAmount">
-                                        <a class="float-right tick-positions green" href="#" wire:click="customAmount({{ $account->id }}) rel="custom input">
+                                        <a class="float-right tick-positions green" wire:click="customAmount({{ $account->id }}) rel="custom input">
                                             <i class="far fa-check-circle fa-lg"></i>
                                         </a>
                                     </td>
                                 @else
-                                    <td>{{ $account->paid_amount ?? 'Not Found' }}
-                                        <a class="float-right" href="#" wire:click="customAmount({{ $account->id }})" rel="custom input">
+                                    <td >{{ $account->paid_amount ?? 'Not Found' }}
+                                        <a class="float-right " for="{{ $account->id }}" wire:click="customAmount({{ $account->id }})" rel="custom input">
                                             <i class="far fa-edit fa-lg"></i>
                                         </a>
                                     </td>
                                 @endif
-
-
 
                             </tr>
                         @endforeach

@@ -21,7 +21,7 @@
                                                 <div wire:ignore>
                                                     <select wire:model="planName" id="planName"
                                                         class="form-control form-control-user @error('planName') is-invalid @enderror js-example-disabled-results">
-                                                        <option disabled>Select Your Plan</option>
+                                                        <option value="Select Your Plan">Select Your Plan</option>
                                                         @foreach ($planList as $data)
                                                             <option value="{{ $data->id }}"
                                                                 {{ $planName == $data->id ? 'selected' : '' }}>

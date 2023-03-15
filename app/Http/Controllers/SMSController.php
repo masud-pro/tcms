@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\SMS;
 use App\Models\Course;
-use App\Models\Option;
-use App\Models\Setting;
 use App\Models\Assessment;
 use Illuminate\Http\Request;
 use App\Jobs\Message\ProcessSMS;
@@ -56,7 +54,7 @@ class SMSController extends Controller {
         $assessment = Assessment::findOrFail( $data['assessment_id'] );
 
         // First count the characters and find the sms count
-        $characters            = strlen( $assessment->name . " " . "result: 1000/1000" . " - " . env( 'APP_NAME' ) );
+        $characters            = strlen( $assessment->name . " " . "result: 1000/1000" . " - " . auth()->user()->teacherInfo->business_institute_name ?? env( 'APP_NAME' ) );
         $numberOfSmsPerMessage = (int) ceil( $characters / 160 );
 
         $smsCount = $assessment->responses()->count() * $numberOfSmsPerMessage; // Count the number of sms
@@ -82,7 +80,7 @@ class SMSController extends Controller {
                 "result: " .
                 $response->marks . "/" .
                 $response->assignment->marks . " - " .
-                env( 'APP_NAME' );
+                auth()->user()->teacherInfo->business_institute_name ?? env( 'APP_NAME' );
 
                 ProcessSMS::dispatch( $sms );
             }
@@ -92,7 +90,7 @@ class SMSController extends Controller {
             SMS::create( [
                 'for'     => $assessment->name . " Results",
                 'count'   => $smsCount,
-                'message' => $assessment->name . " " . "result: (individual)" . " - " . env( 'APP_NAME' ),
+                'message' => $assessment->name . " " . "result: (individual)" . " - " . auth()->user()->teacherInfo->business_institute_name ?? env( 'APP_NAME' ),
             ] );
 
             $smsrow->update( [

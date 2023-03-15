@@ -53,7 +53,7 @@ class AssignmentController extends Controller {
 
         Assignment::create( $validatedData );
 
-        return redirect()->route( "assignments.index" )->with( "success", "Assignment Created Successfully" );
+        return redirect()->route( "questions.index" )->with( "success", "Assignment Created Successfully" );
 
     }
 
@@ -63,9 +63,9 @@ class AssignmentController extends Controller {
      * @param  \App\Models\Assignment      $assignment
      * @return \Illuminate\Http\Response
      */
-    public function edit( Assignment $assignment ) {
+    public function edit( Assignment $question ) {
         return view( "ms.assignments.edit-assignment", [
-            'assignment' => $assignment,
+            'question' => $question,
         ] );
     }
 
@@ -85,7 +85,7 @@ class AssignmentController extends Controller {
 
         $assignment->update( $validatedData );
 
-        return redirect()->back()->with( "success", "Assignment Updated Successfully" );
+        return redirect()->back()->with( "success", "Question Updated Successfully" );
     }
 
     /**
@@ -94,8 +94,8 @@ class AssignmentController extends Controller {
      * @param  \App\Models\Assignment      $assignment
      * @return \Illuminate\Http\Response
      */
-    public function destroy( Assignment $assignment ) {
-        $assessment = $assignment->assessment();
+    public function destroy( Assignment $question ) {
+        $assessment = $question->assessment();
 
         foreach ( $assessment->get() as $signleAssessment ) {
             $signleAssessment->user()->sync( [] );
@@ -103,12 +103,12 @@ class AssignmentController extends Controller {
         }
 
         $assessment->delete();
-        $assignment->response()->delete();
-        $assignment->files()->delete();
+        $question->response()->delete();
+        $question->files()->delete();
 
-        $assignment->delete();
+        $question->delete();
 
-        return redirect()->route( "assignments.index" )->with( "delete", "Assignment Deleted Successfully" );
+        return redirect()->route( "questions.index" )->with( "delete", "Question Deleted Successfully" );
     }
 
 }

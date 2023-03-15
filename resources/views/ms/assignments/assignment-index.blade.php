@@ -1,7 +1,7 @@
 @extends('layouts.cms')
 
 @section('title')
-    Assignments
+    Questions
 @endsection
 
 @push('styles')
@@ -30,12 +30,12 @@
             @endif
 
 
-            <a class="btn btn-primary mb-4" href="{{ route('assignments.create') }}">Create New Assignment</a>
+            <a class="btn btn-primary mb-4" href="{{ route('questions.create') }}">Create New Question</a>
 
 
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">All Assignmets</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">All Questions</h6>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -57,15 +57,14 @@
                                 </tr>
                             </tfoot>
                             <tbody>
-                                @foreach ($assignments as $assignment)
+                                @foreach ($assignments as $question)
                                     <tr>
 
-                                        <td>{{ $assignment->id }}</td>
-                                        <td>{{ $assignment->title ?? '' }}</td>
-                                        <td>{{ $assignment->marks ?? '' }}</td>
+                                        <td>{{ $question->id }}</td>
+                                        <td>{{ $question->title ?? '' }}</td>
+                                        <td>{{ $question->marks ?? '' }}</td>
                                         <td>
-                                            <a class="btn btn-primary"
-                                                href="{{ route('assignments.edit', ['assignment' => $assignment->id]) }}">Edit</a>
+                                            <a class="btn btn-primary" href="{{ route('questions.edit', ['question' => $question->id]) }}">Edit</a>
                                             {{-- <a class="btn btn-primary" href="{{ route("assignments.show",['assignment'=>$assignment->id]) }}">Show</a> --}}
                                         </td>
 

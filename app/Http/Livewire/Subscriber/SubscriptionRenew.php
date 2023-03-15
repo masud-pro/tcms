@@ -20,7 +20,7 @@ class SubscriptionRenew extends Component {
      * @var array
      */
     protected $rules = [
-        'month'     => 'required',
+        'month'     => 'required|int',
         'planName'  => 'required',
         'planPrice' => 'required',
     ];
@@ -44,6 +44,12 @@ class SubscriptionRenew extends Component {
     }
 
     public function updatedplanName() {
+        $this->validate([
+            'planName'  => 'required|int',
+        ],[
+            'planName.required' => 'This field is required.',
+            'planName.integer' => 'Please Select Your Plan',
+        ]);
         $this->calculatePrice();
     }
 
@@ -55,8 +61,8 @@ class SubscriptionRenew extends Component {
     public function changeMonthsBill() {
         $plan = Subscription::find( $this->planName );
 
-        $discountMonth    = floor( $this->month / 12 ) * 2; // 12 mash hole 10 mash gunbe
-        $monthToCalculate = $this->month - $discountMonth;
+        $discountMonth    = floor( (int) $this->month / 12 ) * 2; // 12 mash hole 10 mash gunbe
+        $monthToCalculate = (int) $this->month - $discountMonth;
         $this->planPrice  = $plan->price * $monthToCalculate;
     }
 
