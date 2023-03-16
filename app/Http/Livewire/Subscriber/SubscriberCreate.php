@@ -14,7 +14,7 @@ class SubscriberCreate extends Component {
     /**
      * @var mixed
      */
-    public $subscriberName, $subscriberPackage, $price, $startDate, $specialPrice, $specialPriceField, $monthCount = 1;
+    public $subscriberName, $subscriberPackage, $price, $startDate, $specialPrice, $specialPriceField, $monthCount = 1, $subscriberList, $subscriptionList;
 
     /**
      * @var array
@@ -29,6 +29,9 @@ class SubscriberCreate extends Component {
     ];
 
     public function mount() {
+
+        $this->subscriberList   = User::role( 'Teacher' )->get();
+        $this->subscriptionList = Subscription::all();
 
         $this->calculatePrice();
         $this->startDate = Carbon::now()->format( 'Y-m-d' );
@@ -87,10 +90,6 @@ class SubscriberCreate extends Component {
     }
 
     public function render() {
-
-        $subscriberList   = User::role( 'Teacher' )->get();
-        $subscriptionList = Subscription::WhereNotIn( 'id', [1] )->get();
-
-        return view( 'livewire.subscriber.subscriber-create', compact( 'subscriberList', 'subscriptionList' ) );
+        return view( 'livewire.subscriber.subscriber-create' );
     }
 }
