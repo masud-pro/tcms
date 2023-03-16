@@ -311,11 +311,11 @@ class AccountController extends Controller {
             $numbers = $this->get_phone_numbers( "mothers_phone_no", $request->course_id );
         }
 
-        $allMonth = [];
-        $months   = Account::where( 'course_id', $request->course_id )->get();
-        foreach ( $months as $data ) {
-            array_push( $allMonth, Carbon::parse( $data->month )->format( 'M Y' ) );
-        }
+        $course = Course::find( $request->course_id );
+
+        $allUser = $course->account->where( 'status', 'Unpaid' );
+
+        $message = "সম্মানিত অভিভাবক, আপনার সন্তানের - " . $course->name . " (";
 
         $numberCount = count( $numbers );
 
@@ -328,20 +328,15 @@ class AccountController extends Controller {
 
         if ( $numberCount > 0 ) {
 
-            $month = implode( ",", $allMonth );
-            // $numbers = implode( ",", $numbers );
-
-            // dd( $numbers );
-
-            $message = "সম্মানিত অভিভাবক, আপনার সন্তানের " . "- " . $month . " মাসের পেমেন্ট বাকি আছে - " . auth()->user()->teacherInfo->business_institute_name ?? env( "APP_NAME" );
-            // $message = "Dear Parent, Your child have a payment due on month: " . Carbon::today()->format( "M-Y" ) . " - " . env( "APP_NAME" );
-
             foreach ( $numbers as $id => $number ) {
-                // dd( $number );
+
+                foreach ( $allUser as $userCourse ) {
+                    $message .= Carbon::parse( $userCourse->month )->format( 'M y' ) . ",";
+                }
+
+                $message .= ")" . " মাসের পেমেন্ট বাকি আছে - " . auth()->user()->teacherInfo->business_institute_name ?? env( "APP_NAME" );
                 $sms['number']  = $number;
                 $sms['message'] = $message;
-
-                // dd($sms);
 
                 ProcessSMS::dispatch( $sms );
             }
@@ -372,6 +367,7 @@ class AccountController extends Controller {
      * @param $send_to
      */
     public function all_students_account_sms( $send_to ) {
+
         $students = User::where( 'role', 'Student' )->whereHas( 'payment', function ( $query ) {
             $query->where( 'status', 'Unpaid' );
         } )->get();
@@ -401,9 +397,12 @@ class AccountController extends Controller {
                 $message .= Carbon::parse( $payment->month )->format( "M-Y" ) . ", ";
             }
 
-            $message .= " মাসের পেমেন্ট বাকি আছে - " . env( "APP_NAME" );
+            $message .= " মাসের পেমেন্ট বাকি আছে - " . auth()->user()->teacherInfo->business_institute_name ?? env( "APP_NAME" );
 
             $number = $student->$send_to;
+
+            dd( 'hello' );
+
             SMSController::send_sms( $number, $message );
         }
 

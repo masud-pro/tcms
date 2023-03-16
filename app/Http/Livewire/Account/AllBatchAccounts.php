@@ -8,6 +8,7 @@ use App\Models\Course;
 use App\Models\Account;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\AllBatchAccountsExport;
 
@@ -18,7 +19,7 @@ class AllBatchAccounts extends Component {
     /**
      * @var mixed
      */
-    public $student, $showInput = false, $newPaidAmount, $status;
+    public $student, $showInput = false, $newPaidAmount, $status, $amount;
 
     /**
      * @var string
@@ -37,15 +38,17 @@ class AllBatchAccounts extends Component {
      * @param Account $account
      */
     public function customAmount( Account $account ) {
+        $this->amount = $account->paid_amount;
+    }
 
-        if ( $this->showInput == true ) {
-            $account->update( ['paid_amount' => $this->newPaidAmount] );
-            $this->showInput = false;
-        } else {
-            $this->showInput = true;
+    /**
+     * @param Account $account
+     */
+    public function newAmount( Account $account ) {
+        $data['paid_amount'] = $this->amount;
+        $account->update( $data );
+        $this->dispatchBrowserEvent( 'closeModal' );
 
-            $this->newPaidAmount = $account->paid_amount;
-        }
     }
 
     /**
@@ -85,6 +88,66 @@ class AllBatchAccounts extends Component {
             ] );
         }
     }
+
+    // public function mount() {
+    //     $accounts = Account::select( ["accounts.*", "accounts.id as account_id", "users.id as user_id", "users.name as user_name", "users.email as user_email"] )
+    //         ->with( "user" )
+    //         ->whereMonth( "accounts.created_at", Carbon::today() )
+    //         ->whereHas( "user", function ( $query ) {
+    //             $query->when( $this->student, function ( $query ) {
+    //                        $query->where( 'name', 'like', '%' . $this->student . '%' )
+    //                              ->orWhere( 'id', 'like', $this->student );
+    //                    } )->when( $this->status, function ( $query ) {
+    //                 $query->where( 'status', $this->status );
+    //             } );
+    //         } )
+    //            ->leftJoin( "users", "accounts.user_id", "=", "users.id" )
+    //            ->orderBy( "users.name", "asc" )
+    //            ->simplePaginate( 5 );
+
+    //     $user = Auth::user();
+
+    //     // $accountCourseCollection = Account::with( "user" )->whereHas( 'user', function ( $query ) use ( $user ) {
+    //     //     $query->where( 'teacher_id', $user->id )
+    //     //     ->whereMonth( "accounts.created_at", Carbon::today() );
+    //     // } )->get();
+
+    //     // $accountCourseCollection = Account::with( "user" )->whereHas( 'user', function ( $query ) use ( $user ) {
+    //     //     $query->where( 'teacher_id', $user->id )
+    //     //           ->whereMonth( "accounts.created_at", Carbon::today() );
+    //     // } )->get();
+
+    //     $accountCourseCollection = Account::with( "user" )->whereHas( 'user', function ( $query ) use ( $user ) {
+    //         $query->where( 'teacher_id', $user->id )
+    //               ->whereMonth( "accounts.created_at", Carbon::today() );
+    //     } )->get();
+    //     //    $accountCourseCollection = Account::whereMonth( "accounts.created_at", Carbon::today() )->pluck('course_id');
+
+    //     $loginUserCourse = Auth::user()->addedCourses->pluck( 'id' );
+
+    //     dd( $accountCourseCollection );
+
+    //     $dds = $accountCourseCollection->intersect( $loginUserCourse );
+
+    //     dd( $dds );
+
+    //     $authUserAccount = [];
+
+    //     foreach ( $dds as $id => $value ) {
+    //         //    dd($value);
+
+    //         array_push( $authUserAccount, Account::where( 'course_id', $value )->get() );
+
+    //     }
+
+    //     dd( $authUserAccount );
+    //     dd( $dds );
+    //     //    $loginUserCourse = Course::where('teacher_id' , auth()->user()->id)->get();
+
+    //     dd( $loginUserCourse );
+
+    //     dd( $accounts );
+    // }
 
     public function downloadPDF() {
         return Excel::download( new AllBatchAccountsExport( $this->student ), 'Accounts - ' . Carbon::now()->format( 'M-Y' ) . '.pdf', \Maatwebsite\Excel\Excel::DOMPDF );

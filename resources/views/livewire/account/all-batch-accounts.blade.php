@@ -72,20 +72,13 @@
                                 </td>
                                 <td>{{ $account->course ? $account->course->name : 'Not Found' }}</td>
                                 <td>{{ $account->user ? $account->user->email : 'Not Found' }}</td>
-                                @if ($showInput == true)
-                                    <td>
-                                        <input class="form-control form-control-user" style="width: 80px;" type="number" min="0" wire:model="newPaidAmount">
-                                        <a class="float-right tick-positions green" wire:click="customAmount({{ $account->id }}) rel="custom input">
-                                            <i class="far fa-check-circle fa-lg"></i>
-                                        </a>
-                                    </td>
-                                @else
-                                    <td >{{ $account->paid_amount ?? 'Not Found' }}
-                                        <a class="float-right " for="{{ $account->id }}" wire:click="customAmount({{ $account->id }})" rel="custom input">
-                                            <i class="far fa-edit fa-lg"></i>
-                                        </a>
-                                    </td>
-                                @endif
+                                <td>{{ $account->paid_amount ?? 'Not Found' }}
+                                    <a data-toggle="modal" data-target="#updateAmountModal" wire:click="customAmount({{ $account->id ?? '' }})" class="float-right" rel="custom input">
+                                        <i class="far fa-edit fa-lg"></i>
+                                    </a>
+                                </td>
+
+
 
                             </tr>
                         @endforeach
@@ -103,30 +96,35 @@
         <div class="col-lg mt-4 text-right">
             <a href="{{ route('reauthorize.all') }}" class="btn btn-primary" onclick="return confirm('Are you sure you want to reauthorize the users now?')">Re-authorize Users</a>
         </div>
+
+
+        {{-- <button type="button" wire:click="flushCreate" class="btn btn-primary mb-3" data-toggle="modal" data-target="#createModal"> --}}
+
     </div>
 
 
-    <!-- Update Modal -->
-    <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+    <!-- Update Amount Modal -->
+    <div wire:ignore.self class="modal fade" id="updateAmountModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="updateModalLabel">Update and Re-authorize?</h5>
+                    <h5 class="modal-title" id="updateModalLabel">Edit Amount</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <ul>
-                        <li>Update will just update the accounts</li>
-                        <li>Update with re-authorize will update the accounts and give <b>access to the students to the
-                                course materials based on their payment status.</b></li>
-                    </ul>
+                    <label class="" for="amount">Amount</label>
+                    <input wire:model.defer="amount" value="{{ old('amount') }}" name="amount" class="form-control @error('amount') is-invalid @enderror" min="0" id="amount" type="number">
+                    @error('amount')
+                        <p class="text-danger small mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="updateButton">Update</button>
-                    <button type="button" class="btn btn-primary" id="updateReauthButton">Update and
-                        Re-authorize</button>
+                    <button type="button" class="btn btn-danger close-btn" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" wire:click="newAmount({{ $account->id ?? '' }})">Update</button>
+                    {{-- <button type="button" class="btn btn-primary" id="updateReauthButton">Update and
+                        Re-authorize</button> --}}
                 </div>
             </div>
         </div>
@@ -150,6 +148,11 @@
         function clickpdf() {
             document.getElementById("pdf").click();
         }
+
+
+        window.addEventListener('closeModal', event => {
+            $('#updateAmountModal').modal('hide');
+        });
     </script>
 @endpush
 

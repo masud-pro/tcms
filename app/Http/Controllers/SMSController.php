@@ -157,7 +157,7 @@ class SMSController extends Controller {
 
             foreach ( $courseUsers as $user ) {
                 $sms['number']  = $user->$send_to;
-                $sms['message'] = $data['message'];
+                $sms['message'] = $data['message'] . auth()->user()->teacherInfo->business_institute_name ?? env( "APP_NAME" );
                 ProcessSMS::dispatch( $sms );
             }
 
@@ -179,7 +179,7 @@ class SMSController extends Controller {
                 'course_id' => $data['course_id'],
                 'for'       => $data['for'],
                 'count'     => $smsCount,
-                'message'   => $data['message'],
+                'message'   => $data['message'] . auth()->user()->teacherInfo->business_institute_name ?? env( "APP_NAME" ),
             ] );
 
             $smsrow->update( [
