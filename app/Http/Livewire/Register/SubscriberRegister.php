@@ -98,7 +98,7 @@ class SubscriberRegister extends Component {
         return [
             'fName'                   => ['required'],
             'lName'                   => ['required'],
-            'phoneNumber'             => ['required'],
+            'phoneNumber'             => ['required', 'max:11', 'unique:users,phone_no'],
             'username'                => ['required', 'alpha', 'max:255', 'unique:teacher_infos,username'],
             'emailAddress'            => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'dob'                     => ['required'],
@@ -120,6 +120,7 @@ class SubscriberRegister extends Component {
         'fName.required'         => 'Please enter your first name.',
         'lName.required'         => 'Please enter Your last name.',
         'phoneNumber.required'   => 'Please enter Your phone number.',
+        'phoneNumber.unique'     => 'This phone number is already registered in another account.',
         'username.required'      => 'The user name field is required.',
         'emailAddress.required'  => 'The email field is required',
         'dob.required'           => 'The date of birth field is required',
@@ -236,17 +237,14 @@ class SubscriberRegister extends Component {
     }
 
     public function updatedUsername() {
-     $data =   $this->validate( [
-            'username' => ['required','min:3', 'alpha', 'max:255', 'unique:teacher_infos,username'],
+        $data = $this->validate( [
+            'username' => ['required', 'min:3', 'alpha', 'max:255', 'unique:teacher_infos,username'],
         ]
-    );
+        );
 
-    if ($data) {
-        session()->flash('usernameSuccess', 'This user name is available');
-    }
-
-      
-
+        if ( $data ) {
+            session()->flash( 'usernameSuccess', 'This user name is available' );
+        }
 
     }
 

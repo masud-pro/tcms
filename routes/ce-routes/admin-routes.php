@@ -57,7 +57,7 @@ Route::get( 'regenerate-all', [AccountController::class, "regenerate_all"] )->na
 Route::get( 'all-batch-accounts', [AccountController::class, "all_batch_accounts"] )->name( "account.all-batch-accounts" );
 
 // Assignment
-Route::resource( "assignments", AssignmentController::class )->shallow();
+Route::resource( "questions", AssignmentController::class )->shallow();
 
 // Assignment Responses
 Route::get( 'assessment/{assessment}/responses', [AssessmentController::class, 'responses'] )->name( "assessment.responses" );

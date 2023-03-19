@@ -1,7 +1,9 @@
 <div>
+    @if ($due > 0)
     <div class="text-center">
         <h2 class="text-danger mb-3">You Have {{ $due }} Due Payment(s). Please Pay.</h2>
     </div>
+    @endif
 
     <ul>
         <li><b>Manual payment is done via Bkash, Rocket, Nagad and you have to make the payment manually from the app or

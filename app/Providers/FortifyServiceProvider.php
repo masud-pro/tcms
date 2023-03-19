@@ -32,18 +32,22 @@ class FortifyServiceProvider extends ServiceProvider {
      */
     public function boot() {
 
-        Fortify::authenticateUsing(function (LoginRequest $request) {
+        Fortify::authenticateUsing( function ( LoginRequest $request ) {
 
-            $user = User::where('email', $request->identity)
-                ->orWhere('phone_no', $request->identity)->first();
-    
+            $user = User::where( 'email', $request->identity )
+                ->orWhere( 'phone_no', $request->identity )->first();
+
+            // $username = TeacherInfo::where( 'username', $request->identity )->first();
+            // dd( $user );
+            // dd( $username );
+
             if (
                 $user &&
-                Hash::check($request->password, $user->password)
+                Hash::check( $request->password, $user->password )
             ) {
                 return $user;
             }
-        });
+        } );
 
         Fortify::createUsersUsing( CreateNewUser::class );
         Fortify::updateUserProfileInformationUsing( UpdateUserProfileInformation::class );

@@ -1,7 +1,7 @@
 @extends('layouts.cms')
 
 @section('title')
-    Edit Assignment
+    Edit Question
 @endsection
 
 @section('content')
@@ -26,22 +26,22 @@
         @endif
         <div class="card">
             <div class="card-header">
-                <h6 class="m-0 font-weight-bold text-primary">Edit Assignment</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Edit Question</h6>
             </div>
             <div class="card-body">
-                <form action="{{ route("assignments.update",['assignment'=> $assignment->id]) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route("questions.update",['question'=> $question->id]) }}" method="POST" enctype="multipart/form-data">
 
                     @csrf
                     @method("PATCH")
 
-                    <label for="title">Assignment Title</label>
-                    <input value="{{ old("title") ?? $assignment->title }}" name="title" class="form-control" id="title" type="text">
+                    <label for="title">Question Title</label>
+                    <input value="{{ old("title") ?? $question->title }}" name="title" class="form-control" id="title" type="text">
                     @error('title')
                         <p class="text-danger small mt-1">{{ $message }}</p>
                     @enderror
 
                     <label for="question" class="mt-3">Question</label>
-                    <textarea name="question" id="question" rows="15" class="form-control">{!! old("question") ?? $assignment->question !!}</textarea>
+                    <textarea name="question" id="question" rows="15" class="form-control">{!! old("question") ?? $question->question !!}</textarea>
                     @error('description')
                         <p class="text-danger small mt-1">{{ $message }}</p>
                     @enderror
@@ -56,7 +56,7 @@
                     @enderror --}}
 
                     <label for="marks" class="mt-3">Total Marks</label>
-                    <input onscroll="return false" value="{{ old("marks") ?? $assignment->marks }}" name="marks" class="form-control" id="marks" type="number">
+                    <input onscroll="return false" value="{{ old("marks") ?? $question->marks }}" name="marks" class="form-control" id="marks" type="number">
                     @error('marks')
                         <p class="text-danger small mt-1">{{ $message }}</p>
                     @enderror
@@ -67,7 +67,7 @@
                             <input type="submit" value="Update" class="btn btn-primary mt-4">
                         </div>
                         <div class="col text-right mt-5">
-                            <a class="mt-4" href="{{ route("assignments.index") }}">Go Back</a>
+                            <a class="mt-4" href="{{ route("questions.index") }}">Go Back</a>
                         </div>
                     </div>
 
@@ -75,10 +75,10 @@
                 </form>
 
                 <div class="text-right mt-4">
-                    <form action="{{ route("assignments.destroy",['assignment'=>$assignment->id]) }}" method="POST">
+                    <form action="{{ route("questions.destroy",['question'=>$question->id]) }}" method="POST">
                         @csrf
                         @method("DELETE")
-                        <input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this assignment?')">
+                        <input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this Question?')">
                     </form>
                 </div>
             </div>

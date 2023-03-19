@@ -30,7 +30,7 @@ class CreateUsersTable extends Migration {
             $table->string( "reg_no" )->nullable();
             $table->boolean( "is_active" )->default(0);
             $table->integer( "waiver" )->default(0);
-            $table->string( "phone_no" )->nullable();
+            $table->string( "phone_no" )->unique()->nullable();
             $table->string( "fathers_name" )->nullable();
             $table->string( "fathers_phone_no" )->nullable();
             $table->string( "mothers_name" )->nullable();

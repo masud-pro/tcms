@@ -109,6 +109,8 @@ class UserController extends Controller {
 
         foreach ( $courses as $course ) {
 
+            // dd($course);
+
             $course = Course::findOrFail( $course, ["id", "fee"] );
 
             // Generate payment first
@@ -116,21 +118,27 @@ class UserController extends Controller {
                 ->where( "course_id", $course->id )
                 ->count();
 
-            if ( $accountsCount == 0 ) {
+            if ( $accountsCount > 0 ) {
 
                 $allaccounts = Account::whereMonth( "month", Carbon::today() )
                     ->where( "course_id", $course->id )
                     ->pluck( "id" );
 
-                if ( $allaccounts->count() == 0 ) {
+                if ( $allaccounts->count() > 0 ) {
                     generate_payments( $course );
                 }
 
-                continue; // Generate paments and iterate to the next execution
+                continue; // Generate payments and iterate to the next execution
+            }
+
+            if ( $user->is_active == 1 ) {
+                $course->user()->updateExistingPivot( $user->id, [
+                    'is_active' => 1,
+                ] );
             }
 
             // Add the account if payment is generated previously
-            if ( $user->is_active == 1 ) {
+            if ( $user->is_active == 0 || $user->is_active == 1 ) {
                 $accounts[] = [
                     'user_id'     => $user->id,
                     'course_id'   => $course->id,
@@ -250,6 +258,11 @@ class UserController extends Controller {
             $course = Course::findOrFail( $course, ["id", "fee"] );
             // dd($course);
 
+
+            $course->user()->updateExistingPivot( $user->id, [
+                'is_active' => 1,
+            ] );
+
             $accountsCount = Account::whereMonth( "month", Carbon::today() )
                 ->where( "course_id", $course->id )->count();
 
@@ -273,6 +286,8 @@ class UserController extends Controller {
                 ->where( "user_id", $user->id )
                 ->where( "course_id", $course->id )
                 ->count();
+
+           
 
             // Add the account if payment is generated previously
             if ( $accountcount == 0 && $user->is_active == 1 ) {

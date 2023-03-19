@@ -32,7 +32,7 @@
                 <p class="text-danger small mt-1">{{ $message }}</p>
             @enderror
 
-            <label class="mt-3" for="assessment">Select Assessment</label>
+            <label class="mt-3" for="assessment">Select Question</label>
             <select 
                 class="form-control"
                 id="assessment"
