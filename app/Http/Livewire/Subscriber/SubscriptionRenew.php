@@ -114,30 +114,23 @@ class SubscriptionRenew extends Component {
      */
     public function renewPayment( $adminAccount, $user, $planPrice ) {
 
-        if ( $planPrice != 0 ) {
-
-            $paymentData['name']             = $user->name;
-            $paymentData['email']            = $user->email;
-            $paymentData['address']          = $user->address;
-            $paymentData['phone_no']         = $user->phone_no;
-            $paymentData['amount']           = $this->planPrice;
-            $paymentData['admin_account_id'] = $adminAccount->id;
-            $paymentData['user_id']          = $user->id;
-
-            $payOptions = SslCommerzPaymentController::renew_subscription_payment( $paymentData );
-
-            $paymentLink = json_decode( $payOptions )->data;
-            return redirect( $paymentLink );
-        } else {
-            // $subUser->update( [
-            //     'status' => 1,
-            // ] );
-            // $adminAccount->update( [
-            //     'status' => 1,
-            // ] );
-            // Auth::login( $user );
-            // return redirect()->route( 'dashboard' );
+        if ( $planPrice == 0 ) {
+            session()->flash( 'success', 'Subscription Cannot be Renewed' );
+            return;
         }
+
+        $paymentData['name']             = $user->name;
+        $paymentData['email']            = $user->email;
+        $paymentData['address']          = $user->address;
+        $paymentData['phone_no']         = $user->phone_no;
+        $paymentData['amount']           = $this->planPrice;
+        $paymentData['admin_account_id'] = $adminAccount->id;
+        $paymentData['user_id']          = $user->id;
+
+        $payOptions = SslCommerzPaymentController::renew_subscription_payment( $paymentData );
+
+        $paymentLink = json_decode( $payOptions )->data;
+        return redirect( $paymentLink );
     }
 
     public function render() {
