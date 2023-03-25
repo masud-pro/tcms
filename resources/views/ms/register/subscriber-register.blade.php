@@ -59,6 +59,7 @@
 
         .pd-18 {
             padding-right: 18%;
+            margin-top: -1000px!important;
         }
 
         .pd-4 {

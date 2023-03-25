@@ -19,13 +19,9 @@ use App\Http\Controllers\SslCommerzPaymentController;
 class SubscriberRegister extends Component {
 
     use DefaultSettingTraits;
-    /**
-     * @var mixed
-     */
-    public $planId, $planList, $planFeature, $planPrice, $customPlanData = false, $billChecked, $month, $register, $nextStep, $fName;
-    /**
-     * @var mixed
-     */
+
+    public $planId, $planList, $planFeature, $planPrice, $customPlanData = false, $billChecked, $month, $register, $nextStep, $fName, $isUsernameAvailable = false;
+
     public $lName, $phoneNumber, $username, $emailAddress, $dob, $gender, $curriculum, $teachingLevel, $address, $institute, $password, $password_confirmation, $business_institute_name;
 
     public function mount() {
@@ -78,6 +74,12 @@ class SubscriberRegister extends Component {
     public function updatedMonth() {
         $this->changeMonthsBill();
 
+    }
+
+    public function getPriceWihtoutDiscount() {
+        $plan = Subscription::find( $this->planId );
+
+        return $plan->price * $this->month;
     }
 
     public function changeMonthsBill() {
@@ -192,6 +194,7 @@ class SubscriberRegister extends Component {
         $subAccountData['from_date']            = Carbon::now();
         $subAccountData['status']               = 0;
         $subAccountData['to_date']              = Carbon::now()->addMonths( $this->month );
+        $subAccountData['purpose']              = 'New Registration';
 
         $adminAccount = AdminAccount::create( $subAccountData );
 
@@ -237,13 +240,12 @@ class SubscriberRegister extends Component {
     }
 
     public function updatedUsername() {
-        $data = $this->validate( [
-            'username' => ['required', 'min:3', 'alpha', 'max:255', 'unique:teacher_infos,username'],
-        ]
-        );
+        $usernameValidated = $this->validate( [
+            'username' => ['required', 'min:3', 'alpha_dash', 'max:255', 'unique:teacher_infos,username'],
+        ]);
 
-        if ( $data ) {
-            session()->flash( 'usernameSuccess', 'This user name is available' );
+        if ( $usernameValidated ) {
+            $this->isUsernameAvailable = true;
         }
 
     }

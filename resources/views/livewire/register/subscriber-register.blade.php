@@ -13,22 +13,32 @@
 
                                         <div class="text-center">
                                             @if ($planPrice == 0)
-                                                <h3 class="text-center fs-4 price-container fw-bold">Free for 30 Days
-                                                </h3>
+                                                <h2 class="text-center price-container">Please Select a Plan</h2>
+                                                <h4 class="text-center price-container fw-bold text-success">🎉 Free for 30 Days!! 🎉</h4>
                                             @else
-                                                <h3 class="text-center fs-1 price-container fw-bold">
-                                                    {{ $planPrice == 0 ? '' : number_format($planPrice) }}<span class="fs-6">Tk</span>
-                                                </h3>
+                                                <h5 class="text-center price-container fw-bold text-success">🎉 You Made An Excellent Choice 🎉</h5>
+                                                
+                                                    @if ( $month >= 12)
+                                                        <del class="fs-5">{{ $this->getPriceWihtoutDiscount() }} Tk</del><br>
+                                                        <h3 class="text-center fs-1 price-container fw-bold mt-2">
+                                                            {{ $planPrice == 0 ? '' : number_format($planPrice) }}<span class="fs-6">Tk</span>
+                                                        </h3>
+                                                    @else
+                                                        <h3 class="text-center fs-1 price-container fw-bold">
+                                                            {{ $planPrice == 0 ? '' : number_format($planPrice) }}<span class="fs-6">Tk</span>
+                                                        </h3>
+                                                    @endif
+                                                
                                                 @if (!$customPlanData)
                                                     <div class="form-check form-switch form-switch-lg mt-2">
-                                                        <label class="form-check-label pd-18" for="flexSwitchCheckChecked">Bill Monthly</label>
+                                                        <label class="form-check-label pd-18" for="flexSwitchCheckChecked">Bill Monthly <br><br></label>
                                                         <input class="form-check-input" type="checkbox" name="flexSwitchCheckChecked" value="{{ old('flexSwitchCheckChecked') }}" id="flexSwitchCheckChecked"
                                                             style="opacity: 1;" wire:click="$toggle('billChecked')">
-                                                        <label class="form-check-label pd-4 " style="opacity: 1; color: #222" for="flexSwitchCheckChecked">Bill Annually</label>
+                                                        <label class="form-check-label pd-4 " style="opacity: 1; color: #222" for="flexSwitchCheckChecked">Bill Annually <br> <span class="small text-success">(20% off)</span></label>
                                                     </div>
 
 
-                                                    <a class="small text-dark" wire:click="$toggle('customPlanData')" href="#">Custom</a>
+                                                    <a class="small text-dark" wire:click="$toggle('customPlanData')" href="#">Custom Plans</a>
                                                 @else
                                                     <label>Select Month</label>
                                                     <input wire:model="month" type="number" name="month" value="{{ old('month') }}" class="form-control" min="2">
@@ -72,6 +82,32 @@
 
                                         </div>
 
+
+              
+                                        <div class="col-sm-12 mb-3 mb-sm-0">
+
+                                            @if ($planPrice == 0)
+                                                <ul class="list-unstyled mt-4">
+                                                    <li class="mt-2">✓ Free for full 30 days</li>
+                                                    <li class="mt-2">✓ All the features in free plan</li>
+                                                    <li class="mt-2">✓ No limitation</li>
+                                                    <li class="mt-2">✓ Unlimited studens</li>
+                                                    <li class="mt-2">✅ Get 2 Months Off On Annual Plan</li>
+                                                </ul>
+                                            @else
+                                                <ul class="list-unstyled mt-4">
+                                                    <li class="mt-2">✓ Free plan will be automatically included</li>
+                                                    <li class="mt-2">✓ All the features</li>
+                                                    <li class="mt-2">✓ No limitation</li>
+                                                    <li class="mt-2">✓ Unlimited studens</li>
+                                                    <li class="mt-2">✅ Will be Joined The Premium Member</li>
+                                                    <li class="mt-2">✅ Get 2 Months Off On <b>Annual Plan</b></li>
+                                                </ul>
+                                            @endif
+
+                                        </div>
+
+                                        
 
                                         {{-- <div class="form-group row">
 
@@ -159,9 +195,10 @@
                                                             <p class="text-start text-danger small mt-1">
                                                                 {{ $message }}</p>
                                                         @enderror
-                                                        @if (session()->has('usernameSuccess'))
+                                                        @if ($isUsernameAvailable)
                                                             <p class="text-start text-success small mt-1">
-                                                                {{ session('usernameSuccess') }}</p>
+                                                                Username is available
+                                                            </p>
                                                         @endif
                                                     </div>
 
@@ -219,7 +256,7 @@
                                                     <div class="col-sm-12 mb-3">
                                                         <label for="business_institute_name" class="label-text">Your Business Name</label>
                                                         <input type="text" value="{{ old('business_institute_name') }}" class="form-control form-control-user @error('business_institute_name') is-invalid @enderror"
-                                                            id="business_institute_name" placeholder="Teacher's Business Institute Name" wire:model.defer="business_institute_name">
+                                                            id="business_institute_name" placeholder="Your Business Name" wire:model.defer="business_institute_name">
 
                                                         @error('business_institute_name')
                                                             <p class="text-start text-danger small mt-1">
