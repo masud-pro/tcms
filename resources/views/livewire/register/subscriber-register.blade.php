@@ -73,7 +73,7 @@
                                         </div>
 
 
-                                        <div class="form-group row">
+                                        {{-- <div class="form-group row">
 
                                             <h4 class="fs-4 text-bold">Features </h4>
 
@@ -87,7 +87,7 @@
 
                                             </div>
 
-                                        </div>
+                                        </div> --}}
                                     </div>
                                 </div>
                             </div>
@@ -217,8 +217,7 @@
                                                 <div class="form-group row text-left">
 
                                                     <div class="col-sm-12 mb-3">
-                                                        <label for="business_institute_name" class="label-text">Teacher
-                                                            Business Institute Name</label>
+                                                        <label for="business_institute_name" class="label-text">Your Business Name</label>
                                                         <input type="text" value="{{ old('business_institute_name') }}" class="form-control form-control-user @error('business_institute_name') is-invalid @enderror"
                                                             id="business_institute_name" placeholder="Teacher's Business Institute Name" wire:model.defer="business_institute_name">
 
@@ -252,7 +251,7 @@
                                                             Level</label>
                                                         <span class="required"></span>
                                                         <input type="text" value="{{ old('teachingLevel') }}" class="form-control form-control-user @error('teachingLevel') is-invalid @enderror" id="teachingLevel"
-                                                            placeholder="Teacher's Desired Tuition Level" wire:model.defer="teachingLevel">
+                                                            placeholder="i:e Class 9-10" wire:model.defer="teachingLevel">
 
                                                         @error('teachingLevel')
                                                             <p class="text-start text-danger small mt-1">
@@ -266,7 +265,7 @@
 
 
                                                 <div class="form-group text-left">
-                                                    <label for="institute" class="label-text">Institute</label>
+                                                    <label for="institute" class="label-text">Institute (You Teach On)</label>
 
                                                     <input type="text" class="form-control form-control-user @error('institute') is-invalid @enderror" id="institute" placeholder="Institute Name"
                                                         wire:model.defer="institute" autocomplete="off">
