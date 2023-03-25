@@ -82,7 +82,7 @@ class AdministratorController extends Controller
 
         if ($administrator->hasRole('Super Admin')) {
 
-            return view('ms.administrator.super-admin-edit', compact('administrator'));
+            return view('ms.administrator.super-admin-edit', compact('administrator', 'roles'));
         }
 
         $teacherInfo = TeacherInfo::where('user_id', $administrator->id)->get();
