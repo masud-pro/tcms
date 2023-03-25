@@ -78,7 +78,7 @@ class AdministratorController extends Controller
     public function edit(User $administrator)
     {
 
-        $roles = $this->roleName();
+        $roles = $this->getRoles();
 
         if ($administrator->hasRole('Super Admin')) {
 
@@ -90,7 +90,7 @@ class AdministratorController extends Controller
         return view('ms.administrator.edit', compact('administrator', 'teacherInfo', 'roles'));
     }
 
-    public function roleName()
+    public function getRoles()
     {
         return Role::WhereNotIn('name', ['Student'])->get();
     }

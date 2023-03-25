@@ -91,9 +91,9 @@
                                 <div class="col-sm-12 mb-3">
 
                                     <h2 class="text-end fs-1 price-container fw-bold price-digit"> {{ $price }}
-                                        <span class="fs-5 ml-xx-8 price-currency">tk</span>
+                                        <span class="fs-5 ml-xx-8 price-currency">Tk</span>
                                         @if ($showSubscriptionPreviousPrice == true)
-                                            <span class="fs-6 previous-price">{{ $subscriptionPreviousPrice }}.tk</span>
+                                            <span class="fs-6 previous-price">{{ $subscriptionPreviousPrice }}.Tk</span>
                                         @endif
 
                                     </h2>

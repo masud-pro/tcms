@@ -72,9 +72,13 @@ class SubscriptionRenew extends Component {
         $selectedPlan = $this->subscribedUser->subscription_id == $subscription->id;
 
         if ( $selectedPlan ) {
-            $selectedPlanPrice                   = $this->subscribedUser->special_price ?? $subscription->price;
+            $specialPrice = $this->subscribedUser->special_price;
+            $selectedPlanPrice                   = $specialPrice ?? $subscription->price;
             $this->subscriptionPreviousPrice     = $subscription->price;
-            $this->showSubscriptionPreviousPrice = true;
+
+            if($specialPrice){
+                $this->showSubscriptionPreviousPrice = true;
+            }
 
         } else {
             $selectedPlanPrice                   = $subscription->price;
@@ -109,21 +113,11 @@ class SubscriptionRenew extends Component {
 
         $user = Auth::user();
 
-        $this->renewPayment( $adminAccount, $user, $data['planPrice'] );
+        $this->renewPayment( $adminAccount, $user );
 
     }
 
-    /**
-     * @param $adminAccount
-     * @param $user
-     * @param $planPrice
-     */
-    public function renewPayment( $adminAccount, $user, $planPrice ) {
-
-        if ( $planPrice == 0 ) {
-            session()->flash( 'success', 'Subscription Cannot be Renewed' );
-            return;
-        }
+    public function renewPayment( $adminAccount, $user ) {
 
         $paymentData['name']             = $user->name;
         $paymentData['email']            = $user->email;

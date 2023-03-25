@@ -66,18 +66,18 @@ Route::middleware( ['auth:sanctum', 'verified', 'check_subdomain'] )->group( fun
         echo "Ooops!! Option Route Files Not Found!";
     }
 
-    //
+    // Administrator routes
 
-    Route::resource( 'administrator', AdministratorController::class );
+    Route::resource( 'administrator', AdministratorController::class )->middleware('isAdmin');
 
-    Route::resource( 'role', UserRoleController::class );
-    Route::resource( 'subscription', SubscriptionController::class );
-    Route::resource( 'subscriber', SubscriberController::class );
+    // Route::resource( 'role', UserRoleController::class )->middleware('isAdmin');
+    // Route::resource( 'subscription', SubscriptionController::class )->middleware('isAdmin');
+    // Route::resource( 'subscriber', SubscriberController::class )->middleware('isAdmin');
 
-    Route::get( 'subscriber-transaction', [SubscriberController::class, 'subscriberTransaction'] )->name( 'subscriber.transaction' );
-    Route::get( 'subscriber-renew', [SubscriberController::class, 'subscriberSubscriptionRenew'] )->name( 'subscriber.subscription.renew' );
+    // Route::get( 'subscriber-transaction', [SubscriberController::class, 'subscriberTransaction'] )->name( 'subscriber.transaction' )->middleware('isAdmin');
+    // Route::get( 'subscriber-renew', [SubscriberController::class, 'subscriberSubscriptionRenew'] )->name( 'subscriber.subscription.renew' )->middleware('isAdmin');
 
-    Route::get( 'permission', [UserRoleController::class, 'rolePermission'] )->name( 'role.permission' );
+    Route::get( 'permission', [UserRoleController::class, 'rolePermission'] )->name( 'role.permission' )->middleware('isAdmin');
 
 } );
 
@@ -141,25 +141,24 @@ Route::middleware( ['auth:sanctum'] )->group( function () {
         Route::resource( 'subscriber', SubscriberController::class );
         Route::get( 'permission', [UserRoleController::class, 'rolePermission'] )->name( 'role.permission' );
         Route::get( 'all-generate-payments', [AdministratorController::class, 'generatePayments'] )->name( 'generate.payments' );
-        
+        Route::get( 'subscriber-transaction', [SubscriberController::class, 'subscriberTransaction'] )->name( 'subscriber.transaction' );
     } );
 
-    Route::get( 'subscriber-transaction', [SubscriberController::class, 'subscriberTransaction'] )->name( 'subscriber.transaction' );
     Route::get( 'subscriber-renew', [SubscriberController::class, 'subscriberSubscriptionRenew'] )->name( 'subscriber.subscription.renew' );
 
 } );
 
 
-Route::get( 'clear', function () {
-    Artisan::call( 'view:clear' );
-    Artisan::call( 'route:clear' );
-    // Artisan::call( 'optimize:clear' );
-    Artisan::call( 'cache:clear' );
-    Artisan::call( 'config:clear' );
-    // session()->forget();
-    // session()->flush();
-    return "<h4> Everything cache clear </h4>";
-} );
+// Route::get( 'clear', function () {
+//     Artisan::call( 'view:clear' );
+//     Artisan::call( 'route:clear' );
+//     // Artisan::call( 'optimize:clear' );
+//     Artisan::call( 'cache:clear' );
+//     Artisan::call( 'config:clear' );
+//     // session()->forget();
+//     // session()->flush();
+//     return "<h4> Everything cache clear </h4>";
+// } );
 
 
 
