@@ -75,6 +75,7 @@
                                     <th>ID</th>
                                     <th>Name</th>
                                     <th>Account</th>
+                                    <th>Authorization</th>
                                     <th>Status</th>
                                     <th>Email</th>
                                     <th>Amount</th>
@@ -85,6 +86,7 @@
                                     <th>ID</th>
                                     <th>Name</th>
                                     <th>Account</th>
+                                    <th>Authorization</th>
                                     <th>Status</th>
                                     <th>Email</th>
                                     <th>Amount</th>
@@ -100,6 +102,13 @@
                                             <div class="custom-control custom-checkbox">
                                                 <input {{ $account->status == "Paid" ? "checked" : "" }}  name="status[]" value="{{ $account->id }}" type="checkbox" class="custom-control-input" id="customCheck{{ $account->id }}">
                                                 <label class="custom-control-label" for="customCheck{{ $account->id }}">Paid</label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="hidden" name="canBeAuthorizedUsers[]" value="{{ $account->user->id }}">
+                                                <input {{ $course->user->where('id',$account->user_id)->first()?->pivot->is_active == 1 ? "checked" : "" }}  name="is_active[]" value="{{ $account->user->id }}" type="checkbox" class="custom-control-input" id="is_active{{ $account->id }}">
+                                                <label class="custom-control-label" for="is_active{{ $account->id }}">Paid</label>
                                             </div>
                                         </td>
                                         <td>
@@ -151,13 +160,13 @@
         </div>
         <div class="modal-body">
             <ul>
-                <li>Update will just update the accounts</li>
-                <li>Update with re-authorize will update the accounts and give <b>access to the students to the course materials based on their payment status.</b></li>
+                <li>Updating will re authorize the users, &check; will get access and others not</li>
+                {{-- <li>Update with re-authorize will update the accounts and give <b>access to the students to the course materials based on their payment status.</b></li> --}}
             </ul>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-primary" id="updateButton">Update</button>
-            <button type="button" class="btn btn-primary" id="updateReauthButton">Update and Re-authorize</button>
+            {{-- <button type="button" class="btn btn-primary" id="updateReauthButton">Update and Re-authorize</button> --}}
         </div>
     </div>
     </div>

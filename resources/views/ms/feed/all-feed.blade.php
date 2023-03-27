@@ -60,14 +60,14 @@
                         @if ($course->should_generate_payments === 1)
                             <a class="btn btn-primary mb-4"
                                 href="{{ route('course.accounts.create', ['course' => $course->id]) }}">
-                                Payments
+                                Payments & Authorization
                             </a>
                         @endif
 
 
-                        <a class="btn btn-primary mb-4" href="{{ route('course.authorize', ['course' => $course->id]) }}">
+                        {{-- <a class="btn btn-primary mb-4" href="{{ route('course.authorize', ['course' => $course->id]) }}">
                             Authorization Panel
-                        </a>
+                        </a> --}}
                     @endif
 
                     @if (auth()->user()->role == 'Admin' || $canSeeFriends)

@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
+use App\Jobs\Message\ProcessSMS;
+use App\Models\Account;
+use App\Models\Course;
+use App\Models\Order;
 use App\Models\SMS;
 use App\Models\User;
-use App\Models\Order;
-use App\Models\Course;
-use App\Models\Account;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Jobs\Message\ProcessSMS;
 use Illuminate\Support\Facades\Auth;
 use PhpOffice\PhpSpreadsheet\Calculation\DateTimeExcel\Month;
 
@@ -375,7 +375,7 @@ class AccountController extends Controller {
 
         $numberCount = count( $students );
 
-        // $smsId = Option::where( "slug", "remaining_sms" )->first()['id'];
+// $smsId = Option::where( "slug", "remaining_sms" )->first()['id'];
 
         //$smsrow = Auth::user()->load( 'settings.option' )->settings->where( "option_id",  $smsId )->first();
 
@@ -431,6 +431,7 @@ class AccountController extends Controller {
             if ( $accounts->count() === 0 ) {
                 generate_payments( $course );
             }
+
         }
 
         return redirect()->back()->with( "success", "Payments For This Month Generated Successfully" );
@@ -446,9 +447,10 @@ class AccountController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create( Course $course ) {
+
         if ( $course->type == "Monthly" ) {
 
-            $accounts = Account::whereMonth( "month", Carbon::today() )->where( "course_id", $course->id )->get();
+            $accounts = Account::with( ['course', 'user'] )->whereMonth( "month", Carbon::today() )->where( "course_id", $course->id )->get();
 
             if ( $accounts->count() === 0 ) {
                 $generated = generate_payments( $course );
@@ -458,12 +460,14 @@ class AccountController extends Controller {
 
                 return view( "ms.account.account-index", [
                     "accounts" => $this->get_account_index_data( $course ),
+                    'course'   => $course,
                 ] );
 
             } else { // or show the previous
 
                 return view( "ms.account.account-index", [
                     "accounts" => $this->get_account_index_data( $course ),
+                    'course'   => $course,
                 ] );
             }
 
@@ -479,12 +483,14 @@ class AccountController extends Controller {
 
                 return view( "ms.account.account-index", [
                     "accounts" => Account::where( "course_id", $course->id )->get(),
+                    'course'   => $course,
                 ] );
 
             } else { // or show the previous
 
                 return view( "ms.account.account-index", [
                     "accounts" => $accounts,
+                    'course'   => $course,
                 ] );
 
             }
@@ -561,10 +567,13 @@ class AccountController extends Controller {
      *
      */
     public function change( Request $request ) {
+
         $data = $request->validate( [
-            "ids"        => "required|array",
-            "status"     => "nullable|array",
-            "course"     => "nullable|integer",
+            "ids"        => "required|array", // all account ids
+            "status" => "nullable|array", // paid account ids
+            "canBeAuthorizedUsers" => "nullable|array", // all can be authorized users
+            "is_active" => "nullable|array", // authorized users
+            "course" => "nullable|integer",
             "reauth"     => "nullable|integer",
             "reauth_all" => "nullable|integer",
         ] );
@@ -586,17 +595,38 @@ class AccountController extends Controller {
             Account::whereIn( "id", $data["ids"] )->update( ["status" => "Unpaid"] );
         }
 
-        // Reauthorize if called to be reauthorize
-        if ( isset( $data['reauth'] ) && $data['reauth'] == 1 ) {
-            $courseController = new CourseController();
-            $courseController->reauthorize_users( Course::find( $data['course'] ) );
+        $course = Course::find( $data['course'] );
+
+        if ( isset( $data['is_active'] ) ) {
+
+            $authorized   = $data['is_active'];
+            $unauthorized = array_diff( $data['canBeAuthorizedUsers'], $data['is_active'] );
+
+            $course->user()->updateExistingPivot( $authorized, ["is_active" => 1] );
+            $course->user()->updateExistingPivot( $unauthorized, ["is_active" => 0] );
+
+        } else {
+            $course->user()->updateExistingPivot( $data['canBeAuthorizedUsers'] , ["is_active" => 0] );
         }
 
-        // Reauth all users is globally called
-        if ( isset( $data['reauth_all'] ) && $data['reauth_all'] == 1 ) {
-            $courseController = new CourseController();
-            $courseController->reauthorize_all();
-        }
+// // Reauthorize if called to be reauthorize
+
+// if ( isset( $data['reauth'] ) && $data['reauth'] == 1 ) {
+
+//     $courseController = new CourseController();
+
+//     $courseController->reauthorize_users( $course );
+
+// }
+
+// // Reauth all users is globally called
+
+// if ( isset( $data['reauth_all'] ) && $data['reauth_all'] == 1 ) {
+
+//     $courseController = new CourseController();
+
+//     $courseController->reauthorize_all();
+        // }
 
         return redirect()->back()->with( "success", "Account updated successfully" );
 
