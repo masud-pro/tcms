@@ -235,6 +235,87 @@ function generate_payments($course)
     return true;
 }
 
+function regenerate_all_payments() {
+    $courses = Auth::user()->addedCourses()->latest()->get();
+
+        foreach ( $courses as $course ) {
+            $students = $course->user;
+
+            regenerate_engine( $students, $course );
+        }
+}
+
+function regenerate_engine( $students, $course ) {
+
+    if ( $course->type == "Monthly" ) {
+
+        // If monthly then generate for month
+
+        $newAccount = [];
+
+        foreach ( $students as $student ) {
+
+            if ( $student->is_active == 1 ) {
+
+                $account = Account::whereMonth( "month", Carbon::now() )
+                    ->where( "user_id", $student->id )
+                    ->where( "course_id", $course->id )
+                    ->count();
+
+                if ( $account == 0 ) {
+                    $newAccount[] = [
+                        'user_id'     => $student->id,
+                        'course_id'   => $course->id,
+                        'paid_amount' => $student->waiver ? $course->fee - $student->waiver : $course->fee,
+                        'status'      => "Unpaid",
+                        'month'       => Carbon::today(),
+                        'created_at'  => Carbon::now(),
+                        'updated_at'  => Carbon::now(),
+                    ];
+                }
+
+            }
+
+        }
+
+        Account::insert( $newAccount );
+
+    } else {
+
+        // If onetime then only check
+        $newAccount = [];
+
+        foreach ( $students as $student ) {
+
+            if ( $student->is_active == 1 ) {
+
+                $account = Account::where( "user_id", $student->id )
+                    ->where( "course_id", $course->id )
+                    ->count();
+
+                if ( $account == 0 ) {
+                    $newAccount[] = [
+                        'user_id'     => $student->id,
+                        'course_id'   => $course->id,
+                        'paid_amount' => $student->waiver ? $course->fee - $student->waiver : $course->fee,
+                        'status'      => "Unpaid",
+                        'month'       => Carbon::today(),
+                        'created_at'  => Carbon::now(),
+                        'updated_at'  => Carbon::now(),
+                    ];
+                }
+
+            }
+
+        }
+
+        Account::insert( $newAccount );
+
+    }
+
+}
+
+
 function getSubdomainUser()
 {
     return User::whereHas('teacherInfo', function ($query) {

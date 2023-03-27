@@ -19,7 +19,7 @@ class AllBatchAccounts extends Component {
     /**
      * @var mixed
      */
-    public $student, $showInput = false, $newPaidAmount, $status, $amount;
+    public $student, $showInput = false, $newPaidAmount, $status, $amount, $accountEditId;
 
     /**
      * @var string
@@ -37,16 +37,22 @@ class AllBatchAccounts extends Component {
     /**
      * @param Account $account
      */
-    public function customAmount( Account $account ) {
+    public function setEditId( Account $account ) {
+        $this->accountEditId = $account->id; 
         $this->amount = $account->paid_amount;
     }
+
+
 
     /**
      * @param Account $account
      */
-    public function newAmount( Account $account ) {
-        $data['paid_amount'] = $this->amount;
-        $account->update( $data );
+    public function updateAmount() {
+
+        Account::where('id', $this->accountEditId)->update( [
+            'paid_amount' => $this->amount,
+        ] );
+
         $this->dispatchBrowserEvent( 'closeModal' );
 
     }
@@ -92,7 +98,7 @@ class AllBatchAccounts extends Component {
     public function change_authorization_status( $courseId, $userId, $currentAuthorizationStatus ) {
 
         $course = Course::findOrFail( $courseId );
-        
+
         if($currentAuthorizationStatus == 0){
             $course->user()->updateExistingPivot( $userId, ["is_active" => 1] );
         }else{

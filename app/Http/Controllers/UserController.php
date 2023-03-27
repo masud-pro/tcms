@@ -113,42 +113,15 @@ class UserController extends Controller {
 
             $course = Course::findOrFail( $course, ["id", "fee"] );
 
-            // Generate payment first
-            $accountsCount = Account::whereMonth( "month", Carbon::today() )
-                ->where( "course_id", $course->id )
-                ->count();
-
-            if ( $accountsCount > 0 ) {
-
-                $allaccounts = Account::whereMonth( "month", Carbon::today() )
-                    ->where( "course_id", $course->id )
-                    ->pluck( "id" );
-
-                if ( $allaccounts->count() > 0 ) {
-                    generate_payments( $course );
+            regenerate_all_payments();
+                // Update generate payment for individual student
+                if ( $user->is_active == 1 ) { 
+                    $course->user()->updateExistingPivot( $user->id, [
+                        'is_active' => 1,
+                    ] );
                 }
+    
 
-                continue; // Generate payments and iterate to the next execution
-            }
-
-            if ( $user->is_active == 1 ) {
-                $course->user()->updateExistingPivot( $user->id, [
-                    'is_active' => 1,
-                ] );
-            }
-
-            // Add the account if payment is generated previously
-            if ( $user->is_active == 0 || $user->is_active == 1 ) {
-                $accounts[] = [
-                    'user_id'     => $user->id,
-                    'course_id'   => $course->id,
-                    'status'      => "Unpaid",
-                    'paid_amount' => $course->fee - $user->waiver,
-                    'month'       => Carbon::now(),
-                    'created_at'  => Carbon::now(),
-                    'updated_at'  => Carbon::now(),
-                ];
-            }
         }
 
         Account::insert( $accounts );

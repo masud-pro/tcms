@@ -93,7 +93,7 @@
                                 <td>{{ $account->course ? $account->course->name : 'Not Found' }}</td>
                                 <td>{{ $account->user ? $account->user->email : 'Not Found' }}</td>
                                 <td>{{ $account->paid_amount ?? 'Not Found' }}
-                                    <a data-toggle="modal" data-target="#updateAmountModal" wire:click="customAmount({{ $account->id ?? '' }})" class="float-right" rel="custom input">
+                                    <a data-toggle="modal" data-target="#updateAmountModal" wire:click="setEditId({{ $account->id ?? '' }})" class="float-right" rel="custom input">
                                         <i class="far fa-edit fa-lg"></i>
                                     </a>
                                 </td>
@@ -142,7 +142,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger close-btn" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" wire:click="newAmount({{ $account->id ?? '' }})">Update</button>
+                    <button type="button" class="btn btn-primary" wire:click="updateAmount">Update</button>
                     {{-- <button type="button" class="btn btn-primary" id="updateReauthButton">Update and
                         Re-authorize</button> --}}
                 </div>
