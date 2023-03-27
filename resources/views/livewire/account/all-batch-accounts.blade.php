@@ -25,6 +25,7 @@
                             <th>ID</th>
                             <th>Name</th>
                             <th>Account</th>
+                            <th>Authorization</th>
                             <th>Status</th>
                             <th>Course</th>
                             <th>Email</th>
@@ -36,6 +37,7 @@
                             <th>ID</th>
                             <th>Name</th>
                             <th>Account</th>
+                            <th>Authorization</th>
                             <th>Status</th>
                             <th>Course</th>
                             <th>Email</th>
@@ -53,6 +55,24 @@
                                             id="flexSwitchCheckDefault{{ $account->id }}">
                                         <label class="form-check-label" for="flexSwitchCheckDefault{{ $account->id }}">
                                             Paid
+                                        </label>
+                                    </div>
+                                </td>
+                                <td>
+                                    @php($authorizationSataus = $account->course?->user?->where('id',$account->user_id)->first()?->pivot->is_active)
+
+                                    <div class="form-check form-switch ml-3">
+                                        <input wire:change="change_authorization_status( {{ $account->course->id }},{{ $account->user->id }}, {{ $authorizationSataus }} )" class="form-check-input" type="checkbox" @if ($authorizationSataus == 1) checked @endif
+                                            id="authorizationSwitch{{ $account->id }}">
+                                        <label class="form-check-label" for="authorizationSwitch{{ $account->id }}">
+                                        
+                                        @if ($authorizationSataus == 1)
+                                            <span class="badge badge-success">Authorized</span>
+                                        @elseif ($authorizationSataus == 0)
+                                            <span class="badge badge-warning">Not Authorized</span>
+                                        @else
+                                            <span class="badge badge-danger">Not Found</span>
+                                        @endif
                                         </label>
                                     </div>
                                 </td>
@@ -93,9 +113,9 @@
             {{ $accounts->links() }}
             <a class="small" id="pdf" hidden wire:click.prevent="downloadPDF">Download as PDF</a>
         </div>
-        <div class="col-lg mt-4 text-right">
+        {{-- <div class="col-lg mt-4 text-right">
             <a href="{{ route('reauthorize.all') }}" class="btn btn-primary" onclick="return confirm('Are you sure you want to reauthorize the users now?')">Re-authorize Users</a>
-        </div>
+        </div> --}}
 
 
         {{-- <button type="button" wire:click="flushCreate" class="btn btn-primary mb-3" data-toggle="modal" data-target="#createModal"> --}}

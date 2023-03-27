@@ -123,7 +123,7 @@ class AccountController extends Controller {
                         ->count();
 
                     if ( $account == 0 ) {
-                        $newAccount = [
+                        $newAccount[] = [
                             'user_id'     => $student->id,
                             'course_id'   => $course->id,
                             'paid_amount' => $student->waiver ? $course->fee - $student->waiver : $course->fee,

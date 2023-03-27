@@ -16,7 +16,7 @@ use App\Http\Controllers\AssignmentResponseController;
 // Courses
 Route::get( "archived-courses", [CourseController::class, "archived"] )->name( "archived.course" );
 Route::post( "restore/{course}/course", [CourseController::class, "restore"] )->name( "restore.course" );
-Route::get( "course/{course}/authorization-panel", [CourseController::class, "authorization_panel"] )->name( "course.authorize" );
+// Route::get( "course/{course}/authorization-panel", [CourseController::class, "authorization_panel"] )->name( "course.authorize" );
 Route::patch( "course/{course}/authorization-panel", [CourseController::class, "authorize_users"] )->name( "course.users.authorize" );
 Route::post( "course/{course}/reauthorize", [CourseController::class, "reauthorize_users"] )->name( "course.users.reauthorize" );
 Route::get( "reauthorize-all", [CourseController::class, "reauthorize_all"] )->name( "reauthorize.all" );

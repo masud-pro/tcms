@@ -32,7 +32,7 @@
         <ul>
             <li><b>We have made managing payemnts much more easier than ever.</b></li>
             <li><b>Just click on the button and you're done.</b></li>
-            <li><b>To re-authorize users based on their payments, just click on "Re-authorize Users" below after checking all the users.</b></li>
+            <li><b>If student is unauthorized, he/she will not get any access to the course feed</b></li>
         </ul>
         <div class="card shadow mb-4">
             <div class="card-header py-3">

@@ -123,11 +123,11 @@ class CourseController extends Controller {
     /**
      * @param Course $course
      */
-    public function authorization_panel( Course $course ) {
-        return view( "ms.authorization.authorization-panel", [
-            "students" => $course->user()->orderBy( "name", "asc" )->get(),
-        ] );
-    }
+    // public function authorization_panel( Course $course ) {
+    //     return view( "ms.authorization.authorization-panel", [
+    //         "students" => $course->user()->orderBy( "name", "asc" )->get(),
+    //     ] );
+    // }
 
     /**
      * @param Request $request
