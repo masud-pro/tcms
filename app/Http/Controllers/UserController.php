@@ -114,13 +114,12 @@ class UserController extends Controller {
             $course = Course::findOrFail( $course, ["id", "fee"] );
 
             regenerate_all_payments();
-                // Update generate payment for individual student
-                if ( $user->is_active == 1 ) { 
-                    $course->user()->updateExistingPivot( $user->id, [
-                        'is_active' => 1,
-                    ] );
-                }
-    
+
+            if ( $user->is_active == 1 ) { 
+                $course->user()->updateExistingPivot( $user->id, [
+                    'is_active' => 1,
+                ] );
+            }
 
         }
 
